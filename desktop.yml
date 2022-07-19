@@ -26,6 +26,8 @@
 
 - name: Install packages commonly used on Desktop
   hosts: desktop
+  roles:
+  - role: gantsign.visual-studio-code
   tasks:
   - name: Install git
     become: yes
