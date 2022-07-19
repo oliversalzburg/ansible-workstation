@@ -39,11 +39,11 @@
       update_cache: true
   - name: Configure git email
     community.general.git_config:
-      name: email
+      name: user.email
       scope: global
       value: oliver.salzburg@gmail.com
   - name: Configure git name
     community.general.git_config:
-      name: name
+      name: user.name
       scope: global
       value: Oliver Salzburg
