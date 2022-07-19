@@ -2,7 +2,8 @@
 
 set -o errexit
 
-ANSIBLE_INVENTORY=/etc/ansible/hosts
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+ANSIBLE_INVENTORY=${SCRIPT_DIR}/inventory
 SSH_KEY=${HOME}/.ssh/id_ed25519
 
 sudo apt-get update
@@ -15,7 +16,7 @@ sudo apt-get install --yes python3 python3-pip
 export PATH=${PATH}:${HOME}/.local/bin
 python3 -m pip install --user ansible
 
-sudo mkdir --parents /etc/ansible
+mkdir --parents $ANSIBLE_INVENTORY
 
 cat << EOT | sudo tee $ANSIBLE_INVENTORY
 all:
@@ -57,4 +58,4 @@ echo Process completed
 echo Ansible inventory: $ANSIBLE_INVENTORY
 echo SSH key: $SSH_KEY
 echo Use \'ssh-copy-id -i ${SSH_KEY} ...\' to copy this key to your Ansible managed nodes.
-echo Use \'ansible example --ask-vault-pass -m ping\' to issue commands.
+echo Use \'ansible example --inventory ${ANSIBLE_INVENTORY} --ask-vault-pass --module-name ping\' to issue commands.
