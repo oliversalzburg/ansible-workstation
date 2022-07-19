@@ -28,6 +28,7 @@
   hosts: desktop
   tasks:
   - name: Install git
+    become: yes
     ansible.builtin.apt:
       name:
         - git
