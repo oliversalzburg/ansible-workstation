@@ -23,3 +23,14 @@
       property: "/general/theme"
       value_type: "string"
       value: "Default-xhdpi"
+
+- name: Install packages commonly used on Desktop
+  hosts: desktop
+  tasks:
+  - name: Install git
+    ansible.builtin.apt:
+      name:
+        - git
+        - openssh-client
+      state: present
+      update_cache: true
