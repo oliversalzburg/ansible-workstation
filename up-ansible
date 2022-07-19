@@ -6,6 +6,7 @@ ANSIBLE_INVENTORY=/etc/ansible/hosts
 SSH_KEY=${HOME}/.ssh/id_ed25519
 
 sudo apt-get update
+sudo apt-get install apt-transport-https
 
 # Install Ansible
 
