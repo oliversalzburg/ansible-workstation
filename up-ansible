@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -o errexit
+
 ANSIBLE_INVENTORY=/etc/ansible/hosts
 SSH_KEY=${HOME}/.ssh/id_ed25519
 
