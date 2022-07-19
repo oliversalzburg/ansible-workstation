@@ -1,0 +1,12 @@
+---
+- name: Configure system to use Nvidia GPU
+  hosts: desktop-nvidia
+  
+  tasks:
+  - name: Install X server development package
+    ansible.builtin.apt:
+      name: xserver-xorg-devel
+      state: present
+
+  - name: Generate default X configuration
+    ansible.builtin.shell: nvidia-xconfig
