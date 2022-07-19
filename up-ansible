@@ -5,18 +5,18 @@ set -o errexit
 ANSIBLE_INVENTORY=/etc/ansible/hosts
 SSH_KEY=${HOME}/.ssh/id_ed25519
 
-apt-get update
+sudo apt-get update
 
 # Install Ansible
 
-apt-get install --yes python3 python3-pip
+sudo apt-get install --yes python3 python3-pip
 
 export PATH=${PATH}:${HOME}/.local/bin
 python3 -m pip install --user ansible
 
-mkdir --parents /etc/ansible
+sudo mkdir --parents /etc/ansible
 
-cat << EOT > $ANSIBLE_INVENTORY
+cat << EOT | sudo tee $ANSIBLE_INVENTORY
 all:
   hosts:
     localhost:
@@ -37,7 +37,7 @@ EOT
 
 # Prepare SSH
 
-apt-get install --yes openssh-client
+sudo apt-get install --yes openssh-client
 # ed25519 elliptic curve, with 100 rounds of key derivation, empty passphrase
 ssh-keygen -t ed25519 -a 100 -N '' -f $SSH_KEY <<< y
 
