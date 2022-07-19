@@ -37,3 +37,12 @@
         - openssh-client
       state: present
       update_cache: true
+  - name: Configure git
+    community.general.git_config:
+      name: email
+      scope: global
+      value: oliver.salzburg@gmail.com
+    community.general.git_config:
+      name: name
+      scope: global
+      value: Oliver Salzburg
