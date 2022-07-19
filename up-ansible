@@ -45,6 +45,8 @@ all:
     desktop:
       hosts:
         example:
+    desktop-hidpi:
+      hosts:
 
 EOT
 
