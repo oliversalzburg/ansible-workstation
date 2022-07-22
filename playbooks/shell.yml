@@ -33,7 +33,7 @@
     - name: Set default editor
       community.general.alternatives:
         name: editor
-        path: /usb/bin/vim
+        path: /usr/bin/vim
       
 
     - name: Copy .bashrc
