@@ -7,7 +7,7 @@
       ansible.builtin.copy:
         src: ../home/.local/share/fonts/
         dest: ~/.local/share/fonts/
-        mode: 644
+        mode: 0644
     - name: Copy .xsessionrc
       ansible.builtin.copy:
         src: ../home/.xsessionrc
