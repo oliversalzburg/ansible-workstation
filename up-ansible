@@ -16,7 +16,7 @@ sudo apt-get install --yes python3 python3-pip
 export PATH=${PATH}:${HOME}/.local/bin
 python3 -m pip install --user ansible
 
-cat << EOT | sudo tee $ANSIBLE_INVENTORY
+cat << EOT | sudo tee $ANSIBLE_INVENTORY > /dev/null
 all:
   hosts:
     localhost:
