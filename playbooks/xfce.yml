@@ -3,6 +3,13 @@
   hosts: desktop
 
   tasks:
+    - name: Set theme
+      community.general.xfconf:
+        channel: "xsettings"
+        property: "/Net/ThemeName"
+        value_type: "string"
+        value: "Adwaita-dark"
+
     - name: Install Meslo Nerd Font patched for Powerlevel10k
       ansible.builtin.copy:
         src: ../home/.local/share/fonts/
