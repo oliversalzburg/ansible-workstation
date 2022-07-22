@@ -25,6 +25,16 @@
               url: zsh-users/zsh-syntax-highlighting
 
   tasks:
+    - name: Install vim
+      become: true
+      ansible.builtin.apt:
+        name:
+          - vim
+    - name: Set default editor
+      community.general.alternatives:
+        name: editor
+        path: /usb/bin/vim.tiny
+
     - name: Install powerlevel10k config
       ansible.builtin.copy:
         src: ../home/.p10k.zsh
