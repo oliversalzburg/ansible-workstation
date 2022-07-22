@@ -23,10 +23,11 @@
         src: ../home/.profile
         dest: ~/.profile
 
-    - name: Install zsh
+    - name: Install dependencies
       become: true
       ansible.builtin.apt:
         name:
+          - keychain
           - zsh
 
     - name: Download Oh My Zsh installer
