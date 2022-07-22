@@ -31,6 +31,6 @@
         dest: ~/.p10k.zsh
     - name: Install Meslo Nerd Font patched for Powerlevel10k
       ansible.builtin.copy:
-        src: ../home/.fonts/
+        src: ../home/.local/share/fonts/
         dest: ~/.local/share/fonts/
         mode: 644

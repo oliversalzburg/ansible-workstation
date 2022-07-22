@@ -1,0 +1,14 @@
+---
+- name: Configure the shell on the system
+  hosts: desktop
+
+  tasks:
+    - name: Install Meslo Nerd Font patched for Powerlevel10k
+      ansible.builtin.copy:
+        src: ../home/.local/share/fonts/
+        dest: ~/.local/share/fonts/
+        mode: 644
+    - name: Install Terminal configuration
+      ansible.builtin.copy:
+        src: ../home/.config/xfce4/terminal/terminalrc
+        dest: ~/.config/xfce4/terminal/terminalrc

@@ -30,7 +30,7 @@
   - role: gantsign.visual-studio-code
   tasks:
   - name: Install git
-    become: yes
+    become: true
     ansible.builtin.apt:
       name:
         - git
