@@ -9,7 +9,7 @@
           antigen_libraries:
             - name: oh-my-zsh
           antigen_theme:
-            name: powerlevel10k/powerlevel10k
+            name: romkatv/powerlevel10k
             url: https://github.com/romkatv/powerlevel10k.git
           antigen_bundles:
             - name: aws
