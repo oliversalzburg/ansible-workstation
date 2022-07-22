@@ -37,6 +37,11 @@
     - name: Execute the installer
       ansible.builtin.shell: /tmp/install-ohmyzsh.sh
 
+    - name: Set login shell
+      ansible.builtin.user:
+        name: oliver
+        shell: /bin/zsh
+
     #- name: Install .zshrc
     #  ansible.builtin.copy:
     #    src: ../home/.zshrc
