@@ -57,7 +57,7 @@
   hosts: desktop
   tasks:
   - name: Install KeePassXC
-    become: yes
+    become: true
     ansible.builtin.apt:
       name:
         - keepassxc
@@ -72,6 +72,6 @@
       url: https://discord.com/api/download?platform=linux&format=deb
       dest: /tmp/discord.deb
   - name: Install Discord
-    become: yes
+    become: true
     ansible.builtin.apt: 
       deb: /tmp/discord.deb
