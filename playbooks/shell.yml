@@ -2,10 +2,24 @@
 - name: Configure the shell on the system
   hosts: all
   
-  tasks:
-  - name: Install ZSH
-    become: yes
-    ansible.builtin.apt:
-      name: zsh
-      state: latest
-      update_cache: true
+  roles:
+    - role: gantsign.antigen
+      users:
+        - username: oliver
+          antigen_libraries:
+            - name: oh-my-zsh
+          antigen_theme:
+            name: powerlevel10k/powerlevel10k
+            url: https://github.com/romkatv/powerlevel10k.git
+          antigen_bundles:
+            - name: aws
+            - name: command-not-found
+            - name: git
+            - name: pip
+            - name: safe-paste
+            - name: terraform
+            - name: tig
+            - name: zsh-autosuggestions
+              url: zsh-users/zsh-autosuggestions
+            - name: zsh-syntax-highlighting
+              url: zsh-users/zsh-syntax-highlighting
