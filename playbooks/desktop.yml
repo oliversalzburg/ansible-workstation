@@ -72,5 +72,6 @@
       url: https://discord.com/api/download?platform=linux&format=deb
       dest: /tmp/discord.deb
   - name: Install Discord
+    become: yes
     ansible.builtin.apt: 
       deb: /tmp/discord.deb
