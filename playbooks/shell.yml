@@ -33,8 +33,22 @@
     - name: Set default editor
       community.general.alternatives:
         name: editor
-        path: /usb/bin/vim.tiny
+        path: /usb/bin/vim
+      
 
+    - name: Copy .bashrc
+      ansible.builtin.copy:
+        src: ../home/.bashrc
+        dest: ~/.bashrc
+    - name: Copy .profile
+      ansible.builtin.copy:
+        src: ../home/.profile
+        dest: ~/.profile
+
+    - name: Install .zshrc
+      ansible.builtin.copy:
+        src: ../home/.zshrc
+        dest: ~/.zshrc
     - name: Install powerlevel10k config
       ansible.builtin.copy:
         src: ../home/.p10k.zsh

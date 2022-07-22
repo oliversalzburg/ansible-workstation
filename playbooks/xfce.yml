@@ -8,6 +8,10 @@
         src: ../home/.local/share/fonts/
         dest: ~/.local/share/fonts/
         mode: 644
+    - name: Copy .xsessionrc
+      ansible.builtin.copy:
+        src: ../home/.xsessionrc
+        dest: ~/.xsessionrc
     - name: Install Terminal configuration
       ansible.builtin.copy:
         src: ../home/.config/xfce4/terminal/terminalrc
