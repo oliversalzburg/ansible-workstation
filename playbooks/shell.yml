@@ -31,10 +31,10 @@
         name:
           - vim
     - name: Set default editor
+      become: true
       community.general.alternatives:
         name: editor
         path: /usr/bin/vim
-      
 
     - name: Copy .bashrc
       ansible.builtin.copy:
