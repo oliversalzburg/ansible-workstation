@@ -67,5 +67,9 @@
 - name: Discord
   hosts: desktop
   tasks:
+  - name: Download Discord .deb
+    ansible.builtin.get_url: 
+      url: https://discord.com/api/download?platform=linux&format=deb
+      dest: /tmp/discord.deb
   - name: Install Discord
-    ansible.builtin.apt: https://discord.com/api/download?platform=linux&format=deb
+    ansible.builtin.apt: /tmp/discord.deb
