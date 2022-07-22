@@ -38,20 +38,25 @@
       ansible.builtin.shell: 
         cmd: /tmp/install-ohmyzsh.sh
         creates: ~/.oh-my-zsh/
+    - name: Install Powerlevel10k theme
+      ansible.builtin.git:
+        repo: "https://github.com/romkatv/powerlevel10k.git"
+        dest: ~/.oh-my-zsh/themes/powerlevel10k
+        depth: 1
+    - name: Install .zshrc
+      ansible.builtin.copy:
+        src: ../home/.zshrc
+        dest: ~/.zshrc
+    - name: Install powerlevel10k config
+      ansible.builtin.copy:
+        src: ../home/.p10k.zsh
+        dest: ~/.p10k.zsh
 
     - name: Set login shell
       ansible.builtin.user:
         name: oliver
         shell: /bin/zsh
 
-    #- name: Install .zshrc
-    #  ansible.builtin.copy:
-    #    src: ../home/.zshrc
-    #    dest: ~/.zshrc
-    #- name: Install powerlevel10k config
-    #  ansible.builtin.copy:
-    #    src: ../home/.p10k.zsh
-    #    dest: ~/.p10k.zsh
     - name: Install Meslo Nerd Font patched for Powerlevel10k
       ansible.builtin.copy:
         src: ../home/.local/share/fonts/
