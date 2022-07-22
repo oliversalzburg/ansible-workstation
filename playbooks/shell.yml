@@ -35,7 +35,9 @@
         dest: /tmp/install-ohmyzsh.sh
         mode: 0744
     - name: Execute the installer
-      ansible.builtin.shell: /tmp/install-ohmyzsh.sh
+      ansible.builtin.shell: 
+        cmd: /tmp/install-ohmyzsh.sh
+        creates: ~/.oh-my-zsh/
 
     - name: Set login shell
       ansible.builtin.user:
