@@ -1,0 +1,11 @@
+---
+- name: Configure the shell on the system
+  hosts: all
+  
+  tasks:
+  - name: Install ZSH
+    become: yes
+    ansible.builtin.apt:
+      name: zsh
+      state: latest
+      update_cache: true
