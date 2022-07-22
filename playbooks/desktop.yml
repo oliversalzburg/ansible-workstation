@@ -47,6 +47,11 @@
       name: user.name
       scope: global
       value: Oliver Salzburg
+  - name: Configure git pull strategy
+    community.general.git_config:
+      name: pull.rebase
+      scope: global
+      value: false
 
 - name: KeePassXC
   hosts: desktop
