@@ -2,28 +2,6 @@
 - name: Configure the shell on the system
   hosts: all
 
-  roles:
-    - role: gantsign.antigen
-      users:
-        - username: oliver
-          antigen_libraries:
-            - name: oh-my-zsh
-          antigen_theme:
-            name: romkatv/powerlevel10k
-            url: https://github.com/romkatv/powerlevel10k.git
-          antigen_bundles:
-            - name: aws
-            - name: command-not-found
-            - name: git
-            - name: pip
-            - name: safe-paste
-            - name: terraform
-            - name: tig
-            - name: zsh-autosuggestions
-              url: zsh-users/zsh-autosuggestions
-            - name: zsh-syntax-highlighting
-              url: zsh-users/zsh-syntax-highlighting
-
   tasks:
     - name: Install vim
       become: true
@@ -45,14 +23,27 @@
         src: ../home/.profile
         dest: ~/.profile
 
-    - name: Install .zshrc
-      ansible.builtin.copy:
-        src: ../home/.zshrc
-        dest: ~/.zshrc
-    - name: Install powerlevel10k config
-      ansible.builtin.copy:
-        src: ../home/.p10k.zsh
-        dest: ~/.p10k.zsh
+    - name: Install zsh
+      become: true
+      ansible.builtin.apt:
+        name:
+          - zsh
+
+    - name: Download Oh My Zsh installer
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+        dest: /tmp/install-ohmyzsh.sh
+    - name: Execute the installer
+      ansible.builtin.shell: /tmp/install-ohmyzsh.sh
+
+    #- name: Install .zshrc
+    #  ansible.builtin.copy:
+    #    src: ../home/.zshrc
+    #    dest: ~/.zshrc
+    #- name: Install powerlevel10k config
+    #  ansible.builtin.copy:
+    #    src: ../home/.p10k.zsh
+    #    dest: ~/.p10k.zsh
     - name: Install Meslo Nerd Font patched for Powerlevel10k
       ansible.builtin.copy:
         src: ../home/.local/share/fonts/
