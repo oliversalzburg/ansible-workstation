@@ -33,7 +33,7 @@
       ansible.builtin.get_url:
         url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
         dest: /tmp/install-ohmyzsh.sh
-        mode: 644
+        mode: 0744
     - name: Execute the installer
       ansible.builtin.shell: /tmp/install-ohmyzsh.sh
 
@@ -49,4 +49,4 @@
       ansible.builtin.copy:
         src: ../home/.local/share/fonts/
         dest: ~/.local/share/fonts/
-        mode: 644
+        mode: 0644
