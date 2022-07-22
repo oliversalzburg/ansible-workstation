@@ -24,7 +24,7 @@
       value_type: "string"
       value: "Default-xhdpi"
 
-- name: Install coding environment
+- name: Coding Environment
   hosts: desktop
   roles:
   - role: gantsign.visual-studio-code
@@ -48,7 +48,7 @@
       scope: global
       value: Oliver Salzburg
 
-- name: Install KeePassXC
+- name: KeePassXC
   hosts: desktop
   tasks:
   - name: Install KeePassXC
@@ -58,3 +58,9 @@
         - keepassxc
       state: present
       update_cache: true
+
+- name: Discord
+  hosts: desktop
+  tasks:
+  - name: Install Discord
+    ansible.builtin.apt: https://discord.com/api/download?platform=linux&format=deb
