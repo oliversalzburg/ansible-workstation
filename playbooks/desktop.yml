@@ -1,6 +1,6 @@
 ---
 - name: Enable High-DPI display scaling
-  hosts: desktop-hidpi
+  hosts: desktop_hidpi
   
   tasks:
   #- name: Set DPI for X

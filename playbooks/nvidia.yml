@@ -1,6 +1,6 @@
 ---
 - name: Configure system to use Nvidia GPU
-  hosts: desktop-nvidia
+  hosts: desktop_nvidia
   
   tasks:
   - name: Install X server development package
