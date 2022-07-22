@@ -8,6 +8,9 @@
         src: ../home/.local/share/fonts/
         dest: ~/.local/share/fonts/
         mode: 0644
+    - name: Update font cache
+      command: fc-cache -fv
+
     - name: Copy .xsessionrc
       ansible.builtin.copy:
         src: ../home/.xsessionrc
