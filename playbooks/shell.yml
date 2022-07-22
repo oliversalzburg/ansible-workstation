@@ -1,7 +1,7 @@
 ---
 - name: Configure the shell on the system
   hosts: all
-  
+
   roles:
     - role: gantsign.antigen
       users:
@@ -23,3 +23,9 @@
               url: zsh-users/zsh-autosuggestions
             - name: zsh-syntax-highlighting
               url: zsh-users/zsh-syntax-highlighting
+
+  tasks:
+    - name: Install powerlevel10k config
+      ansible.builtin.copy:
+        src: ../home/.p10k.zsh
+        dest: ~/.p10k.zsh
