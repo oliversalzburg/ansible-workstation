@@ -24,7 +24,7 @@
       value_type: "string"
       value: "Default-xhdpi"
 
-- name: Install packages commonly used on Desktop
+- name: Install coding environment
   hosts: desktop
   roles:
   - role: gantsign.visual-studio-code
@@ -47,3 +47,14 @@
       name: user.name
       scope: global
       value: Oliver Salzburg
+
+- name: Install KeePassXC
+  hosts: desktop
+  tasks:
+  - name: Install KeePassXC
+    become: yes
+    ansible.builtin.apt:
+      name:
+        - keepassxc
+      state: present
+      update_cache: true
