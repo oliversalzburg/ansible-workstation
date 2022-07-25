@@ -3,11 +3,24 @@
   hosts: desktop_nvidia
   
   tasks:
-  - name: Install X server development package
+  - name: Install dependencies
+    become: true
     ansible.builtin.apt:
-      name: xserver-xorg-devel
-      state: present
-      update_cache: true
+      name:
+        - linux-headers-amd64
+        - software-properties-common
 
-  - name: Generate default X configuration
-    ansible.builtin.shell: nvidia-xconfig
+  - name: Enable non-free APT
+    become: true
+    ansible.builtin.command: apt-add-repository non-free
+  - name: Enable contrib APT
+    become: true
+    ansible.builtin.command: apt-add-repository contrib
+
+  - name: Install Nvidia driver
+    become: true
+    ansible.builtin.apt:
+      update_cache: true
+      name:
+        - firmware-misc-nonfree
+        - nvidia-driver
