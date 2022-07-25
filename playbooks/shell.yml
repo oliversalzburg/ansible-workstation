@@ -27,6 +27,7 @@
       become: true
       ansible.builtin.apt:
         name:
+          - htop
           - keychain
           - ncdu
           - zsh
