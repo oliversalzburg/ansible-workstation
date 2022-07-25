@@ -18,7 +18,7 @@
     # It's not clear why the above approach doesn't work, but it simply produces no changes.
     # When we run the command manually, everything works as expected.
     - name: Don't save session on exit (manual)
-      ansible.builtin.command: xfconf-query -c xfce4-session -p /general/SaveOnExit -t bool -s false
+      ansible.builtin.command: xfconf-query -c xfce4-session -p /general/SaveOnExit -t bool -s false -n
 
     - name: Install Meslo Nerd Font patched for Powerlevel10k
       ansible.builtin.copy:
