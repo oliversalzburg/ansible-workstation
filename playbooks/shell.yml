@@ -28,6 +28,7 @@
       ansible.builtin.apt:
         name:
           - keychain
+          - ncdu
           - zsh
 
     - name: Download Oh My Zsh installer
@@ -64,6 +65,7 @@
         dest: ~/.p10k.zsh
 
     - name: Set login shell
+      become: true
       ansible.builtin.user:
         name: oliver
         shell: /bin/zsh
