@@ -1,0 +1,27 @@
+---
+- name: Install Steam
+  hosts: desktop
+
+  tasks:
+  - name: Check if i386 is enabled
+    ansible.builtin.shell: dpkg --print-foreign-architectures | grep i386
+    register: result_i386_check
+    changed_when: result_i386_check.rc == 1
+    failed_when: result_i386_check.rc > 1
+
+  - name: Enable i386 architecture
+    ansible.builtin.command: dpkg --add-architecture i386
+    when: result_i386_check.rc == 1
+
+  - name: Ensure apt cache is up to date
+    ansible.builtin.apt: update_cache=yes
+    when: result_i386_check.rc == 1
+
+  - name: Install Steam
+    ansible.builtin.apt:
+      name:
+        - libgl1-mesa-dri:i386
+        - libglx-mesa0:i386
+        - mesa-vulkan-drivers
+        - mesa-vulkan-drivers:i386
+        - steam
