@@ -9,6 +9,12 @@
         property: "/Net/ThemeName"
         value_type: "string"
         value: "Adwaita-dark"
+    - name: Don't save session on exit
+      community.general.xfconf:
+        channel: "xfce4-session"
+        property: "/general/SaveOnExit"
+        value_type: "bool"
+        value: false
 
     - name: Install Meslo Nerd Font patched for Powerlevel10k
       ansible.builtin.copy:
