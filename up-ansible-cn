@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Initial entrypoint for Ansible control node initialization
+
 set -o errexit
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
