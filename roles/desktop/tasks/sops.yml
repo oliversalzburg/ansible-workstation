@@ -1,0 +1,16 @@
+---
+- name: Download sops binary
+  ansible.builtin.get_url:
+    url: "https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux"
+    dest: /tmp
+    mode: 0600
+
+- name: Copy sops binary to destination directory
+  become: true
+  ansible.builtin.copy:
+    src: /tmp/sops-v3.7.3.linux
+    dest: /usr/local/bin/sops
+    mode: 0755
+    owner: root
+    group: root
+    remote_src: true

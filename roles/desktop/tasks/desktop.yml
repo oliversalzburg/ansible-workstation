@@ -13,6 +13,6 @@
     value_type: "string"
     value: "Default-xhdpi"
 
-- include_tasks: ./coding-environment.yml
-- include_tasks: ./keepassxc.yml
-- include_tasks: ./discord.yml
+- include_tasks: coding-environment.yml
+- include_tasks: keepassxc.yml
+- include_tasks: discord.yml
