@@ -1,5 +1,5 @@
 ---
-- name: Configure the shell on the system
+- name: Configure the Xfce on the system
   hosts: desktop
 
   tasks:
