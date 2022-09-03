@@ -23,4 +23,4 @@ sudo apt-get install --yes openssh-server
 
 echo ""
 echo Process completed.
-echo Use \'ssh-copy-id -i ${SSH_KEY} $(hostname -I)\' to copy your SSH key to this Ansible managed nodes.
+echo Use \'ssh-copy-id -i ${SSH_KEY} $(hostname -I | cut -d' ' -f1)\' to copy your SSH key to this Ansible managed nodes.
