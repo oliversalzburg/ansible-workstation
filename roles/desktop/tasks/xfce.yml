@@ -1,0 +1,28 @@
+---
+- name: Set theme
+  community.general.xfconf:
+    channel: xsettings
+    property: /Net/ThemeName
+    value_type: string
+    value: Adwaita-dark
+#- name: Don't save session on exit
+#  community.general.xfconf:
+#    channel: xfce4-session
+#    property: /general/SaveOnExit
+#    value_type: bool
+#    value: "false"
+# It's not clear why the above approach doesn't work, but it simply produces no changes.
+# When we run the command manually, everything works as expected.
+- name: Don't save session on exit (manual)
+  ansible.builtin.command: xfconf-query -c xfce4-session -p /general/SaveOnExit -t bool -s false -n
+
+- name: Copy .xsessionrc
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/home/.xsessionrc"
+    dest: ~/.xsessionrc
+- name: Install Terminal configuration
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/home/.config/xfce4/terminal/terminalrc"
+    dest: ~/.config/xfce4/terminal/terminalrc
+- name: Update font cache
+  command: fc-cache -fv

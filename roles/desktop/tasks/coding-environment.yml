@@ -1,0 +1,28 @@
+---
+- name: Install VS Code
+  ansible.builtin.include_role:
+    name: gantsign.visual-studio-code
+
+- name: Install git
+  become: true
+  ansible.builtin.apt:
+    name:
+      - git
+      - openssh-client
+    state: present
+    update_cache: true
+- name: Configure git email
+  community.general.git_config:
+    name: user.email
+    scope: global
+    value: oliver.salzburg@gmail.com
+- name: Configure git name
+  community.general.git_config:
+    name: user.name
+    scope: global
+    value: Oliver Salzburg
+- name: Configure git pull strategy
+  community.general.git_config:
+    name: pull.rebase
+    scope: global
+    value: false

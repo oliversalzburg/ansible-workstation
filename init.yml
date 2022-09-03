@@ -1,0 +1,11 @@
+---
+- hosts: workstation
+  gather_facts: yes
+  roles:
+    - role: all
+    - role: desktop
+
+- hosts: container
+  gather_facts: yes
+  roles:
+    - role: all

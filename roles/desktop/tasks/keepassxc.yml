@@ -1,0 +1,8 @@
+---
+- name: Install KeePassXC
+  become: true
+  ansible.builtin.apt:
+    name:
+      - keepassxc
+    state: present
+    update_cache: true
