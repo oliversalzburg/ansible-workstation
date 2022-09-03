@@ -1,0 +1,6 @@
+---
+k3s_version: v1.24.4+k3s1
+#ansible_user: debian
+systemd_dir: /etc/systemd/system
+container_ip: "{{ hostvars[groups['container'][0]]['ansible_host'] | default(groups['container'][0]) }}"
+#extra_server_args: ""
