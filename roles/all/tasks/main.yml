@@ -19,14 +19,19 @@
     src: "{{ role_path }}/files/home/.profile"
     dest: ~/.profile
 
-- name: Install dependencies
+- name: Install commonly used dependencies
   become: true
   ansible.builtin.apt:
     name:
+      - curl
+      - dnsutils
       - git
       - htop
+      - iputils-tracepath
       - keychain
       - ncdu
+      - nmap
+      - wget
       - zsh
 
 - name: Download Oh My Zsh installer
