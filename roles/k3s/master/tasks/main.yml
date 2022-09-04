@@ -53,7 +53,7 @@
     owner: "{{ ansible_user }}"
 
 - name: Copy config file to user home directory
-  copy:
+  ansible.builtin.copy:
     src: /etc/rancher/k3s/k3s.yaml
     dest: ~{{ ansible_user }}/.kube/config
     remote_src: yes
@@ -65,6 +65,13 @@
       --server=https://{{ container_ip }}:6443
       --kubeconfig ~{{ ansible_user }}/.kube/config
   changed_when: true
+
+- name: Fetch kube config
+  run_once: true
+  fetch:
+    src: ~{{ ansible_user }}/.kube/config
+    dest: kubeconfig
+    flat: true
 
 - name: Create kubectl symlink
   file:

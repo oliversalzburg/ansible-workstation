@@ -1,0 +1,20 @@
+---
+- name: Download flux archive
+  ansible.builtin.get_url:
+    url: "https://github.com/fluxcd/flux2/releases/download/v0.33.0/flux_0.33.0_linux_amd64.tar.gz"
+    dest: /tmp
+
+- name: Extract flux archive
+  ansible.builtin.unarchive:
+    src: /tmp/flux_0.33.0_linux_amd64.tar.gz
+    dest: /tmp
+
+- name: Copy flux binary to destination directory
+  become: true
+  ansible.builtin.copy:
+    src: /tmp/flux
+    dest: /usr/local/bin/flux
+    mode: 0755
+    owner: root
+    group: root
+    remote_src: true

@@ -1,5 +1,6 @@
 ---
 - include_tasks: desktop.yml
 - include_tasks: xfce.yml
+- include_tasks: flux.yml
 - include_tasks: kubectl.yml
 - include_tasks: sops.yml
