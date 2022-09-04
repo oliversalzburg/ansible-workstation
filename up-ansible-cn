@@ -61,4 +61,4 @@ echo Process completed.
 echo Ansible inventory: $ANSIBLE_INVENTORY
 echo SSH key: $SSH_KEY
 echo Use \'ssh-copy-id -i ${SSH_KEY} ...\' to copy this key to your Ansible managed nodes.
-echo Use \'ansible example --inventory ${ANSIBLE_INVENTORY} --ask-vault-pass --module-name ping\' to issue commands.
+echo Use \'ansible example --ask-vault-pass --module-name ping\' to issue commands.
