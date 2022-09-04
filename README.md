@@ -1,6 +1,6 @@
 # ansible-workstation
 
 ```shell
-ansible-galaxy install -r requirements.yml
-ansible-playbook playbooks/desktop.yml --inventory inventory --ask-vault-pass
+ansible-galaxy install -r provision/ansible/requirements.yml
+ansible-playbook provision/ansible/init.yml --ask-vault-pass
 ```
