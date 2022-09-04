@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pihole
+  labels:
+    app: pihole
+spec:
+  selector:
+    matchLabels:
+      app: pihole
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: pihole
+        tier: pihole
+    spec:
+      hostNetwork: true
+      containers:
+      - image: pihole/pihole:latest
+        name: pihole
+        env:
+        - name: TZ
+          value: Europe/Berlin
+        - name: WEBPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: pihole-password
+              key: password
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 2Gi
+            cpu: 1000m
+        securityContext:
+          privileged: true
+        ports:
+        - containerPort: 53
+          name: dnstcp
+          protocol: TCP
+        - containerPort: 53
+          name: dnsudp
+          protocol: UDP
+        - containerPort: 67
+          name: dhcp
+          protocol: UDP
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        - containerPort: 443
+          name: https
+          protocol: TCP
+        volumeMounts:
+        - name: pihole-etc-dnsmasqd
+          mountPath: /etc/dnsmasq.d
+        - name: pihole-etc-pihole
+          mountPath: /etc/pihole
+      volumes:
+      - name: pihole-etc-dnsmasqd
+        hostPath:
+          path: /mnt/data/pihole/dnsmasq.d
+          type: DirectoryOrCreate
+      - name: pihole-etc-pihole
+        hostPath:
+          path: /mnt/data/pihole/etc
+          type: DirectoryOrCreate
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
