@@ -1,1 +1,6 @@
-- src: gantsign.visual-studio-code
+roles:
+  - src: gantsign.visual-studio-code
+
+collections:
+  - name: kubernetes.core
+    version: 2.3.2
