@@ -1,0 +1,9 @@
+---
+- name: Install kubernetes python package
+  ansible.builtin.pip:
+    name: kubernetes
+
+- name: Bootstrap Flux in k8s cluster
+  become: false
+  kubernetes.core.k8s:
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='cluster/bootstrap') }}"

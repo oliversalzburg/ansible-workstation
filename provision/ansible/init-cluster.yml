@@ -1,0 +1,6 @@
+---
+- hosts: container
+  gather_facts: yes
+  roles:
+    - role: cluster
+      become: true

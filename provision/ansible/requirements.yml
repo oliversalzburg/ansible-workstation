@@ -2,5 +2,7 @@ roles:
   - src: gantsign.visual-studio-code
 
 collections:
+  - name: community.sops
+    version: 1.3.0
   - name: kubernetes.core
     version: 2.3.2
