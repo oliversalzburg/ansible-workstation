@@ -25,4 +25,4 @@
     src: "{{ role_path }}/files/home/.config/xfce4/terminal/terminalrc"
     dest: ~/.config/xfce4/terminal/terminalrc
 - name: Update font cache
-  command: fc-cache -fv
+  ansible.builtin.command: fc-cache -fv
