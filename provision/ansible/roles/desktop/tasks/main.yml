@@ -4,5 +4,6 @@
 
 - include_tasks: age.yml
 - include_tasks: flux.yml
+- include_tasks: helm.yml
 - include_tasks: kubectl.yml
 - include_tasks: sops.yml

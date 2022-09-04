@@ -1,18 +1,24 @@
 ---
+- name: Ensure working directory exists
+  ansible.builtin.file:
+    path: "{{ downloads_directory }}/flux"
+    state: directory
+    owner: "{{ ansible_user }}"
+
 - name: Download flux archive
   ansible.builtin.get_url:
-    url: "https://github.com/fluxcd/flux2/releases/download/v0.33.0/flux_0.33.0_linux_amd64.tar.gz"
-    dest: /tmp
+    url: "https://github.com/fluxcd/flux2/releases/download/v{{ version_flux }}/flux_{{ version_flux }}_linux_amd64.tar.gz"
+    dest: "{{ downloads_directory }}"
 
 - name: Extract flux archive
   ansible.builtin.unarchive:
-    src: /tmp/flux_0.33.0_linux_amd64.tar.gz
-    dest: /tmp
+    src: "{{ downloads_directory }}/flux_{{ version_flux }}_linux_amd64.tar.gz"
+    dest: "{{ downloads_directory }}/flux"
 
 - name: Copy flux binary to destination directory
   become: true
   ansible.builtin.copy:
-    src: /tmp/flux
+    src: "{{ downloads_directory }}/flux/flux"
     dest: /usr/local/bin/flux
     mode: 0755
     owner: root

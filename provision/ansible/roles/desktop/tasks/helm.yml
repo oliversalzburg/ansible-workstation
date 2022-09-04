@@ -1,0 +1,26 @@
+---
+- name: Ensure working directory exists
+  ansible.builtin.file:
+    path: "{{ downloads_directory }}/helm"
+    state: directory
+    owner: "{{ ansible_user }}"
+
+- name: Download helm archive
+  ansible.builtin.get_url:
+    url: "https://get.helm.sh/helm-v{{ version_helm }}-linux-amd64.tar.gz"
+    dest: "{{ downloads_directory }}"
+
+- name: Extract helm archive
+  ansible.builtin.unarchive:
+    src: "{{ downloads_directory }}/helm-v{{ version_helm }}-linux-amd64.tar.gz"
+    dest: "{{ downloads_directory }}/helm"
+
+- name: Copy helm binary to destination directory
+  become: true
+  ansible.builtin.copy:
+    src: "{{ downloads_directory }}/helm/linux-amd64/helm"
+    dest: /usr/local/bin/helm
+    mode: 0755
+    owner: root
+    group: root
+    remote_src: true
