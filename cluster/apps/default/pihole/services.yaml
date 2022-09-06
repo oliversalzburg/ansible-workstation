@@ -41,7 +41,8 @@ spec:
   type: NodePort
   ports:
     - name: http
-      port: 80
+      port: 8053
       protocol: TCP
+      targetPort: 80
   selector:
     app: pihole
