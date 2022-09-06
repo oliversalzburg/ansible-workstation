@@ -4,7 +4,7 @@ age.agekey:
 	cat age.agekey >> ~/.config/sops/age/keys.txt
 
 init:
-	ansible-playbook provision/ansible/init.yml --vault-password-file provision/ansible/ vault-password-file
+	ansible-playbook provision/ansible/init.yml --vault-password-file provision/ansible/vault-password-file
 
 init-cluster: age.agekey
 	ansible-playbook provision/ansible/init-cluster.yml --vault-password-file provision/ansible/vault-password-file
