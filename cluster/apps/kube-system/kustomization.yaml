@@ -7,4 +7,3 @@ resources:
   # - kured
   - metrics-server
   - reloader
-  - pihole
