@@ -38,10 +38,11 @@ spec:
             cpu: 1000m
         #securityContext:
         #  privileged: true
-        #ports:
-        #- containerPort: 53
-        #  name: dnstcp
-        #  protocol: TCP
+        ports:
+        - containerPort: 53
+          name: dnstcp
+          protocol: TCP
+          hostPort: 53
         #- containerPort: 53
         #  name: dnsudp
         #  protocol: UDP
