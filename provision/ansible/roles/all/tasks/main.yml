@@ -45,14 +45,9 @@
     url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
     dest: "{{ downloads_directory }}/install-ohmyzsh.sh"
     mode: 0744
-# Not sure if this helps, but we continuously get stuck at this spot and have to restart the play.
-- name: Sleep for 5 seconds and continue with play
-  ansible.builtin.wait_for:
-    timeout: 5
-  delegate_to: localhost
 - name: Execute the installer
   ansible.builtin.shell: 
-    cmd: "{{ downloads_directory }}/install-ohmyzsh.sh"
+    cmd: "{{ downloads_directory }}/install-ohmyzsh.sh --unattended"
     creates: ~/.oh-my-zsh/
 - name: Install Powerlevel10k theme
   ansible.builtin.git:
