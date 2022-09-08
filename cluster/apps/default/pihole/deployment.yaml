@@ -38,22 +38,22 @@ spec:
             cpu: 1000m
         #securityContext:
         #  privileged: true
-        ports:
-        - containerPort: 53
-          name: dnstcp
-          protocol: TCP
-        - containerPort: 53
-          name: dnsudp
-          protocol: UDP
-        - containerPort: 67
-          name: dhcp
-          protocol: UDP
-        - containerPort: 80
-          name: http
-          protocol: TCP
-        - containerPort: 443
-          name: https
-          protocol: TCP
+        #ports:
+        #- containerPort: 53
+        #  name: dnstcp
+        #  protocol: TCP
+        #- containerPort: 53
+        #  name: dnsudp
+        #  protocol: UDP
+        #- containerPort: 67
+        #  name: dhcp
+        #  protocol: UDP
+        #- containerPort: 80
+        #  name: http
+        #  protocol: TCP
+        #- containerPort: 443
+        #  name: https
+        #  protocol: TCP
         volumeMounts:
         - name: pihole-etc-dnsmasqd
           mountPath: /etc/dnsmasq.d
