@@ -17,7 +17,7 @@ spec:
         app: pihole
         tier: pihole
     spec:
-      hostNetwork: true
+      #hostNetwork: true
       containers:
       - image: pihole/pihole:latest
         name: pihole
