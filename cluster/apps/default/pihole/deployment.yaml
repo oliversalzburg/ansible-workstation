@@ -43,9 +43,10 @@ spec:
           name: dnstcp
           protocol: TCP
           hostPort: 53
-        #- containerPort: 53
-        #  name: dnsudp
-        #  protocol: UDP
+        - containerPort: 53
+          name: dnsudp
+          protocol: UDP
+          hostPort: 53
         #- containerPort: 67
         #  name: dhcp
         #  protocol: UDP
