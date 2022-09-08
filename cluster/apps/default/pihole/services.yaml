@@ -22,13 +22,15 @@ metadata:
   labels:
     app: pihole
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
-    - name: dnstcp
+    - name: dnsudp
       port: 53
       protocol: UDP
   selector:
     app: pihole
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: "${METALLB_K8S_GATEWAY_ADDR}"
 ---
 apiVersion: v1
 kind: Service
