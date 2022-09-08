@@ -27,7 +27,7 @@ spec:
         - name: WEBPASSWORD
           valueFrom:
             secretKeyRef:
-              name: pihole-password
+              name: pihole
               key: password
         resources:
           requests:
