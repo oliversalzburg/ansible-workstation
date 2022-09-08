@@ -36,8 +36,8 @@ spec:
           limits:
             memory: 2Gi
             cpu: 1000m
-        securityContext:
-          privileged: true
+        #securityContext:
+        #  privileged: true
         ports:
         - containerPort: 53
           name: dnstcp
