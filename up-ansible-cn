@@ -5,7 +5,7 @@
 set -o errexit
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-ANSIBLE_INVENTORY=${SCRIPT_DIR}/inventory
+ANSIBLE_INVENTORY=${SCRIPT_DIR}/provision/ansible/inventory
 SSH_KEY=${HOME}/.ssh/id_ed25519
 
 sudo apt-get update
