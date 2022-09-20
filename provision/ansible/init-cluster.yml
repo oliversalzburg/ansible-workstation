@@ -1,6 +1,9 @@
 ---
-- hosts: container
+- hosts: "{{ target_host | default('container') }}"
   gather_facts: yes
   roles:
+    - role: all
+    - role: k3s/master
+      become: true
     - role: cluster
       become: true

@@ -84,3 +84,7 @@
     src: "{{ role_path }}/files/home/.local/share/fonts/"
     dest: ~/.local/share/fonts/
     mode: 0644
+
+- include_tasks: age.yml
+- include_tasks: coding-environment.yml
+- include_tasks: sops.yml
