@@ -53,8 +53,11 @@ EOT
 # Prepare SSH
 
 sudo apt-get install --yes openssh-client
-# ed25519 elliptic curve, with 100 rounds of key derivation, empty passphrase
-ssh-keygen -t ed25519 -a 100 -N '' -f $SSH_KEY <<< y
+
+if [ ! -f ~/.ssh/id_ed25519 ]; then
+  # ed25519 elliptic curve, with 100 rounds of key derivation, empty passphrase
+  ssh-keygen -t ed25519 -a 100 -N '' -f $SSH_KEY <<< y
+fi
 
 echo ""
 echo Process completed.
