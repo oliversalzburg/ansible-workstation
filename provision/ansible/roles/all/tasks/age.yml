@@ -1,7 +1,7 @@
 ---
 - name: Ensure working directory exists
   ansible.builtin.file:
-    path: "{{ downloads_directory }}/age"
+    path: "{{ downloads_directory }}"
     state: directory
     owner: "{{ ansible_user }}"
 
@@ -12,7 +12,8 @@
 
 - name: Extract age archive
   ansible.builtin.unarchive:
-    src: "{{ downloads_directory }}/age-v1.0.0-linux-amd64.tar.gz"
+    src: "{{ downloads_directory }}/age-v{{ version_age }}-linux-amd64.tar.gz"
+    remote_src: true
     dest: "{{ downloads_directory }}"
 
 - name: Copy age binary to destination directory
