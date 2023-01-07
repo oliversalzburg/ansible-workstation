@@ -31,8 +31,3 @@ We will assume you are working on a control node, as provisioned through this fr
     ```shell
     ansible example --ask-vault-pass --module-name include_role --args name=all
     ```
-
-```shell
-ansible-galaxy install -r requirements.yml
-ansible-playbook playbooks/desktop.yml --ask-vault-pass
-```
