@@ -3,23 +3,30 @@
 # Initial entrypoint for Ansible control node initialization
 
 set -o errexit
+set -o nounset
+set -o pipefail
+if [[ "${TRACE-0}" == "1" ]]; then
+  set -o xtrace
+fi
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-ANSIBLE_INVENTORY=${SCRIPT_DIR}/provision/ansible/inventory
-SSH_KEY=${HOME}/.ssh/id_ed25519
+cd "$(dirname "$0")"
 
-sudo apt-get update
-sudo apt-get install apt-transport-https
+main() {
+  SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+  ANSIBLE_INVENTORY=${SCRIPT_DIR}/provision/ansible/inventory
+  SSH_KEY=${HOME}/.ssh/id_ed25519
 
-# Install Ansible
+  sudo apt-get update
 
-sudo apt-get install --yes python3 python3-pip
+  # Install Ansible
 
-export PATH=${PATH}:${HOME}/.local/bin
-python3 -m pip install --user ansible
+  sudo apt-get install --yes python3 python3-pip
 
-if [[ ! -e $ANSIBLE_INVENTORY ]]; then
-  cat <<EOT | sudo tee "$ANSIBLE_INVENTORY" >/dev/null
+  export PATH=${PATH}:${HOME}/.local/bin
+  python3 -m pip install --user ansible
+
+  if [[ ! -e $ANSIBLE_INVENTORY ]]; then
+    cat <<EOT | sudo tee "$ANSIBLE_INVENTORY" >/dev/null
   all:
     hosts:
       localhost:
@@ -50,29 +57,33 @@ if [[ ! -e $ANSIBLE_INVENTORY ]]; then
         hosts:
 
 EOT
-else
+  else
+    echo
+    echo "NOTICE: Existing Ansible inventory found at '${ANSIBLE_INVENTORY}'! NOT replacing existing inventory."
+    echo
+  fi
+
+  ansible-galaxy install -r provision/ansible/requirements.yml
+
+  # Prepare SSH
+
+  sudo apt-get install --yes openssh-client
+
+  # Generate an SSH key if it doesn't exist
+  if [[ ! -e $SSH_KEY ]]; then
+    # ed25519 elliptic curve, with 100 rounds of key derivation, empty passphrase
+    ssh-keygen -t ed25519 -a 100 -N '' -f "$SSH_KEY" <<<y
+  else
+    echo
+    echo "NOTICE: Existing SSH key found at '${SSH_KEY}'! NOT replacing existing key."
+  fi
+
   echo
-  echo "NOTICE: Existing Ansible inventory found at '${ANSIBLE_INVENTORY}'! NOT replacing existing inventory."
-fi
+  echo Process completed.
+  echo Ansible inventory: "$ANSIBLE_INVENTORY"
+  echo SSH key: "$SSH_KEY"
+  echo Use \'ssh-copy-id -i "${SSH_KEY}" ...\' to copy this key to your Ansible managed nodes.
+  echo Use \'ansible example --ask-vault-pass --module-name ping\' to issue commands.
+}
 
-ansible-galaxy install -r requirements.yml
-
-# Prepare SSH
-
-sudo apt-get install --yes openssh-client
-
-# Generate an SSH key if it doesn't exist
-if [[ ! -e $SSH_KEY ]]; then
-  # ed25519 elliptic curve, with 100 rounds of key derivation, empty passphrase
-  ssh-keygen -t ed25519 -a 100 -N '' -f "$SSH_KEY" <<<y
-else
-  echo
-  echo "NOTICE: Existing SSH key found at '${SSH_KEY}'! NOT replacing existing key."
-fi
-
-echo
-echo Process completed.
-echo Ansible inventory: "$ANSIBLE_INVENTORY"
-echo SSH key: "$SSH_KEY"
-echo Use \'ssh-copy-id -i "${SSH_KEY}" ...\' to copy this key to your Ansible managed nodes.
-echo Use \'ansible example --inventory "${ANSIBLE_INVENTORY}" --ask-vault-pass --module-name ping\' to issue commands.
+main "$@"

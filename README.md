@@ -29,10 +29,10 @@ We will assume you are working on a control node, as provisioned through this fr
 
 1. Run a playbook on the new node:
     ```shell
-    ansible-playbook playbooks/shell.yml --limit example --inventory inventory --ask-vault-pass
+    ansible example --ask-vault-pass --module-name include_role --args name=all
     ```
 
 ```shell
 ansible-galaxy install -r requirements.yml
-ansible-playbook playbooks/desktop.yml --inventory inventory --ask-vault-pass
+ansible-playbook playbooks/desktop.yml --ask-vault-pass
 ```
