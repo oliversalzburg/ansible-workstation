@@ -18,50 +18,61 @@ sudo apt-get install --yes python3 python3-pip
 export PATH=${PATH}:${HOME}/.local/bin
 python3 -m pip install --user ansible
 
-cat << EOT | sudo tee $ANSIBLE_INVENTORY > /dev/null
-all:
-  hosts:
-    localhost:
-      ansible_connection: local
-      ansible_become_password: !vault |
-          \$ANSIBLE_VAULT;1.1;AES256
-          64303437353037323066306635343631306366383935396336393465356537613666346634643535
-          3636643263656539363437653539643862663364633133310a313863313639353261333333616664
-          61643731386665303135333234623632666632316132323835376165663231613137393636363361
-          6435633963346230630a306561663531643562316139633333333564393039346432613738313666
-          6665
-    example:
-      ansible_connection: ssh
-      ansible_host: 192.168.32.204
-      ansible_user: oliver
-      ansible_become_password: !vault |
-          \$ANSIBLE_VAULT;1.1;AES256
-          64303437353037323066306635343631306366383935396336393465356537613666346634643535
-          3636643263656539363437653539643862663364633133310a313863313639353261333333616664
-          61643731386665303135333234623632666632316132323835376165663231613137393636363361
-          6435633963346230630a306561663531643562316139633333333564393039346432613738313666
-          6665
-  children:
-    desktop:
-      hosts:
-        example:
-    desktop_hidpi:
-      hosts:
+if [[ ! -e $ANSIBLE_INVENTORY ]]; then
+  cat <<EOT | sudo tee "$ANSIBLE_INVENTORY" >/dev/null
+  all:
+    hosts:
+      localhost:
+        ansible_connection: local
+        ansible_become_password: !vault |
+            \$ANSIBLE_VAULT;1.1;AES256
+            64303437353037323066306635343631306366383935396336393465356537613666346634643535
+            3636643263656539363437653539643862663364633133310a313863313639353261333333616664
+            61643731386665303135333234623632666632316132323835376165663231613137393636363361
+            6435633963346230630a306561663531643562316139633333333564393039346432613738313666
+            6665
+      example:
+        ansible_connection: ssh
+        ansible_host: 192.168.32.204
+        ansible_user: oliver
+        ansible_become_password: !vault |
+            \$ANSIBLE_VAULT;1.1;AES256
+            64303437353037323066306635343631306366383935396336393465356537613666346634643535
+            3636643263656539363437653539643862663364633133310a313863313639353261333333616664
+            61643731386665303135333234623632666632316132323835376165663231613137393636363361
+            6435633963346230630a306561663531643562316139633333333564393039346432613738313666
+            6665
+    children:
+      desktop:
+        hosts:
+          example:
+      desktop_hidpi:
+        hosts:
 
 EOT
+else
+  echo
+  echo "NOTICE: Existing Ansible inventory found at '${ANSIBLE_INVENTORY}'! NOT replacing existing inventory."
+fi
+
+ansible-galaxy install -r requirements.yml
 
 # Prepare SSH
 
 sudo apt-get install --yes openssh-client
 
-if [ ! -f ~/.ssh/id_ed25519 ]; then
+# Generate an SSH key if it doesn't exist
+if [[ ! -e $SSH_KEY ]]; then
   # ed25519 elliptic curve, with 100 rounds of key derivation, empty passphrase
-  ssh-keygen -t ed25519 -a 100 -N '' -f $SSH_KEY <<< y
+  ssh-keygen -t ed25519 -a 100 -N '' -f "$SSH_KEY" <<<y
+else
+  echo
+  echo "NOTICE: Existing SSH key found at '${SSH_KEY}'! NOT replacing existing key."
 fi
 
-echo ""
+echo
 echo Process completed.
-echo Ansible inventory: $ANSIBLE_INVENTORY
-echo SSH key: $SSH_KEY
-echo Use \'ssh-copy-id -i ${SSH_KEY} ...\' to copy this key to your Ansible managed nodes.
-echo Use \'ansible example --ask-vault-pass --module-name ping\' to issue commands.
+echo Ansible inventory: "$ANSIBLE_INVENTORY"
+echo SSH key: "$SSH_KEY"
+echo Use \'ssh-copy-id -i "${SSH_KEY}" ...\' to copy this key to your Ansible managed nodes.
+echo Use \'ansible example --inventory "${ANSIBLE_INVENTORY}" --ask-vault-pass --module-name ping\' to issue commands.
