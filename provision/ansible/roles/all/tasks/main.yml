@@ -19,6 +19,15 @@
     src: "{{ role_path }}/files/home/.profile"
     dest: ~/.profile
 
+- name: "Ensure default config directory exists: htop"
+  file: 
+    path:  ~/.config/htop/
+    state: directory
+- name: "Install default configs: htop"
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/home/.config/htop/htoprc"
+    dest: ~/.config/htop/htoprc
+
 - name: Install commonly used dependencies
   become: true
   ansible.builtin.apt:
