@@ -9,7 +9,7 @@ TimeoutStartSec=0
 Restart=always
 ExecStartPre=-/usr/bin/docker exec %n stop
 ExecStartPre=-/usr/bin/docker rm %n
-ExecStartPre=/usr/bin/docker pull pihole/pihole:latest
+ExecStartPre=/usr/bin/docker pull pihole/pihole:{{ pihole_version }}
 ExecStart=/usr/bin/docker run --rm --name %n \
     --dns=127.0.0.1 --dns=1.1.1.1 \
     --hostname pi.hole \
@@ -21,10 +21,8 @@ ExecStart=/usr/bin/docker run --rm --name %n \
     -e "WEBPASSWORD={{ pihole_webpassword }}" \
     -p "53:53/tcp" \
     -p "53:53/udp" \
-    -p "67:67/udp" \
     -p "80:80/tcp" \
-    --cap-add NET_ADMIN \
-    pihole/pihole:latest
+    pihole/pihole:{{ pihole_version }}
 
 [Install]
 WantedBy=default.target
