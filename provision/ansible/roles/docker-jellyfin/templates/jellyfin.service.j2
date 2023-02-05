@@ -2,7 +2,7 @@
 Description=Jellyfin
 Documentation=https://jellyfin.org/docs/
 After=docker.service
-Requires=docker.service
+Requires=docker.service,systemd-networkd-wait-online.service
 
 [Service]
 TimeoutStartSec=0

@@ -2,7 +2,7 @@
 Description=Pi-hole
 Documentation=https://pi-hole.net/
 After=docker.service
-Requires=docker.service
+Requires=docker.service,systemd-networkd-wait-online.service
 
 [Service]
 TimeoutStartSec=0
