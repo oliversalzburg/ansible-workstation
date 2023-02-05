@@ -1,0 +1,17 @@
+---
+- name: Copy pihole service file
+  become: true
+  ansible.builtin.template:
+    src: "pihole.service.j2"
+    dest: "{{ systemd_dir }}/pihole.service"
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Enable and check pihole service
+  become: true
+  ansible.builtin.systemd:
+    name: pihole
+    daemon_reload: yes
+    state: restarted
+    enabled: yes
