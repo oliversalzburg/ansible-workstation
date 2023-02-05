@@ -1,4 +1,5 @@
 ---
+pihole_basedir: /mnt/usb
 pihole_version: latest
 pihole_webpassword: !vault |
   $ANSIBLE_VAULT;1.1;AES256

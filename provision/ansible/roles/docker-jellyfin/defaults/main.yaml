@@ -1,0 +1,4 @@
+---
+jellyfin_basedir: /mnt/usb
+jellyfin_mediadir: /mnt/usb/media
+jellyfin_version: latest

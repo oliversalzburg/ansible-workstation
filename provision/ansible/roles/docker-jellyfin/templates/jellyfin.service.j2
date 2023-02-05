@@ -1,0 +1,21 @@
+[Unit]
+Description=Jellyfin
+Documentation=https://jellyfin.org/docs/
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker exec %n stop
+ExecStartPre=-/usr/bin/docker rm %n
+ExecStartPre=/usr/bin/docker pull jellyfin/jellyfin:{{ jellyfin_version }}
+ExecStart=/usr/bin/docker run --rm --name %n \
+    -v "{{ jellyfin_basedir }}/jellyfin/cache:/cache" \
+    -v "{{ jellyfin_basedir }}/jellyfin/config:/config" \
+    --mount "type=bind,source={{ jellyfin_mediadir }},target=/media" \
+    -p "8096:8096/tcp" \
+    jellyfin/jellyfin:{{ jellyfin_version }}
+
+[Install]
+WantedBy=default.target
