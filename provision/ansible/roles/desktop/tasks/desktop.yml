@@ -1,4 +1,0 @@
----
-- include_tasks: keepassxc.yml
-- include_tasks: discord.yml
-- include_tasks: vscode.yml

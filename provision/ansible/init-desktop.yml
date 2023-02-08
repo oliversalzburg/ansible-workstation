@@ -1,6 +1,0 @@
----
-- hosts: "{{ target_host | default('workstation') }}"
-  gather_facts: yes
-  roles:
-    - role: all
-    - role: desktop

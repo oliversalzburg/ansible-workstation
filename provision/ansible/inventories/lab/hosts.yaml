@@ -1,0 +1,10 @@
+all:
+  hosts:
+    localhost:
+      ansible_connection: local
+    container:
+      ansible_connection: ssh
+      ansible_host: 192.168.178.2
+    laptop:
+      ansible_connection: ssh
+      ansible_host: 192.168.178.36

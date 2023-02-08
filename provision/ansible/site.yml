@@ -1,0 +1,5 @@
+#!/usr/bin/env ansible-playbook
+
+- import_playbook: playbooks/00_init-all.yml
+- import_playbook: playbooks/10_init-container.yml
+- import_playbook: playbooks/10_init-laptop.yml

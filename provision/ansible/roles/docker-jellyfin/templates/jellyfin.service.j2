@@ -2,7 +2,7 @@
 Description=Jellyfin
 Documentation=https://jellyfin.org/docs/
 After=docker.service
-Requires=docker.service,systemd-networkd-wait-online.service
+Requires=docker.service systemd-networkd-wait-online.service
 
 [Service]
 TimeoutStartSec=0
@@ -13,8 +13,11 @@ ExecStartPre=/usr/bin/docker pull jellyfin/jellyfin:{{ jellyfin_version }}
 ExecStart=/usr/bin/docker run --rm --name %n \
     -v "{{ jellyfin_basedir }}/jellyfin/cache:/cache" \
     -v "{{ jellyfin_basedir }}/jellyfin/config:/config" \
-    --mount "type=bind,source={{ jellyfin_mediadir }},target=/media" \
     -p "8096:8096/tcp" \
+    --gpus all \
+    --group-add="{{ getent_group.render[1] }}" \
+    --device /dev/dri/renderD128:/dev/dri/renderD128 \
+    --device /dev/dri/card0:/dev/dri/card0 \
     jellyfin/jellyfin:{{ jellyfin_version }}
 
 [Install]

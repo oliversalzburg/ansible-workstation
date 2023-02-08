@@ -6,7 +6,7 @@
     dest: "{{ systemd_dir }}/pihole.service"
     owner: root
     group: root
-    mode: 0755
+    mode: 0644
 
 - name: Enable and check systemd-networkd service
   become: true

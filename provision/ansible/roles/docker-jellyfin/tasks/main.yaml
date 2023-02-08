@@ -1,4 +1,9 @@
 ---
+- name: Get render group
+  ansible.builtin.getent:
+    database: group
+    key: render
+
 - name: Copy Jellyfin service file
   become: true
   ansible.builtin.template:
@@ -6,7 +11,7 @@
     dest: "{{ systemd_dir }}/jellyfin.service"
     owner: root
     group: root
-    mode: 0755
+    mode: 0644
 
 - name: Enable and check Jellyfin service
   become: true

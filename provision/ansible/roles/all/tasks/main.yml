@@ -38,6 +38,7 @@
       - htop
       - iputils-tracepath
       - keychain
+      - lshw
       - ncdu
       - nmap
       - wget

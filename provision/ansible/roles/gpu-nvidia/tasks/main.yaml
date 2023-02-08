@@ -1,0 +1,19 @@
+---
+- name: Enable non-free APT
+  become: true
+  ansible.builtin.command: apt-add-repository non-free
+- name: Enable contrib APT
+  become: true
+  ansible.builtin.command: apt-add-repository contrib
+
+- name: Install Nvidia driver
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    name:
+      - firmware-misc-nonfree
+      - linux-headers-amd64
+      - nvidia-driver
+      - software-properties-common
+      - vainfo
+      - vdpauinfo

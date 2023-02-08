@@ -1,0 +1,13 @@
+---
+- name: Enable non-free APT
+  become: true
+  ansible.builtin.command: apt-add-repository non-free
+
+- name: Install Intel driver
+  become: true
+  ansible.builtin.apt:
+    name:
+      - intel-gpu-tools
+      - intel-media-va-driver-non-free 
+      - vainfo
+      - vdpauinfo
