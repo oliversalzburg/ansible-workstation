@@ -39,6 +39,7 @@
       - iputils-tracepath
       - keychain
       - lshw
+      - man-db
       - ncdu
       - nmap
       - wget
