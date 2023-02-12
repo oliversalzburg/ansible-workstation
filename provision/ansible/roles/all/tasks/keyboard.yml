@@ -1,0 +1,9 @@
+---
+- name: Install VS Code
+  ansible.builtin.include_role:
+    name: gantsign.keyboard
+  vars:
+    keyboard_model: microsoft4000
+    keyboard_layout: de
+    keyboard_variant: nodeadkeys
+    keyboard_backspace: guess

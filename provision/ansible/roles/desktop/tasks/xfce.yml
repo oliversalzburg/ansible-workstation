@@ -27,6 +27,21 @@
     value: Adwaita-dark
   when: xfconf_query_check.rc == 0
 
+- name: Set keyboard layout
+  community.general.xfconf:
+    channel: keyboard-layout
+    property: /Default/XkbLayout
+    value_type: string
+    value: de
+  when: xfconf_query_check.rc == 0
+- name: Set keyboard layout variant
+  community.general.xfconf:
+    channel: keyboard-layout
+    property: /Default/XkbVariant
+    value_type: string
+    value: nodeadkeys
+  when: xfconf_query_check.rc == 0
+
 #- name: Don't save session on exit
 #  community.general.xfconf:
 #    channel: xfce4-session

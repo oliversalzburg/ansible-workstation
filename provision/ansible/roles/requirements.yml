@@ -1,4 +1,5 @@
 roles:
+  - src: gantsign.keyboard
   - src: gantsign.visual-studio-code
 
 collections:
