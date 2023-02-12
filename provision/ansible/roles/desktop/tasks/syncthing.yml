@@ -1,0 +1,25 @@
+- name: Create keyring storage
+  become: true
+  file:
+    path: "{{ directory_keyrings }}"
+    state: directory
+- name: Install APT key
+  become: true
+  ansible.builtin.apt_key:
+    url: https://syncthing.net/release-key.gpg
+    keyring: "{{ directory_keyrings }}/syncthing.gpg"
+    state: present
+
+- name: Add Syncthing Repository
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by={{ directory_keyrings }}/syncthing.gpg] https://apt.syncthing.net/ syncthing stable"
+    state: present
+
+- name: Install Syncthing
+  become: true
+  ansible.builtin.apt:
+    name:
+      - syncthing
+    state: present
+    update_cache: true

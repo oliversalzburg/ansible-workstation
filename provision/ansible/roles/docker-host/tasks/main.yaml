@@ -27,19 +27,19 @@
 - name: Create keyring storage
   become: true
   file:
-    path: /etc/apt/keyrings
+    path: "{{ directory_keyrings }}"
     state: directory
 - name: Install APT key
   become: true
   ansible.builtin.apt_key:
     url: https://download.docker.com/linux/debian/gpg
-    keyring: /etc/apt/keyrings/docker.gpg
+    keyring: "{{ directory_keyrings }}/docker.gpg"
     state: present
 
 - name: Add Docker Repository
   become: true
   ansible.builtin.apt_repository:
-    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
+    repo: "deb [arch=amd64 signed-by={{ directory_keyrings }}/docker.gpg] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
     state: present
 
 - name: Install Docker

@@ -32,6 +32,7 @@
   become: true
   ansible.builtin.apt:
     name:
+      - ca-certificates
       - curl
       - dnsutils
       - git
@@ -44,6 +45,7 @@
       - nmap
       - wget
       - zsh
+    update_cache: true
 
 - name: Ensure working directory exists
   ansible.builtin.file:
