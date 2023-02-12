@@ -5,6 +5,9 @@ all:
     container:
       ansible_connection: ssh
       ansible_host: 192.168.178.2
+    workstation:
+      ansible_connection: ssh
+      ansible_host: 192.168.178.26
     laptop:
       ansible_connection: ssh
       ansible_host: 192.168.178.36

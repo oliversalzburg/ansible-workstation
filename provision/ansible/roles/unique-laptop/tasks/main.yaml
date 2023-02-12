@@ -1,0 +1,5 @@
+---
+- name: Set hostname
+  become: true
+  ansible.builtin.hostname:
+    name: laptop

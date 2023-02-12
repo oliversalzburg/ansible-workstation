@@ -31,6 +31,12 @@ We will assume you are working on a control node, as provisioned through this fr
 
     The default inventory contains an `example` host, which you can modify and use, or you can add entirely new host entries here. We will assume you're using the `example` host and have adjusted it appropriately.
 
+1. Install dependencies:
+
+    ```shell
+    ansible-galaxy install -r roles/requirements.yml
+    ```
+
 1. Run a playbook on the new node:
     ```shell
     ansible example --ask-vault-pass --module-name include_role --args name=all
