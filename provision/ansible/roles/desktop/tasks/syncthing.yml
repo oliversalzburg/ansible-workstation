@@ -27,10 +27,10 @@
 - name: Get users
   ansible.builtin.getent:
     database: passwd
-    key: oliver
+    key: "{{ ansible_user }}"
 - name: Enable user service
   become: true
-  become_user: oliver
+  become_user: "{{ ansible_user }}"
   become_method: su
   ansible.builtin.systemd:
     enabled: true
@@ -38,4 +38,4 @@
     name: syncthing
     scope: user
   environment:
-    XDG_RUNTIME_DIR: "/run/user/{{ getent_passwd.oliver[1] }}"
+    XDG_RUNTIME_DIR: "/run/user/{{ getent_passwd[ansible_user][1] }}"

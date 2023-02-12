@@ -89,7 +89,7 @@
 - name: Set login shell
   become: true
   ansible.builtin.user:
-    name: oliver
+    name: "{{ ansible_user }}"
     shell: /bin/zsh
 
 - name: Install Meslo Nerd Font patched for Powerlevel10k
