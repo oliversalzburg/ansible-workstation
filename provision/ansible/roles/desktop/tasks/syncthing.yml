@@ -23,3 +23,19 @@
       - syncthing
     state: present
     update_cache: true
+
+- name: Get users
+  ansible.builtin.getent:
+    database: passwd
+    key: oliver
+- name: Enable user service
+  become: true
+  become_user: oliver
+  become_method: su
+  ansible.builtin.systemd:
+    enabled: true
+    state: started
+    name: syncthing
+    scope: user
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ getent_passwd.oliver[1] }}"
