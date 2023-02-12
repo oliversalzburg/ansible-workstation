@@ -1,4 +1,8 @@
 ---
+- debug:
+    msg:
+      - "pihole ULA: {{ ipv6_ula }}"
+      
 - name: Copy pihole service file
   become: true
   ansible.builtin.template:

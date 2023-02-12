@@ -53,9 +53,42 @@
     state: present
     update_cache: true
 
+- name: Install docker python package
+  become: true
+  ansible.builtin.pip:
+    name: docker
+
+- name: Ensure /etc/docker exists
+  become: true
+  ansible.builtin.file:
+    path: /etc/docker
+    state: directory
+- name: Enable IPv6 networking in Docker
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/docker/daemon.json"
+    dest: /etc/docker/daemon.json
+    mode: 0644
+
+#- name: Create a network with IPv6 IPAM config
+#  become: true
+#  community.docker.docker_network:
+#    name: ipv6
+#    enable_ipv6: yes
+#    ipam_config:
+#      - subnet: fd01::/64
+
 - name: Add user '{{ ansible_user }}' to Docker group
   become: true
   ansible.builtin.user:
     name: '{{ ansible_user }}'
     groups: docker
     append: yes
+
+- name: Enable and check docker service
+  become: true
+  ansible.builtin.systemd:
+    name: docker
+    daemon_reload: yes
+    state: restarted
+    enabled: yes

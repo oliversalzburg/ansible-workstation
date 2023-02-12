@@ -17,6 +17,8 @@ ExecStart=/usr/bin/docker run --rm --name %n \
     -e PROXY_LOCATION="pi.hole" \
     -v "{{ pihole_basedir }}/pihole/etc/pihole:/etc/pihole" \
     -v "{{ pihole_basedir }}/pihole/etc/dnsmasq.d:/etc/dnsmasq.d" \
+    -e "IPv6=true" \
+    -e "FTLCONF_LOCAL_IPV6={{ ipv6_ula }}" \
     -e "TZ=Europe/Berlin" \
     -e "WEBPASSWORD={{ pihole_webpassword }}" \
     -p "53:53/tcp" \
