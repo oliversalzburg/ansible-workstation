@@ -1,5 +1,5 @@
 age.agekey:
-	age-keygen --output age.agekey
+	age-keygen -o age.agekey
 	mkdir --parents ~/.config/sops/age
 	cat age.agekey >> ~/.config/sops/age/keys.txt
 

@@ -1,0 +1,22 @@
+auth_token_npmjs: ENC[AES256_GCM,data:fdLVmaAcp0mreB/8GxISjD9WwVt3iifBSoz8683/RdUu08J8,iv:eJfLyHpUwhABHBXEQwh8kjf8FLIKtg/GwoO7HlJIyko=,tag:7cK733nL7Wd2JWfTibhhmA==,type:str]
+auth_token_github: ENC[AES256_GCM,data:DgjCAeeX44HZUcc9rqdeDKyhOvd5XACOghHikrPi68+iKz0lAaKtoQ==,iv:o7tCpvAZByVXS3FYBo6Y7uIb2MdZG3HSMEyRtslXEc8=,tag:ZVREujGjn62YD91zfMhxBA==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1pan98cxr43vkcty4lr2krz0lv9tcfh48dl29vft28jv54txyts7qcxwshn
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA3dWpsalUwRlB6WENhNUIx
+            SEU1SUZHczlBejZTZyt4K0RiY3BHQ3VBNlI0ClVKTFhmdElGYVRLSGxSN0p0M1Bx
+            SGloMDVIaTNGNjMvUE9BU0dkQ3lXcTQKLS0tIHlaWVBSYVRCUkg5TnlqVStjZnFw
+            SE9MSTh6cnQrNWxTNGFCR2xvNGhmT1UKZ3HILHktZEe0S0zzFoXWNx2AtmSlESsh
+            9K/ZztN2zJGeYomwiJXCwToQPa1aXYrtlDgpmBZMlOfwOTS7I2p4LA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-02-13T20:33:49Z"
+    mac: ENC[AES256_GCM,data:hEia7K954iGhacJvdN9g059UJW1lfW/BEoDXBYxXNueHYSPP+q29RBBVJQSFJ4utVTkAKwXVaIlB7dtR9sWoh8KzhCusYHoWOACuha7IEq2wUJyYiCfd9EX3+xnSTnH17g423gFzWrsTdLXIJHt2kF4iqys1WPcnSxFbmsRWz+k=,iv:wLiWFdsM9ZzSr+UbtqjUHM1P1iKEemkfhbKTQYU9VkM=,tag:e2o8riUhxYrKNAfnC8zNmg==,type:str]
+    pgp: []
+    unencrypted_suffix: _unencrypted
+    version: 3.7.3

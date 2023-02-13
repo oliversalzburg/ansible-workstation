@@ -5,8 +5,10 @@
     name:
       - git
       - openssh-client
+      - shellcheck
     state: present
     update_cache: true
+
 - name: Configure git email
   community.general.git_config:
     name: user.email
@@ -17,6 +19,36 @@
     name: user.name
     scope: global
     value: Oliver Salzburg
+- name: Configure git autocrlf
+  community.general.git_config:
+    name: core.autocrlf
+    scope: global
+    value: input
+- name: Configure git eol
+  community.general.git_config:
+    name: core.eol
+    scope: global
+    value: lf
+- name: Configure git comment char
+  community.general.git_config:
+    name: core.commentChar
+    scope: global
+    value: ;
+- name: Configure git push default
+  community.general.git_config:
+    name: push.default
+    scope: global
+    value: current
+- name: Configure git default branch
+  community.general.git_config:
+    name: init.defaultBranch
+    scope: global
+    value: main
+- name: Configure git prune on fetch
+  community.general.git_config:
+    name: fetch.prune
+    scope: global
+    value: true
 - name: Configure git pull strategy
   community.general.git_config:
     name: pull.rebase
