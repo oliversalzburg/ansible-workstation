@@ -3,24 +3,33 @@
 # Initial entrypoint for Ansible managed node initialization
 
 set -o errexit
+set -o nounset
+set -o pipefail
+if [[ "${TRACE-0}" == "1" ]]; then
+  set -o xtrace
+fi
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-SSH_KEY=${HOME}/.ssh/id_ed25519
+cd "$(dirname "$0")"
 
-sudo apt-get update
-sudo apt-get install apt-transport-https
+main() {
+  SSH_KEY=${HOME}/.ssh/id_ed25519
 
-# Install Ansible
+  sudo apt-get update
 
-sudo apt-get install --yes python3 python3-pip
+  # Install Ansible
 
-export PATH=${PATH}:${HOME}/.local/bin
-python3 -m pip install --user ansible
+  sudo apt-get install --yes python3 python3-pip
 
-# Prepare SSH
+  export PATH=${PATH}:${HOME}/.local/bin
+  python3 -m pip install --user ansible
 
-sudo apt-get install --yes openssh-server
+  # Prepare SSH
 
-echo ""
-echo Process completed.
-echo Use \'ssh-copy-id -i ${SSH_KEY} $(hostname -I | cut -d' ' -f1)\' to copy your SSH key to this Ansible managed nodes.
+  sudo apt-get install --yes openssh-server
+
+  echo ""
+  echo Process completed.
+  echo Use \'ssh-copy-id -i "${SSH_KEY}" "$(hostname -I | cut -d' ' -f1)"\' to copy your SSH key to this Ansible managed nodes.
+}
+
+main "$@"

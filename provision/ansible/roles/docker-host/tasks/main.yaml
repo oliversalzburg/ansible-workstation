@@ -70,14 +70,6 @@
     dest: /etc/docker/daemon.json
     mode: 0644
 
-#- name: Create a network with IPv6 IPAM config
-#  become: true
-#  community.docker.docker_network:
-#    name: ipv6
-#    enable_ipv6: yes
-#    ipam_config:
-#      - subnet: fd01::/64
-
 - name: Add user '{{ ansible_user }}' to Docker group
   become: true
   ansible.builtin.user:

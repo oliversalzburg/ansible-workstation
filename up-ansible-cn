@@ -25,46 +25,6 @@ main() {
   export PATH=${PATH}:${HOME}/.local/bin
   python3 -m pip install --user ansible
 
-  if [[ ! -e $ANSIBLE_INVENTORY ]]; then
-    cat <<EOT | sudo tee "$ANSIBLE_INVENTORY" >/dev/null
-all:
-  hosts:
-    localhost:
-      ansible_connection: local
-      ansible_become_password: !vault |
-          \$ANSIBLE_VAULT;1.1;AES256
-          64303437353037323066306635343631306366383935396336393465356537613666346634643535
-          3636643263656539363437653539643862663364633133310a313863313639353261333333616664
-          61643731386665303135333234623632666632316132323835376165663231613137393636363361
-          6435633963346230630a306561663531643562316139633333333564393039346432613738313666
-          6665
-    example:
-      ansible_connection: ssh
-      ansible_host: 192.168.32.204
-      ansible_user: oliver
-      ansible_become_password: !vault |
-          \$ANSIBLE_VAULT;1.1;AES256
-          64303437353037323066306635343631306366383935396336393465356537613666346634643535
-          3636643263656539363437653539643862663364633133310a313863313639353261333333616664
-          61643731386665303135333234623632666632316132323835376165663231613137393636363361
-          6435633963346230630a306561663531643562316139633333333564393039346432613738313666
-          6665
-  children:
-    desktop:
-      hosts:
-        example:
-    desktop_hidpi:
-      hosts:
-
-EOT
-  else
-    echo
-    echo "NOTICE: Existing Ansible inventory found at '${ANSIBLE_INVENTORY}'! NOT replacing existing inventory."
-    echo
-  fi
-
-  ansible-galaxy install -r provision/ansible/requirements.yml
-
   # Prepare SSH
 
   sudo apt-get install --yes openssh-client
@@ -83,7 +43,7 @@ EOT
   echo Ansible inventory: "$ANSIBLE_INVENTORY"
   echo SSH key: "$SSH_KEY"
   echo Use \'ssh-copy-id -i "${SSH_KEY}" ...\' to copy this key to your Ansible managed nodes.
-  echo Use \'ansible example --ask-vault-pass --module-name ping\' to issue commands.
+  echo Use Makefile targets to issue commands.
 }
 
 main "$@"

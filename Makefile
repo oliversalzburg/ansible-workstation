@@ -4,6 +4,7 @@ age.agekey:
 	cat age.agekey >> ~/.config/sops/age/keys.txt
 
 requirements:
+	cd provision/ansible; pip3 install -r requirements.txt
 	cd provision/ansible; ansible-galaxy install -r roles/requirements.yml
 
 init:
