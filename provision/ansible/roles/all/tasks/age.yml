@@ -1,25 +1,25 @@
 ---
 - name: Ensure working directory exists
   ansible.builtin.file:
-    path: "{{ downloads_directory }}"
+    path: "{{ directory_downloads }}"
     state: directory
     owner: "{{ ansible_user }}"
 
 - name: Download age archive
   ansible.builtin.get_url:
     url: "https://github.com/FiloSottile/age/releases/download/v{{ version_age }}/age-v{{ version_age }}-linux-amd64.tar.gz"
-    dest: "{{ downloads_directory }}"
+    dest: "{{ directory_downloads }}"
 
 - name: Extract age archive
   ansible.builtin.unarchive:
-    src: "{{ downloads_directory }}/age-v{{ version_age }}-linux-amd64.tar.gz"
+    src: "{{ directory_downloads }}/age-v{{ version_age }}-linux-amd64.tar.gz"
     remote_src: true
-    dest: "{{ downloads_directory }}"
+    dest: "{{ directory_downloads }}"
 
 - name: Copy age binary to destination directory
   become: true
   ansible.builtin.copy:
-    src: "{{ downloads_directory }}/age/{{ item }}"
+    src: "{{ directory_downloads }}/age/{{ item }}"
     dest: /usr/local/bin/{{ item }}
     mode: 0755
     owner: root

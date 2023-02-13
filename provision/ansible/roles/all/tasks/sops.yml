@@ -1,20 +1,20 @@
 ---
 - name: Ensure working directory exists
   ansible.builtin.file:
-    path: "{{ downloads_directory }}"
+    path: "{{ directory_downloads }}"
     state: directory
     owner: "{{ ansible_user }}"
 
 - name: Download sops binary
   ansible.builtin.get_url:
     url: "https://github.com/mozilla/sops/releases/download/v{{ version_sops }}/sops-v{{ version_sops }}.linux"
-    dest: "{{ downloads_directory }}"
+    dest: "{{ directory_downloads }}"
     mode: 0600
 
 - name: Copy sops binary to destination directory
   become: true
   ansible.builtin.copy:
-    src: "{{ downloads_directory }}/sops-v{{ version_sops }}.linux"
+    src: "{{ directory_downloads }}/sops-v{{ version_sops }}.linux"
     dest: /usr/local/bin/sops
     mode: 0755
     owner: root

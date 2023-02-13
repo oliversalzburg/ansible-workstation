@@ -1,8 +1,11 @@
 ---
 ansible_user: oliver
 
-downloads_directory: /tmp/.ansible-downloads
-systemd_dir: /etc/systemd/system
+git_email: oliver.salzburg@gmail.com
+git_name: Oliver Salzburg
+
+directory_downloads: /tmp/.ansible-downloads
+directory_systemd: /etc/systemd/system
 directory_keyrings: /etc/apt/keyrings
 
 version_age: 1.1.1

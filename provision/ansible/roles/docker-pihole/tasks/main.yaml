@@ -7,7 +7,7 @@
   become: true
   ansible.builtin.template:
     src: "pihole.service.j2"
-    dest: "{{ systemd_dir }}/pihole.service"
+    dest: "{{ directory_systemd }}/pihole.service"
     owner: root
     group: root
     mode: 0644

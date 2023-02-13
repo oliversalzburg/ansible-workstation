@@ -13,12 +13,12 @@
   community.general.git_config:
     name: user.email
     scope: global
-    value: oliver.salzburg@gmail.com
+    value: "{{ git_email }}"
 - name: Configure git name
   community.general.git_config:
     name: user.name
     scope: global
-    value: Oliver Salzburg
+    value: "{{ git_name }}"
 - name: Configure git autocrlf
   community.general.git_config:
     name: core.autocrlf

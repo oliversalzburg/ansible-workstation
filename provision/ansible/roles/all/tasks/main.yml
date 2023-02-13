@@ -52,18 +52,18 @@
 
 - name: Ensure working directory exists
   ansible.builtin.file:
-    path: "{{ downloads_directory }}"
+    path: "{{ directory_downloads }}"
     state: directory
     owner: "{{ ansible_user }}"
 
 - name: Download Oh My Zsh installer
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-    dest: "{{ downloads_directory }}/install-ohmyzsh.sh"
+    dest: "{{ directory_downloads }}/install-ohmyzsh.sh"
     mode: 0744
 - name: Execute the installer
   ansible.builtin.shell: 
-    cmd: "{{ downloads_directory }}/install-ohmyzsh.sh --unattended"
+    cmd: "{{ directory_downloads }}/install-ohmyzsh.sh --unattended"
     creates: ~/.oh-my-zsh/
 - name: Install Powerlevel10k theme
   ansible.builtin.git:
