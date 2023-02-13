@@ -1,4 +1,7 @@
 ---
+- name: Gather Facts
+  ansible.builtin.gather_facts:
+
 - name: Install vim
   become: true
   ansible.builtin.apt:

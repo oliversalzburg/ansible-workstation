@@ -3,17 +3,18 @@ age.agekey:
 	mkdir --parents ~/.config/sops/age
 	cat age.agekey >> ~/.config/sops/age/keys.txt
 
+requirements:
+	cd provision/ansible; ansible-galaxy install -r roles/requirements.yml
+
 init:
-	ansible-playbook provision/ansible/init.yml --vault-password-file provision/ansible/vault-password-file
+	cd provision/ansible; ansible-playbook site.yml --vault-password-file vault-password-file
 
-init-cluster: age.agekey
-	ansible-playbook provision/ansible/init-cluster.yml --vault-password-file provision/ansible/vault-password-file
-	cat age.agekey | kubectl -n flux-system create secret generic sops-age --from-file=age.agekey=/dev/stdin
-	kubectl apply --kustomize cluster/flux/flux-system/
+init-container:
+	cd provision/ansible; ansible-playbook playbooks/10_init-container.yml --vault-password-file vault-password-file
+init-laptop:
+	cd provision/ansible; ansible-playbook playbooks/10_init-laptop.yml --vault-password-file vault-password-file
+init-workstation:
+	cd provision/ansible; ansible-playbook playbooks/10_init-workstation.yml --vault-password-file vault-password-file
 
-init-desktop:
-	ansible-playbook provision/ansible/init-desktop.yml --vault-password-file provision/ansible/vault-password-file
-
-reconcile:
-	flux reconcile -n flux-system source git flux-cluster
-	flux reconcile -n flux-system kustomization flux-cluster
+init-localhost: requirements
+	cd provision/ansible; ansible localhost --module-name include_role --args name=all --vault-password-file vault-password-file
