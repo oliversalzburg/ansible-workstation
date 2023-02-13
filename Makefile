@@ -8,14 +8,14 @@ requirements:
 	cd provision/ansible; ansible-galaxy install -r roles/requirements.yml
 
 init:
-	cd provision/ansible; ansible-playbook site.yml --vault-password-file vault-password-file
+	cd provision/ansible; ansible-playbook site.yml
 
 init-container:
-	cd provision/ansible; ansible-playbook playbooks/10_init-container.yml --vault-password-file vault-password-file
+	cd provision/ansible; ansible-playbook playbooks/10_init-container.yml
 init-laptop:
-	cd provision/ansible; ansible-playbook playbooks/10_init-laptop.yml --vault-password-file vault-password-file
+	cd provision/ansible; ansible-playbook playbooks/10_init-laptop.yml
 init-workstation:
-	cd provision/ansible; ansible-playbook playbooks/10_init-workstation.yml --vault-password-file vault-password-file
+	cd provision/ansible; ansible-playbook playbooks/10_init-workstation.yml
 
 init-localhost: requirements
-	cd provision/ansible; ansible localhost --module-name include_role --args name=all --vault-password-file vault-password-file
+	cd provision/ansible; ansible localhost --module-name include_role --args name=all

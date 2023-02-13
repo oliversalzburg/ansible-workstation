@@ -1,3 +1,33 @@
+- name: Create keyring storage
+  become: true
+  file:
+    path: "{{ directory_keyrings }}"
+    state: directory
+- name: Install APT key
+  become: true
+  ansible.builtin.apt_key:
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    keyring: "{{ directory_keyrings }}/nodesource.gpg"
+    state: present
+- name: Add Nodesource Repository
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by={{ directory_keyrings }}/nodesource.gpg] https://deb.nodesource.com/node_{{ version_nodejs }}.x {{ ansible_distribution_release }} main"
+    state: present
+- name: Add Nodesource sources Repository
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb-src [signed-by={{ directory_keyrings }}/nodesource.gpg] https://deb.nodesource.com/node_{{ version_nodejs }}.x {{ ansible_distribution_release }} main"
+    state: present
+
+- name: Install NodeJs
+  become: true
+  ansible.builtin.apt:
+    name:
+      - nodejs
+    state: present
+    update_cache: true
+
 - name: Copy .npmrc
   ansible.builtin.template:
     src: home/.npmrc.j2

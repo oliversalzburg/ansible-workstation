@@ -1,3 +1,5 @@
+ansible_become_password: ENC[AES256_GCM,data:1pKwDevsect6wMkS,iv:OM+D+g8reDgbsC/YBVGEYXH0NeYJlzDxkfgfTs0CkbM=,tag:1P+fVGlGGjHF8tOWiaKLdg==,type:str]
+pihole_webpassword: ENC[AES256_GCM,data:rsC5QW54C97mehKAKPJTfRyQWi0=,iv:TT7HNFHbHJg7iscaCFXN5ckYAQlTIWvOksKF45imN0E=,tag:aCoy6d9l3w62qoB8eZhUZg==,type:str]
 auth_token_npmjs: ENC[AES256_GCM,data:fdLVmaAcp0mreB/8GxISjD9WwVt3iifBSoz8683/RdUu08J8,iv:eJfLyHpUwhABHBXEQwh8kjf8FLIKtg/GwoO7HlJIyko=,tag:7cK733nL7Wd2JWfTibhhmA==,type:str]
 auth_token_github: ENC[AES256_GCM,data:DgjCAeeX44HZUcc9rqdeDKyhOvd5XACOghHikrPi68+iKz0lAaKtoQ==,iv:o7tCpvAZByVXS3FYBo6Y7uIb2MdZG3HSMEyRtslXEc8=,tag:ZVREujGjn62YD91zfMhxBA==,type:str]
 sops:
@@ -15,8 +17,8 @@ sops:
             SE9MSTh6cnQrNWxTNGFCR2xvNGhmT1UKZ3HILHktZEe0S0zzFoXWNx2AtmSlESsh
             9K/ZztN2zJGeYomwiJXCwToQPa1aXYrtlDgpmBZMlOfwOTS7I2p4LA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-02-13T20:33:49Z"
-    mac: ENC[AES256_GCM,data:hEia7K954iGhacJvdN9g059UJW1lfW/BEoDXBYxXNueHYSPP+q29RBBVJQSFJ4utVTkAKwXVaIlB7dtR9sWoh8KzhCusYHoWOACuha7IEq2wUJyYiCfd9EX3+xnSTnH17g423gFzWrsTdLXIJHt2kF4iqys1WPcnSxFbmsRWz+k=,iv:wLiWFdsM9ZzSr+UbtqjUHM1P1iKEemkfhbKTQYU9VkM=,tag:e2o8riUhxYrKNAfnC8zNmg==,type:str]
+    lastmodified: "2023-02-13T20:59:30Z"
+    mac: ENC[AES256_GCM,data:P86yJQFO4Py0lTrHRvtDPDUdKYr9XA5wId1wqOb6rw6jx6UYF0+G0Th0nZQF+4k3JTymto2DA9+YDLZ7BbpZfrjArLPr07XhcK6WfnZ1VdK8C0z5GlWOrpfXx/XM4uPKdNDWfN7VsBsvOXBTfBXrhYdRhrUHPDMW1zW0kZp0xjM=,iv:mE4ZuHBEFTp143gA5Ux9MgVTIWwJNrfeLLZF2kNsM74=,tag:pUkTuzm0OZKu3nJrWAXMgA==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 3.7.3
