@@ -24,7 +24,7 @@
 
 - name: "Ensure default config directory exists: htop"
   file: 
-    path:  ~/.config/htop/
+    path: ~/.config/htop/
     state: directory
 - name: "Install default configs: htop"
   ansible.builtin.copy:
@@ -46,6 +46,8 @@
       - man-db
       - ncdu
       - nmap
+      - python3
+      - python3-pip
       - wget
       - zsh
     update_cache: true
@@ -81,9 +83,11 @@
     dest: ~/.oh-my-zsh/plugins/zsh-syntax-highlighting
     depth: 1
 - name: Install .zshrc
-  ansible.builtin.copy:
-    src: "{{ role_path }}/files/home/.zshrc"
+  ansible.builtin.template:
+    src: home/.zshrc.j2
     dest: ~/.zshrc
+    mode: 0600
+    
 - name: Install powerlevel10k config
   ansible.builtin.copy:
     src: "{{ role_path }}/files/home/.p10k.zsh"
@@ -106,3 +110,4 @@
 - include_tasks: keyboard.yml
 - include_tasks: nodejs.yml
 - include_tasks: sops.yml
+- include_tasks: terraform.yml

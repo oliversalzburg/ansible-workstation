@@ -1,0 +1,24 @@
+- name: Create keyring storage
+  become: true
+  file:
+    path: "{{ directory_keyrings }}"
+    state: directory
+- name: Install APT key
+  become: true
+  ansible.builtin.apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    keyring: "{{ directory_keyrings }}/hashicorp-archive-keyring.gpg"
+    state: present
+- name: Add Hashicorp Repository
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by={{ directory_keyrings }}/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
+    state: present
+
+- name: Install Terraform
+  become: true
+  ansible.builtin.apt:
+    name:
+      - terraform
+    state: present
+    update_cache: true
