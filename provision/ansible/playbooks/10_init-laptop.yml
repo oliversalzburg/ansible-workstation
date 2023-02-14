@@ -2,6 +2,7 @@
 - hosts: "{{ target_host | default('laptop') }}"
   gather_facts: true
   roles:
+    - role: all
     - role: unique-laptop
     - role: gpu-nvidia
     - role: docker-host
