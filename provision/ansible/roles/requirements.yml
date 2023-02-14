@@ -3,5 +3,6 @@ roles:
   - src: gantsign.visual-studio-code
 
 collections:
+  - name: community.crypto
   - name: community.docker
   - name: community.sops

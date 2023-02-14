@@ -2,11 +2,38 @@
 - name: Gather Facts
   ansible.builtin.gather_facts:
 
-- name: Install vim
+- name: Install commonly used dependencies
   become: true
   ansible.builtin.apt:
     name:
+      - bash
+      - ca-certificates
+      - curl
+      - dnsutils
+      - git
+      - htop
+      - iputils-tracepath
+      - keychain
+      - lshw
+      - man-db
+      - ncdu
+      - nmap
+      - openssh-client
+      - python3
+      - python3-pip
+      - tzdata
       - vim
+      - wget
+      - zsh
+    update_cache: true
+
+- name: Generate SSH key
+  community.crypto.openssh_keypair:
+    path: ~/.ssh/id_ed25519
+    force: false
+    regenerate: never
+    mode: 0600
+
 - name: Set default editor
   become: true
   community.general.alternatives:
@@ -30,28 +57,6 @@
   ansible.builtin.copy:
     src: "{{ role_path }}/files/home/.config/htop/htoprc"
     dest: ~/.config/htop/htoprc
-
-- name: Install commonly used dependencies
-  become: true
-  ansible.builtin.apt:
-    name:
-      - ca-certificates
-      - curl
-      - dnsutils
-      - git
-      - htop
-      - iputils-tracepath
-      - keychain
-      - lshw
-      - man-db
-      - ncdu
-      - nmap
-      - python3
-      - python3-pip
-      - tzdata
-      - wget
-      - zsh
-    update_cache: true
 
 - name: Ensure working directory exists
   ansible.builtin.file:
@@ -109,7 +114,6 @@
 - include_tasks: age.yml
 - include_tasks: coding-environment.yml
 - include_tasks: keyboard.yml
-- include_tasks: l10n.yml
 - include_tasks: nodejs.yml
 - include_tasks: sops.yml
 - include_tasks: terraform.yml

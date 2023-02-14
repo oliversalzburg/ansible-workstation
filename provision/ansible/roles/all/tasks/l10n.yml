@@ -1,6 +1,10 @@
 ---
-- name: Gather Facts
-  ansible.builtin.gather_facts:
+- name: Set default value to Undefined, if the variable is not defined
+  ansible.builtin.debug:
+    msg: "{{ lookup('ansible.builtin.env', 'WSL', default=Undefined) }}"
+- name: Set default value to Undefined, if the variable is not defined2
+  ansible.builtin.debug:
+    msg: "{{ lookup('ansible.builtin.env', 'WSL', default=Undefined) }} == Undefined"
 
 - name: Set timezone to Germany
   become: true
@@ -19,20 +23,25 @@
     name: "{{ config_system_language }}"
     state: present
 
+# Skipped on WSL
 - name: Get current locale and language configuration
+  when: ansible_env.WSL != 'true'
   command: localectl status
   register: locale_status
   changed_when: false
 
 - name: Parse 'LANG' from current locale and language configuration
+  when: ansible_env.WSL != 'true'
   set_fact:
     locale_lang: "{{ locale_status.stdout | regex_search('LANG=([^\n]+)', '\\1') | first }}"
 
 - name: Parse 'LANGUAGE' from current locale and language configuration
+  when: ansible_env.WSL != 'true'
   set_fact:
     locale_language: "{{ locale_status.stdout | regex_search('LANGUAGE=([^\n]+)', '\\1') | default([locale_lang], true) | first }}"
 
 - name: Configure locale to '{{ config_system_locale }}' and language to '{{ config_system_language }}'
+  when: ansible_env.WSL != 'true'
   become: true
   command: localectl set-locale LANG={{ config_system_locale }} LANGUAGE={{ config_system_language }}
   changed_when: locale_lang != config_system_locale or locale_language != config_system_language

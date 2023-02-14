@@ -7,14 +7,14 @@ requirements:
 	cd provision/ansible; pip3 install -r requirements.txt
 	cd provision/ansible; ansible-galaxy install -r roles/requirements.yml
 
-init:
+init: requirements
 	cd provision/ansible; ansible-playbook site.yml
 
-init-container:
+init-container: requirements
 	cd provision/ansible; ansible-playbook playbooks/10_init-container.yml
-init-laptop:
+init-laptop: requirements
 	cd provision/ansible; ansible-playbook playbooks/10_init-laptop.yml
-init-workstation:
+init-workstation: requirements
 	cd provision/ansible; ansible-playbook playbooks/10_init-workstation.yml
 
 init-localhost: requirements
