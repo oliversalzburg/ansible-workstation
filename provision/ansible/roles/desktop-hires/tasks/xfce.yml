@@ -1,0 +1,12 @@
+---
+- name: Check if we have xfconf-query
+  command: xfconf-query --version
+  register: xfconf_query_check
+
+- name: Set window scaling factor
+  community.general.xfconf:
+    channel: "xsettings"
+    property: "/Gdk/WindowScalingFactor"
+    value_type: "int"
+    value: "2"
+  when: xfconf_query_check.rc == 0
