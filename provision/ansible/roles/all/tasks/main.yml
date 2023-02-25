@@ -114,6 +114,7 @@
 - include_tasks: age.yml
 - include_tasks: coding-environment.yml
 - include_tasks: keyboard.yml
+- include_tasks: l10n.yml
 - include_tasks: nodejs.yml
 - include_tasks: sops.yml
 - include_tasks: terraform.yml
