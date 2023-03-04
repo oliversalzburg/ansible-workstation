@@ -7,10 +7,12 @@ Assumes Debian, often accepts Ubuntu.
 You have a new machine. Congratulations.
 
 Bootstrap it with the Debian "Netinst" minimal installation image. For example:
-- <https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-11.6.0-amd64-netinst.iso>
+
+-   <https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-11.6.0-amd64-netinst.iso>
 
 If you need a Windows tool to put this on a USB key, [Rufus](https://rufus.ie/en/) in DD mode is still perfectly fine. If you have a machine with stupid hardware (which you probably have), ensure to use an image with **proprietary firmware included**, such as:
-- <https://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/current/amd64/iso-cd/firmware-11.6.0-amd64-netinst.iso>
+
+-   <https://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/current/amd64/iso-cd/firmware-11.6.0-amd64-netinst.iso>
 
 Install `openssh-server`, run `ip a` and take note of the IP address.
 
@@ -31,3 +33,25 @@ We will assume you are working on a control node, as provisioned through this fr
 
     The default inventory contains an `example` host, which you can modify and use, or you can add entirely new host entries here. We will assume you're using the `example` host and have adjusted it appropriately.
 
+## Regular operations
+
+### Update site
+
+```shell
+cd provision/ansible
+ansible-playbook site.yml
+```
+
+### Apply role on target
+
+```shell
+cd provision/ansible
+ansible localhost --module-name ansible.builtin.include_role --args name=docker-pihole
+```
+
+### Apply task on target
+
+```shell
+cd provision/ansible
+ansible localhost --module-name ansible.builtin.include_tasks -a roles/all/tasks/l10n.yml
+```

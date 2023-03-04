@@ -1,4 +1,4 @@
 ---
-pihole_basedir: /mnt/usb
+pihole_basedir: /mnt/usb/pihole
 pihole_version: latest
 ipv6_ula: "{{ ansible_all_ipv6_addresses | select('match', '^fd00') | first }}"

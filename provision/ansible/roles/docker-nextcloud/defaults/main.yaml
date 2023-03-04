@@ -1,0 +1,3 @@
+---
+nextcloud_datadir: /mnt/usb/nextcloud
+nextcloud_version: latest
