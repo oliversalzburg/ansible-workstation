@@ -8,3 +8,4 @@
     - role: docker-jellyfin
     #- role: docker-nextcloud
     - role: docker-pihole
+    - role: dyndns
