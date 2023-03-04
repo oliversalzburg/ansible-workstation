@@ -1,0 +1,12 @@
+daemon=600
+syslog=yes # log update msgs to syslog
+pid=/var/run/ddclient.pid # record PID in file
+ssl=yes # use TLS
+use=web, web=checkip.dyndns.org/, web-skip='IP Address'
+
+protocol=cloudflare, \
+zone={{ dyndns_zone_cloudflare }}, \
+ttl=1, \
+login={{ dyndns_login_cloudflare }}, \
+password={{ dyndns_password_cloudflare }} \
+site.{{ dyndns_zone_cloudflare }}

@@ -6,5 +6,5 @@
     - role: unique-container
     - role: gpu-intel
     - role: docker-jellyfin
-    - role: docker-nextcloud
+    #- role: docker-nextcloud
     - role: docker-pihole
