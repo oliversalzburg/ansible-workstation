@@ -1,0 +1,33 @@
+[Unit]
+Description=traefik
+Documentation=https://doc.traefik.io/traefik
+After=docker.service
+Requires=docker.service systemd-networkd-wait-online.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker exec %n stop
+ExecStartPre=-/usr/bin/docker rm %n
+ExecStartPre=/usr/bin/docker pull traefik:{{ traefik_version }}
+ExecStart=/usr/bin/docker run --rm --name %n \
+    #--publish "443:443" \
+    --publish "8080:8080" \
+    --volume "{{ traefik_basedir }}/letsencrypt:/letsencrypt" \
+    --volume /var/run/docker.sock:/var/run/docker.sock:ro \
+    --label "cloudflare.enabled=true" \
+    --label "cloudflare.name=ingress" \
+    --label "cloudflare.zone=ffm.ninja" \
+    traefik:{{ traefik_version }} \
+    #--log.level=DEBUG \
+    --api.insecure=true \
+    --providers.docker=true \
+    --providers.docker.exposedbydefault=false \
+    #--entrypoints.websecure.address=:443 \
+    #--certificatesresolvers.myresolver.acme.tlschallenge=true \
+    #--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory \
+    #--certificatesresolvers.myresolver.acme.email={{ letsencrypt_email_address }} \
+    #--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,3 @@
+---
+traefik_basedir: /mnt/usb/traefik
+traefik_version: latest

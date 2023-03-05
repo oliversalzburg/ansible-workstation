@@ -12,22 +12,6 @@
     group: root
     mode: 0644
 
-- name: Enable and check systemd-networkd service
-  become: true
-  ansible.builtin.systemd:
-    name: systemd-networkd
-    daemon_reload: yes
-    state: started
-    enabled: yes
-
-- name: Enable and check systemd-networkd-wait-online service
-  become: true
-  ansible.builtin.systemd:
-    name: systemd-networkd-wait-online
-    daemon_reload: yes
-    state: started
-    enabled: yes
-
 - name: Enable and check pihole service
   become: true
   ansible.builtin.systemd:

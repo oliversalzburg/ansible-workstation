@@ -11,13 +11,21 @@ ExecStartPre=-/usr/bin/docker exec %n stop
 ExecStartPre=-/usr/bin/docker rm %n
 ExecStartPre=/usr/bin/docker pull jellyfin/jellyfin:{{ jellyfin_version }}
 ExecStart=/usr/bin/docker run --rm --name %n \
-    --volume "{{ jellyfin_basedir }}/jellyfin/cache:/cache" \
-    --volume "{{ jellyfin_basedir }}/jellyfin/config:/config" \
+    --volume "{{ jellyfin_basedir }}/cache:/cache" \
+    --volume "{{ jellyfin_basedir }}/config:/config" \
     --mount "type=bind,source={{ jellyfin_mediadir }},target=/media" \
     --publish "8096:8096/tcp" \
     --group-add="{{ getent_group.render[1] }}" \
     --device /dev/dri/renderD128:/dev/dri/renderD128 \
     --device /dev/dri/card0:/dev/dri/card0 \
+    #--label "traefik.enable=true" \
+    #--label "traefik.http.routers.jellyfin.rule=Host(`jellyfin.{{ dyndns_zone_cloudflare }}`)" \
+    #--label "traefik.http.routers.jellyfin.entrypoints=websecure" \
+    #--label "traefik.http.routers.jellyfin.tls.certresolver=myresolver" \
+    #--label "traefik.http.services.jellyfin.loadbalancer.server.port=8096" \
+    --label "cloudflare.enabled=true" \
+    --label "cloudflare.name=jellyfin" \
+    --label "cloudflare.zone={{ dyndns_zone_cloudflare }}" \
     jellyfin/jellyfin:{{ jellyfin_version }}
 
 [Install]

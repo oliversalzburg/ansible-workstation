@@ -40,6 +40,13 @@
     name: editor
     path: /usr/bin/vim
 
+- name: Add user '{{ ansible_user }}' to systemd-journal group
+  become: true
+  ansible.builtin.user:
+    name: '{{ ansible_user }}'
+    groups: systemd-journal
+    append: yes
+
 - name: Copy .bashrc
   ansible.builtin.copy:
     src: "{{ role_path }}/files/home/.bashrc"

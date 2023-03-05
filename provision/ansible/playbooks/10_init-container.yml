@@ -5,7 +5,9 @@
     - role: all
     - role: unique-container
     - role: gpu-intel
+    - role: docker-cloudflare-dns
     - role: docker-jellyfin
     #- role: docker-nextcloud
     - role: docker-pihole
-    - role: dyndns
+    - role: docker-traefik
+    #- role: dyndns

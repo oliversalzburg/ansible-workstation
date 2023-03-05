@@ -1,0 +1,26 @@
+---
+- name: Copy docker-cloudflare-dns service file
+  become: true
+  ansible.builtin.template:
+    src: "cloudflare-dns.service.j2"
+    dest: "{{ directory_systemd }}/cloudflare-dns.service"
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Copy docker-cloudflare-dns timer file
+  become: true
+  ansible.builtin.template:
+    src: "cloudflare-dns.timer.j2"
+    dest: "{{ directory_systemd }}/cloudflare-dns.timer"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Enable and check docker-cloudflare-dns service
+  become: true
+  ansible.builtin.systemd:
+    name: cloudflare-dns
+    daemon_reload: yes
+    state: restarted
+    enabled: yes
