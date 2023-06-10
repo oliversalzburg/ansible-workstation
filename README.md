@@ -42,6 +42,13 @@ cd provision/ansible
 ansible-playbook site.yml
 ```
 
+### Update single node
+
+```shell
+cd provision/ansible
+ansible-playbook site.yml --limit laptop
+```
+
 ### Apply role on target
 
 ```shell
@@ -53,5 +60,5 @@ ansible localhost --module-name ansible.builtin.include_role --args name=docker-
 
 ```shell
 cd provision/ansible
-ansible localhost --module-name ansible.builtin.include_tasks -a roles/all/tasks/l10n.yml
+ansible localhost --module-name ansible.builtin.include_tasks --args roles/all/tasks/l10n.yml
 ```

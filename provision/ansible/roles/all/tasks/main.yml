@@ -2,6 +2,13 @@
 - name: Gather Facts
   ansible.builtin.gather_facts:
 
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    upgrade: yes
+    update_cache: yes
+    cache_valid_time: 86400
+
 - name: Install commonly used dependencies
   become: true
   ansible.builtin.apt:
