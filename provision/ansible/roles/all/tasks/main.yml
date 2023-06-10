@@ -30,6 +30,7 @@
       - python3-pip
       - tzdata
       - vim
+      - wakeonlan
       - wget
       - zsh
     update_cache: true

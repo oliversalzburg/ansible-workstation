@@ -1,0 +1,10 @@
+[Unit]
+Description=Mount NAS
+Requires=systemd-networkd-wait-online.service
+
+[Service]
+Type=oneshot
+ExecStart=/root/nas-mount.sh
+
+[Install]
+WantedBy=default.target
