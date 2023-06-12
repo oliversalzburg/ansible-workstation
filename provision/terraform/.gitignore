@@ -1,0 +1,5 @@
+.terraform/
+.terraform.tfstate.lock.info
+id_ed25519*
+terraform.tfstate
+terraform.tfstate.backup
