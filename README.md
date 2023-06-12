@@ -25,13 +25,16 @@ We will assume you are working on a control node, as provisioned through this fr
 ### Provision Remote Node
 
 1. Ensure `openssh-server` is installed and running on your remote node.
-1. Copy your SSH key to the remote node:
-    ```shell
-    ssh-copy-id -i /home/oliver/.ssh/id_ed25519 192.168.12.19
-    ```
-1. Register the node in your inventory. The `inventory` is created in the folder where you provisioned your control node. If you lost it, provision a new control node.
 
-    The default inventory contains an `example` host, which you can modify and use, or you can add entirely new host entries here. We will assume you're using the `example` host and have adjusted it appropriately.
+1. Copy your SSH key to the remote node:
+
+    ```shell
+    ssh-copy-id -i $HOME/.ssh/id_ed25519 192.168.12.19
+    ```
+
+1. Register the node in your inventory.
+
+    The default inventory is located `provision/ansible/inventories/lab`.
 
 ## Regular operations
 
@@ -71,7 +74,7 @@ cd provision/ansible
 ansible localhost --module-name ansible.builtin.include_role --args name=docker-pihole
 ```
 
-#### Apply to node that isn't in the inventory
+#### When target not in the inventory
 
 ```shell
 ansible all --inventory admin@<ip_address>, --module-name ansible.builtin.include_role --args name=all --extra-vars "ansible_user=admin"
