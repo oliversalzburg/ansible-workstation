@@ -40,10 +40,3 @@ resource "aws_instance" "sandbox" {
     Name = "sandbox-${random_pet.sandbox.id}"
   }
 }
-
-output "sandbox" {
-  value = {
-    name         = random_pet.sandbox.id
-    ipv4_address = aws_instance.sandbox.public_ip
-  }
-}
