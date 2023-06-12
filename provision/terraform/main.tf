@@ -18,6 +18,10 @@ resource "aws_security_group" "sandbox" {
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
+
+  tags = {
+    Name = "sandbox-${random_pet.sandbox.id}"
+  }
 }
 
 resource "aws_key_pair" "sandbox" {
