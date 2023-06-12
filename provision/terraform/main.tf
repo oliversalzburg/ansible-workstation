@@ -1,20 +1,5 @@
 resource "random_pet" "sandbox" {}
 
-resource "tls_private_key" "id_ed25519" {
-  algorithm = "ED25519"
-}
-
-resource "local_file" "id_ed25519" {
-  filename        = "id_ed25519"
-  content         = tls_private_key.id_ed25519.private_key_openssh
-  file_permission = 0600
-}
-resource "local_file" "id_ed25519_pub" {
-  filename = "id_ed25519.pub"
-  content  = tls_private_key.id_ed25519.public_key_openssh
-  file_permission = 0644
-}
-
 resource "aws_security_group" "sandbox" {
   name = "sandbox-${random_pet.sandbox.id}"
 
@@ -37,7 +22,7 @@ resource "aws_security_group" "sandbox" {
 
 resource "aws_key_pair" "sandbox" {
   key_name   = "sandbox-${random_pet.sandbox.id}"
-  public_key = tls_private_key.id_ed25519.public_key_openssh
+  public_key = data.local_file.id_ed25519_pub.content
 }
 
 resource "aws_instance" "sandbox" {
