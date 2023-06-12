@@ -35,6 +35,21 @@ We will assume you are working on a control node, as provisioned through this fr
 
 ## Regular operations
 
+### Provision sandbox
+
+```shell
+cd provision/terraform
+terraform init
+AWS_PROFILE=sandbox terraform apply -var id_ed25519_pub=$HOME/.ssh/id_ed25519.pub
+```
+
+### Destroy sandbox
+
+```shell
+cd provision/terraform
+AWS_PROFILE=sandbox terraform destroy -var id_ed25519_pub=$HOME/.ssh/id_ed25519.pub
+```
+
 ### Update site
 
 ```shell
