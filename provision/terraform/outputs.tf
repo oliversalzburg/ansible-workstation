@@ -1,6 +1,6 @@
 output "sandbox" {
   value = {
-    name         = random_pet.sandbox.id
-    ipv4_address = aws_instance.sandbox.public_ip
+    name         = random_pet.this.id
+    ipv4_address = aws_instance.this.public_ip
   }
 }

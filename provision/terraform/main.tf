@@ -1,7 +1,7 @@
-resource "random_pet" "sandbox" {}
+resource "random_pet" "this" {}
 
-resource "aws_security_group" "sandbox" {
-  name = "sandbox-${random_pet.sandbox.id}"
+resource "aws_security_group" "this" {
+  name = "sandbox-${random_pet.this.id}"
 
   ingress {
     from_port        = 22
@@ -20,23 +20,23 @@ resource "aws_security_group" "sandbox" {
   }
 
   tags = {
-    Name = "sandbox-${random_pet.sandbox.id}"
+    Name = "sandbox-${random_pet.this.id}"
   }
 }
 
-resource "aws_key_pair" "sandbox" {
-  key_name   = "sandbox-${random_pet.sandbox.id}"
+resource "aws_key_pair" "this" {
+  key_name   = "sandbox-${random_pet.this.id}"
   public_key = data.local_file.id_ed25519_pub.content
 }
 
-resource "aws_instance" "sandbox" {
+resource "aws_instance" "this" {
   ami                         = data.aws_ami_ids.debian.ids[0]
   associate_public_ip_address = true
   instance_type               = "t3a.nano"
-  key_name                    = aws_key_pair.sandbox.key_name
-  vpc_security_group_ids      = [aws_security_group.sandbox.id]
+  key_name                    = aws_key_pair.this.key_name
+  vpc_security_group_ids      = [aws_security_group.this.id]
 
   tags = {
-    Name = "sandbox-${random_pet.sandbox.id}"
+    Name = "sandbox-${random_pet.this.id}"
   }
 }
