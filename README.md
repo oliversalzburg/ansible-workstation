@@ -74,8 +74,10 @@ ansible localhost --module-name ansible.builtin.include_role --args name=docker-
 #### Apply to node that isn't in the inventory
 
 ```shell
-ansible all --inventory admin@<ip_address> --module-name ansible.builtin.include_role --args name=all --extra-vars "ansible_user=admin"
+ansible all --inventory admin@<ip_address>, --module-name ansible.builtin.include_role --args name=all --extra-vars "ansible_user=admin"
 ```
+
+Notice the trailing `,` after the `<ip_address>`.
 
 ### Apply task on target
 
