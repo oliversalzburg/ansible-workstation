@@ -1,8 +1,12 @@
 enableTelemetry: false
 npmRegistries:
+{% if auth_token_npmjs is defined %}
   //registry.npmjs.org:
     npmAuthToken: {{ auth_token_npmjs }}
     npmAlwaysAuth: true
+{% endif %}
+{% if auth_token_github is defined %}
   //npm.pkg.github.com:
     npmAuthToken: {{ auth_token_github }}
     npmAlwaysAuth: true
+{% endif %}

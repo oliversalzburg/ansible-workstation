@@ -1,0 +1,14 @@
+---
+git_email: oliver.salzburg@gmail.com
+git_name: Oliver Salzburg
+
+config_system_locale: en_US.UTF-8
+config_system_language: en_US.UTF-8
+
+directory_downloads: /tmp/.ansible-downloads
+directory_systemd: /etc/systemd/system
+directory_keyrings: /usr/share/keyrings
+
+version_age: 1.1.1
+version_nodejs: 20
+version_sops: 3.7.3

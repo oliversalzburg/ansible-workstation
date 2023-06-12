@@ -56,6 +56,12 @@ cd provision/ansible
 ansible localhost --module-name ansible.builtin.include_role --args name=docker-pihole
 ```
 
+#### Apply to node that isn't in the inventory
+
+```shell
+ansible all --inventory admin@<ip_address> --module-name ansible.builtin.include_role --args name=all --extra-vars "ansible_user=admin"
+```
+
 ### Apply task on target
 
 ```shell

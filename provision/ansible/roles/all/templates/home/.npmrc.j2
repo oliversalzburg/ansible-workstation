@@ -16,5 +16,9 @@ save-exact=true
 # Always use authentication, even for GET requests to the registry.
 always-auth=true
 
+{% if auth_token_npmjs is defined %}
 //registry.npmjs.org/:_authToken={{ auth_token_npmjs }}
+{% endif %}
+{% if auth_token_github is defined %}
 //npm.pkg.github.com/:_authToken={{ auth_token_github }}
+{% endif %}
