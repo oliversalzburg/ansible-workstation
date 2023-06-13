@@ -76,6 +76,8 @@ ansible-playbook playbooks/00_init-all.yml --limit laptop
 
 #### When node not in the inventory
 
+_Usually not helpful, as node is missing `group_vars`._
+
 ```shell
 cd provision/ansible
 ansible-playbook playbooks/00_init-all.yml --inventory admin@<ip_address>, --extra-vars "ansible_user=admin"
@@ -89,6 +91,8 @@ ansible localhost --module-name ansible.builtin.include_role --args name=docker-
 ```
 
 #### When node not in the inventory
+
+_Usually not helpful, as node is missing `group_vars`._
 
 ```shell
 cd provision/ansible

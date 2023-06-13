@@ -3,3 +3,4 @@
 id_ed25519*
 terraform.tfstate
 terraform.tfstate.backup
+terraform.tfvars

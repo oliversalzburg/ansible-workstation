@@ -9,3 +9,7 @@ data "aws_ami_ids" "debian" {
 data "local_file" "id_ed25519_pub" {
   filename = var.id_ed25519_pub
 }
+
+data "aws_route53_zone" "sandboxes" {
+  name = var.zone_name
+}

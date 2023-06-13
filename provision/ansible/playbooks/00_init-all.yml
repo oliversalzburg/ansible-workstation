@@ -11,7 +11,7 @@
     - name: Check if we're on a cloud instance
       shell: command -v cloud-init >/dev/null 2>&1
       register: is_cloudinit_exist
-      ignore_errors: yes
+      ignore_errors: true
 
     - name: Wait for cloud-init / user-data to finish
       command: cloud-init status --wait
