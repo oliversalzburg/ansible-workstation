@@ -67,22 +67,37 @@ cd provision/ansible
 ansible-playbook site.yml --limit laptop
 ```
 
-### Apply role on target
+### Apply playbook on node
+
+```shell
+cd provision/ansible
+ansible-playbook playbooks/00_init-all.yml --limit laptop
+```
+
+#### When node not in the inventory
+
+```shell
+cd provision/ansible
+ansible-playbook playbooks/00_init-all.yml --inventory admin@<ip_address>, --extra-vars "ansible_user=admin"
+```
+
+### Apply role on node
 
 ```shell
 cd provision/ansible
 ansible localhost --module-name ansible.builtin.include_role --args name=docker-pihole
 ```
 
-#### When target not in the inventory
+#### When node not in the inventory
 
 ```shell
+cd provision/ansible
 ansible all --inventory admin@<ip_address>, --module-name ansible.builtin.include_role --args name=all --extra-vars "ansible_user=admin"
 ```
 
 Notice the trailing `,` after the `<ip_address>`.
 
-### Apply task on target
+### Apply task on node
 
 ```shell
 cd provision/ansible

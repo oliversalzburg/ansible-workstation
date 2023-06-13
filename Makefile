@@ -19,3 +19,6 @@ init-workstation: requirements
 
 init-localhost: requirements
 	cd provision/ansible; ansible localhost --module-name include_role --args name=all
+
+sandbox:
+	cd provision/terraform; terraform init; terraform apply -var id_ed25519_pub=${HOME}/.ssh/id_ed25519.pub

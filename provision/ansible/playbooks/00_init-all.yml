@@ -1,5 +1,26 @@
+#!/usr/bin/env ansible-playbook
+
 ---
+- name: Wait till ready
+  hosts: all
+  gather_facts: false
+  pre_tasks:
+    - name: Wait for connection
+      ansible.builtin.wait_for_connection:
+
+    - name: Check if we're on a cloud instance
+      shell: command -v cloud-init >/dev/null 2>&1
+      register: is_cloudinit_exist
+      ignore_errors: yes
+
+    - name: Wait for cloud-init / user-data to finish
+      command: cloud-init status --wait
+      changed_when: false
+      when: is_cloudinit_exist.rc == 0
+
+    - name: Gather facts
+      ansible.builtin.gather_facts:
+
 - hosts: all
-  gather_facts: true
   roles:
     - role: all

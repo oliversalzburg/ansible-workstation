@@ -1,5 +1,5 @@
 ---
-- name: Gather Facts
+- name: Gather facts
   ansible.builtin.gather_facts:
 
 - name: Update and upgrade apt packages
