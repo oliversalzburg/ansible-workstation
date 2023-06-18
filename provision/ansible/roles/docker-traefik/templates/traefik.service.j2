@@ -1,16 +1,25 @@
 [Unit]
 Description=traefik
 Documentation=https://doc.traefik.io/traefik
-After=docker.service
-Requires=docker.service systemd-networkd-wait-online.service
+Wants=network.target
+After=network-online.target
+Requires=systemd-networkd-wait-online.service
 
 [Service]
-TimeoutStartSec=0
-Restart=always
-ExecStartPre=-/usr/bin/docker exec %n stop
-ExecStartPre=-/usr/bin/docker rm %n
-ExecStartPre=/usr/bin/docker pull traefik:{{ traefik_version }}
-ExecStart=/usr/bin/docker run --rm --name %n \
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+TimeoutStopSec=70
+ExecStartPre=/bin/rm -f %t/container-traefik.pid %t/container-traefik.ctr-id
+ExecStartPre=/usr/bin/podman pull docker.io/traefik/traefik:{{ traefik_version }}
+ExecStart=/usr/bin/podman run \
+   --conmon-pidfile %t/container-traefik.pid \
+    --cidfile %t/container-traefik.ctr-id \
+    --cgroups=no-conmon \
+    --detach \
+    --replace \
+    --network host \
+    --name %n \
+    --rm \
     #--publish "443:443" \
     --publish "8080:8080" \
     --volume "{{ traefik_basedir }}/letsencrypt:/letsencrypt" \
@@ -21,13 +30,18 @@ ExecStart=/usr/bin/docker run --rm --name %n \
     traefik:{{ traefik_version }} \
     #--log.level=DEBUG \
     --api.insecure=true \
-    --providers.docker=true \
-    --providers.docker.exposedbydefault=false \
+    #--providers.docker=true \
+    #--providers.docker.exposedbydefault=false \
     #--entrypoints.websecure.address=:443 \
     #--certificatesresolvers.myresolver.acme.tlschallenge=true \
     #--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory \
     #--certificatesresolvers.myresolver.acme.email={{ letsencrypt_email_address }} \
     #--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
 
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-traefik.ctr-id -t 10
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-traefik.ctr-id
+PIDFile=%t/container-traefik.pid
+Type=forking
+
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target default.target

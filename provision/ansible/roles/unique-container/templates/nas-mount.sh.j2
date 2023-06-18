@@ -1,4 +1,10 @@
 #!/bin/sh
+
+# Check if already mounted.
+if mount | grep {{ media_location }} > /dev/null; then
+  exit 0
+fi
+
 sudo wakeonlan {{ media_wol_address }}
 sudo mkdir --parents {{ media_mount }}
 

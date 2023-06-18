@@ -1,0 +1,46 @@
+[Unit]
+Description=Jellyfin
+Documentation=https://jellyfin.org/docs/
+Wants=network.target
+After=network-online.target
+Requires=systemd-networkd-wait-online.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+TimeoutStopSec=70
+ExecStartPre=/bin/rm -f %t/container-jellyfin.pid %t/container-jellyfin.ctr-id
+ExecStartPre=/usr/bin/podman pull docker.io/jellyfin/jellyfin:{{ jellyfin_version }}
+ExecStart=/usr/bin/podman run \
+  --conmon-pidfile %t/container-jellyfin.pid \
+  --cidfile %t/container-jellyfin.ctr-id \
+  --cgroups=no-conmon \
+  --detach \
+  --replace \
+  --rm \
+  --network host \
+  --name %n \
+  --volume "{{ jellyfin_basedir }}/cache:/cache" \
+  --volume "{{ jellyfin_basedir }}/config:/config" \
+  --mount "type=bind,source={{ jellyfin_mediadir }},target=/media" \
+  --publish "8096:8096/tcp" \
+  --group-add="{{ getent_group.render[1] }}" \
+  --device /dev/dri/renderD128:/dev/dri/renderD128 \
+  --device /dev/dri/card0:/dev/dri/card0 \
+  #--label "traefik.enable=true" \
+  #--label "traefik.http.routers.jellyfin.rule=Host(`jellyfin.{{ dyndns_zone_cloudflare }}`)" \
+  #--label "traefik.http.routers.jellyfin.entrypoints=websecure" \
+  #--label "traefik.http.routers.jellyfin.tls.certresolver=myresolver" \
+  #--label "traefik.http.services.jellyfin.loadbalancer.server.port=8096" \
+  --label "cloudflare.enabled=true" \
+  --label "cloudflare.name=jellyfin" \
+  --label "cloudflare.zone={{ dyndns_zone_cloudflare }}" \
+  docker.io/jellyfin/jellyfin:{{ jellyfin_version }}
+
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-jellyfin.ctr-id -t 10
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-jellyfin.ctr-id
+PIDFile=%t/container-jellyfin.pid
+Type=forking
+
+[Install]
+WantedBy=multi-user.target default.target

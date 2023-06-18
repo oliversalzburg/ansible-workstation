@@ -1,0 +1,44 @@
+[Unit]
+Description=Pi-hole
+Documentation=https://pi-hole.net/
+Wants=network.target
+After=network-online.target
+Requires=systemd-networkd-wait-online.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+TimeoutStopSec=70
+ExecStartPre=/bin/rm -f %t/container-pihole.pid %t/container-pihole.ctr-id
+ExecStartPre=/usr/bin/podman pull docker.io/pihole/pihole:{{ pihole_version }}
+ExecStart=/usr/bin/podman run \
+    --conmon-pidfile %t/container-pihole.pid \
+    --cidfile %t/container-pihole.ctr-id \
+    --cgroups=no-conmon \
+    --detach \
+    --replace \
+    --network host \
+    --name %n \
+    --rm \
+    --dns=127.0.0.1 --dns=1.1.1.1 \
+    --hostname pi.hole \
+    -e VIRTUAL_HOST="pi.hole" \
+    -e PROXY_LOCATION="pi.hole" \
+    --volume "{{ pihole_basedir }}/etc/pihole:/etc/pihole" \
+    --volume "{{ pihole_basedir }}/etc/dnsmasq.d:/etc/dnsmasq.d" \
+#    -e "IPv6=true" \
+#    -e "FTLCONF_LOCAL_IPV6={{ ipv6_ula }}" \
+    -e "TZ=Europe/Berlin" \
+    -e "WEBPASSWORD={{ pihole_webpassword }}" \
+    --publish "53:53/tcp" \
+    --publish "53:53/udp" \
+    --publish "80:80/tcp" \
+    pihole/pihole:{{ pihole_version }}
+
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-pihole.ctr-id -t 10
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-pihole.ctr-id
+PIDFile=%t/container-pihole.pid
+Type=forking
+
+[Install]
+WantedBy=multi-user.target default.target
