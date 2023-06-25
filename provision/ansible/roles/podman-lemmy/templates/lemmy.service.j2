@@ -13,7 +13,7 @@ ExecStartPre=/bin/sh -c 'cat /root/docker_hub_credentials | /usr/bin/podman logi
     --password-stdin \
     docker.io'
 # ExecStartPre=/usr/bin/podman pull \
-#     docker.io/dessalines/lemmy:{{ lemmy_version }}
+#     docker.io/dessalines/lemmy:{{ version_lemmy }}
 ExecStart=/usr/bin/podman run \
     --conmon-pidfile %t/container-lemmy.pid \
     --cidfile %t/container-lemmy.ctr-id \
@@ -26,7 +26,7 @@ ExecStart=/usr/bin/podman run \
     --hostname lemmy \
     --volume "{{ lemmy_basedir }}/config/config.hjson:/config/config.hjson:z" \
     --publish "8536:8536/tcp" \
-    docker.io/dessalines/lemmy:{{ lemmy_version }}
+    docker.io/dessalines/lemmy:{{ version_lemmy }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-lemmy.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-lemmy.ctr-id

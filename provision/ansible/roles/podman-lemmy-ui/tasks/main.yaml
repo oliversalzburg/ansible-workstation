@@ -1,0 +1,17 @@
+---
+- name: Copy Lemmy UI service file
+  become: true
+  ansible.builtin.template:
+    src: "lemmy-ui.service.j2"
+    dest: "{{ directory_systemd }}/lemmy-ui.service"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Enable and check Lemmy UI service
+  become: true
+  ansible.builtin.systemd:
+    name: lemmy-ui
+    daemon_reload: yes
+    state: restarted
+    enabled: yes
