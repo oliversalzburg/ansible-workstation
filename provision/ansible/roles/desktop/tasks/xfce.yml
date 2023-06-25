@@ -1,6 +1,6 @@
 ---
 - name: Check if we have xfconf-query
-  command: xfconf-query --version
+  ansible.builtin.command: xfconf-query --version
   register: xfconf_query_check
 
 - name: Set window scaling factor

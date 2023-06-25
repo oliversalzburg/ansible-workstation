@@ -20,7 +20,7 @@
 # Skipped on WSL
 - name: Get current locale and language configuration
   when: ( ansible_env.WSL | default('false') ) == 'false'
-  command: localectl status
+  ansible.builtin.command: localectl status
   register: locale_status
   changed_when: false
 
@@ -37,5 +37,5 @@
 - name: Configure locale to '{{ config_system_locale }}' and language to '{{ config_system_language }}'
   when: ansible_env.WSL | default('false') == 'false'
   become: true
-  command: localectl set-locale LANG={{ config_system_locale }} LANGUAGE={{ config_system_language }}
+  ansible.builtin.command: localectl set-locale LANG={{ config_system_locale }} LANGUAGE={{ config_system_language }}
   changed_when: locale_lang != config_system_locale or locale_language != config_system_language
