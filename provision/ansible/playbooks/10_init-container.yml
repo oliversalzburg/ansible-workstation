@@ -1,9 +1,10 @@
 ---
 - hosts: "{{ target_host | default('container') }}"
-  gather_facts: true
+  gather_facts: false
   roles:
     - role: unique-container
     - role: gpu-intel
+    - role: podman-docker-io
     - role: podman-postgres
     - role: podman-jellyfin
     - role: podman-pihole

@@ -1,18 +1,25 @@
 [Unit]
 Description=Lemmy - A link aggregator for the fediverse
 After=network.target
+StartLimitIntervalSec=10
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
+StartLimitBurst=3
 ExecStartPre=/bin/rm -f %t/container-lemmy.pid %t/container-lemmy.ctr-id
-ExecStartPre=/usr/bin/podman pull docker.io/dessalines/lemmy:{{ lemmy_version }}
+ExecStartPre=/bin/sh -c 'cat /root/docker_hub_credentials | /usr/bin/podman login \
+    --username {{ docker_hub_username }} \
+    --password-stdin \
+    docker.io'
+# ExecStartPre=/usr/bin/podman pull \
+#     docker.io/dessalines/lemmy:{{ lemmy_version }}
 ExecStart=/usr/bin/podman run \
     --conmon-pidfile %t/container-lemmy.pid \
     --cidfile %t/container-lemmy.ctr-id \
     --cgroups=no-conmon \
     --detach \
-    -e "RUST_LOG=warn" \
+    --env "RUST_LOG=warn" \
     --replace \
     --name %n \
     --rm \

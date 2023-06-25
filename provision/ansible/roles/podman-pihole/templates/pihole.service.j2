@@ -4,13 +4,20 @@ Documentation=https://pi-hole.net/
 Wants=network.target
 After=network-online.target
 Requires=systemd-networkd-wait-online.service
+StartLimitIntervalSec=10
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
+StartLimitBurst=3
 TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/container-pihole.pid %t/container-pihole.ctr-id
-ExecStartPre=/usr/bin/podman pull docker.io/pihole/pihole:{{ pihole_version }}
+ExecStartPre=/bin/sh -c 'cat /root/docker_hub_credentials | /usr/bin/podman login \
+    --username {{ docker_hub_username }} \
+    --password-stdin \
+    docker.io'
+# ExecStartPre=/usr/bin/podman pull \
+#     docker.io/pihole/pihole:{{ pihole_version }}
 ExecStart=/usr/bin/podman run \
     --conmon-pidfile %t/container-pihole.pid \
     --cidfile %t/container-pihole.ctr-id \

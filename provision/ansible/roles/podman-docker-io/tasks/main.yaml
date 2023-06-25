@@ -1,0 +1,17 @@
+---
+- name: Install podman
+  become: true
+  ansible.builtin.apt:
+    name:
+      - podman
+    state: present
+    update_cache: true
+
+- name: Copy docker.io credentials
+  become: true
+  ansible.builtin.template:
+    src: "docker_hub_credentials.j2"
+    dest: "/root/docker_hub_credentials"
+    owner: root
+    group: root
+    mode: 0600

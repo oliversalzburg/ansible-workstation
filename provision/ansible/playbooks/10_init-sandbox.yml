@@ -1,6 +1,6 @@
 ---
 - hosts: "{{ target_host | default('sandbox') }}"
-  gather_facts: true
+  gather_facts: false
   roles:
     - role: podman-postgres
     - role: podman-lemmy

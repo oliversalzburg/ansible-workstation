@@ -1,6 +1,6 @@
 ---
 - hosts: "{{ target_host | default('workstation') }}"
-  gather_facts: true
+  gather_facts: false
   roles:
     - role: unique-workstation
     - role: gpu-nvidia
