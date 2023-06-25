@@ -2,7 +2,6 @@
 - hosts: "{{ target_host | default('workstation') }}"
   gather_facts: true
   roles:
-    - role: all
     - role: unique-workstation
     - role: gpu-nvidia
     - role: docker-host

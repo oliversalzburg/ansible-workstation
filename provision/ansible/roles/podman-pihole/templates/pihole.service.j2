@@ -33,7 +33,7 @@ ExecStart=/usr/bin/podman run \
     --publish "53:53/tcp" \
     --publish "53:53/udp" \
     --publish "80:80/tcp" \
-    pihole/pihole:{{ pihole_version }}
+    docker.io/pihole/pihole:{{ pihole_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-pihole.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-pihole.ctr-id

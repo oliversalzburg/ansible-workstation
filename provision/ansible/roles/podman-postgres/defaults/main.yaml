@@ -1,0 +1,5 @@
+---
+postgres_basedir: /mnt/usb/postgres
+#postgres_password: secret
+#postgres_user: root
+postgres_version: 15

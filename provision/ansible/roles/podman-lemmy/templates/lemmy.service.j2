@@ -1,0 +1,34 @@
+[Unit]
+Description=Lemmy - A link aggregator for the fediverse
+After=network.target
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+ExecStartPre=/bin/rm -f %t/container-lemmy.pid %t/container-lemmy.ctr-id
+ExecStartPre=/usr/bin/podman pull docker.io/dessalines/lemmy:{{ lemmy_version }}
+ExecStart=/usr/bin/podman run \
+    --conmon-pidfile %t/container-lemmy.pid \
+    --cidfile %t/container-lemmy.ctr-id \
+    --cgroups=no-conmon \
+    --detach \
+    -e "RUST_LOG=warn" \
+    --replace \
+    --name %n \
+    --rm \
+    --hostname lemmy \
+    --volume "{{ lemmy_basedir }}/config/config.hjson:/config/config.hjson:z" \
+    --publish "8536:8536/tcp" \
+    docker.io/dessalines/lemmy:{{ lemmy_version }}
+
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-lemmy.ctr-id -t 10
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-lemmy.ctr-id
+
+# Hardening
+ProtectSystem=yes
+PrivateTmp=true
+MemoryDenyWriteExecute=true
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

@@ -2,12 +2,9 @@
 - hosts: "{{ target_host | default('container') }}"
   gather_facts: true
   roles:
-    - role: all
     - role: unique-container
     - role: gpu-intel
-    #- role: docker-cloudflare-dns
+    - role: podman-postgres
     - role: podman-jellyfin
-    #- role: docker-nextcloud
     - role: podman-pihole
-    #- role: docker-traefik
-    #- role: dyndns
+    

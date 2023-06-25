@@ -4,3 +4,4 @@
 - import_playbook: playbooks/10_init-container.yml
 - import_playbook: playbooks/10_init-laptop.yml
 - import_playbook: playbooks/10_init-workstation.yml
+- import_playbook: playbooks/10_init-sandbox.yml
