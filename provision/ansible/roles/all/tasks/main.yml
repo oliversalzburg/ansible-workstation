@@ -37,6 +37,7 @@
 
 - name: Generate SSH key
   community.crypto.openssh_keypair:
+    type: ed25519
     path: ~/.ssh/id_ed25519
     force: false
     regenerate: never
