@@ -36,15 +36,17 @@ resource "aws_security_group" "this" {
 
 resource "aws_key_pair" "this" {
   key_name   = "sandbox-${random_pet.this.id}"
-  public_key = data.local_file.id_ed25519_pub.content
+  public_key = chomp(data.local_file.id_ed25519_pub.content)
 }
 
 resource "aws_instance" "this" {
   ami                         = data.aws_ami_ids.debian.ids[0]
   associate_public_ip_address = true
-  instance_type               = "t3a.nano"
+  ebs_optimized               = true
+  instance_type               = "t3.micro"
   ipv6_address_count          = 1
   key_name                    = aws_key_pair.this.key_name
+  monitoring                  = true
   vpc_security_group_ids      = [aws_security_group.this.id]
 
   tags = {
