@@ -13,6 +13,8 @@
   become: true
   ansible.builtin.apt:
     name:
+      - apparmor-profiles
+      - apparmor-utils
       - bash
       - ca-certificates
       - curl

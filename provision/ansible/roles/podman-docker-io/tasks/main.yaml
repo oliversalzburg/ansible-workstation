@@ -3,6 +3,8 @@
   become: true
   ansible.builtin.apt:
     name:
+      - dnsmasq
+      - golang-github-containernetworking-plugin-dnsname
       - podman
     state: present
     update_cache: true
@@ -15,3 +17,35 @@
     owner: root
     group: root
     mode: 0600
+
+- name: Ensure cni directory exists
+  become: true
+  ansible.builtin.file:
+    path: /usr/libexec/cni
+    state: directory
+    owner: root
+
+- name: Link dnsname plugin
+  become: true
+  ansible.builtin.file:
+    src: /usr/lib/dnsname
+    dest: /usr/libexec/cni/dnsname
+    owner: root
+    group: root
+    state: link
+
+- name: Copy CNI config
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/cni/net.d/87-podman-ptp.conflist"
+    dest: /etc/cni/net.d/87-podman-ptp.conflist
+
+#- name: Copy dnsmasq AppArmor config
+#  become: true
+#  ansible.builtin.copy:
+#    src: "{{ role_path }}/files/etc/apparmor.d/local/usr.sbin.dnsmasq"
+#    dest: /etc/apparmor.d/local/usr.sbin.dnsmasq
+#
+#- name: Reload AppArmor config
+#  become: true
+#  ansible.builtin.command: apparmor_parser --replace /etc/apparmor.d/local/usr.sbin.dnsmasq

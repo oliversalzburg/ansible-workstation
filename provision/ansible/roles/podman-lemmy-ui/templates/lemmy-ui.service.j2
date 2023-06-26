@@ -13,23 +13,26 @@ ExecStartPre=/bin/sh -c 'cat /root/docker_hub_credentials | /usr/bin/podman logi
     --password-stdin \
     docker.io'
 # ExecStartPre=/usr/bin/podman pull \
-#     docker.io/dessalines/lemmy-ui:{{ lemmy_version }}
+#     docker.io/dessalines/lemmy-ui:{{ version_lemmy }}
 ExecStart=/usr/bin/podman run \
-    --conmon-pidfile %t/container-lemmy-ui.pid \
+    --cgroups no-conmon \
     --cidfile %t/container-lemmy-ui.ctr-id \
-    --cgroups=no-conmon \
+    --conmon-pidfile %t/container-lemmy-ui.pid \
     --detach \
     --env "LEMMY_UI_LEMMY_INTERNAL_HOST=lemmy:8536" \
     --env "LEMMY_UI_LEMMY_EXTERNAL_HOST=lemmy.ffm.ninja" \
     --env "LEMMY_UI_HTTPS=true" \
-    --replace \
-    --name %n \
-    --rm \
     --hostname lemmy-ui \
-    docker.io/dessalines/lemmy-ui:{{ lemmy_version }}
+    --log-driver journald \
+    --name %n \
+    --replace \
+    --rm \
+    docker.io/dessalines/lemmy-ui:{{ version_lemmy }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-lemmy-ui.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-lemmy-ui.ctr-id
+PIDFile=%t/container-lemmy-ui.pid
+Type=forking
 
 # Hardening
 ProtectSystem=yes

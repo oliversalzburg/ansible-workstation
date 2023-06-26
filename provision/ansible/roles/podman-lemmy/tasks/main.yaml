@@ -29,6 +29,7 @@
   ansible.builtin.command: podman exec {{ postgres_ctr_id.stdout }} psql --command "GRANT ALL PRIVILEGES ON DATABASE lemmy TO lemmy";
 
 - name: Ensure working directory exists
+  become: true
   ansible.builtin.file:
     path: "{{ lemmy_basedir }}/config"
     state: directory

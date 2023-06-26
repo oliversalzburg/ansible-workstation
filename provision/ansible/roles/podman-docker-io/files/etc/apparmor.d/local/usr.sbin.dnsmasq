@@ -1,0 +1,4 @@
+# required by the dnsname plugin in podman
+/run/containers/cni/dnsname/*/dnsmasq.conf r,
+/run/containers/cni/dnsname/*/addnhosts r,
+/run/containers/cni/dnsname/*/pidfile rw,

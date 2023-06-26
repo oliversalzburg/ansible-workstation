@@ -19,21 +19,14 @@ ExecStartPre=/bin/sh -c 'cat /root/docker_hub_credentials | /usr/bin/podman logi
 # ExecStartPre=/usr/bin/podman pull \
 #     docker.io/jellyfin/jellyfin:{{ jellyfin_version }}
 ExecStart=/usr/bin/podman run \
-  --conmon-pidfile %t/container-jellyfin.pid \
+  --cgroups no-conmon \
   --cidfile %t/container-jellyfin.ctr-id \
-  --cgroups=no-conmon \
+  --conmon-pidfile %t/container-jellyfin.pid \
   --detach \
-  --replace \
-  --rm \
-  --network host \
-  --name %n \
-  --volume "{{ jellyfin_basedir }}/cache:/cache" \
-  --volume "{{ jellyfin_basedir }}/config:/config" \
-  --mount "type=bind,source={{ jellyfin_mediadir }},target=/media" \
-  --publish "8096:8096/tcp" \
-  --group-add="{{ getent_group.render[1] }}" \
   --device /dev/dri/renderD128:/dev/dri/renderD128 \
   --device /dev/dri/card0:/dev/dri/card0 \
+  --group-add "{{ getent_group.render[1] }}" \
+  --hostname jellyfin \
   #--label "traefik.enable=true" \
   #--label "traefik.http.routers.jellyfin.rule=Host(`jellyfin.{{ dyndns_zone_cloudflare }}`)" \
   #--label "traefik.http.routers.jellyfin.entrypoints=websecure" \
@@ -42,6 +35,15 @@ ExecStart=/usr/bin/podman run \
   --label "cloudflare.enabled=true" \
   --label "cloudflare.name=jellyfin" \
   --label "cloudflare.zone={{ dyndns_zone_cloudflare }}" \
+  --log-driver journald \
+  --mount "type=bind,source={{ jellyfin_mediadir }},target=/media" \
+  --name %n \
+  --network host \
+  --publish "8096:8096/tcp" \
+  --replace \
+  --rm \
+  --volume "{{ jellyfin_basedir }}/cache:/cache" \
+  --volume "{{ jellyfin_basedir }}/config:/config" \
   docker.io/jellyfin/jellyfin:{{ jellyfin_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-jellyfin.ctr-id -t 10

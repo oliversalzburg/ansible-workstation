@@ -3,5 +3,7 @@
   gather_facts: false
   roles:
     - role: certbot
+    - role: podman-docker-io
     - role: podman-postgres
     - role: podman-lemmy
+    - role: podman-lemmy-ui

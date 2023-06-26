@@ -19,27 +19,29 @@ ExecStartPre=/bin/sh -c 'cat /root/docker_hub_credentials | /usr/bin/podman logi
 # ExecStartPre=/usr/bin/podman pull \
 #     docker.io/pihole/pihole:{{ pihole_version }}
 ExecStart=/usr/bin/podman run \
-    --conmon-pidfile %t/container-pihole.pid \
+    --cgroups no-conmon \
     --cidfile %t/container-pihole.ctr-id \
-    --cgroups=no-conmon \
+    --conmon-pidfile %t/container-pihole.pid \
     --detach \
-    --replace \
-    --network host \
-    --name %n \
-    --rm \
-    --dns=127.0.0.1 --dns=1.1.1.1 \
+    --dns=127.0.0.1 \
+    --dns=1.1.1.1 \
+    --env VIRTUAL_HOST="pi.hole" \
+    --env PROXY_LOCATION="pi.hole" \
+#    --env "IPv6=true" \
+#    --env "FTLCONF_LOCAL_IPV6={{ ipv6_ula }}" \
+    --env "TZ=Europe/Berlin" \
+    --env "WEBPASSWORD={{ pihole_webpassword }}" \
     --hostname pi.hole \
-    -e VIRTUAL_HOST="pi.hole" \
-    -e PROXY_LOCATION="pi.hole" \
-    --volume "{{ pihole_basedir }}/etc/pihole:/etc/pihole" \
-    --volume "{{ pihole_basedir }}/etc/dnsmasq.d:/etc/dnsmasq.d" \
-#    -e "IPv6=true" \
-#    -e "FTLCONF_LOCAL_IPV6={{ ipv6_ula }}" \
-    -e "TZ=Europe/Berlin" \
-    -e "WEBPASSWORD={{ pihole_webpassword }}" \
+    --log-driver journald \
+    --name %n \
+    --network host \
     --publish "53:53/tcp" \
     --publish "53:53/udp" \
     --publish "80:80/tcp" \
+    --replace \
+    --rm \
+    --volume "{{ pihole_basedir }}/etc/pihole:/etc/pihole" \
+    --volume "{{ pihole_basedir }}/etc/dnsmasq.d:/etc/dnsmasq.d" \
     docker.io/pihole/pihole:{{ pihole_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-pihole.ctr-id -t 10
