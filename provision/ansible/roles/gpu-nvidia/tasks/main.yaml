@@ -2,6 +2,9 @@
 - name: Enable non-free APT
   become: true
   ansible.builtin.command: apt-add-repository non-free
+- name: Enable non-free-firmware APT
+  become: true
+  ansible.builtin.command: apt-add-repository non-free-firmware
 - name: Enable contrib APT
   become: true
   ansible.builtin.command: apt-add-repository contrib
