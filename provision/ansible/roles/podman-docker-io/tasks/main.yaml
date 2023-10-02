@@ -9,6 +9,11 @@
     state: present
     update_cache: true
 
+- name: Install podman-compose
+  become: true
+  ansible.builtin.pip:
+    name: podman-compose
+
 - name: Copy docker.io credentials
   become: true
   ansible.builtin.template:
