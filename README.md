@@ -8,11 +8,9 @@ You have a new machine. Congratulations.
 
 Bootstrap it with the Debian "Netinst" minimal installation image. For example:
 
--   <https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-11.6.0-amd64-netinst.iso>
+-   <https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-12.1.0-amd64-netinst.iso>
 
-If you need a Windows tool to put this on a USB key, [Rufus](https://rufus.ie/en/) in DD mode is still perfectly fine. If you have a machine with stupid hardware (which you probably have), ensure to use an image with **proprietary firmware included**, such as:
-
--   <https://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/current/amd64/iso-cd/firmware-11.6.0-amd64-netinst.iso>
+If you need a Windows tool to put this on a USB key, [Rufus](https://rufus.ie/en/) in DD mode is still perfectly fine.
 
 Install `openssh-server`, run `ip a` and take note of the IP address.
 
