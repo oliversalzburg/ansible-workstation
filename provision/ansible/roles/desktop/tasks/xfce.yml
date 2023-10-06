@@ -60,6 +60,11 @@
     dest: ~/.xsessionrc
   when: xfconf_query_check.rc == 0
 
+- name: "Ensure default config directory exists: xfce terminal"
+  file: 
+    path: ~/.config/xfce4/terminal/
+    state: directory
+
 - name: Install Terminal configuration
   ansible.builtin.copy:
     src: "{{ role_path }}/files/home/.config/xfce4/terminal/terminalrc"

@@ -1,10 +1,10 @@
 ---
 - name: Enable non-free APT
   become: true
-  ansible.builtin.command: apt-add-repository non-free
+  ansible.builtin.command: apt-add-repository --yes non-free
 - name: Enable non-free-firmware APT
   become: true
-  ansible.builtin.command: apt-add-repository non-free-firmware
+  ansible.builtin.command: apt-add-repository --yes non-free-firmware
 
 - name: Install Intel driver
   become: true

@@ -4,5 +4,4 @@
   roles:
     - role: unique-laptop
     - role: gpu-nvidia
-    - role: docker-host
     - role: desktop

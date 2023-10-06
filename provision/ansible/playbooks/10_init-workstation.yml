@@ -4,6 +4,5 @@
   roles:
     - role: unique-workstation
     - role: gpu-nvidia
-    - role: docker-host
     - role: desktop
     - role: desktop-hires

@@ -30,6 +30,7 @@
       - openssh-client
       - python3
       - python3-pip
+      - software-properties-common
       - tzdata
       - vim
       - wakeonlan

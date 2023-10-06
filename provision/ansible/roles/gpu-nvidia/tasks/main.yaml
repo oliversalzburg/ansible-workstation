@@ -1,22 +1,39 @@
 ---
 - name: Enable non-free APT
   become: true
-  ansible.builtin.command: apt-add-repository non-free
+  ansible.builtin.command: apt-add-repository --yes non-free
 - name: Enable non-free-firmware APT
   become: true
-  ansible.builtin.command: apt-add-repository non-free-firmware
+  ansible.builtin.command: apt-add-repository --yes non-free-firmware
 - name: Enable contrib APT
   become: true
-  ansible.builtin.command: apt-add-repository contrib
+  ansible.builtin.command: apt-add-repository --yes contrib
+
+- name: Check if i386 is enabled
+  ansible.builtin.shell: dpkg --print-foreign-architectures | grep i386
+  register: result_i386_check
+  changed_when: result_i386_check.rc == 1
+  failed_when: result_i386_check.rc > 1
+
+- name: Enable i386 architecture
+  become: true
+  ansible.builtin.command: dpkg --add-architecture i386
+  when: result_i386_check.rc == 1
+
+- name: Ensure apt cache is up to date
+  become: true
+  ansible.builtin.apt: update_cache=yes
+  when: result_i386_check.rc == 1
 
 - name: Install Nvidia driver
   become: true
   ansible.builtin.apt:
+    install_recommends: true
     update_cache: true
     name:
       - firmware-misc-nonfree
       - linux-headers-amd64
       - nvidia-driver
-      - software-properties-common
+      - nvidia-driver-libs:i386
       - vainfo
       - vdpauinfo
