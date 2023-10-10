@@ -1,4 +1,10 @@
 ---
+- name: Install Arc Theme
+  become: true
+  ansible.builtin.apt:
+    name:
+      - arc-theme
+
 - name: Check if we have xfconf-query
   ansible.builtin.command: xfconf-query --version
   register: xfconf_query_check
@@ -24,7 +30,7 @@
     channel: xsettings
     property: /Net/ThemeName
     value_type: string
-    value: Adwaita-dark
+    value: Arc-Dark
   when: xfconf_query_check.rc == 0
 
 - name: Set keyboard layout
