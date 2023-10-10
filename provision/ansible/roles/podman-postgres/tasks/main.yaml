@@ -9,7 +9,7 @@
 - name: Copy Postgres service file
   become: true
   ansible.builtin.template:
-    src: "postgres.service.j2"
+    src: postgres.service.j2
     dest: "{{ directory_systemd }}/postgres.service"
     owner: root
     group: root

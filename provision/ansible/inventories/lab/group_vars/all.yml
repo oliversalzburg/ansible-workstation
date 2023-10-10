@@ -8,6 +8,7 @@ config_system_locale: en_US.UTF-8
 config_system_language: en_US.UTF-8
 
 directory_downloads: /tmp/.ansible-downloads
+directory_networkd: /etc/systemd/network
 directory_systemd: /etc/systemd/system
 directory_keyrings: /usr/share/keyrings
 

@@ -9,6 +9,7 @@ letsencrypt_email_address: ENC[AES256_GCM,data:U5EO++NDwz/8lQEQwq40WBTw9PubqXa85
 pihole_webpassword: ENC[AES256_GCM,data:rsC5QW54C97mehKAKPJTfRyQWi0=,iv:TT7HNFHbHJg7iscaCFXN5ckYAQlTIWvOksKF45imN0E=,tag:aCoy6d9l3w62qoB8eZhUZg==,type:str]
 postgres_password: ENC[AES256_GCM,data:0cw87aH4h4ih2QSX,iv:CoC7Z8EFvBLsU4qtPw7cgPKdej/1XPZY76N/PnGvdO4=,tag:EyH3uD1m5bsbov0bNqMYHA==,type:str]
 postgres_user: ENC[AES256_GCM,data:adXvPg==,iv:fbj9Xf5fDcvG2kI62sAusGRCbfyysfHXcQvnLqK0yT4=,tag:2g4SNC+6zvYD1+2h6fWakQ==,type:str]
+psk_offline: ENC[AES256_GCM,data:2gKGhULLNA29wsAbtIQMKJOR3wd2vXMJTnw5mdQ/e5186ItgKxLK4u0jQqgEOl4JLtkFuoOKaLk+6m1xvZLNEQ==,iv:orxFt18fDGo+VPk8g7gZ7aDwm4wCm+mZWU3uNZs6PHk=,tag:7pNLJn33bE6knDRUBHdLlw==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -24,8 +25,8 @@ sops:
             SE9MSTh6cnQrNWxTNGFCR2xvNGhmT1UKZ3HILHktZEe0S0zzFoXWNx2AtmSlESsh
             9K/ZztN2zJGeYomwiJXCwToQPa1aXYrtlDgpmBZMlOfwOTS7I2p4LA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-06-25T13:05:29Z"
-    mac: ENC[AES256_GCM,data:5xIqoRjxUQHSg70IcDVyERVjCHYzl7DXdWa9fOF+iXX6qNVzMEsGDXGaHOHzAPdyfBGiECYNvcG7KLtH+4hHReZhVSF+CdiXvmB0FMyL1ikbF5JwN/tcwUTcTnrHEvKGYy8rIdq81+rCgSGOqCsA9IsDnd+VCJBkmMWC8aTfxO0=,iv:koT0z/E+nPeQd8Kv0+q2Vvbug9admharJdnfKqqInC8=,tag:xiVt9ALNMhXd65za+mbIOw==,type:str]
+    lastmodified: "2023-10-10T14:00:33Z"
+    mac: ENC[AES256_GCM,data:0E/AfWusimLn3W7o0VAJHtT+Cn7SbDGkPmWnLp9U03hkFiRgYcLWpwFfzKuUj/F5iyV9ho3YbDreesNHm9AMqDnT9TFUTZBJN2Nk0vp9azIHxnjcapYOUFV0emPZfhcSbzqs8RHWEulUDtJYHb1w0U6Ty336mMpuEmnd2L7mcFE=,iv:GHY1BVMBv0Q4KnNYjAejPJLKxSvn2/P3u2DAwVyI2R8=,tag:OpAqzmmjJcp5Uid67qPItg==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 3.7.3
