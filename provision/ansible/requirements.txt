@@ -1,1 +1,1 @@
-ansible-lint ==1.0.4
+ansible-lint ==6.21.1
