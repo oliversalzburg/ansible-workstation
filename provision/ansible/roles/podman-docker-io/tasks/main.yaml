@@ -6,13 +6,9 @@
       - dnsmasq
       - golang-github-containernetworking-plugin-dnsname
       - podman
+      - podman-compose
     state: present
     update_cache: true
-
-- name: Install podman-compose
-  become: true
-  ansible.builtin.pip:
-    name: podman-compose
 
 - name: Copy docker.io credentials
   become: true
@@ -23,21 +19,21 @@
     group: root
     mode: 0600
 
-- name: Ensure cni directory exists
-  become: true
-  ansible.builtin.file:
-    path: /usr/libexec/cni
-    state: directory
-    owner: root
+#- name: Ensure cni directory exists
+#  become: true
+#  ansible.builtin.file:
+#    path: /usr/libexec/cni
+#    state: directory
+#    owner: root
 
-- name: Link dnsname plugin
-  become: true
-  ansible.builtin.file:
-    src: /usr/lib/dnsname
-    dest: /usr/libexec/cni/dnsname
-    owner: root
-    group: root
-    state: link
+#- name: Link dnsname plugin
+#  become: true
+#  ansible.builtin.file:
+#    src: /usr/lib/cni/dnsname
+#    dest: /usr/libexec/cni/dnsname
+#    owner: root
+#    group: root
+#    state: link
 
 - name: Copy CNI config
   become: true
