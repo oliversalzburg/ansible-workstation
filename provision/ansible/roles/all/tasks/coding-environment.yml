@@ -6,6 +6,7 @@
       - git
       - openssh-client
       - shellcheck
+      - tig
     state: present
     update_cache: true
 
