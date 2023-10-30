@@ -33,6 +33,7 @@
       - python3-pip
       - software-properties-common
       - tzdata
+      - unzip
       - vim
       - wakeonlan
       - wget
