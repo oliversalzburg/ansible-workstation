@@ -22,6 +22,7 @@
       - git
       - htop
       - iputils-tracepath
+      - jq
       - keychain
       - lshw
       - man-db
