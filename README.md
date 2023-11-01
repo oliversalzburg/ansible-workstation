@@ -16,9 +16,11 @@ Install `openssh-server`, run `ip a` and take note of the IP address.
 
 When provisioning a new machine, you need an **Ansible control node**. You can bring this up at any time on any machine on your network and tear it down whenever you want. It is only required for play execution.
 
-### Provision Control Node
+### Provision Control Node - Quick Start
 
 We will assume you are working on a control node, as provisioned through this framework. If you don't have a control node, bring it up with `./up-ansible-cn` and follow instructions. If you want to provision a standalone node, that node will also be your control node.
+
+1. Clone this repository. If you don't have `git`, you might want to run the `up-bootstrap` script.
 
 ### Provision Remote Node
 

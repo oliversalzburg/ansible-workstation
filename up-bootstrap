@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Initial entrypoint for Ansible control node initialization
+
+set -o errexit
+set -o nounset
+set -o pipefail
+if [[ "${TRACE-0}" == "1" ]]; then
+  set -o xtrace
+fi
+
+cd "$(dirname "$0")"
+
+main() {
+  sudo apt-get update
+  sudo apt-get install --yes git
+}
+
+main "$@"
