@@ -25,6 +25,12 @@ main() {
   export PATH=${PATH}:${HOME}/.local/bin
   pipx install --include-deps ansible
 
+  # Install SOPS
+
+  wget https://github.com/getsops/sops/releases/download/v3.7.3/sops-v3.7.3.linux.amd64 \
+    --output-document=${HOME}/.local/bin/sops
+  chmod +x ${HOME}/.local/bin/sops
+
   # Prepare SSH
 
   sudo apt-get install --yes openssh-client
