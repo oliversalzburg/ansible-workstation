@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Initial entrypoint for Ansible control node initialization
-
 set -o errexit
 set -o nounset
 set -o pipefail

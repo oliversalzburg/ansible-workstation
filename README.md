@@ -22,6 +22,31 @@ We will assume you are working on a control node, as provisioned through this fr
 
 1. Clone this repository. If you don't have `git`, you might want to run the `up-bootstrap` script.
 
+    1. Grab the bootstrap script. `wget` should be installed as part of the standard system utilities. If you don't have it, install it with `apt install wget`.
+
+        ```shell
+        wget https://raw.githubusercontent.com/oliversalzburg/ansible-workstation/main/up-bootstrap
+        ```
+
+    1. Run the bootstrap script:
+
+        ```shell
+        bash up-bootstrap
+        ```
+
+    1. Clone this repository:
+
+        ```shell
+        git clone https://github.com/oliversalzburg/ansible-workstation.git
+        ```
+
+1. Prepare the node as a control now:
+
+    ```shell
+    cd ansible-workstation
+    bash up-ansible-cn
+    ```
+
 ### Provision Remote Node
 
 1. Ensure `openssh-server` is installed and running on your remote node.
