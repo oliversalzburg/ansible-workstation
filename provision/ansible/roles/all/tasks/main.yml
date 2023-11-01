@@ -25,6 +25,7 @@
       - jq
       - keychain
       - lshw
+      - lsof
       - man-db
       - ncdu
       - nmap
