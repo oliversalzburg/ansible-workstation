@@ -11,11 +11,11 @@ init: requirements
 	cd provision/ansible; ansible-playbook site.yml
 
 init-container: requirements
-	cd provision/ansible; ansible-playbook playbooks/10_init-container.yml
+	cd provision/ansible; ansible-playbook playbooks/00_init-all.yml --limit container
 init-laptop: requirements
-	cd provision/ansible; ansible-playbook playbooks/10_init-laptop.yml
+	cd provision/ansible; ansible-playbook playbooks/00_init-all.yml --limit laptop
 init-workstation: requirements
-	cd provision/ansible; ansible-playbook playbooks/10_init-workstation.yml
+	cd provision/ansible; ansible-playbook playbooks/00_init-all.yml --limit workstation
 
 init-localhost: requirements
 	cd provision/ansible; ansible localhost --module-name include_role --args name=all
