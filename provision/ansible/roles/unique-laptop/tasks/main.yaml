@@ -2,7 +2,7 @@
 - name: Set hostname
   become: true
   ansible.builtin.hostname:
-    name: laptop
+    name: oliver-laptop
 
 - name: "Create network: offline"
   become: true
