@@ -38,6 +38,7 @@
       - vim
       - wakeonlan
       - wget
+      - whois
       - zsh
     update_cache: true
 
