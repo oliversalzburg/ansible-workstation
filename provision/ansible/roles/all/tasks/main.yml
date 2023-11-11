@@ -17,6 +17,7 @@
       - apparmor-utils
       - bash
       - ca-certificates
+      - cmake
       - curl
       - dnsutils
       - git
