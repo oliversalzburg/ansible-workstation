@@ -55,3 +55,8 @@
     name: pull.rebase
     scope: global
     value: false
+- name: Configure git follow tags
+  community.general.git_config:
+    name: push.followTags
+    scope: global
+    value: true
