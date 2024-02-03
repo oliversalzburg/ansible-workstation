@@ -13,6 +13,5 @@ directory_systemd: /etc/systemd/system
 directory_keyrings: /usr/share/keyrings
 
 version_age: 1.1.1
-version_lemmy: 0.18
 version_nodejs: 20
 version_sops: 3.7.3

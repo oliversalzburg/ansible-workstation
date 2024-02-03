@@ -16,8 +16,8 @@
 - name: "Store WPA config: offline"
   become: true
   ansible.builtin.template:
-    src: wpa_supplicant-wlp2s0.conf.j2
-    dest: /etc/wpa_supplicant/wpa_supplicant-wlp2s0.conf
+    src: wpa_supplicant-wlp3s0.conf.j2
+    dest: /etc/wpa_supplicant/wpa_supplicant-wlp3s0.conf
     owner: root
     group: root
     mode: 0600
@@ -50,6 +50,14 @@
     name: systemd-networkd
     state: started
     enabled: true
+
+- name: Copy nas-credentials
+  become: true
+  ansible.builtin.template:
+    src: nas-credentials.j2
+    dest: "{{ media_credentials_file }}"
+    mode: 0700
+    owner: root
 
 - name: Copy nas-mount.sh
   become: true

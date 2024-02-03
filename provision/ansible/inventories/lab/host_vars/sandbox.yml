@@ -1,2 +1,1 @@
-lemmy_basedir: /opt/lemmy
 postgres_basedir: /opt/postgres

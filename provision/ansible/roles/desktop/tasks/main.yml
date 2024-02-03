@@ -1,5 +1,4 @@
 ---
-- include_tasks: discord.yml
 - include_tasks: keepassxc.yml
 - include_tasks: steam.yml
 - include_tasks: syncthing.yml
