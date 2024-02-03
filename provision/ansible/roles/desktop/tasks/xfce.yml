@@ -1,4 +1,11 @@
 ---
+- name: Install XFCE Desktop environment
+  become: true
+  ansible.builtin.apt:
+    name:
+      - lightdm
+      - xfce4
+
 - name: Install Arc Theme
   become: true
   ansible.builtin.apt:

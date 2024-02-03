@@ -7,5 +7,7 @@
     - role: desktop
     - role: podman-docker-io
     - role: podman-jellyfin
+      jellyfin_basedir: /home/oliver/jellyfin
     - role: podman-pihole
+      pihole_basedir: /home/oliver/pihole
     

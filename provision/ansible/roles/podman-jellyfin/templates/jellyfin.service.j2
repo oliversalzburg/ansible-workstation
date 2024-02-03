@@ -12,10 +12,6 @@ Restart=on-failure
 StartLimitBurst=3
 TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/container-jellyfin.pid %t/container-jellyfin.ctr-id
-ExecStartPre=/bin/sh -c 'cat /root/docker_hub_credentials | /usr/bin/podman login \
-    --username {{ docker_hub_username }} \
-    --password-stdin \
-    docker.io'
 # ExecStartPre=/usr/bin/podman pull \
 #     docker.io/jellyfin/jellyfin:{{ jellyfin_version }}
 ExecStart=/usr/bin/podman run \
@@ -27,14 +23,6 @@ ExecStart=/usr/bin/podman run \
   --device /dev/dri/card0:/dev/dri/card0 \
   --group-add "{{ getent_group.render[1] }}" \
   --hostname jellyfin \
-  #--label "traefik.enable=true" \
-  #--label "traefik.http.routers.jellyfin.rule=Host(`jellyfin.{{ dyndns_zone_cloudflare }}`)" \
-  #--label "traefik.http.routers.jellyfin.entrypoints=websecure" \
-  #--label "traefik.http.routers.jellyfin.tls.certresolver=myresolver" \
-  #--label "traefik.http.services.jellyfin.loadbalancer.server.port=8096" \
-  --label "cloudflare.enabled=true" \
-  --label "cloudflare.name=jellyfin" \
-  --label "cloudflare.zone={{ dyndns_zone_cloudflare }}" \
   --log-driver journald \
   --mount "type=bind,source={{ jellyfin_mediadir }},target=/media" \
   --name %n \

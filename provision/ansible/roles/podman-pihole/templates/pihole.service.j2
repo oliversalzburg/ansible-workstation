@@ -16,8 +16,6 @@ ExecStartPre=/bin/sh -c 'cat /root/docker_hub_credentials | /usr/bin/podman logi
     --username {{ docker_hub_username }} \
     --password-stdin \
     docker.io'
-# ExecStartPre=/usr/bin/podman pull \
-#     docker.io/pihole/pihole:{{ pihole_version }}
 ExecStart=/usr/bin/podman run \
     --cgroups no-conmon \
     --cidfile %t/container-pihole.ctr-id \
@@ -27,8 +25,6 @@ ExecStart=/usr/bin/podman run \
     --dns=1.1.1.1 \
     --env VIRTUAL_HOST="pi.hole" \
     --env PROXY_LOCATION="pi.hole" \
-#    --env "IPv6=true" \
-#    --env "FTLCONF_LOCAL_IPV6={{ ipv6_ula }}" \
     --env "TZ=Europe/Berlin" \
     --env "WEBPASSWORD={{ pihole_webpassword }}" \
     --hostname pi.hole \
