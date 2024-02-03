@@ -1,0 +1,11 @@
+---
+- name: Copy .npmrc
+  ansible.builtin.template:
+    src: home/.npmrc.j2
+    dest: "{{ userspace_user }}/.npmrc"
+    mode: 0600
+- name: Copy .yarnrc.yml
+  ansible.builtin.template:
+    src: home/.yarnrc.yml.j2
+    dest: "{{ userspace_user }}/.yarnrc.yml"
+    mode: 0600

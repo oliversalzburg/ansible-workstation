@@ -1,5 +1,7 @@
 ---
-- name: Install VS Code
+- name: Configure keyboard
+  become: true
+  become_user: "{{ userspace_user }}"
   ansible.builtin.include_role:
     name: gantsign.keyboard
   vars:

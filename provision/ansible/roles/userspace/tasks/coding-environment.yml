@@ -1,0 +1,71 @@
+---
+- name: Configure git email
+  become: true
+  become_user: "{{ userspace_user }}"
+  community.general.git_config:
+    name: user.email
+    scope: global
+    value: "{{ git_email }}"
+- name: Configure git name
+  become: true
+  become_user: "{{ userspace_user }}"
+  community.general.git_config:
+    name: user.name
+    scope: global
+    value: "{{ git_name }}"
+- name: Configure git autocrlf
+  become: true
+  become_user: "{{ userspace_user }}"
+  community.general.git_config:
+    name: core.autocrlf
+    scope: global
+    value: input
+- name: Configure git eol
+  become: true
+  become_user: "{{ userspace_user }}"
+  community.general.git_config:
+    name: core.eol
+    scope: global
+    value: lf
+- name: Configure git comment char
+  become: true
+  become_user: "{{ userspace_user }}"
+  community.general.git_config:
+    name: core.commentChar
+    scope: global
+    value: ;
+- name: Configure git push default
+  become: true
+  become_user: "{{ userspace_user }}"
+  community.general.git_config:
+    name: push.default
+    scope: global
+    value: current
+- name: Configure git default branch
+  become: true
+  become_user: "{{ userspace_user }}"
+  community.general.git_config:
+    name: init.defaultBranch
+    scope: global
+    value: main
+- name: Configure git prune on fetch
+  become: true
+  become_user: "{{ userspace_user }}"
+  community.general.git_config:
+    name: fetch.prune
+    scope: global
+    value: true
+- name: Configure git pull strategy
+  become: true
+  become_user: "{{ userspace_user }}"
+  community.general.git_config:
+    name: pull.rebase
+    scope: global
+    value: false
+- name: Configure git follow tags
+  become: true
+  become_user: "{{ userspace_user }}"
+  community.general.git_config:
+    name: push.followTags
+    scope: global
+    value: true

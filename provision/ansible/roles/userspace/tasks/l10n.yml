@@ -19,23 +19,23 @@
 
 # Skipped on WSL
 - name: Get current locale and language configuration
-  when: ( ansible_env.WSL | default('false') ) == 'false'
+  when: ( ansible_env.WSL_DISTRO_NAME | default('false') ) == 'false'
   ansible.builtin.command: localectl status
   register: locale_status
   changed_when: false
 
 - name: Parse 'LANG' from current locale and language configuration
-  when: ansible_env.WSL | default('false') == 'false'
+  when: ansible_env.WSL_DISTRO_NAME | default('false') == 'false'
   set_fact:
     locale_lang: "{{ locale_status.stdout | regex_search('LANG=([^\n]+)', '\\1') | first }}"
 
 - name: Parse 'LANGUAGE' from current locale and language configuration
-  when: ansible_env.WSL | default('false') == 'false'
+  when: ansible_env.WSL_DISTRO_NAME | default('false') == 'false'
   set_fact:
     locale_language: "{{ locale_status.stdout | regex_search('LANGUAGE=([^\n]+)', '\\1') | default([locale_lang], true) | first }}"
 
 - name: Configure locale to '{{ config_system_locale }}' and language to '{{ config_system_language }}'
-  when: ansible_env.WSL | default('false') == 'false'
+  when: ansible_env.WSL_DISTRO_NAME | default('false') == 'false'
   become: true
   ansible.builtin.command: localectl set-locale LANG={{ config_system_locale }} LANGUAGE={{ config_system_language }}
   changed_when: locale_lang != config_system_locale or locale_language != config_system_language
