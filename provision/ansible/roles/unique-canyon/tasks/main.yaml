@@ -1,0 +1,77 @@
+---
+- name: Set hostname
+  become: true
+  ansible.builtin.hostname:
+    name: canyon
+
+- name: "Create network: offline"
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/systemd/network/offline.network"
+    dest: "{{ directory_networkd }}/offline.network"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: "Store WPA config: offline"
+  become: true
+  ansible.builtin.template:
+    src: wpa_supplicant-wlp2s0.conf.j2
+    dest: /etc/wpa_supplicant/wpa_supplicant-wlp2s0.conf
+    owner: root
+    group: root
+    mode: 0600
+
+- name: "Configure DNS"
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/systemd/resolved.conf"
+    dest: /etc/systemd/resolved.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Install systemd-resolved
+  become: true
+  ansible.builtin.apt:
+    name:
+      - systemd-resolved
+
+- name: Enable systemd-resolved
+  become: true
+  ansible.builtin.systemd:
+    name: systemd-resolved
+    state: restarted
+    enabled: true
+
+- name: Enable systemd-networkd
+  become: true
+  ansible.builtin.systemd:
+    name: systemd-networkd
+    state: started
+    enabled: true
+
+- name: Copy nas-mount.sh
+  become: true
+  ansible.builtin.template:
+    src: nas-mount.sh.j2
+    dest: /root/nas-mount.sh
+    mode: 0700
+    owner: root
+
+- name: Copy nas-mount service file
+  become: true
+  ansible.builtin.template:
+    src: nas-mount.service.j2
+    dest: "{{ directory_systemd }}/nas-mount.service"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Enable and check nas-mount service
+  become: true
+  ansible.builtin.systemd:
+    name: nas-mount
+    daemon_reload: yes
+    state: restarted
+    enabled: yes

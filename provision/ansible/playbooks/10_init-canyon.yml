@@ -1,0 +1,11 @@
+---
+- hosts: "{{ target_host | default('canyon') }}"
+  gather_facts: false
+  roles:
+    - role: unique-canyon
+    - role: gpu-intel
+    - role: desktop
+    - role: podman-docker-io
+    - role: podman-jellyfin
+    - role: podman-pihole
+    

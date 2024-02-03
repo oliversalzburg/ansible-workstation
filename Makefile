@@ -10,6 +10,8 @@ requirements:
 init: requirements
 	cd provision/ansible; ansible-playbook site.yml
 
+init-canyon: requirements
+	cd provision/ansible; ansible-playbook playbooks/00_init-all.yml --limit canyon
 init-container: requirements
 	cd provision/ansible; ansible-playbook playbooks/00_init-all.yml --limit container
 init-laptop: requirements
