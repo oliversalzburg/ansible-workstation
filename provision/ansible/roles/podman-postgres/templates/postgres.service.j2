@@ -9,12 +9,6 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 StartLimitBurst=3
 ExecStartPre=/bin/rm -f %t/container-postgres.pid %t/container-postgres.ctr-id
-ExecStartPre=/bin/sh -c 'cat /root/docker_hub_credentials | /usr/bin/podman login \
-    --username {{ docker_hub_username }} \
-    --password-stdin \
-    docker.io'
-# ExecStartPre=/usr/bin/podman pull \
-#     docker.io/library/postgres:{{ postgres_version }}
 ExecStart=/usr/bin/podman run \
     --cgroups no-conmon \
     --cidfile %t/container-postgres.ctr-id \

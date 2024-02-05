@@ -12,10 +12,6 @@ Restart=on-failure
 StartLimitBurst=3
 TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/container-pihole.pid %t/container-pihole.ctr-id
-ExecStartPre=/bin/sh -c 'cat /root/docker_hub_credentials | /usr/bin/podman login \
-    --username {{ docker_hub_username }} \
-    --password-stdin \
-    docker.io'
 ExecStart=/usr/bin/podman run \
     --cgroups no-conmon \
     --cidfile %t/container-pihole.ctr-id \
@@ -23,11 +19,11 @@ ExecStart=/usr/bin/podman run \
     --detach \
     --dns=127.0.0.1 \
     --dns=1.1.1.1 \
-    --env VIRTUAL_HOST="pi.hole" \
-    --env PROXY_LOCATION="pi.hole" \
+    --env "FTL_LOCAL_IPV4=192.168.178.51" \
+    --env "INTERFACE=eno1" \
     --env "TZ=Europe/Berlin" \
     --env "WEBPASSWORD={{ pihole_webpassword }}" \
-    --hostname pi.hole \
+    --hostname pihole \
     --log-driver journald \
     --name %n \
     --network host \

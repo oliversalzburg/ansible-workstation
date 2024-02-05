@@ -12,12 +12,6 @@ Restart=on-failure
 StartLimitBurst=3
 TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/container-traefik.pid %t/container-traefik.ctr-id
-ExecStartPre=/bin/sh -c 'cat /root/docker_hub_credentials | /usr/bin/podman login \
-    --username {{ docker_hub_username }} \
-    --password-stdin \
-    docker.io'
-# ExecStartPre=/usr/bin/podman pull \
-#     docker.io/traefik/traefik:{{ traefik_version }}
 ExecStart=/usr/bin/podman run \
    --conmon-pidfile %t/container-traefik.pid \
     --cidfile %t/container-traefik.ctr-id \

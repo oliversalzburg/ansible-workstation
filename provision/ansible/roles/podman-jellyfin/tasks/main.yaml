@@ -13,6 +13,13 @@
     group: root
     mode: 0644
 
+- name: Copy Jellyfin timer file
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/systemd/jellyfin.timer"
+    dest: "{{ directory_systemd }}/jellyfin.timer"
+    mode: 0644
+
 - name: Enable and check Jellyfin service
   become: true
   ansible.builtin.systemd:

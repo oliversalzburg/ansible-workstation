@@ -1,5 +1,5 @@
 [Match]
-Name=wlp3s0
+Name=eno1 wlp3s0
 
 [Network]
 DHCP=yes

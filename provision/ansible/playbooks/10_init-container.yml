@@ -4,7 +4,6 @@
   roles:
     - role: unique-container
     - role: gpu-intel
-    - role: podman-docker-io
     - role: podman-jellyfin
     - role: podman-pihole
     
