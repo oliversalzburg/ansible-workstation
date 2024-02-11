@@ -3,6 +3,7 @@
   gather_facts: false
   roles:
     - role: unique-workstation
-    - role: gpu-nvidia
     - role: desktop
     - role: desktop-hires
+    - role: userspace
+      userspace_user: adesso-os

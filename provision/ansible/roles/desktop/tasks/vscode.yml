@@ -6,27 +6,3 @@
   vars:
     users:
       - username: "{{ ansible_user }}"
-        visual_studio_code_extensions:
-          - bodil.prettier-toml
-          - bungcip.better-toml
-          - dbaeumer.vscode-eslint
-          - digitalbrainstem.javascript-ejs-support
-          - dotjoshjohnson.xml
-          - editorconfig.editorconfig
-          - esbenp.prettier-vscode
-          - foxundermoon.shell-format
-          - hashicorp.terraform
-          - ibm.output-colorizer
-          - jrebocho.vscode-random
-          - michelemelluso.code-beautifier
-          - mohammadbaqer.better-folding
-          - ms-vscode.cpptools-extension-pack
-          - ms-vscode-remote.vscode-remote-extensionpack
-          - mushan.vscode-paste-image
-          - pawelgrzybek.gatito-theme
-          - redhat.ansible
-          - redhat.vscode-yaml
-          - runem.lit-plugin
-          - streetsidesoftware.code-spell-checker
-          - timonwong.shellcheck
-          - vscode-icons-team.vscode-icons

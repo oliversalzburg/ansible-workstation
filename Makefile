@@ -12,12 +12,10 @@ init: requirements
 
 init-canyon: requirements
 	cd provision/ansible; ansible-playbook site.yml --limit canyon
-init-container: requirements
-	cd provision/ansible; ansible-playbook playbooks/00_init-all.yml --limit container
 init-laptop: requirements
-	cd provision/ansible; ansible-playbook playbooks/00_init-all.yml --limit laptop
+	cd provision/ansible; ansible-playbook site.yml --limit laptop
 init-workstation: requirements
-	cd provision/ansible; ansible-playbook playbooks/00_init-all.yml --limit workstation
+	cd provision/ansible; ansible-playbook site.yml --limit workstation
 
 init-localhost: requirements
 	cd provision/ansible; ansible localhost --module-name include_role --args name=all

@@ -3,5 +3,4 @@
   gather_facts: false
   roles:
     - role: unique-laptop
-    - role: gpu-nvidia
     - role: desktop
