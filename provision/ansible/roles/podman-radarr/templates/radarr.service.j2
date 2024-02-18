@@ -1,0 +1,38 @@
+[Unit]
+Description=Radarr
+Documentation=https://radarr.video/
+Wants=systemd-networkd-wait-online.service
+After=nas-mount.service
+StartLimitIntervalSec=10
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+StartLimitBurst=3
+ExecStartPre=/bin/rm -f %t/container-radarr.pid %t/container-radarr.ctr-id
+ExecStart=/usr/bin/podman run \
+    --cidfile %t/container-radarr.ctr-id \
+    --conmon-pidfile %t/container-radarr.pid \
+    --detach \
+    --env "PUID=1001" \
+    --env "PGID=1001" \
+    --env "UMASK=002" \
+    --env "TZ=Europe/Berlin" \
+    --hostname radarr \
+    --log-driver journald \
+    --mount "type=bind,source={{ radarr_mediadir }},target=/data" \
+    --name %n \
+    --network host \
+    --publish "7878:7878/tcp" \
+    --replace \
+    --rm \
+    --volume "{{ radarr_basedir }}/config:/config" \
+    ghcr.io/hotio/radarr
+
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-radarr.ctr-id --time 10
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-radarr.ctr-id
+PIDFile=%t/container-radarr.pid
+Type=forking
+
+[Install]
+WantedBy=multi-user.target default.target

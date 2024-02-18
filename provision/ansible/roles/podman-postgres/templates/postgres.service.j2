@@ -23,7 +23,7 @@ ExecStart=/usr/bin/podman run \
     --rm \
     docker.io/library/postgres:{{ postgres_version }}
 
-ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-postgres.ctr-id -t 10
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-postgres.ctr-id --time 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-postgres.ctr-id
 PIDFile=%t/container-postgres.pid
 Type=forking

@@ -19,7 +19,7 @@ ExecStart=/usr/bin/podman run \
     --detach \
     --dns=127.0.0.1 \
     --dns=1.1.1.1 \
-    --env "FTL_LOCAL_IPV4=192.168.178.51" \
+    --env "FTL_LOCAL_IPV4=192.168.178.52" \
     --env "INTERFACE=eno1" \
     --env "TZ=Europe/Berlin" \
     --env "WEBPASSWORD={{ pihole_webpassword }}" \
@@ -36,7 +36,7 @@ ExecStart=/usr/bin/podman run \
     --volume "{{ pihole_basedir }}/etc/dnsmasq.d:/etc/dnsmasq.d" \
     docker.io/pihole/pihole:{{ pihole_version }}
 
-ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-pihole.ctr-id -t 10
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-pihole.ctr-id --time 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-pihole.ctr-id
 PIDFile=%t/container-pihole.pid
 Type=forking

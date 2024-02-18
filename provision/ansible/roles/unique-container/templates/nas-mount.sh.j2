@@ -15,7 +15,7 @@ while ! ping -c 1 -W 1 "{{ media_ip_address }}" >/dev/null 2>&1; do
   echo "Waiting for host... ${WAIT_ITERATIONS++}"
 done
 
-while ! sudo mount -t cifs -o ro,vers=3.0,credentials={{ media_credentials_file }} {{ media_location }} {{ media_mount }} >/dev/null 2>&1; do
+while ! sudo mount -t cifs -o credentials={{ media_credentials_file }},gid=1001,uid=1001,vers=3.0 {{ media_location }} {{ media_mount }} >/dev/null 2>&1; do
   sleep 10
   echo "Waiting for mount... ${WAIT_ITERATIONS++}"
 done

@@ -1,0 +1,3 @@
+---
+sonarr_basedir: /mnt/usb/sonarr
+sonarr_mediadir: "{{ media_mount }}"

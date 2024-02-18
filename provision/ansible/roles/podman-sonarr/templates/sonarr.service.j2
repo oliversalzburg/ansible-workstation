@@ -1,0 +1,38 @@
+[Unit]
+Description=Sonarr
+Documentation=https://sonarr.tv/
+Wants=systemd-networkd-wait-online.service
+After=nas-mount.service
+StartLimitIntervalSec=10
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+StartLimitBurst=3
+ExecStartPre=/bin/rm -f %t/container-sonarr.pid %t/container-sonarr.ctr-id
+ExecStart=/usr/bin/podman run \
+    --cidfile %t/container-sonarr.ctr-id \
+    --conmon-pidfile %t/container-sonarr.pid \
+    --detach \
+    --env "PUID=1001" \
+    --env "PGID=1001" \
+    --env "UMASK=002" \
+    --env "TZ=Europe/Berlin" \
+    --hostname sonarr \
+    --log-driver journald \
+    --mount "type=bind,source={{ sonarr_basedir }}/config,target=/config" \
+    --mount "type=bind,source={{ sonarr_mediadir }},target=/data" \
+    --name %n \
+    --network host \
+    --publish "8989:8989/tcp" \
+    --replace \
+    --rm \
+    ghcr.io/hotio/sonarr
+
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-sonarr.ctr-id --time 10
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-sonarr.ctr-id
+PIDFile=%t/container-sonarr.pid
+Type=forking
+
+[Install]
+WantedBy=multi-user.target default.target

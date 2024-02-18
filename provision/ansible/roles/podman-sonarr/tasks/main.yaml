@@ -1,0 +1,31 @@
+---
+- name: Ensure working directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ sonarr_basedir }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+
+- name: Ensure config directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ sonarr_basedir }}/config"
+    state: directory
+    owner: "{{ ansible_user }}"
+
+- name: Copy sonarr service file
+  become: true
+  ansible.builtin.template:
+    src: sonarr.service.j2
+    dest: "{{ directory_systemd }}/sonarr.service"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Enable and check sonarr service
+  become: true
+  ansible.builtin.systemd:
+    name: sonarr
+    daemon_reload: yes
+    state: restarted
+    enabled: yes

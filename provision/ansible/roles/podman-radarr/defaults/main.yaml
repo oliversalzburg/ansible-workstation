@@ -1,0 +1,3 @@
+---
+radarr_basedir: /mnt/usb/radarr
+radarr_mediadir: "{{ media_mount }}"

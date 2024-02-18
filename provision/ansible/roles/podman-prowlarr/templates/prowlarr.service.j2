@@ -1,0 +1,37 @@
+[Unit]
+Description=Prowlarr
+Documentation=https://prowlarr.video/
+Wants=systemd-networkd-wait-online.service
+After=nas-mount.service
+StartLimitIntervalSec=10
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+StartLimitBurst=3
+ExecStartPre=/bin/rm -f %t/container-prowlarr.pid %t/container-prowlarr.ctr-id
+ExecStart=/usr/bin/podman run \
+    --cidfile %t/container-prowlarr.ctr-id \
+    --conmon-pidfile %t/container-prowlarr.pid \
+    --detach \
+    --env "PUID=1001" \
+    --env "PGID=1001" \
+    --env "UMASK=002" \
+    --env "TZ=Europe/Berlin" \
+    --hostname prowlarr \
+    --log-driver journald \
+    --name %n \
+    --network host \
+    --publish "9696:9696/tcp" \
+    --replace \
+    --rm \
+    --volume "{{ prowlarr_basedir }}/config:/config" \
+    ghcr.io/hotio/prowlarr
+
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-prowlarr.ctr-id --time 10
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-prowlarr.ctr-id
+PIDFile=%t/container-prowlarr.pid
+Type=forking
+
+[Install]
+WantedBy=multi-user.target default.target
