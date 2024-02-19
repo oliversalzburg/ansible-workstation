@@ -1,0 +1,31 @@
+---
+- name: Ensure working directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ lidarr_basedir }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+
+- name: Ensure config directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ lidarr_basedir }}/config"
+    state: directory
+    owner: "{{ ansible_user }}"
+
+- name: Copy lidarr service file
+  become: true
+  ansible.builtin.template:
+    src: lidarr.service.j2
+    dest: "{{ directory_systemd }}/lidarr.service"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Enable and check lidarr service
+  become: true
+  ansible.builtin.systemd:
+    name: lidarr
+    daemon_reload: yes
+    state: restarted
+    enabled: yes

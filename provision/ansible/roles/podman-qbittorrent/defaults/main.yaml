@@ -1,0 +1,4 @@
+---
+qbittorrent_basedir: /mnt/usb/qbittorrent
+qbittorrent_mediadir: "{{ media_mount }}"
+qbittorrent_version: latest

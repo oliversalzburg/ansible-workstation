@@ -43,6 +43,7 @@
       - wakeonlan
       - wget
       - whois
+      - wireguard
       - zsh
     update_cache: true
 

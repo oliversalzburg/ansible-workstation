@@ -10,29 +10,29 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 StartLimitBurst=3
 TimeoutStopSec=70
-ExecStartPre=/bin/rm -f %t/container-jellyfin.pid %t/container-jellyfin.ctr-id
+ExecStartPre=/bin/rm --force %t/container-jellyfin.pid %t/container-jellyfin.ctr-id
+ExecStartPre=-/usr/bin/podman pull docker.io/jellyfin/jellyfin:{{ jellyfin_version }}
 ExecStart=/usr/bin/podman run \
   --cgroups no-conmon \
   --cidfile %t/container-jellyfin.ctr-id \
   --conmon-pidfile %t/container-jellyfin.pid \
   --detach \
-  --device /dev/dri/renderD128:/dev/dri/renderD128 \
-  --device /dev/dri/card0:/dev/dri/card0 \
+  --device /dev/dri:/dev/dri \
   --group-add "{{ getent_group.render[1] }}" \
   --hostname jellyfin \
   --log-driver journald \
   --mount "type=bind,source={{ jellyfin_mediadir }},target=/media" \
+  --mount "type=bind,source={{ jellyfin_basedir }}/cache,target=/cache" \
+  --mount "type=bind,source={{ jellyfin_basedir }}/config,target=/config" \
   --name %n \
   --network host \
   --publish "8096:8096/tcp" \
   --replace \
   --rm \
-  --volume "{{ jellyfin_basedir }}/cache:/cache" \
-  --volume "{{ jellyfin_basedir }}/config:/config" \
   docker.io/jellyfin/jellyfin:{{ jellyfin_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-jellyfin.ctr-id --time 10
-ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-jellyfin.ctr-id
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/container-jellyfin.ctr-id
 PIDFile=%t/container-jellyfin.pid
 Type=forking
 

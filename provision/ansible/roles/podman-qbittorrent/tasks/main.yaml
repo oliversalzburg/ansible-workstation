@@ -1,0 +1,38 @@
+---
+- name: Ensure working directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ qbittorrent_basedir }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+
+- name: Ensure config directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ qbittorrent_basedir }}/config"
+    state: directory
+    owner: "{{ ansible_user }}"
+
+- name: Ensure data directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ qbittorrent_basedir }}/data"
+    state: directory
+    owner: "{{ ansible_user }}"
+
+- name: Copy qbittorrent service file
+  become: true
+  ansible.builtin.template:
+    src: qbittorrent.service.j2
+    dest: "{{ directory_systemd }}/qbittorrent.service"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Enable and check qbittorrent service
+  become: true
+  ansible.builtin.systemd:
+    name: qbittorrent
+    daemon_reload: yes
+    state: restarted
+    enabled: yes

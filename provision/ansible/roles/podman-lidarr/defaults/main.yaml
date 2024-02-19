@@ -1,0 +1,4 @@
+---
+lidarr_basedir: /mnt/usb/lidarr
+lidarr_mediadir: "{{ media_mount }}"
+lidarr_version: latest

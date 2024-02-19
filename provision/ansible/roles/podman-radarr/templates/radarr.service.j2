@@ -9,7 +9,8 @@ StartLimitIntervalSec=10
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 StartLimitBurst=3
-ExecStartPre=/bin/rm -f %t/container-radarr.pid %t/container-radarr.ctr-id
+ExecStartPre=/bin/rm --force %t/container-radarr.pid %t/container-radarr.ctr-id
+ExecStartPre=-/usr/bin/podman pull ghcr.io/hotio/radarr:{{ radarr_version }}
 ExecStart=/usr/bin/podman run \
     --cidfile %t/container-radarr.ctr-id \
     --conmon-pidfile %t/container-radarr.pid \
@@ -20,17 +21,17 @@ ExecStart=/usr/bin/podman run \
     --env "TZ=Europe/Berlin" \
     --hostname radarr \
     --log-driver journald \
+    --mount "type=bind,source={{ radarr_basedir }}/config,target=/config" \
     --mount "type=bind,source={{ radarr_mediadir }},target=/data" \
     --name %n \
     --network host \
     --publish "7878:7878/tcp" \
     --replace \
     --rm \
-    --volume "{{ radarr_basedir }}/config:/config" \
-    ghcr.io/hotio/radarr
+    ghcr.io/hotio/radarr:{{ radarr_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-radarr.ctr-id --time 10
-ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-radarr.ctr-id
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/container-radarr.ctr-id
 PIDFile=%t/container-radarr.pid
 Type=forking
 

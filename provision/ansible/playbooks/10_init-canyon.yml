@@ -6,7 +6,9 @@
     - role: gpu-intel
     - role: desktop
     - role: podman-jellyfin
+    - role: podman-lidarr
     - role: podman-pihole
     - role: podman-prowlarr
+    - role: podman-qbittorrent
     - role: podman-radarr
     - role: podman-sonarr
