@@ -18,18 +18,20 @@ ExecStart=/usr/bin/podman run \
   --conmon-pidfile %t/container-jellyfin.pid \
   --detach \
   --device /dev/dri:/dev/dri \
-  --group-add "{{ getent_group.render[1] }}" \
-  --hostname jellyfin \
+  --hostname %n \
+  --label "traefik.enable=true" \
+  --label "traefik.http.routers.jellyfin.rule=Host(`%n.canyon.labnet`)" \
+  --label "traefik.http.services.jellyfin.loadbalancer.server.port=8096" \
   --log-driver journald \
   --mount "type=bind,source={{ jellyfin_mediadir }},target=/media" \
   --mount "type=bind,source={{ jellyfin_basedir }}/cache,target=/cache" \
   --mount "type=bind,source={{ jellyfin_basedir }}/config,target=/config" \
   --name %n \
-  --network host \
+  --network labnet \
   --publish "8096:8096/tcp" \
   --replace \
   --rm \
-  docker.io/jellyfin/jellyfin:{{ jellyfin_version }}
+  jellyfin/jellyfin
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-jellyfin.ctr-id --time 10
 ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/container-jellyfin.ctr-id

@@ -13,6 +13,15 @@
     state: directory
     owner: "{{ ansible_user }}"
 
+- name: Copy wireguard configuration
+  become: true
+  ansible.builtin.template:
+    src: wg0.conf.j2
+    dest: "{{ prowlarr_basedir }}/config/wireguard/wg0.conf"
+    owner: root
+    group: root
+    mode: 0600
+
 - name: Copy prowlarr service file
   become: true
   ansible.builtin.template:
@@ -26,6 +35,6 @@
   become: true
   ansible.builtin.systemd:
     name: prowlarr
-    daemon_reload: yes
+    daemon_reload: true
     state: restarted
-    enabled: yes
+    enabled: true

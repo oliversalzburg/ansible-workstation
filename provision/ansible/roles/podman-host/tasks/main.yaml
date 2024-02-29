@@ -1,0 +1,16 @@
+---
+- name: Cleanup old podman network
+  containers.podman.podman_network:
+    name: lab
+    state: absent
+  become: true
+
+- name: Create a podman network
+  containers.podman.podman_network:
+    name: labnet
+    ipv6: false
+    ip_range: "10.100.0.0/24"
+    subnet: "10.100.0.0/24"
+    gateway: "10.100.0.1"
+  become: true
+

@@ -13,12 +13,14 @@
     state: directory
     owner: "{{ ansible_user }}"
 
-- name: Ensure data directory exists
+- name: Copy wireguard configuration
   become: true
-  ansible.builtin.file:
-    path: "{{ qbittorrent_basedir }}/data"
-    state: directory
-    owner: "{{ ansible_user }}"
+  ansible.builtin.template:
+    src: wg0.conf.j2
+    dest: "{{ qbittorrent_basedir }}/config/wireguard/wg0.conf"
+    owner: root
+    group: root
+    mode: 0600
 
 - name: Copy qbittorrent service file
   become: true
@@ -33,6 +35,6 @@
   become: true
   ansible.builtin.systemd:
     name: qbittorrent
-    daemon_reload: yes
+    daemon_reload: true
     state: restarted
-    enabled: yes
+    enabled: true

@@ -12,6 +12,6 @@
   become: true
   ansible.builtin.systemd:
     name: traefik
-    daemon_reload: yes
+    daemon_reload: true
     state: restarted
-    enabled: yes
+    enabled: true

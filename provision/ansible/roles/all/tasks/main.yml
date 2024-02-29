@@ -5,8 +5,8 @@
 - name: Update and upgrade apt packages
   become: true
   apt:
-    upgrade: yes
-    update_cache: yes
+    upgrade: true
+    update_cache: true
     cache_valid_time: 86400
 
 - name: Install commonly used dependencies
@@ -21,6 +21,7 @@
       - cmake
       - curl
       - dnsutils
+      - file
       - git
       - htop
       - iputils-tracepath

@@ -75,28 +75,28 @@
   ansible.builtin.user:
     name: '{{ ansible_user }}'
     groups: docker
-    append: yes
+    append: true
 
 - name: Enable and check docker service
   become: true
   ansible.builtin.systemd:
     name: docker
-    daemon_reload: yes
+    daemon_reload: true
     state: restarted
-    enabled: yes
+    enabled: true
 
 - name: Enable and check systemd-networkd service
   become: true
   ansible.builtin.systemd:
     name: systemd-networkd
-    daemon_reload: yes
+    daemon_reload: true
     state: started
-    enabled: yes
+    enabled: true
 
 - name: Enable and check systemd-networkd-wait-online service
   become: true
   ansible.builtin.systemd:
     name: systemd-networkd-wait-online
-    daemon_reload: yes
+    daemon_reload: true
     state: started
-    enabled: yes
+    enabled: true

@@ -18,7 +18,7 @@
   ansible.builtin.user:
     name: "{{ userspace_user }}"
     groups: systemd-journal
-    append: yes
+    append: true
 
 - name: Copy .bashrc
   become: true

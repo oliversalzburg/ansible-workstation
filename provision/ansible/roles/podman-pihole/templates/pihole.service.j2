@@ -11,33 +11,36 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 StartLimitBurst=3
 TimeoutStopSec=70
-ExecStartPre=/bin/rm -f %t/container-pihole.pid %t/container-pihole.ctr-id
+ExecStartPre=/bin/rm --force %t/container-pihole.pid %t/container-pihole.ctr-id
+ExecStartPre=-/usr/bin/podman pull docker.io/pihole/pihole:{{ pihole_version }}
 ExecStart=/usr/bin/podman run \
-    --cgroups no-conmon \
+    #--cgroups no-conmon \
     --cidfile %t/container-pihole.ctr-id \
     --conmon-pidfile %t/container-pihole.pid \
     --detach \
     --dns=127.0.0.1 \
     --dns=1.1.1.1 \
-    --env "FTL_LOCAL_IPV4=192.168.178.52" \
-    --env "INTERFACE=eno1" \
+    #--env "FTLCONF_LOCAL_IPV4=192.168.178.52" \
+    #--env "INTERFACE=eno1" \
     --env "TZ=Europe/Berlin" \
     --env "WEBPASSWORD={{ pihole_webpassword }}" \
-    --hostname pihole \
+    --hostname %n \
+    --label "traefik.http.routers.pihole.rule=Host(`%n.canyon.labnet`)" \
+    --label "traefik.http.services.pihole.loadbalancer.server.port=80" \
     --log-driver journald \
+    --mount "type=bind,source={{ pihole_basedir }}/etc/pihole,target=/etc/pihole" \
+    --mount "type=bind,source={{ pihole_basedir }}/etc/dnsmasq.d,target=/etc/dnsmasq.d" \
     --name %n \
-    --network host \
-    --publish "53:53/tcp" \
-    --publish "53:53/udp" \
-    --publish "80:80/tcp" \
+    #--network host \
+    --publish "192.168.178.52:53:53/tcp" \
+    --publish "192.168.178.52:53:53/udp" \
+    --publish "8053:80/tcp" \
     --replace \
     --rm \
-    --volume "{{ pihole_basedir }}/etc/pihole:/etc/pihole" \
-    --volume "{{ pihole_basedir }}/etc/dnsmasq.d:/etc/dnsmasq.d" \
-    docker.io/pihole/pihole:{{ pihole_version }}
+    pihole
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-pihole.ctr-id --time 10
-ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-pihole.ctr-id
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/container-pihole.ctr-id
 PIDFile=%t/container-pihole.pid
 Type=forking
 

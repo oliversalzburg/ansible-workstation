@@ -80,6 +80,6 @@
   become: true
   ansible.builtin.systemd:
     name: nas-mount
-    daemon_reload: yes
+    daemon_reload: true
     state: restarted
-    enabled: yes
+    enabled: true

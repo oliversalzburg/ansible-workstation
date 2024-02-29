@@ -5,6 +5,7 @@
     - role: unique-canyon
     - role: gpu-intel
     - role: desktop
+    - role: podman-host
     - role: podman-jellyfin
     - role: podman-lidarr
     - role: podman-pihole
@@ -12,3 +13,4 @@
     - role: podman-qbittorrent
     - role: podman-radarr
     - role: podman-sonarr
+    - role: podman-traefik

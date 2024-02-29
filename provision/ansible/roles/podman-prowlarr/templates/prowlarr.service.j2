@@ -15,20 +15,30 @@ ExecStart=/usr/bin/podman run \
     --cidfile %t/container-prowlarr.ctr-id \
     --conmon-pidfile %t/container-prowlarr.pid \
     --detach \
-    --dns 1.1.1.1 \
     --env "PUID=1001" \
     --env "PGID=1001" \
     --env "UMASK=002" \
     --env "TZ=Europe/Berlin" \
-    --hostname prowlarr \
+    --hostname %n \
+    --label "traefik.enable=true" \
+    --label "traefik.http.routers.prowlarr.rule=Host(`%n.canyon.labnet`)" \
+    --label "traefik.http.services.prowlarr.loadbalancer.server.port=9696" \
     --log-driver journald \
     --mount "type=bind,source={{ prowlarr_basedir }}/config,target=/config" \
     --name %n \
-    --network host \
-    --publish "9696:9696/tcp" \
+    --network labnet \
     --replace \
     --rm \
-    ghcr.io/hotio/prowlarr:{{ prowlarr_version }}
+    --env "VPN_ENABLED=true" \
+    --env "VPN_CONF=wg0" \
+    --env "VPN_PROVIDER=proton" \
+    --env "VPN_LAN_NETWORK=192.168.178.0/24" \
+    --env "VPN_EXPOSE_PORTS_ON_LAN=9696/tcp" \
+    --env "VPN_AUTO_PORT_FORWARD=true" \
+    --cap-add NET_ADMIN \
+    --sysctl "net.ipv4.conf.all.src_valid_mark=1" \
+    --sysctl "net.ipv6.conf.all.disable_ipv6=1" \
+    hotio/prowlarr
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-prowlarr.ctr-id --time 10
 ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/container-prowlarr.ctr-id

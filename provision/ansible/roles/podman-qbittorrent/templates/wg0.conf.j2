@@ -1,0 +1,9 @@
+[Interface]
+PrivateKey = {{ vpn_privatekey }}
+Address = {{ vpn_address }}
+DNS = {{ vpn_dns }}
+
+[Peer]
+PublicKey = {{ vpn_publickey }}
+AllowedIPs = 0.0.0.0/0
+Endpoint = {{ vpn_endpoint }}

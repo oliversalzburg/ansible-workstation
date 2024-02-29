@@ -1,4 +1,18 @@
 ---
+- name: Ensure working directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ pihole_basedir }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+
+- name: Copy dnsmasq bind address fix
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/20-fix-binds.conf"
+    dest: "{{ pihole_basedir }}/etc/dnsmasq.d/20-fix-binds.conf"
+    mode: 0644
+
 - name: Copy pihole service file
   become: true
   ansible.builtin.template:
@@ -12,6 +26,6 @@
   become: true
   ansible.builtin.systemd:
     name: pihole
-    daemon_reload: yes
+    daemon_reload: true
     state: restarted
-    enabled: yes
+    enabled: true
