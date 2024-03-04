@@ -2,7 +2,7 @@
 - name: Set hostname
   become: true
   ansible.builtin.hostname:
-    name: canyon
+    name: "{{ inventory_hostname }}.{{ realm }}"
 
 - name: "Create network: offline"
   become: true
@@ -22,7 +22,7 @@
     group: root
     mode: 0600
 
-- name: "Configure DNS"
+- name: Configure DNS
   become: true
   ansible.builtin.copy:
     src: "{{ role_path }}/files/etc/systemd/resolved.conf"
@@ -55,7 +55,7 @@
   become: true
   ansible.builtin.template:
     src: nas-credentials.j2
-    dest: "{{ media_credentials_file }}"
+    dest: "/home/{{ ansible_user }}/nas-credentials"
     mode: 0700
     owner: root
 

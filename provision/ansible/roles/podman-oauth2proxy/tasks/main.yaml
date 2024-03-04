@@ -2,30 +2,30 @@
 - name: Ensure working directory exists
   become: true
   ansible.builtin.file:
-    path: "{{ prowlarr_basedir }}"
+    path: "{{ oauth2proxy_basedir }}"
     state: directory
     owner: "{{ ansible_user }}"
 
-- name: Ensure config directory exists
+- name: Ensure directories exists
   become: true
   ansible.builtin.file:
-    path: "{{ prowlarr_basedir }}/config"
+    path: "{{ oauth2proxy_basedir }}/templates"
     state: directory
     owner: "{{ ansible_user }}"
 
-- name: Copy prowlarr service file
+- name: Copy oauth2proxy service file
   become: true
   ansible.builtin.template:
-    src: prowlarr.service.j2
-    dest: "{{ directory_systemd }}/prowlarr.service"
+    src: oauth2proxy.service.j2
+    dest: "{{ directory_systemd }}/oauth2proxy.service"
     owner: root
     group: root
     mode: 0644
 
-- name: Enable and check prowlarr service
+- name: Enable and check oauth2proxy service
   become: true
   ansible.builtin.systemd:
-    name: prowlarr
+    name: oauth2proxy
     daemon_reload: true
     state: restarted
     enabled: true

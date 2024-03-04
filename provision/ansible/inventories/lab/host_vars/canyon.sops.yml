@@ -1,10 +1,11 @@
-media_credentials_file: ENC[AES256_GCM,data:q1JKef6ipbZoSymbSEntsNWm+NAmky8E2dBtEw==,iv:pBFv6QPjeP3f94jZrmkTSnQX9htVpzQ34cC2d5NrS/Q=,tag:tMCzygjgqMEWRRiuCOb2Mw==,type:str]
 media_username: ENC[AES256_GCM,data:ejGfZQ0vsg==,iv:zQl92ekx3rdWRqGe6BLd65unC7frppkavzvMJq4C44k=,tag:9aszT3r/tknsd4PqUxoCSQ==,type:str]
 media_password: ENC[AES256_GCM,data:X+58UwohzQ==,iv:A0RIkWEJ8dYSlJXzMeiDEmr3mKhLbDRwc97Ka1gR5A4=,tag:Qfj8LceG3KSgk4yoRshNag==,type:str]
 media_ip_address: ENC[AES256_GCM,data:B0aXW6bSNnqaIN8yWA==,iv:OiQXUoiOzdVqCrxC8dRrVsmslMBjtiGNJiZPndpfvIU=,tag:C1wplBVnd9IMuHDQ0t2ADg==,type:str]
 media_location: ENC[AES256_GCM,data:dZ6qzXbtWUYGX/tIuNLYGnHqCeBIhys=,iv:r5odFEcEN4TRDJ1pXPRkvikWAL5o5TNXTgqIwp/lLyc=,tag:n26slFMNI2H8GUV1LiKrOQ==,type:str]
 media_mount: ENC[AES256_GCM,data:4jLye85Z3Z/1dhI8,iv:ZOFXAUBVs5WSEV9kaEuQTRj+nyUsphJgTqIoiicCZvA=,tag:mf2NaftzcKpYkMnY6umSuw==,type:str]
 media_wol_address: ENC[AES256_GCM,data:G+uHVl1gHPlLWIKQdkIOqoI=,iv:PdL5zNW/FzlHbcHMSglL37lrP7LwYZCmQ14yscNPDGM=,tag:AGQFkHXTQg9WZ27+DLfQqA==,type:str]
+oauth2proxy_client_secret: ENC[AES256_GCM,data:y0xnyVhQVtVLqVqUYg17UYN8/vv+ONit4Fjt+UHTyXk=,iv:f847L5/JNLvSRWLT4CqLwWGwA8h9UT1EnV3SBuU4s8U=,tag:zdxZng+9xwka5HdssqNPgw==,type:str]
+oauth2proxy_cookie_secret: ENC[AES256_GCM,data:zLPda4JzZ5K2P0pOpJRyuemjtZ91uIEK,iv:OPVgdxvh1ME0sSYBk/2qHeduoZnV/xwUVxj6gjznEd0=,tag:TfsnGURHOXLrTZVB4q0+4Q==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -20,8 +21,8 @@ sops:
             ei9iam02cWZOTjBEK0JiM2VJNlh4OVkKOcd8+wLEG/May3gaiwT+4oqg49vCuYbN
             MOQLSBXhiMD5KLPlpDBDgCB0td6Ulh7QlcjSwXWUGhDDDykAMh0OZQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-02-03T18:20:58Z"
-    mac: ENC[AES256_GCM,data:BLFDTslVjO77/mXqRbkZIZ685Adw3uinMk+gBy3RUp2fhhi1CZKJAgRlyc0i8Q8ODRfIbh8v39r29nR1IheTMhIYphs+QqBoFJphTXNdHWyTFjA8+2ob1nf/LbmU2cH85PdGKrr8AP9p2DiH3RZeekIf0/GzIdv0DrB3iH/n8TA=,iv:BMIi8MhSRIeIE+ZwYHreNZTHOHMdZpue/5t+TX5lfCc=,tag:PZF41YmxyxYRv6vrTN+2aw==,type:str]
+    lastmodified: "2024-03-05T22:24:38Z"
+    mac: ENC[AES256_GCM,data:18Qku7+n9/V713vTPERdaNllfV2fK1RFPhUexJttDL4wD7o8BDp9VBooXAYmeziuqyu9p7VST9fmNnlx0EAi96IRygF0iCyGoYIAssJD2+pe1aPFE685ZPTajcqtO7t/pC5+yMRBHsR2AD69LtyekMz0QK7l2hWzjKWKJx2z1Yg=,iv:+vK4m2nLmAPsShIRGqLtIOBSFSCyNUKsi6GY3WgqQzk=,tag:5oHaRBJOOWg+l5qBeduyoQ==,type:str]
     pgp: []
     unencrypted_regex: ^(kind)$
     version: 3.7.3

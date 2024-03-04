@@ -1,0 +1,6 @@
+---
+keycloak_basedir: /mnt/usb/keycloak
+keycloak_version: latest
+keycloak_user: kcuser
+keycloak_password: kcuser_password
+keycloak_db: keycloak

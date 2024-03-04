@@ -1,8 +1,8 @@
 [Unit]
 Description=Prowlarr
 Documentation=https://prowlarr.com/
-Wants=systemd-networkd-wait-online.service
-After=nas-mount.service
+Wants=network-online.target
+After=network-online.target qbittorrent.service
 StartLimitIntervalSec=10
 
 [Service]
@@ -12,33 +12,31 @@ StartLimitBurst=3
 ExecStartPre=/bin/rm --force %t/container-prowlarr.pid %t/container-prowlarr.ctr-id
 ExecStartPre=-/usr/bin/podman pull ghcr.io/hotio/prowlarr:{{ prowlarr_version }}
 ExecStart=/usr/bin/podman run \
+    --cgroups no-conmon \
     --cidfile %t/container-prowlarr.ctr-id \
     --conmon-pidfile %t/container-prowlarr.pid \
     --detach \
     --env "PUID=1001" \
     --env "PGID=1001" \
     --env "UMASK=002" \
-    --env "TZ=Europe/Berlin" \
+    --env "TZ={{ config_system_timezone }}" \
     --hostname %n \
     --label "traefik.enable=true" \
-    --label "traefik.http.routers.prowlarr.rule=Host(`%n.canyon.labnet`)" \
+    --label "traefik.http.routers.prowlarr.entrypoints=websecure" \
+    --label "traefik.http.routers.prowlarr.middlewares=oauth@file" \
+    --label "traefik.http.routers.prowlarr.rule=Host(`%n.{{ inventory_hostname }}.{{ realm }}`)" \
+    --label "traefik.http.routers.prowlarr.tls.certresolver={{ realm }}" \
+    --label "traefik.http.routers.prowlarr.tls.domains[0].main=%n.{{ inventory_hostname }}.{{ realm }}" \
     --label "traefik.http.services.prowlarr.loadbalancer.server.port=9696" \
     --log-driver journald \
+    --mount "type=bind,source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,ro=true" \
     --mount "type=bind,source={{ prowlarr_basedir }}/config,target=/config" \
     --name %n \
-    --network labnet \
+    --network "service" \
     --replace \
+    --pull never \
     --rm \
-    --env "VPN_ENABLED=true" \
-    --env "VPN_CONF=wg0" \
-    --env "VPN_PROVIDER=proton" \
-    --env "VPN_LAN_NETWORK=192.168.178.0/24" \
-    --env "VPN_EXPOSE_PORTS_ON_LAN=9696/tcp" \
-    --env "VPN_AUTO_PORT_FORWARD=true" \
-    --cap-add NET_ADMIN \
-    --sysctl "net.ipv4.conf.all.src_valid_mark=1" \
-    --sysctl "net.ipv6.conf.all.disable_ipv6=1" \
-    hotio/prowlarr
+    hotio/prowlarr:{{ prowlarr_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-prowlarr.ctr-id --time 10
 ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/container-prowlarr.ctr-id

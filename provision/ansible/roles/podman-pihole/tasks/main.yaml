@@ -6,11 +6,18 @@
     state: directory
     owner: "{{ ansible_user }}"
 
-- name: Copy dnsmasq bind address fix
+- name: Forward the host DNS zone to the aardvark DNS backend on the host
+  become: true
+  ansible.builtin.template:
+    src: "20-forward-host-realm.conf.j2"
+    dest: "{{ pihole_basedir }}/etc/dnsmasq.d/20-forward-host-realm.conf"
+    mode: 0644
+
+- name: Copy custom hosts list
   become: true
   ansible.builtin.copy:
-    src: "{{ role_path }}/files/20-fix-binds.conf"
-    dest: "{{ pihole_basedir }}/etc/dnsmasq.d/20-fix-binds.conf"
+    src: "{{ role_path }}/files/custom.list"
+    dest: "{{ pihole_basedir }}/etc/pihole/custom.list"
     mode: 0644
 
 - name: Copy pihole service file

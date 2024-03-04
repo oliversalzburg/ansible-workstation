@@ -1,0 +1,3 @@
+---
+oauth2proxy_basedir: /mnt/usb/oauth2proxy
+oauth2proxy_version: latest

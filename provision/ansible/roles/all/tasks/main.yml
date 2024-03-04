@@ -36,8 +36,10 @@
       - openssh-client
       - python3
       - python3-pip
+      - python3-psycopg2
       - ripgrep
       - software-properties-common
+      - strace
       - tzdata
       - unzip
       - vim
@@ -58,4 +60,5 @@
 - include_tasks: coding-environment.yml
 - include_tasks: nodejs.yml
 - include_tasks: sops.yml
+- include_tasks: step.yml
 - include_tasks: terraform.yml

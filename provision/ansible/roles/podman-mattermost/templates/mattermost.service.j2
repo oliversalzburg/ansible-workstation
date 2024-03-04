@@ -1,0 +1,52 @@
+[Unit]
+Description=Mattermost
+Documentation=https://docs.mattermost.com/
+Wants=network-online.target
+After=network-online.target
+StartLimitIntervalSec=10
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+StartLimitBurst=3
+ExecStartPre=/bin/rm --force %t/container-mattermost.pid %t/container-mattermost.ctr-id
+ExecStartPre=-/usr/bin/podman pull docker.io/mattermost/mattermost-team-edition:{{ mattermost_version }}
+ExecStart=/usr/bin/podman run \
+    --cgroups no-conmon \
+    --cidfile %t/container-mattermost.ctr-id \
+    --conmon-pidfile %t/container-mattermost.pid \
+    --detach \
+    --env "MM_SERVICESETTINGS_SITEURL=https://%n.{{ inventory_hostname }}.{{ realm }}" \
+    --env "MM_SQLSETTINGS_DRIVERNAME=postgres" \
+    --env "MM_SQLSETTINGS_DATASOURCE=postgres://{{ mattermost_user }}:{{ mattermost_password }}@{{ inventory_hostname }}.{{ realm }}:5432/{{ mattermost_db }}?sslmode=disable&connect_timeout=10" \
+    --env "TZ={{ config_system_timezone }}" \
+    --user "1000:1000" \
+    --hostname %n \
+    --label "traefik.enable=true" \
+    --label "traefik.http.routers.mattermost.entrypoints=websecure" \
+    --label "traefik.http.routers.mattermost.rule=Host(`%n.{{ inventory_hostname }}.{{ realm }}`)" \
+    --label "traefik.http.routers.mattermost.tls.certresolver={{ realm }}" \
+    --label "traefik.http.routers.mattermost.tls.domains[0].main=%n.{{ inventory_hostname }}.{{ realm }}" \
+    --label "traefik.http.services.mattermos.loadbalancer.server.port=8065" \
+    --log-driver journald \
+    --mount "type=bind,source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,ro=true" \
+    --mount "type=bind,source={{ mattermost_basedir }}/config,target=/mattermost/config,rw=true" \
+    --mount "type=bind,source={{ mattermost_basedir }}/data,target=/mattermost/data" \
+    --mount "type=bind,source={{ mattermost_basedir }}/logs,target=/mattermost/logs" \
+    --mount "type=bind,source={{ mattermost_basedir }}/plugins,target=/mattermost/plugins" \
+    --mount "type=bind,source={{ mattermost_basedir }}/client/plugins,target=/mattermost/client/plugins" \
+    --mount "type=bind,source={{ mattermost_basedir }}/bleve-indexes,target=/mattermost/bleve-indexes" \
+    --name %n \
+    --network "service" \
+    --pull never \
+    --replace \
+    --rm \
+    mattermost/mattermost-team-edition:{{ mattermost_version }}
+
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-mattermost.ctr-id --time 10
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/container-mattermost.ctr-id
+PIDFile=%t/container-mattermost.pid
+Type=forking
+
+[Install]
+WantedBy=multi-user.target default.target

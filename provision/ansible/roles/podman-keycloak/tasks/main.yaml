@@ -1,0 +1,69 @@
+---
+- name: Ensure working directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ keycloak_basedir }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+
+- name: Ensure directories exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ keycloak_basedir }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+
+- name: Create user keycloak
+  community.postgresql.postgresql_user:
+    host: localhost
+    login_password: "{{ postgres_password }}"
+    login_user: "{{ postgres_user }}"
+    name: "{{ keycloak_user }}"
+    password: "{{ keycloak_password }}"
+
+- name: Create database for keycloak
+  community.postgresql.postgresql_db:
+    host: localhost
+    login_password: "{{ postgres_password }}"
+    login_user: "{{ postgres_user }}"
+    name: "{{ keycloak_db }}"
+    owner: "{{ keycloak_user }}"
+
+- name: "GRANT ALL PRIVILEGES ON DATABASE {{ keycloak_db }} TO {{ keycloak_user }}"
+  community.postgresql.postgresql_privs:
+    host: localhost
+    login_password: "{{ postgres_password }}"
+    login_user: "{{ postgres_user }}"
+    db: postgres
+    privs: ALL
+    type: database
+    obj: "{{ keycloak_db }}"
+    role: "{{ keycloak_user }}"
+
+- name: "GRANT USAGE, CREATE ON SCHEMA PUBLIC TO {{ keycloak_user }}"
+  community.postgresql.postgresql_privs:
+    host: localhost
+    login_password: "{{ postgres_password }}"
+    login_user: "{{ postgres_user }}"
+    db: postgres
+    privs: CREATE
+    type: schema
+    obj: public
+    role: "{{ keycloak_user }}"
+
+- name: Copy keycloak service file
+  become: true
+  ansible.builtin.template:
+    src: keycloak.service.j2
+    dest: "{{ directory_systemd }}/keycloak.service"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Enable and check keycloak service
+  become: true
+  ansible.builtin.systemd:
+    name: keycloak
+    daemon_reload: true
+    state: restarted
+    enabled: true

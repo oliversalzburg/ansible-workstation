@@ -1,0 +1,61 @@
+http:
+  middlewares:
+    # Inspired by
+    # https://www.benjaminrancourt.ca/a-complete-traefik-configuration/
+
+    # Recommended default middleware for most of the services
+    default:
+      chain:
+        middlewares:
+          - default-security-headers
+          - gzip
+
+    # Add automatically some security headers
+    default-security-headers:
+      headers:
+        browserXssFilter: true                            # X-XSS-Protection=1; mode=block
+        contentTypeNosniff: true                          # X-Content-Type-Options=nosniff
+        customFrameOptionsValue: "SAMEORIGIN"
+        customResponseHeaders:
+          X-Robots-Tag: "noindex, nofollow"
+        forceSTSHeader: true                              # Add the Strict-Transport-Security header even when the connection is HTTP
+        #frameDeny: true                                   # X-Frame-Options=deny
+        referrerPolicy: "strict-origin-when-cross-origin"
+        stsIncludeSubdomains: true                        # Add includeSubdomains to the Strict-Transport-Security header
+        stsPreload: true                                  # Add preload flag appended to the Strict-Transport-Security header
+        stsSeconds: 63072000                              # Set the max-age of the Strict-Transport-Security header (63072000 = 2 years)
+
+    # Enable GZIP compression
+    gzip:
+      compress: {}
+
+    oauth:
+      chain:
+        middlewares:
+          - oauth-errors
+          - oauth-auth
+
+    oauth-auth:
+      forwardAuth:
+        address: "https://oauth2proxy.service.{{ inventory_hostname }}.{{ realm }}/oauth2/auth"
+        trustForwardHeader: true
+    oauth-errors:
+      errors:
+        status:
+          - "401-403"
+        service: oauth2proxy@docker
+        query: "/oauth2/sign_in?rd={url}"
+
+  routers:
+    dashboard:
+      middlewares:
+        - oauth
+      rule: "Host(`traefik.{{ inventory_hostname }}.{{ realm }}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+      service: api@internal
+      tls:
+        certresolver: "{{ realm }}"
+
+tls:
+  options:
+    default:
+      sniStrict: true

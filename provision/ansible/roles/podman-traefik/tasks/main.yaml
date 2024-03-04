@@ -1,4 +1,47 @@
 ---
+- name: Ensure working directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ traefik_basedir }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+
+- name: Ensure ACME storage exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ traefik_basedir }}/acme"
+    state: directory
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Ensure configuration directiony exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ traefik_basedir }}/conf.d"
+    state: directory
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Copy traefik config file
+  become: true
+  ansible.builtin.template:
+    src: "traefik.yml.j2"
+    dest: "{{ traefik_basedir }}/traefik.yml"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy traefik dynamic config file
+  become: true
+  ansible.builtin.template:
+    src: "traefik_dynamic_default.yml.j2"
+    dest: "{{ traefik_basedir }}/conf.d/traefik_dynamic_default.yml"
+    owner: root
+    group: root
+    mode: 0644
+
 - name: Copy traefik service file
   become: true
   ansible.builtin.template:

@@ -1,0 +1,42 @@
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+  websecure:
+    address: ":443"
+    http:
+      tls:
+        certresolver: "{{ realm }}"
+        domains:
+          - main: "{{ inventory_hostname }}.{{ realm }}"
+            sans:
+              - "192.168.178.52"
+              - "*.{{ inventory_hostname }}.{{ realm }}"
+      middlewares:
+        - default@file
+
+api:
+  dashboard: true
+
+certificatesResolvers:
+  {{ realm }}:
+    acme:
+      caServer: "https://workstation.{{ realm }}:4431/acme/acme/directory"
+      email: "{{ letsencrypt_email_address }}"
+      storage: "/etc/acme/acme.json"
+      httpChallenge:
+        entrypoint: web
+      tlsChallenge: true
+
+log:
+  level: DEBUG
+
+providers:
+  docker:
+    exposedByDefault: false
+  file:
+    directory: conf.d

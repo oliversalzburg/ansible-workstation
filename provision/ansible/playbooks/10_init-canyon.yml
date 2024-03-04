@@ -5,9 +5,15 @@
     - role: unique-canyon
     - role: gpu-intel
     - role: desktop
+    # Required for roles below. Process first.
     - role: podman-host
+    - role: podman-postgres
+    # Application roles
+    - role: podman-keycloak
     - role: podman-jellyfin
     - role: podman-lidarr
+    - role: podman-mattermost
+    - role: podman-oauth2proxy
     - role: podman-pihole
     - role: podman-prowlarr
     - role: podman-qbittorrent

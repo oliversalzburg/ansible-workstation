@@ -2,4 +2,4 @@
 - name: Set hostname
   become: true
   ansible.builtin.hostname:
-    name: workstation
+    name: "{{ inventory_hostname }}.{{ realm }}"

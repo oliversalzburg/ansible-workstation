@@ -2,7 +2,7 @@
 - name: Set hostname
   become: true
   ansible.builtin.hostname:
-    name: oliver-laptop
+    name: "{{ inventory_hostname }}.{{ realm }}"
 
 - name: "Create network: offline"
   become: true

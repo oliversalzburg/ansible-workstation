@@ -1,11 +1,14 @@
 ---
 ansible_user: oliver
+realm: labnet
+realm_name: Lab
 
 git_email: oliver.salzburg@gmail.com
 git_name: Oliver Salzburg
 
 config_system_locale: en_US.UTF-8
 config_system_language: en_US.UTF-8
+config_system_timezone: Europe/Berlin
 
 directory_downloads: /tmp/.ansible-downloads
 directory_networkd: /etc/systemd/network
@@ -15,3 +18,16 @@ directory_keyrings: /usr/share/keyrings
 version_age: 1.1.1
 version_nodejs: 20
 version_sops: 3.7.3
+
+jellyfin_version: "10.8.13-1-amd64"
+keycloak_version: "24.0.1"
+lidarr_version: "release-2.1.7.4030"
+mattermost_version: "9.6.0"
+oauth2proxy_version: "v7.6.0-amd64"
+pihole_version: "2024.02.2"
+postgres_version: "16.2-bookworm"
+prowlarr_version: "release-1.13.3.4273"
+qbittorrent_version: "release-4.6.3"
+radarr_version: "release-5.3.6.8612"
+sonarr_version: "release-4.0.2.1183"
+traefik_version: "v2.11.0"

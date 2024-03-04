@@ -1,8 +1,8 @@
 [Unit]
 Description=Jellyfin
 Documentation=https://jellyfin.org/docs/
-Wants=systemd-networkd-wait-online.service
-After=nas-mount.service
+Wants=network-online.target
+After=network-online.target nas-mount.service
 StartLimitIntervalSec=10
 
 [Service]
@@ -19,19 +19,20 @@ ExecStart=/usr/bin/podman run \
   --detach \
   --device /dev/dri:/dev/dri \
   --hostname %n \
-  --label "traefik.enable=true" \
-  --label "traefik.http.routers.jellyfin.rule=Host(`%n.canyon.labnet`)" \
+  --label "traefik.enable=false" \
+  --label "traefik.http.routers.jellyfin.rule=Host(`%n.{{ inventory_hostname }}.{{ realm }}`)" \
   --label "traefik.http.services.jellyfin.loadbalancer.server.port=8096" \
   --log-driver journald \
+  --mount "type=bind,source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,ro=true" \
   --mount "type=bind,source={{ jellyfin_mediadir }},target=/media" \
   --mount "type=bind,source={{ jellyfin_basedir }}/cache,target=/cache" \
   --mount "type=bind,source={{ jellyfin_basedir }}/config,target=/config" \
   --name %n \
-  --network labnet \
-  --publish "8096:8096/tcp" \
+  --network host \
+  --pull never \
   --replace \
   --rm \
-  jellyfin/jellyfin
+  jellyfin/jellyfin:{{ jellyfin_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-jellyfin.ctr-id --time 10
 ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/container-jellyfin.ctr-id

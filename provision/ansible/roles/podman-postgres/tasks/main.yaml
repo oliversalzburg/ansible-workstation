@@ -2,7 +2,7 @@
 - name: Ensure working directory exists
   become: true
   ansible.builtin.file:
-    path: "{{ postgres_basedir }}/var/lib/postgresql/data"
+    path: "{{ postgres_basedir }}/data"
     state: directory
     owner: "{{ ansible_user }}"
 

@@ -1,8 +1,8 @@
 [Unit]
 Description=Lidarr
 Documentation=https://lidarr.audio/
-Wants=systemd-networkd-wait-online.service
-After=nas-mount.service
+Wants=network-online.target
+After=network-online.target nas-mount.service
 StartLimitIntervalSec=10
 
 [Service]
@@ -12,25 +12,32 @@ StartLimitBurst=3
 ExecStartPre=/bin/rm --force %t/container-lidarr.pid %t/container-lidarr.ctr-id
 ExecStartPre=-/usr/bin/podman pull ghcr.io/hotio/lidarr:{{ lidarr_version }}
 ExecStart=/usr/bin/podman run \
+    --cgroups no-conmon \
     --cidfile %t/container-lidarr.ctr-id \
     --conmon-pidfile %t/container-lidarr.pid \
     --detach \
     --env "PUID=1001" \
     --env "PGID=1001" \
     --env "UMASK=002" \
-    --env "TZ=Europe/Berlin" \
+    --env "TZ={{ config_system_timezone }}" \
     --hostname %n \
     --label "traefik.enable=true" \
-    --label "traefik.http.routers.lidarr.rule=Host(`%n.canyon.labnet`)" \
+    --label "traefik.http.routers.lidarr.entrypoints=websecure" \
+    --label "traefik.http.routers.lidarr.middlewares=oauth@file" \
+    --label "traefik.http.routers.lidarr.rule=Host(`%n.{{ inventory_hostname }}.{{ realm }}`)" \
+    --label "traefik.http.routers.lidarr.tls.certresolver={{ realm }}" \
+    --label "traefik.http.routers.lidarr.tls.domains[0].main=%n.{{ inventory_hostname }}.{{ realm }}" \
     --label "traefik.http.services.lidarr.loadbalancer.server.port=8686" \
     --log-driver journald \
+    --mount "type=bind,source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,ro=true" \
     --mount "type=bind,source={{ lidarr_basedir }}/config,target=/config" \
     --mount "type=bind,source={{ lidarr_mediadir }},target=/data" \
     --name %n \
-    --network labnet \
+    --network "service" \
+    --pull never \
     --replace \
     --rm \
-    hotio/lidarr
+    hotio/lidarr:{{ lidarr_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-lidarr.ctr-id --time 10
 ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/container-lidarr.ctr-id
