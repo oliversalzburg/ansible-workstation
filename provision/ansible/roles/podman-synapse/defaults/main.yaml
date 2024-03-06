@@ -1,0 +1,6 @@
+---
+synapse_basedir: /mnt/usb/synapse
+synapse_version: latest
+synapse_user: synapse
+synapse_password: synapse_password
+synapse_db: synapse

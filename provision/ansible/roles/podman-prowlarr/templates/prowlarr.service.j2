@@ -8,6 +8,7 @@ StartLimitIntervalSec=10
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
+RestartSec=10
 StartLimitBurst=3
 ExecStartPre=/bin/rm --force %t/container-prowlarr.pid %t/container-prowlarr.ctr-id
 ExecStartPre=-/usr/bin/podman pull ghcr.io/hotio/prowlarr:{{ prowlarr_version }}

@@ -8,6 +8,7 @@ StartLimitIntervalSec=10
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
+RestartSec=10
 StartLimitBurst=3
 ExecStartPre=/bin/rm --force %t/container-oauth2proxy.pid %t/container-oauth2proxy.ctr-id
 ExecStartPre=-/usr/bin/podman pull quay.io/oauth2-proxy/oauth2-proxy:{{ oauth2proxy_version }}

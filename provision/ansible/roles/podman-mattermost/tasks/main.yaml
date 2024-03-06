@@ -25,7 +25,6 @@
     host: localhost
     login_password: "{{ postgres_password }}"
     login_user: "{{ postgres_user }}"
-    db: "{{ mattermost_db }}"
     name: "{{ mattermost_user }}"
     password: "{{ mattermost_password }}"
 

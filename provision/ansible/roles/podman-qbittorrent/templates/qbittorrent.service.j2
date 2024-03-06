@@ -8,6 +8,7 @@ StartLimitIntervalSec=10
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
+RestartSec=10
 StartLimitBurst=3
 #User=1001
 #Group=1001
