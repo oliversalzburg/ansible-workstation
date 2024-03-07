@@ -1,0 +1,3 @@
+---
+prometheus_basedir: /mnt/usb/prometheus
+prometheus_version: latest

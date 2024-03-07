@@ -1,0 +1,36 @@
+---
+- name: Ensure working directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ prometheus_basedir }}/{{ item }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+  loop:
+    - data
+    - etc
+
+- name: Copy settings file
+  become: true
+  ansible.builtin.template:
+    src: prometheus.yml.j2
+    dest: "{{ prometheus_basedir }}/etc/prometheus.yml"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy service file
+  become: true
+  ansible.builtin.template:
+    src: prometheus.service.j2
+    dest: "{{ directory_systemd }}/prometheus.service"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Enable and check service
+  become: true
+  ansible.builtin.systemd:
+    name: prometheus
+    daemon_reload: true
+    state: restarted
+    enabled: true

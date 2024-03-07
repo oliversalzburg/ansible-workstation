@@ -15,10 +15,27 @@
     group: root
     mode: 0644
 
+- name: Copy Postgres Exporter service file
+  become: true
+  ansible.builtin.template:
+    src: postgres-exporter.service.j2
+    dest: "{{ directory_systemd }}/postgres-exporter.service"
+    owner: root
+    group: root
+    mode: 0644
+
 - name: Enable and check Postgres service
   become: true
   ansible.builtin.systemd:
     name: postgres
+    daemon_reload: true
+    state: restarted
+    enabled: true
+
+- name: Enable and check Postgres Exporter service
+  become: true
+  ansible.builtin.systemd:
+    name: postgres-exporter
     daemon_reload: true
     state: restarted
     enabled: true

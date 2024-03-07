@@ -1,0 +1,13 @@
+scrape_configs:
+  - job_name: 'node'
+    scrape_interval: 15s
+    static_configs:
+    - targets:
+      - '{{ inventory_hostname }}.{{ realm }}:9100'
+      - 'workstation.{{ realm }}:9100'
+
+  - job_name: postgres
+    scrape_interval: 15s
+    static_configs:
+      - targets:
+        - '{{ inventory_hostname }}.{{ realm }}:9187'
