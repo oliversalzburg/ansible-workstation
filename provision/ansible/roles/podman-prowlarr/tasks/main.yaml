@@ -1,26 +1,35 @@
 ---
-- name: Ensure working directory exists
+- name: Ensure working directories exist
   become: true
   ansible.builtin.file:
-    path: "{{ prowlarr_basedir }}"
+    path: "{{ prowlarr_basedir }}/{{ item }}"
     state: directory
     owner: "{{ ansible_user }}"
+  loop:
+    - config
 
-- name: Ensure config directory exists
-  become: true
-  ansible.builtin.file:
-    path: "{{ prowlarr_basedir }}/config"
-    state: directory
-    owner: "{{ ansible_user }}"
-
-- name: Copy prowlarr service file
+- name: Copy configuration
   become: true
   ansible.builtin.template:
-    src: prowlarr.service.j2
-    dest: "{{ directory_systemd }}/prowlarr.service"
+    src: "config.xml.j2"
+    dest: "{{ prowlarr_basedir }}/config/config.xml"
+    owner: 1001
+    group: 1001
+    mode: 0644
+
+- name: Copy service files
+  become: true
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "{{ directory_systemd }}/{{ item }}"
     owner: root
     group: root
     mode: 0644
+  loop:
+    - prowlarr-exporter.service
+    - prowlarr-flaresolverr.service
+    - prowlarr-main.service
+    - prowlarr.service
 
 - name: Enable and check prowlarr service
   become: true

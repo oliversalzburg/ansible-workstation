@@ -21,20 +21,21 @@ ExecStart=/usr/bin/podman run \
   --conmon-pidfile %t/container-jellyfin.pid \
   --detach \
   --device /dev/dri:/dev/dri \
-  --hostname %n \
+  --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
   --label "traefik.enable=false" \
-  --label "traefik.http.routers.jellyfin.rule=Host(`%n.{{ inventory_hostname }}.{{ realm }}`)" \
+  --label "traefik.http.routers.jellyfin.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
   --label "traefik.http.services.jellyfin.loadbalancer.server.port=8096" \
   --log-driver journald \
   --mount "type=bind,source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,ro=true" \
   --mount "type=bind,source={{ jellyfin_mediadir }},target=/media" \
   --mount "type=bind,source={{ jellyfin_basedir }}/cache,target=/cache" \
   --mount "type=bind,source={{ jellyfin_basedir }}/config,target=/config" \
-  --name %n \
+  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
   --network host \
   --pull never \
   --replace \
   --rm \
+  --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
   jellyfin/jellyfin:{{ jellyfin_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-jellyfin.ctr-id --time 10

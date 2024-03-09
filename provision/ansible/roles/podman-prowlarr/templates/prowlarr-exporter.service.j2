@@ -1,11 +1,11 @@
 [Unit]
-Description=PostgreSQL Server Exporter
-Documentation=https://github.com/prometheus-community/postgres-exporter_exporter
+Description=Radarr Exporter
+Documentation=https://github.com/onedr0p/exportarr
 Wants=network.target
 After=network.target
 RequiresMountsFor=%t/containers
-BindsTo=postgres.service
-After=postgres.service postgres-main.service
+BindsTo=prowlarr.service
+After=prowlarr.service prowlarr-main.service
 StartLimitIntervalSec=10
 
 [Service]
@@ -15,20 +15,23 @@ RestartSec=10
 StartLimitBurst=3
 TimeoutStopSec=70
 ExecStartPre=/bin/rm --force %t/%n.ctr-id
-ExecStartPre=-/usr/bin/podman pull quay.io/prometheuscommunity/postgres-exporter:{{ postgresexporter_version }}
+ExecStartPre=-/usr/bin/podman pull ghcr.io/onedr0p/exportarr:{{ exportarr_version }}
 ExecStart=/usr/bin/podman run \
     --cgroups no-conmon \
     --cidfile "%t/%n.ctr-id" \
     --detach \
-    --env "DATA_SOURCE_NAME=postgresql://{{ postgres_user }}:{{ postgres_password }}@127.0.0.1:5432/postgres?sslmode=disable" \
+    --env "APIKEY={{ prowlarr_api_key }}" \
+    --env "ENABLE_ADDITIONAL_METRICS=true" \
+    --env "PORT=9707" \
+    --env "URL=http://127.0.0.1:9696" \
     --log-driver journald \
     --name "%n.{{ inventory_hostname }}.{{ realm }}" \
-    --pod-id-file "%t/postgres.pod-id" \
+    --pod-id-file "%t/prowlarr.pod-id" \
     --pull never \
     --replace \
     --rm \
     --sdnotify "conmon" \
-    prometheuscommunity/postgres-exporter:{{ postgresexporter_version }}
+    onedr0p/exportarr:{{ exportarr_version }} prowlarr
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/%n.ctr-id --time 10
 ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/%n.ctr-id

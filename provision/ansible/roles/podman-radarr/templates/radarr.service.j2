@@ -1,49 +1,40 @@
 [Unit]
-Description=Radarr
-Documentation=https://radarr.video/
+Description=Radarr Root Service
+Documentation=
 Wants=network-online.target
-After=network-online.target nas-mount.service
-StartLimitIntervalSec=10
+After=network-online.target
+RequiresMountsFor=
+Requires=radarr-main.service radarr-exporter.service
+Before=radarr-main.service radarr-exporter.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
-RestartSec=10
-StartLimitBurst=3
-ExecStartPre=/bin/rm --force %t/container-radarr.pid %t/container-radarr.ctr-id
-ExecStartPre=-/usr/bin/podman pull ghcr.io/hotio/radarr:{{ radarr_version }}
-ExecStart=/usr/bin/podman run \
-    --cgroups no-conmon \
-    --cidfile %t/container-radarr.ctr-id \
-    --conmon-pidfile %t/container-radarr.pid \
-    --detach \
-    --env "PUID=1001" \
-    --env "PGID=1001" \
-    --env "UMASK=002" \
-    --env "TZ={{ config_system_timezone }}" \
-    --hostname %n \
-    --label "traefik.enable=true" \
-    --label "traefik.http.routers.radarr.entrypoints=websecure" \
-    --label "traefik.http.routers.radarr.middlewares=oauth@file" \
-    --label "traefik.http.routers.radarr.rule=Host(`%n.{{ inventory_hostname }}.{{ realm }}`)" \
-    --label "traefik.http.routers.radarr.tls.certresolver={{ realm }}" \
-    --label "traefik.http.routers.radarr.tls.domains[0].main=%n.{{ inventory_hostname }}.{{ realm }}" \
-    --label "traefik.http.services.radarr.loadbalancer.server.port=7878" \
-    --log-driver journald \
-    --mount "type=bind,source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,ro=true" \
-    --mount "type=bind,source={{ radarr_basedir }}/config,target=/config" \
-    --mount "type=bind,source={{ radarr_mediadir }},target=/data" \
-    --name %n \
-    --network "service" \
-    --pull never \
-    --replace \
-    --rm \
-    hotio/radarr:{{ radarr_version }}
+TimeoutStopSec=70
+ExecStartPre=/bin/rm --force %t/radarr.pid %t/radarr.pod-id
+ExecStartPre=/usr/bin/podman pod create \
+  --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --infra-conmon-pidfile %t/radarr.pid \
+  --label "traefik.enable=true" \
+  --label "traefik.http.routers.radarr.entrypoints=websecure" \
+  --label "traefik.http.routers.radarr.middlewares=oauth@file" \
+  --label "traefik.http.routers.radarr.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
+  --label "traefik.http.routers.radarr.tls.certresolver={{ realm }}" \
+  --label "traefik.http.routers.radarr.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
+  --label "traefik.http.services.radarr.loadbalancer.server.port=7878" \
+  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --network "service" \
+  --pod-id-file %t/radarr.pod-id \
+  --replace \
+  --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
+  --volume "{{ radarr_basedir }}/config:/config:rw" \
+  --volume "{{ radarr_mediadir }}:/data:rw"
 
-ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-radarr.ctr-id --time 10
-ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/container-radarr.ctr-id
-PIDFile=%t/container-radarr.pid
+ExecStart=/usr/bin/podman pod start --pod-id-file %t/radarr.pod-id
+ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/radarr.pod-id --time 10
+ExecStopPost=/usr/bin/podman pod rm --ignore --force --pod-id-file %t/radarr.pod-id
+PIDFile=%t/radarr.pid
 Type=forking
 
 [Install]
-WantedBy=multi-user.target default.target
+WantedBy=default.target

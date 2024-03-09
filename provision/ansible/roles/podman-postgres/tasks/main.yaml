@@ -1,41 +1,30 @@
 ---
-- name: Ensure working directory exists
+- name: Ensure working directories exist
   become: true
   ansible.builtin.file:
-    path: "{{ postgres_basedir }}/data"
+    path: "{{ postgres_basedir }}/{{ item }}"
     state: directory
     owner: "{{ ansible_user }}"
+  loop:
+    - data
 
-- name: Copy Postgres service file
+- name: Copy service files
   become: true
   ansible.builtin.template:
-    src: postgres.service.j2
-    dest: "{{ directory_systemd }}/postgres.service"
+    src: "{{ item }}.j2"
+    dest: "{{ directory_systemd }}/{{ item }}"
     owner: root
     group: root
     mode: 0644
-
-- name: Copy Postgres Exporter service file
-  become: true
-  ansible.builtin.template:
-    src: postgres-exporter.service.j2
-    dest: "{{ directory_systemd }}/postgres-exporter.service"
-    owner: root
-    group: root
-    mode: 0644
+  loop:
+    - postgres-exporter.service
+    - postgres-main.service
+    - postgres.service
 
 - name: Enable and check Postgres service
   become: true
   ansible.builtin.systemd:
     name: postgres
-    daemon_reload: true
-    state: restarted
-    enabled: true
-
-- name: Enable and check Postgres Exporter service
-  become: true
-  ansible.builtin.systemd:
-    name: postgres-exporter
     daemon_reload: true
     state: restarted
     enabled: true

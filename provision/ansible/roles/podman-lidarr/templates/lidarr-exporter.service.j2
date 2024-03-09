@@ -1,0 +1,43 @@
+[Unit]
+Description=Lidarr Exporter
+Documentation=https://github.com/onedr0p/exportarr
+Wants=network.target
+After=network.target
+RequiresMountsFor=%t/containers
+BindsTo=lidarr.service
+After=lidarr.service lidarr-main.service
+StartLimitIntervalSec=10
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+RestartSec=10
+StartLimitBurst=3
+TimeoutStopSec=70
+ExecStartPre=/bin/rm --force %t/%n.ctr-id
+ExecStartPre=-/usr/bin/podman pull ghcr.io/onedr0p/exportarr:{{ exportarr_version }}
+ExecStart=/usr/bin/podman run \
+  --cgroups no-conmon \
+  --cidfile "%t/%n.ctr-id" \
+  --detach \
+  --env "APIKEY={{ lidarr_api_key }}" \
+  --env "ENABLE_ADDITIONAL_METRICS=true" \
+  --env "PORT=9707" \
+  --env "URL=http://127.0.0.1:8686" \
+  --log-driver journald \
+  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --pod-id-file "%t/lidarr.pod-id" \
+  --pull never \
+  --replace \
+  --rm \
+  --sdnotify "conmon" \
+  --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  onedr0p/exportarr:{{ exportarr_version }} lidarr
+
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/%n.ctr-id --time 10
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/%n.ctr-id
+Type=notify
+NotifyAccess=all
+
+[Install]
+WantedBy=default.target

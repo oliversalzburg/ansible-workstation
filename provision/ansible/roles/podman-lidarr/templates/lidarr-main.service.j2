@@ -1,0 +1,41 @@
+[Unit]
+Description=Lidarr
+Documentation=https://lidarr.audio/
+Wants=network-online.target
+After=network-online.target nas-mount.service
+RequiresMountsFor=%t/containers
+BindsTo=lidarr.service
+After=lidarr.service
+StartLimitIntervalSec=10
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+RestartSec=10
+StartLimitBurst=3
+ExecStartPre=/bin/rm --force %t/%n.ctr-id
+ExecStartPre=-/usr/bin/podman pull ghcr.io/hotio/lidarr:{{ lidarr_version }}
+ExecStart=/usr/bin/podman run \
+  --cgroups "no-conmon" \
+  --cidfile "%t/%n.ctr-id" \
+  --detach \
+  --env "PUID={{ _user.uid }}" \
+  --env "PGID={{ _groups.results[0].gid }}" \
+  --env "UMASK=002" \
+  --env "TZ={{ config_system_timezone }}" \
+  --log-driver "journald" \
+  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --pod-id-file "%t/lidarr.pod-id" \
+  --pull "never" \
+  --replace \
+  --rm \
+  --sdnotify "conmon" \
+  hotio/lidarr:{{ lidarr_version }}
+
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/%n.ctr-id --time 10
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/%n.ctr-id
+Type=notify
+NotifyAccess=all
+
+[Install]
+WantedBy=default.target

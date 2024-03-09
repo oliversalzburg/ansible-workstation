@@ -19,38 +19,31 @@ ExecStart=/usr/bin/podman run \
     --detach \
     --env "KEYCLOAK_ADMIN={{ keycloak_admin }}" \
     --env "KEYCLOAK_ADMIN_PASSWORD={{ keycloak_admin_password }}" \
-    --env "MM_SERVICESETTINGS_SITEURL=https://%n.{{ inventory_hostname }}.{{ realm }}" \
-    --env "MM_SQLSETTINGS_DRIVERNAME=postgres" \
-    --env "MM_SQLSETTINGS_DATASOURCE=postgres://{{ keycloak_user }}:{{ keycloak_password }}@{{ inventory_hostname }}.{{ realm }}:5432/{{ keycloak_db }}?sslmode=disable&connect_timeout=10" \
     --env "TZ={{ config_system_timezone }}" \
     --user "1000:1000" \
-    --hostname %n \
+    --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
     --label "traefik.enable=true" \
     --label "traefik.http.routers.keycloak.entrypoints=websecure" \
-    --label "traefik.http.routers.keycloak.rule=Host(`%n.{{ inventory_hostname }}.{{ realm }}`)" \
+    --label "traefik.http.routers.keycloak.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
     --label "traefik.http.routers.keycloak.tls.certresolver={{ realm }}" \
-    --label "traefik.http.routers.keycloak.tls.domains[0].main=%n.{{ inventory_hostname }}.{{ realm }}" \
+    --label "traefik.http.routers.keycloak.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
     --label "traefik.http.services.keycloak.loadbalancer.server.port=8080" \
     --log-driver journald \
     --mount "type=bind,source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,ro=true" \
-    --mount "type=bind,source={{ keycloak_basedir }}/config,target=/keycloak/config,rw=true" \
-    --mount "type=bind,source={{ keycloak_basedir }}/data,target=/keycloak/data" \
-    --mount "type=bind,source={{ keycloak_basedir }}/logs,target=/keycloak/logs" \
-    --mount "type=bind,source={{ keycloak_basedir }}/plugins,target=/keycloak/plugins" \
-    --mount "type=bind,source={{ keycloak_basedir }}/client/plugins,target=/keycloak/client/plugins" \
-    --mount "type=bind,source={{ keycloak_basedir }}/bleve-indexes,target=/keycloak/bleve-indexes" \
-    --name %n \
+    --mount "type=bind,source={{ keycloak_basedir }}/data,target=/opt/keycloak/data" \
+    --name "%n.{{ inventory_hostname }}.{{ realm }}" \
     --network "service" \
     --pull never \
     --replace \
     --rm \
+    --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
     keycloak/keycloak:{{ keycloak_version }} \
     start \
     --db="postgres" \
-    --db-url="jdbc:postgresql://{{ inventory_hostname }}.{{ realm }}:5432/{{ keycloak_db }}" \
-    --db-username="{{ keycloak_user }}" \
-    --db-password="{{ keycloak_password }}" \
-    --hostname="%n.{{ inventory_hostname }}.{{ realm }}" \
+    --db-url="jdbc:postgresql://postgres.service.{{ inventory_hostname }}.{{ realm }}:5432/{{ keycloak_pg_db }}" \
+    --db-username="{{ keycloak_pg_user }}" \
+    --db-password="{{ keycloak_pg_password }}" \
+    --hostname="%N.web.{{ inventory_hostname }}.{{ realm }}" \
     --http-enabled="true" \
     --proxy-headers="xforwarded"
 

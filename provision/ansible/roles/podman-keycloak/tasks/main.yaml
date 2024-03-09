@@ -1,35 +1,71 @@
 ---
+- name: Create groups
+  become: true
+  register: _groups
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+    system: true
+  loop: "{{ keycloak_groups }}"
+
+- name: Ensure {{ ansible_user }} is a group member
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: "{{ keycloak_groups }}"
+    append: true
+
+- name: Create user
+  become: true
+  register: _user
+  ansible.builtin.user:
+    comment: "{{ keycloak_name }}"
+    create_home: false
+    group: "{{ _groups.results[0].gid }}"
+    groups: "{{ keycloak_groups }}"
+    home: "{{ keycloak_basedir }}"
+    name: "{{ keycloak_id }}"
+    password: "!"
+    shell: "/usr/sbin/nologin"
+    system: true
+
+
 - name: Ensure working directory exists
   become: true
   ansible.builtin.file:
     path: "{{ keycloak_basedir }}"
     state: directory
-    owner: "{{ ansible_user }}"
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
 
-- name: Ensure directories exists
+- name: Ensure directories exist
   become: true
   ansible.builtin.file:
-    path: "{{ keycloak_basedir }}"
+    path: "{{ keycloak_basedir }}/{{ item }}"
     state: directory
-    owner: "{{ ansible_user }}"
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+  loop:
+    - data
 
-- name: Create user keycloak
+
+- name: Create postgres user
   community.postgresql.postgresql_user:
     host: localhost
     login_password: "{{ postgres_password }}"
     login_user: "{{ postgres_user }}"
-    name: "{{ keycloak_user }}"
-    password: "{{ keycloak_password }}"
+    name: "{{ keycloak_pg_user }}"
+    password: "{{ keycloak_pg_password }}"
 
-- name: Create database for keycloak
+- name: Create postgres database
   community.postgresql.postgresql_db:
     host: localhost
     login_password: "{{ postgres_password }}"
     login_user: "{{ postgres_user }}"
-    name: "{{ keycloak_db }}"
-    owner: "{{ keycloak_user }}"
+    name: "{{ keycloak_pg_db }}"
+    owner: "{{ keycloak_pg_user }}"
 
-- name: "GRANT ALL PRIVILEGES ON DATABASE {{ keycloak_db }} TO {{ keycloak_user }}"
+- name: "GRANT ALL PRIVILEGES ON DATABASE 'db'' TO 'user'"
   community.postgresql.postgresql_privs:
     host: localhost
     login_password: "{{ postgres_password }}"
@@ -37,10 +73,10 @@
     db: postgres
     privs: ALL
     type: database
-    obj: "{{ keycloak_db }}"
-    role: "{{ keycloak_user }}"
+    obj: "{{ keycloak_pg_db }}"
+    role: "{{ keycloak_pg_user }}"
 
-- name: "GRANT USAGE, CREATE ON SCHEMA PUBLIC TO {{ keycloak_user }}"
+- name: "GRANT USAGE, CREATE ON SCHEMA PUBLIC TO 'user'"
   community.postgresql.postgresql_privs:
     host: localhost
     login_password: "{{ postgres_password }}"
@@ -49,21 +85,24 @@
     privs: CREATE
     type: schema
     obj: public
-    role: "{{ keycloak_user }}"
+    role: "{{ keycloak_pg_user }}"
 
-- name: Copy keycloak service file
+
+- name: Copy service files
   become: true
   ansible.builtin.template:
-    src: keycloak.service.j2
-    dest: "{{ directory_systemd }}/keycloak.service"
+    src: "{{ item }}.j2"
+    dest: "{{ directory_systemd }}/{{ item }}"
     owner: root
     group: root
     mode: 0644
+  loop:
+    - keycloak.service
 
-- name: Enable and check keycloak service
+- name: Enable and check service
   become: true
   ansible.builtin.systemd:
-    name: keycloak
     daemon_reload: true
-    state: restarted
     enabled: true
+    name: keycloak
+    state: restarted

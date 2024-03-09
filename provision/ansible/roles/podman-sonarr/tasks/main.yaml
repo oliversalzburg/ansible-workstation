@@ -1,26 +1,34 @@
 ---
-- name: Ensure working directory exists
+- name: Ensure working directories exist
   become: true
   ansible.builtin.file:
-    path: "{{ sonarr_basedir }}"
+    path: "{{ sonarr_basedir }}/{{ item }}"
     state: directory
     owner: "{{ ansible_user }}"
+  loop:
+    - config
 
-- name: Ensure config directory exists
-  become: true
-  ansible.builtin.file:
-    path: "{{ sonarr_basedir }}/config"
-    state: directory
-    owner: "{{ ansible_user }}"
-
-- name: Copy sonarr service file
+- name: Copy configuration
   become: true
   ansible.builtin.template:
-    src: sonarr.service.j2
-    dest: "{{ directory_systemd }}/sonarr.service"
+    src: "config.xml.j2"
+    dest: "{{ sonarr_basedir }}/config/config.xml"
+    owner: 1001
+    group: 1001
+    mode: 0644
+
+- name: Copy service files
+  become: true
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "{{ directory_systemd }}/{{ item }}"
     owner: root
     group: root
     mode: 0644
+  loop:
+    - sonarr-exporter.service
+    - sonarr-main.service
+    - sonarr.service
 
 - name: Enable and check sonarr service
   become: true

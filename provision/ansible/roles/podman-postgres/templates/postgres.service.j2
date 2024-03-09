@@ -1,42 +1,33 @@
 [Unit]
-Description=PostgreSQL
-Documentation=https://www.postgresql.org/docs/
+Description=PostgreSQL Root Service
+Documentation=
 Wants=network.target
 After=network.target
-StartLimitIntervalSec=10
+RequiresMountsFor=
+Requires=postgres-main.service postgres-exporter.service
+Before=postgres-main.service postgres-exporter.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
-RestartSec=10
-StartLimitBurst=3
-# docker.io rate-limit delays can abort startup if timeout is too short.
-TimeoutStartSec=300
 TimeoutStopSec=70
-ExecStartPre=/bin/rm --force %t/container-postgres.pid %t/container-postgres.ctr-id
-ExecStartPre=-/usr/bin/podman pull docker.io/library/postgres:{{ postgres_version }}
-ExecStart=/usr/bin/podman run \
-    --cgroups no-conmon \
-    --cidfile %t/container-postgres.ctr-id \
-    --conmon-pidfile %t/container-postgres.pid \
-    --detach \
-    --env "POSTGRES_PASSWORD={{ postgres_password }}" \
-    --env "POSTGRES_USER={{ postgres_user }}" \
-    --hostname %n \
-    --log-driver journald \
-    --mount "type=bind,source={{ postgres_basedir }}/data,target=/var/lib/postgresql/data" \
-    --name %n \
-    --network "service" \
-    --publish "5432:5432/tcp" \
-    --pull never \
-    --replace \
-    --rm \
-    postgres:{{ postgres_version }}
+ExecStartPre=/bin/rm --force %t/postgres.pid %t/postgres.pod-id
+ExecStartPre=/usr/bin/podman pod create \
+  --infra-conmon-pidfile %t/postgres.pid \
+  --pod-id-file %t/postgres.pod-id \
+  --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --volume "{{ postgres_basedir }}/data:/var/lib/postgresql/data:rw" \
+  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --network "service" \
+  --publish "5432:5432/tcp" \
+  --publish "9187:9187/tcp" \
+  --replace
 
-ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-postgres.ctr-id --time 10
-ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/container-postgres.ctr-id
-PIDFile=%t/container-postgres.pid
+ExecStart=/usr/bin/podman pod start --pod-id-file %t/postgres.pod-id
+ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/postgres.pod-id --time 10
+ExecStopPost=/usr/bin/podman pod rm --ignore --force --pod-id-file %t/postgres.pod-id
+PIDFile=%t/postgres.pid
 Type=forking
 
 [Install]
-WantedBy=multi-user.target default.target
+WantedBy=default.target

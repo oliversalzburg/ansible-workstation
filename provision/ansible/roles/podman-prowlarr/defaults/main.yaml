@@ -1,3 +1,5 @@
 ---
 prowlarr_basedir: /mnt/usb/prowlarr
 prowlarr_version: latest
+exportarr_version: latest
+flaresolverr_version: latest

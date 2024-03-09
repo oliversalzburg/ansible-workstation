@@ -1,4 +1,11 @@
 ---
+lidarr_id: lidarr
+lidarr_name: Lidarr
+lidarr_groups:
+  - lidarr
+  - service
+
 lidarr_basedir: /mnt/usb/lidarr
 lidarr_mediadir: "{{ media_mount }}"
 lidarr_version: latest
+exportarr_version: latest

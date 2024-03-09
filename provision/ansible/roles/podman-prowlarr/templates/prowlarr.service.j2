@@ -1,48 +1,39 @@
 [Unit]
-Description=Prowlarr
-Documentation=https://prowlarr.com/
+Description=Prowlarr Root Service
+Documentation=
 Wants=network-online.target
-After=network-online.target qbittorrent.service
-StartLimitIntervalSec=10
+After=network-online.target
+RequiresMountsFor=
+Requires=prowlarr-main.service prowlarr-exporter.service prowlarr-flaresolverr.service
+Before=prowlarr-main.service prowlarr-exporter.service prowlarr-flaresolverr.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
-RestartSec=10
-StartLimitBurst=3
-ExecStartPre=/bin/rm --force %t/container-prowlarr.pid %t/container-prowlarr.ctr-id
-ExecStartPre=-/usr/bin/podman pull ghcr.io/hotio/prowlarr:{{ prowlarr_version }}
-ExecStart=/usr/bin/podman run \
-    --cgroups no-conmon \
-    --cidfile %t/container-prowlarr.ctr-id \
-    --conmon-pidfile %t/container-prowlarr.pid \
-    --detach \
-    --env "PUID=1001" \
-    --env "PGID=1001" \
-    --env "UMASK=002" \
-    --env "TZ={{ config_system_timezone }}" \
-    --hostname %n \
-    --label "traefik.enable=true" \
-    --label "traefik.http.routers.prowlarr.entrypoints=websecure" \
-    --label "traefik.http.routers.prowlarr.middlewares=oauth@file" \
-    --label "traefik.http.routers.prowlarr.rule=Host(`%n.{{ inventory_hostname }}.{{ realm }}`)" \
-    --label "traefik.http.routers.prowlarr.tls.certresolver={{ realm }}" \
-    --label "traefik.http.routers.prowlarr.tls.domains[0].main=%n.{{ inventory_hostname }}.{{ realm }}" \
-    --label "traefik.http.services.prowlarr.loadbalancer.server.port=9696" \
-    --log-driver journald \
-    --mount "type=bind,source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,ro=true" \
-    --mount "type=bind,source={{ prowlarr_basedir }}/config,target=/config" \
-    --name %n \
-    --network "service" \
-    --replace \
-    --pull never \
-    --rm \
-    hotio/prowlarr:{{ prowlarr_version }}
+TimeoutStopSec=70
+ExecStartPre=/bin/rm --force %t/prowlarr.pid %t/prowlarr.pod-id
+ExecStartPre=/usr/bin/podman pod create \
+  --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --infra-conmon-pidfile %t/prowlarr.pid \
+  --label "traefik.enable=true" \
+  --label "traefik.http.routers.prowlarr.entrypoints=websecure" \
+  --label "traefik.http.routers.prowlarr.middlewares=oauth@file" \
+  --label "traefik.http.routers.prowlarr.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
+  --label "traefik.http.routers.prowlarr.tls.certresolver={{ realm }}" \
+  --label "traefik.http.routers.prowlarr.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
+  --label "traefik.http.services.prowlarr.loadbalancer.server.port=9696" \
+  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --network "service" \
+  --pod-id-file %t/prowlarr.pod-id \
+  --replace \
+  --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
+  --volume "{{ prowlarr_basedir }}/config:/config:rw"
 
-ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-prowlarr.ctr-id --time 10
-ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/container-prowlarr.ctr-id
-PIDFile=%t/container-prowlarr.pid
+ExecStart=/usr/bin/podman pod start --pod-id-file %t/prowlarr.pod-id
+ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/prowlarr.pod-id --time 10
+ExecStopPost=/usr/bin/podman pod rm --ignore --force --pod-id-file %t/prowlarr.pod-id
+PIDFile=%t/prowlarr.pid
 Type=forking
 
 [Install]
-WantedBy=multi-user.target default.target
+WantedBy=default.target

@@ -22,12 +22,13 @@ ExecStart=/usr/bin/podman run \
     --cgroups=no-conmon \
     --detach \
     --dns 192.168.178.52 \
-    --hostname "{{ inventory_hostname }}.{{ realm }}" \
+    #--hostname "{{ inventory_hostname }}.{{ realm }}" \
+    --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
     #--label "cloudflare.enabled=true" \
     #--label "cloudflare.name=ingress" \
     #--label "cloudflare.zone=ffm.ninja" \
     --label "traefik.enable=false" \
-    --name %n \
+    --name "%n.{{ inventory_hostname }}.{{ realm }}" \
     --network "service" \
     --publish "443:443" \
     --publish "80:80" \

@@ -21,22 +21,22 @@ ExecStart=/usr/bin/podman run \
     --conmon-pidfile %t/container-grafana.pid \
     --detach \
     --env "TZ={{ config_system_timezone }}" \
-    --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
-    --hostname %n \
+    --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
     --label "traefik.enable=true" \
     --label "traefik.http.routers.grafana.entrypoints=websecure" \
-    --label "traefik.http.routers.grafana.rule=Host(`%n.{{ inventory_hostname }}.{{ realm }}`)" \
+    --label "traefik.http.routers.grafana.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
     --label "traefik.http.routers.grafana.tls.certresolver={{ realm }}" \
-    --label "traefik.http.routers.grafana.tls.domains[0].main=%n.{{ inventory_hostname }}.{{ realm }}" \
+    --label "traefik.http.routers.grafana.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
     --label "traefik.http.services.grafana.loadbalancer.server.port=3000" \
     --log-driver journald \
     --mount "type=bind,source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,ro=true" \
     --mount "type=bind,source={{ grafana_basedir }}/data,target=/var/lib/grafana,rw=true" \
-    --name %n \
+    --name "%n.{{ inventory_hostname }}.{{ realm }}" \
     --network "service" \
     --pull never \
     --replace \
     --rm \
+    --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
     grafana/grafana-oss:{{ grafana_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-grafana.ctr-id --time 10

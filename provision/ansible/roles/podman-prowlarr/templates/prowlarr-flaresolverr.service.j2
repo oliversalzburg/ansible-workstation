@@ -1,0 +1,40 @@
+[Unit]
+Description=FlareSolverr
+Documentation=https://github.com/FlareSolverr/FlareSolverr
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=%t/containers
+BindsTo=prowlarr.service
+After=prowlarr.service
+StartLimitIntervalSec=10
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+RestartSec=10
+StartLimitBurst=3
+ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
+ExecStartPre=-/usr/bin/podman pull ghcr.io/flaresolverr/flaresolverr:{{ flaresolverr_version }}
+ExecStart=/usr/bin/podman run \
+  --cgroups "no-conmon" \
+  --cidfile "%t/%n.ctr-id" \
+  --detach \
+  --env "LOG_LEVEL=info" \
+  --env "TZ={{ config_system_timezone }}" \
+  --log-driver journald \
+  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --pod-id-file "%t/prowlarr.pod-id" \
+  --pull never \
+  --replace \
+  --rm \
+  --sdnotify "conmon" \
+  flaresolverr/flaresolverr:{{ flaresolverr_version }}
+
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/%n.ctr-id --time 10
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/%n.ctr-id
+Type=notify
+NotifyAccess=all
+
+[Install]
+WantedBy=default.target
+

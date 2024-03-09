@@ -1,9 +1,15 @@
 ---
 - hosts: "{{ target_host | default('workstation') }}"
-  gather_facts: false
+  gather_subset:
+    - "distribution_release"
+    - "mounts"
   roles:
     - role: unique-workstation
     - role: desktop
     - role: desktop-hires
+    - role: prometheus.prometheus.node_exporter
+      node_exporter_enabled_collectors:
+        - processes
+        - systemd
     - role: userspace
       userspace_user: adesso-os

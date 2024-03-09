@@ -1,4 +1,11 @@
 ---
+jellyfin_id: jellyfin
+jellyfin_name: Jellyfin
+jellyfin_groups:
+  - jellyfin
+  - nas
+  - service
+
 jellyfin_basedir: /mnt/usb/jellyfin
 jellyfin_mediadir: "{{ media_mount }}"
 jellyfin_version: latest

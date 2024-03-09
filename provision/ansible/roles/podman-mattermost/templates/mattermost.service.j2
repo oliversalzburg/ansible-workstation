@@ -20,17 +20,17 @@ ExecStart=/usr/bin/podman run \
     --cidfile %t/container-mattermost.ctr-id \
     --conmon-pidfile %t/container-mattermost.pid \
     --detach \
-    --env "MM_SERVICESETTINGS_SITEURL=https://%n.{{ inventory_hostname }}.{{ realm }}" \
+    --env "MM_SERVICESETTINGS_SITEURL=https://%N.web.{{ inventory_hostname }}.{{ realm }}" \
     --env "MM_SQLSETTINGS_DRIVERNAME=postgres" \
-    --env "MM_SQLSETTINGS_DATASOURCE=postgres://{{ mattermost_user }}:{{ mattermost_password }}@{{ inventory_hostname }}.{{ realm }}:5432/{{ mattermost_db }}?sslmode=disable&connect_timeout=10" \
+    --env "MM_SQLSETTINGS_DATASOURCE=postgres://{{ mattermost_user }}:{{ mattermost_password }}@postgres.service.{{ inventory_hostname }}.{{ realm }}:5432/{{ mattermost_db }}?sslmode=disable&connect_timeout=10" \
     --env "TZ={{ config_system_timezone }}" \
     --user "1000:1000" \
-    --hostname %n \
+    --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
     --label "traefik.enable=true" \
     --label "traefik.http.routers.mattermost.entrypoints=websecure" \
-    --label "traefik.http.routers.mattermost.rule=Host(`%n.{{ inventory_hostname }}.{{ realm }}`)" \
+    --label "traefik.http.routers.mattermost.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
     --label "traefik.http.routers.mattermost.tls.certresolver={{ realm }}" \
-    --label "traefik.http.routers.mattermost.tls.domains[0].main=%n.{{ inventory_hostname }}.{{ realm }}" \
+    --label "traefik.http.routers.mattermost.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
     --label "traefik.http.services.mattermost.loadbalancer.server.port=8065" \
     --log-driver journald \
     --mount "type=bind,source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,ro=true" \
@@ -40,7 +40,7 @@ ExecStart=/usr/bin/podman run \
     --mount "type=bind,source={{ mattermost_basedir }}/plugins,target=/mattermost/plugins" \
     --mount "type=bind,source={{ mattermost_basedir }}/client/plugins,target=/mattermost/client/plugins" \
     --mount "type=bind,source={{ mattermost_basedir }}/bleve-indexes,target=/mattermost/bleve-indexes" \
-    --name %n \
+    --name "%n.{{ inventory_hostname }}.{{ realm }}" \
     --network "service" \
     --pull never \
     --replace \

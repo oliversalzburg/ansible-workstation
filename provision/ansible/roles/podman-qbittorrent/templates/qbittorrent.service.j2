@@ -24,19 +24,19 @@ ExecStart=/usr/bin/podman run \
     --env "UMASK=002" \
     --env "TZ={{ config_system_timezone }}" \
     --env "WEBUI_PORTS=8080/tcp" \
-    --hostname %n \
+    --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
     --label "traefik.enable=true" \
     --label "traefik.http.routers.qbittorrent.entrypoints=websecure" \
     --label "traefik.http.routers.qbittorrent.middlewares=oauth@file" \
-    --label "traefik.http.routers.qbittorrent.rule=Host(`%n.{{ inventory_hostname }}.{{ realm }}`)" \
+    --label "traefik.http.routers.qbittorrent.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
     --label "traefik.http.routers.qbittorrent.tls.certresolver={{ realm }}" \
-    --label "traefik.http.routers.qbittorrent.tls.domains[0].main=%n.{{ inventory_hostname }}.{{ realm }}" \
+    --label "traefik.http.routers.qbittorrent.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
     --label "traefik.http.services.qbittorrent.loadbalancer.server.port=8080" \
     --log-driver journald \
     --mount "type=bind,source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,ro=true" \
     --mount "type=bind,source={{ qbittorrent_basedir }}/config,target=/config" \
     --mount "type=bind,source={{ qbittorrent_mediadir }},target=/data" \
-    --name %n \
+    --name "%n.{{ inventory_hostname }}.{{ realm }}" \
     --network "service" \
     --pull never \
     --replace \

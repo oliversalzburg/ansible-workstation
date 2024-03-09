@@ -1,29 +1,71 @@
 ---
-- name: Get render group
-  ansible.builtin.getent:
-    database: group
-    key: render
+- name: Create groups
+  become: true
+  register: _groups
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+    system: true
+  loop: "{{ jellyfin_groups }}"
 
-- name: Copy Jellyfin service file
+- name: Ensure {{ ansible_user }} is a group member
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: "{{ jellyfin_groups }}"
+    append: true
+
+- name: Create user
+  become: true
+  register: _user
+  ansible.builtin.user:
+    comment: "{{ jellyfin_name }}"
+    create_home: false
+    group: "{{ _groups.results[0].gid }}"
+    groups: "{{ jellyfin_groups }}"
+    home: "{{ jellyfin_basedir }}"
+    name: "{{ jellyfin_id }}"
+    password: "!"
+    shell: "/usr/sbin/nologin"
+    system: true
+
+
+- name: Ensure working directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ jellyfin_basedir }}"
+    state: directory
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+
+- name: Ensure directories exist
+  become: true
+  ansible.builtin.file:
+    path: "{{ jellyfin_basedir }}/{{ item }}"
+    state: directory
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+  loop:
+    - cache
+    - config
+
+
+- name: Copy service files
   become: true
   ansible.builtin.template:
-    src: "jellyfin.service.j2"
-    dest: "{{ directory_systemd }}/jellyfin.service"
+    src: "{{ item }}.j2"
+    dest: "{{ directory_systemd }}/{{ item }}"
     owner: root
     group: root
     mode: 0644
+  loop:
+    - jellyfin.service
+    - jellyfin.timer
 
-- name: Copy Jellyfin timer file
-  become: true
-  ansible.builtin.copy:
-    src: "{{ role_path }}/files/etc/systemd/jellyfin.timer"
-    dest: "{{ directory_systemd }}/jellyfin.timer"
-    mode: 0644
-
-- name: Enable and check Jellyfin service
+- name: Enable and check service
   become: true
   ansible.builtin.systemd:
-    name: jellyfin
     daemon_reload: true
-    state: restarted
     enabled: true
+    name: jellyfin
+    state: restarted

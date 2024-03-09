@@ -1,4 +1,6 @@
 entryPoints:
+  traefik:
+    address: ":8081"
   web:
     address: ":80"
     http:
@@ -12,10 +14,12 @@ entryPoints:
       tls:
         certresolver: "{{ realm }}"
         domains:
-          - main: "{{ inventory_hostname }}.{{ realm }}"
+          - main: "web.{{ inventory_hostname }}.{{ realm }}"
             sans:
-              - "192.168.178.52"
+              - "*.web.{{ inventory_hostname }}.{{ realm }}"
               - "*.{{ inventory_hostname }}.{{ realm }}"
+              - "{{ inventory_hostname }}.{{ realm }}"
+              - "192.168.178.52"
       middlewares:
         - default@file
 
@@ -34,6 +38,12 @@ certificatesResolvers:
 
 log:
   level: DEBUG
+
+metrics:
+  prometheus:
+    addEntryPointsLabels: true
+    addServicesLabels: true
+    entryPoint: traefik
 
 providers:
   docker:

@@ -19,10 +19,14 @@
   become: true
   register: _user
   ansible.builtin.user:
-    name: "{{ grafana_id }}"
     comment: "{{ grafana_name }}"
+    create_home: false
     group: "{{ _groups.results[0].gid }}"
     groups: "{{ grafana_groups }}"
+    home: "{{ grafana_basedir }}"
+    name: "{{ grafana_id }}"
+    password: "!"
+    shell: "/usr/sbin/nologin"
     system: true
 
 - name: Ensure working directory exists
@@ -33,7 +37,7 @@
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
 
-- name: Ensure directories exists
+- name: Ensure directories exist
   become: true
   ansible.builtin.file:
     path: "{{ grafana_basedir }}/{{ item }}"
@@ -43,14 +47,17 @@
   loop:
     - data
 
-- name: Copy service file
+
+- name: Copy service files
   become: true
   ansible.builtin.template:
-    src: grafana.service.j2
-    dest: "{{ directory_systemd }}/grafana.service"
+    src: "{{ item }}.j2"
+    dest: "{{ directory_systemd }}/{{ item }}"
     owner: root
     group: root
     mode: 0644
+  loop:
+    - grafana.service
 
 - name: Enable and check service
   become: true

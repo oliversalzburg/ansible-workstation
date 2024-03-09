@@ -37,7 +37,7 @@ http:
 
     oauth-auth:
       forwardAuth:
-        address: "https://oauth2proxy.service.{{ inventory_hostname }}.{{ realm }}/oauth2/auth"
+        address: "https://oauth2proxy.web.{{ inventory_hostname }}.{{ realm }}/oauth2/auth"
         trustForwardHeader: true
     oauth-errors:
       errors:
@@ -48,9 +48,9 @@ http:
 
   routers:
     dashboard:
-      middlewares:
-        - oauth
-      rule: "Host(`traefik.{{ inventory_hostname }}.{{ realm }}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+      #middlewares:
+      #  - oauth
+      rule: "Host(`web.{{ inventory_hostname }}.{{ realm }}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
       service: api@internal
       tls:
         certresolver: "{{ realm }}"

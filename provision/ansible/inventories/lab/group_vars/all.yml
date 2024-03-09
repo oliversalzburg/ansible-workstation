@@ -19,6 +19,7 @@ version_age: 1.1.1
 version_nodejs: 20
 version_sops: 3.7.3
 
+exportarr_version: "v1.6.2"
 jellyfin_version: "10.8.13-1-amd64"
 keycloak_version: "24.0.1"
 lidarr_version: "release-2.1.7.4030"
@@ -31,3 +32,8 @@ qbittorrent_version: "release-4.6.3"
 radarr_version: "release-5.3.6.8612"
 sonarr_version: "release-4.0.2.1183"
 traefik_version: "v2.11.0"
+
+lidarr_api_key: 30a49b8716a96f61f6122881f5e12a5f
+prowlarr_api_key: 30a49b8716a96f61f6122881f5e12a5f
+radarr_api_key: 30a49b8716a96f61f6122881f5e12a5f
+sonarr_api_key: 30a49b8716a96f61f6122881f5e12a5f

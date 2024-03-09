@@ -1,6 +1,13 @@
 ---
+keycloak_id: keycloak
+keycloak_name: Keycloak
+keycloak_groups:
+  - keycloak
+  - service
+
 keycloak_basedir: /mnt/usb/keycloak
 keycloak_version: latest
-keycloak_user: kcuser
-keycloak_password: kcuser_password
-keycloak_db: keycloak
+
+keycloak_pg_user: kcuser
+keycloak_pg_password: kcuser_password
+keycloak_pg_db: keycloak

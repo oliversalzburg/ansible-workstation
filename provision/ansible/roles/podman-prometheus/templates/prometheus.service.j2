@@ -20,17 +20,17 @@ ExecStart=/usr/bin/podman run \
     --cidfile %t/container-prometheus.ctr-id \
     --conmon-pidfile %t/container-prometheus.pid \
     --detach \
-    --hostname %n \
+    --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
     --label "traefik.enable=true" \
     --label "traefik.http.routers.prometheus.entrypoints=websecure" \
-    --label "traefik.http.routers.prometheus.rule=Host(`%n.{{ inventory_hostname }}.{{ realm }}`)" \
+    --label "traefik.http.routers.prometheus.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
     --label "traefik.http.routers.prometheus.tls.certresolver={{ realm }}" \
-    --label "traefik.http.routers.prometheus.tls.domains[0].main=%n.{{ inventory_hostname }}.{{ realm }}" \
+    --label "traefik.http.routers.prometheus.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
     --label "traefik.http.services.prometheus.loadbalancer.server.port=9090" \
     --log-driver journald \
     --mount "type=bind,source={{ prometheus_basedir }}/data,target=/prometheus,rw=true" \
     --mount "type=bind,source={{ prometheus_basedir }}/etc,target=/etc/prometheus,ro=true" \
-    --name %n \
+    --name "%n.{{ inventory_hostname }}.{{ realm }}" \
     --network "service" \
     --pull never \
     --replace \

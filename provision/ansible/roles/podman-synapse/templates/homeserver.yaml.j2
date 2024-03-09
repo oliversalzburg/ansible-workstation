@@ -4,7 +4,7 @@ database:
     user: "{{ synapse_user }}"
     password: "{{ synapse_password }}"
     database: "{{ synapse_db }}"
-    host: "{{ inventory_hostname }}.{{ realm }}"
+    host: "postgres.service.{{ inventory_hostname }}.{{ realm }}"
     port: 5432
 listeners:
   - port: 8008
