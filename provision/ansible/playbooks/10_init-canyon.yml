@@ -1,16 +1,26 @@
 ---
 - hosts: "{{ target_host | default('canyon') }}"
-  gather_facts: false
+  gather_subset:
+    - "architecture"
+    - "mounts"
   roles:
     - role: unique-canyon
     - role: gpu-intel
     - role: desktop
+    - role: prometheus.prometheus.node_exporter
+      node_exporter_enabled_collectors:
+        - processes
+        - systemd
+    - role: prometheus.prometheus.cadvisor
     # Required for roles below. Process first.
     - role: podman-host
     - role: podman-postgres
-    # Application roles
-    - role: podman-keycloak
+    - role: podman-prometheus
+    # Application roles. Eventually consistent.
+    - role: podman-bazarr
+    - role: podman-grafana
     - role: podman-jellyfin
+    - role: podman-keycloak
     - role: podman-lidarr
     - role: podman-mattermost
     - role: podman-oauth2proxy

@@ -52,24 +52,24 @@
 - name: Create postgres user
   community.postgresql.postgresql_user:
     host: localhost
-    login_password: "{{ postgres_password }}"
-    login_user: "{{ postgres_user }}"
+    login_password: "{{ postgres_master_password }}"
+    login_user: "{{ postgres_master_user }}"
     name: "{{ keycloak_pg_user }}"
     password: "{{ keycloak_pg_password }}"
 
 - name: Create postgres database
   community.postgresql.postgresql_db:
     host: localhost
-    login_password: "{{ postgres_password }}"
-    login_user: "{{ postgres_user }}"
+    login_password: "{{ postgres_master_password }}"
+    login_user: "{{ postgres_master_user }}"
     name: "{{ keycloak_pg_db }}"
     owner: "{{ keycloak_pg_user }}"
 
 - name: "GRANT ALL PRIVILEGES ON DATABASE 'db'' TO 'user'"
   community.postgresql.postgresql_privs:
     host: localhost
-    login_password: "{{ postgres_password }}"
-    login_user: "{{ postgres_user }}"
+    login_password: "{{ postgres_master_password }}"
+    login_user: "{{ postgres_master_user }}"
     db: postgres
     privs: ALL
     type: database
@@ -79,13 +79,29 @@
 - name: "GRANT USAGE, CREATE ON SCHEMA PUBLIC TO 'user'"
   community.postgresql.postgresql_privs:
     host: localhost
-    login_password: "{{ postgres_password }}"
-    login_user: "{{ postgres_user }}"
+    login_password: "{{ postgres_master_password }}"
+    login_user: "{{ postgres_master_user }}"
     db: postgres
     privs: CREATE
     type: schema
     obj: public
     role: "{{ keycloak_pg_user }}"
+
+
+- name: Create secret keycloak_admin
+  become: true
+  containers.podman.podman_secret:
+    data: "{{ keycloak_admin }}"
+    force: true
+    name: keycloak_admin
+    state: present
+- name: Create secret keycloak_admin_password
+  become: true
+  containers.podman.podman_secret:
+    data: "{{ keycloak_admin_password }}"
+    force: true
+    name: keycloak_admin_password
+    state: present
 
 
 - name: Copy service files

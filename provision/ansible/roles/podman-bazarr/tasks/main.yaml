@@ -6,25 +6,25 @@
     name: "{{ item }}"
     state: present
     system: true
-  loop: "{{ prometheus_groups }}"
+  loop: "{{ bazarr_groups }}"
 
 - name: Ensure {{ ansible_user }} is a group member
   become: true
   ansible.builtin.user:
     name: "{{ ansible_user }}"
-    groups: "{{ prometheus_groups }}"
+    groups: "{{ bazarr_groups }}"
     append: true
 
 - name: Create user
   become: true
   register: _user
   ansible.builtin.user:
-    comment: "{{ prometheus_name }}"
+    comment: "{{ bazarr_name }}"
     create_home: false
     group: "{{ _groups.results[0].gid }}"
-    groups: "{{ prometheus_groups }}"
-    home: "{{ prometheus_basedir }}"
-    name: "{{ prometheus_id }}"
+    groups: "{{ bazarr_groups }}"
+    home: "{{ bazarr_basedir }}"
+    name: "{{ bazarr_id }}"
     password: "!"
     shell: "/usr/sbin/nologin"
     system: true
@@ -33,7 +33,7 @@
 - name: Ensure working directory exists
   become: true
   ansible.builtin.file:
-    path: "{{ prometheus_basedir }}"
+    path: "{{ bazarr_basedir }}"
     state: directory
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
@@ -41,23 +41,22 @@
 - name: Ensure directories exist
   become: true
   ansible.builtin.file:
-    path: "{{ prometheus_basedir }}/{{ item }}"
+    path: "{{ bazarr_basedir }}/{{ item }}"
     state: directory
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
   loop:
-    - data
-    - etc
+    - config
 
 
-- name: Copy configuration
-  become: true
-  ansible.builtin.template:
-    src: prometheus.yml.j2
-    dest: "{{ prometheus_basedir }}/etc/prometheus.yml"
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
-    mode: 0644
+#- name: Copy configuration
+#  become: true
+#  ansible.builtin.template:
+#    src: "config.xml.j2"
+#    dest: "{{ bazarr_basedir }}/config/config.xml"
+#    owner: "{{ _user.uid }}"
+#    group: "{{ _groups.results[0].gid }}"
+#    mode: 0644
 
 
 - name: Copy service files
@@ -69,12 +68,14 @@
     group: root
     mode: 0644
   loop:
-    - prometheus.service
+    - bazarr-exporter.service
+    - bazarr-main.service
+    - bazarr.service
 
 - name: Enable and check service
   become: true
   ansible.builtin.systemd:
     daemon_reload: true
     enabled: true
-    name: prometheus
+    name: bazarr
     state: restarted

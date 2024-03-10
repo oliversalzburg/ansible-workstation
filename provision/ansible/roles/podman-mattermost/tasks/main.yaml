@@ -1,17 +1,50 @@
 ---
+- name: Create groups
+  become: true
+  register: _groups
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+    system: true
+  loop: "{{ mattermost_groups }}"
+
+- name: Ensure {{ ansible_user }} is a group member
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: "{{ mattermost_groups }}"
+    append: true
+
+- name: Create user
+  become: true
+  register: _user
+  ansible.builtin.user:
+    comment: "{{ mattermost_name }}"
+    create_home: false
+    group: "{{ _groups.results[0].gid }}"
+    groups: "{{ mattermost_groups }}"
+    home: "{{ mattermost_basedir }}"
+    name: "{{ mattermost_id }}"
+    password: "!"
+    shell: "/usr/sbin/nologin"
+    system: true
+
+
 - name: Ensure working directory exists
   become: true
   ansible.builtin.file:
     path: "{{ mattermost_basedir }}"
     state: directory
-    owner: "{{ ansible_user }}"
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
 
-- name: Ensure directories exists
+- name: Ensure directories exist
   become: true
   ansible.builtin.file:
     path: "{{ mattermost_basedir }}/{{ item }}"
     state: directory
-    owner: "{{ ansible_user }}"
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
   loop:
     - config
     - data
@@ -20,57 +53,61 @@
     - client/plugins
     - bleve-indexes
 
-- name: Create user mattermost
+
+- name: Create postgres user
   community.postgresql.postgresql_user:
     host: localhost
-    login_password: "{{ postgres_password }}"
-    login_user: "{{ postgres_user }}"
-    name: "{{ mattermost_user }}"
-    password: "{{ mattermost_password }}"
+    login_password: "{{ postgres_master_password }}"
+    login_user: "{{ postgres_master_user }}"
+    name: "{{ mattermost_pg_user }}"
+    password: "{{ mattermost_pg_password }}"
 
-- name: Create database for mattermost
+- name: Create postgres database
   community.postgresql.postgresql_db:
     host: localhost
-    login_password: "{{ postgres_password }}"
-    login_user: "{{ postgres_user }}"
-    name: "{{ mattermost_db }}"
-    owner: "{{ mattermost_user }}"
+    login_password: "{{ postgres_master_password }}"
+    login_user: "{{ postgres_master_user }}"
+    name: "{{ mattermost_pg_db }}"
+    owner: "{{ mattermost_pg_user }}"
 
-- name: "GRANT ALL PRIVILEGES ON DATABASE {{ mattermost_db }} TO {{ mattermost_user }}"
+- name: "GRANT ALL PRIVILEGES ON DATABASE 'db'' TO 'user'"
   community.postgresql.postgresql_privs:
     host: localhost
-    login_password: "{{ postgres_password }}"
-    login_user: "{{ postgres_user }}"
+    login_password: "{{ postgres_master_password }}"
+    login_user: "{{ postgres_master_user }}"
     db: postgres
     privs: ALL
     type: database
-    obj: "{{ mattermost_db }}"
-    role: "{{ mattermost_user }}"
+    obj: "{{ mattermost_pg_db }}"
+    role: "{{ mattermost_pg_user }}"
 
-- name: "GRANT USAGE, CREATE ON SCHEMA PUBLIC TO {{ mattermost_user }}"
+- name: "GRANT USAGE, CREATE ON SCHEMA PUBLIC TO 'user'"
   community.postgresql.postgresql_privs:
     host: localhost
-    login_password: "{{ postgres_password }}"
-    login_user: "{{ postgres_user }}"
+    login_password: "{{ postgres_master_password }}"
+    login_user: "{{ postgres_master_user }}"
     db: postgres
     privs: CREATE
     type: schema
-    objs: public
-    role: "{{ mattermost_user }}"
+    obj: public
+    role: "{{ mattermost_pg_user }}"
 
-- name: Copy mattermost service file
+
+- name: Copy service files
   become: true
   ansible.builtin.template:
-    src: mattermost.service.j2
-    dest: "{{ directory_systemd }}/mattermost.service"
+    src: "{{ item }}.j2"
+    dest: "{{ directory_systemd }}/{{ item }}"
     owner: root
     group: root
     mode: 0644
+  loop:
+    - mattermost.service
 
-- name: Enable and check mattermost service
+- name: Enable and check service
   become: true
   ansible.builtin.systemd:
-    name: mattermost
     daemon_reload: true
-    state: restarted
     enabled: true
+    name: mattermost
+    state: restarted

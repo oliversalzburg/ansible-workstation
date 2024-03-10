@@ -1,6 +1,12 @@
 ---
+postgres_id: postgres
+postgres_name: Grafana
+postgres_groups:
+  - postgres
+  - service
+
 postgres_basedir: /mnt/usb/postgres
-postgres_password: postgres
-postgres_user: postgres
+postgres_master_password: postgres
+postgres_master_user: postgres
 postgres_version: 16
 postgresexporter_version: v0.15.0

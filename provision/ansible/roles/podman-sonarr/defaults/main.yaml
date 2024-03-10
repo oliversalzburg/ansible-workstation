@@ -1,4 +1,11 @@
 ---
+sonarr_id: sonarr
+sonarr_name: Sonarr
+sonarr_groups:
+  - sonarr
+  - nas
+  - service
+
 sonarr_basedir: /mnt/usb/sonarr
 sonarr_mediadir: "{{ media_mount }}"
 sonarr_version: latest

@@ -1,21 +1,63 @@
 ---
-- name: Ensure working directories exist
+- name: Create groups
+  become: true
+  register: _groups
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+    system: true
+  loop: "{{ sonarr_groups }}"
+
+- name: Ensure {{ ansible_user }} is a group member
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: "{{ sonarr_groups }}"
+    append: true
+
+- name: Create user
+  become: true
+  register: _user
+  ansible.builtin.user:
+    comment: "{{ sonarr_name }}"
+    create_home: false
+    group: "{{ _groups.results[0].gid }}"
+    groups: "{{ sonarr_groups }}"
+    home: "{{ sonarr_basedir }}"
+    name: "{{ sonarr_id }}"
+    password: "!"
+    shell: "/usr/sbin/nologin"
+    system: true
+
+
+- name: Ensure working directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ sonarr_basedir }}"
+    state: directory
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+
+- name: Ensure directories exist
   become: true
   ansible.builtin.file:
     path: "{{ sonarr_basedir }}/{{ item }}"
     state: directory
-    owner: "{{ ansible_user }}"
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
   loop:
     - config
+
 
 - name: Copy configuration
   become: true
   ansible.builtin.template:
     src: "config.xml.j2"
     dest: "{{ sonarr_basedir }}/config/config.xml"
-    owner: 1001
-    group: 1001
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
     mode: 0644
+
 
 - name: Copy service files
   become: true
@@ -30,10 +72,10 @@
     - sonarr-main.service
     - sonarr.service
 
-- name: Enable and check sonarr service
+- name: Enable and check service
   become: true
   ansible.builtin.systemd:
-    name: sonarr
     daemon_reload: true
-    state: restarted
     enabled: true
+    name: sonarr
+    state: restarted

@@ -20,8 +20,8 @@ ExecStart=/usr/bin/podman run \
   --cgroups "no-conmon" \
   --cidfile "%t/%n.ctr-id" \
   --detach \
-  --env "PUID=1001" \
-  --env "PGID=1001" \
+  --env "PUID={{ _user.uid }}" \
+  --env "PGID={{ _groups.results[0].gid }}" \
   --env "UMASK=002" \
   --env "TZ={{ config_system_timezone }}" \
   --log-driver journald \

@@ -13,39 +13,40 @@ StartLimitBurst=3
 ExecStartPre=/bin/rm --force %t/container-keycloak.pid %t/container-keycloak.ctr-id
 ExecStartPre=-/usr/bin/podman pull quay.io/keycloak/keycloak:{{ keycloak_version }}
 ExecStart=/usr/bin/podman run \
-    --cgroups no-conmon \
-    --cidfile %t/container-keycloak.ctr-id \
-    --conmon-pidfile %t/container-keycloak.pid \
-    --detach \
-    --env "KEYCLOAK_ADMIN={{ keycloak_admin }}" \
-    --env "KEYCLOAK_ADMIN_PASSWORD={{ keycloak_admin_password }}" \
-    --env "TZ={{ config_system_timezone }}" \
-    --user "1000:1000" \
-    --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
-    --label "traefik.enable=true" \
-    --label "traefik.http.routers.keycloak.entrypoints=websecure" \
-    --label "traefik.http.routers.keycloak.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
-    --label "traefik.http.routers.keycloak.tls.certresolver={{ realm }}" \
-    --label "traefik.http.routers.keycloak.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
-    --label "traefik.http.services.keycloak.loadbalancer.server.port=8080" \
-    --log-driver journald \
-    --mount "type=bind,source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,ro=true" \
-    --mount "type=bind,source={{ keycloak_basedir }}/data,target=/opt/keycloak/data" \
-    --name "%n.{{ inventory_hostname }}.{{ realm }}" \
-    --network "service" \
-    --pull never \
-    --replace \
-    --rm \
-    --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
-    keycloak/keycloak:{{ keycloak_version }} \
-    start \
-    --db="postgres" \
-    --db-url="jdbc:postgresql://postgres.service.{{ inventory_hostname }}.{{ realm }}:5432/{{ keycloak_pg_db }}" \
-    --db-username="{{ keycloak_pg_user }}" \
-    --db-password="{{ keycloak_pg_password }}" \
-    --hostname="%N.web.{{ inventory_hostname }}.{{ realm }}" \
-    --http-enabled="true" \
-    --proxy-headers="xforwarded"
+  --cgroups no-conmon \
+  --cidfile %t/container-keycloak.ctr-id \
+  --conmon-pidfile %t/container-keycloak.pid \
+  --detach \
+  --env "TZ={{ config_system_timezone }}" \
+  --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --label "traefik.enable=true" \
+  --label "traefik.http.routers.keycloak.entrypoints=websecure" \
+  --label "traefik.http.routers.keycloak.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
+  --label "traefik.http.routers.keycloak.tls.certresolver={{ realm }}" \
+  --label "traefik.http.routers.keycloak.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
+  --label "traefik.http.services.keycloak.loadbalancer.server.port=8080" \
+  --log-driver journald \
+  --mount "type=bind,source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,ro=true" \
+  # Data mount is currently not utilized.
+  #--mount "type=bind,source={{ keycloak_basedir }}/data,target=/opt/keycloak/data" \
+  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --network "service" \
+  --pull never \
+  --replace \
+  --rm \
+  --secret "keycloak_admin,type=env,target=KEYCLOAK_ADMIN" \
+  --secret "keycloak_admin_password,type=env,target=KEYCLOAK_ADMIN_PASSWORD" \
+  # Keycloak doesn't seem to support running rootless. Errors on startup.
+  #--user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  keycloak/keycloak:{{ keycloak_version }} \
+  start \
+  --db="postgres" \
+  --db-url="jdbc:postgresql://postgres.service.{{ inventory_hostname }}.{{ realm }}:5432/{{ keycloak_pg_db }}" \
+  --db-username="{{ keycloak_pg_user }}" \
+  --db-password="{{ keycloak_pg_password }}" \
+  --hostname="%N.web.{{ inventory_hostname }}.{{ realm }}" \
+  --http-enabled="true" \
+  --proxy-headers="xforwarded"
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-keycloak.ctr-id --time 10
 ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/container-keycloak.ctr-id

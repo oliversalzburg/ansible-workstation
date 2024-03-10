@@ -17,18 +17,18 @@ TimeoutStopSec=70
 ExecStartPre=/bin/rm --force %t/%n.ctr-id
 ExecStartPre=-/usr/bin/podman pull quay.io/prometheuscommunity/postgres-exporter:{{ postgresexporter_version }}
 ExecStart=/usr/bin/podman run \
-    --cgroups no-conmon \
-    --cidfile "%t/%n.ctr-id" \
-    --detach \
-    --env "DATA_SOURCE_NAME=postgresql://{{ postgres_user }}:{{ postgres_password }}@127.0.0.1:5432/postgres?sslmode=disable" \
-    --log-driver journald \
-    --name "%n.{{ inventory_hostname }}.{{ realm }}" \
-    --pod-id-file "%t/postgres.pod-id" \
-    --pull never \
-    --replace \
-    --rm \
-    --sdnotify "conmon" \
-    prometheuscommunity/postgres-exporter:{{ postgresexporter_version }}
+  --cgroups no-conmon \
+  --cidfile "%t/%n.ctr-id" \
+  --detach \
+  --env "DATA_SOURCE_NAME=postgresql://{{ postgres_master_user }}:{{ postgres_master_password }}@127.0.0.1:5432/postgres?sslmode=disable" \
+  --log-driver journald \
+  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --pod-id-file "%t/postgres.pod-id" \
+  --pull never \
+  --replace \
+  --rm \
+  --sdnotify "conmon" \
+  prometheuscommunity/postgres-exporter:{{ postgresexporter_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/%n.ctr-id --time 10
 ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/%n.ctr-id

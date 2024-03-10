@@ -1,6 +1,13 @@
 ---
+synapse_id: synapse
+synapse_name: Grafana
+synapse_groups:
+  - synapse
+  - service
+
 synapse_basedir: /mnt/usb/synapse
 synapse_version: latest
-synapse_user: synapse
-synapse_password: synapse_password
-synapse_db: synapse
+
+synapse_pg_user: synapse
+synapse_pg_password: synapse_pg_password
+synapse_pg_db: synapse

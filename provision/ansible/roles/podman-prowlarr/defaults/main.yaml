@@ -1,4 +1,10 @@
 ---
+prowlarr_id: prowlarr
+prowlarr_name: Prowlarr
+prowlarr_groups:
+  - prowlarr
+  - service
+
 prowlarr_basedir: /mnt/usb/prowlarr
 prowlarr_version: latest
 exportarr_version: latest

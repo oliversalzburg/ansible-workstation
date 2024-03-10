@@ -1,0 +1,13 @@
+---
+bazarr_id: bazarr
+bazarr_name: Bazarr
+bazarr_groups:
+  - bazarr
+  - nas
+  - service
+
+bazarr_basedir: /mnt/usb/bazarr
+bazarr_mediadir: "{{ media_mount }}"
+bazarr_version: latest
+bazarr_api_key: 01234567890123456789
+exportarr_version: latest

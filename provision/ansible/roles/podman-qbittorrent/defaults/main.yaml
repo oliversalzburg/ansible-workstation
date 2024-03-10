@@ -1,4 +1,11 @@
 ---
+qbittorrent_id: qbittorrent
+qbittorrent_name: qBittorrent
+qbittorrent_groups:
+  - qbittorrent
+  - nas
+  - service
+
 qbittorrent_basedir: /mnt/usb/qbittorrent
 qbittorrent_mediadir: "{{ media_mount }}"
 qbittorrent_version: latest

@@ -1,3 +1,9 @@
 ---
+prometheus_id: prometheus
+prometheus_name: Prometheus
+prometheus_groups:
+  - prometheus
+  - service
+
 prometheus_basedir: /mnt/usb/prometheus
 prometheus_version: latest

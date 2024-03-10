@@ -49,6 +49,9 @@
     - cache
     - config
 
+- name: Get groups
+  ansible.builtin.getent:
+    database: group
 
 - name: Copy service files
   become: true

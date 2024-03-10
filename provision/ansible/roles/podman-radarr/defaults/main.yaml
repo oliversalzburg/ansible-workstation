@@ -1,4 +1,11 @@
 ---
+radarr_id: radarr
+radarr_name: Radarr
+radarr_groups:
+  - radarr
+  - nas
+  - service
+
 radarr_basedir: /mnt/usb/radarr
 radarr_mediadir: "{{ media_mount }}"
 radarr_version: latest

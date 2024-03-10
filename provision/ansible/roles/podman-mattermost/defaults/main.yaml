@@ -1,6 +1,13 @@
 ---
+mattermost_id: mattermost
+mattermost_name: Mattermost
+mattermost_groups:
+  - mattermost
+  - service
+
 mattermost_basedir: /mnt/usb/mattermost
 mattermost_version: latest
-mattermost_user: mmuser
-mattermost_password: mmuser_password
-mattermost_db: mattermost
+
+mattermost_pg_user: mmuser
+mattermost_pg_password: mmuser_password
+mattermost_pg_db: mattermost

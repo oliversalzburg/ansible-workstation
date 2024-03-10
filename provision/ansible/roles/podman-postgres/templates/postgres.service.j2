@@ -13,15 +13,15 @@ Restart=on-failure
 TimeoutStopSec=70
 ExecStartPre=/bin/rm --force %t/postgres.pid %t/postgres.pod-id
 ExecStartPre=/usr/bin/podman pod create \
-  --infra-conmon-pidfile %t/postgres.pid \
-  --pod-id-file %t/postgres.pod-id \
   --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
-  --volume "{{ postgres_basedir }}/data:/var/lib/postgresql/data:rw" \
+  --infra-conmon-pidfile %t/postgres.pid \
   --name "%n.{{ inventory_hostname }}.{{ realm }}" \
   --network "service" \
+  --pod-id-file %t/postgres.pod-id \
   --publish "5432:5432/tcp" \
   --publish "9187:9187/tcp" \
-  --replace
+  --replace \
+  --volume "{{ postgres_basedir }}/data:/var/lib/postgresql/data:rw"
 
 ExecStart=/usr/bin/podman pod start --pod-id-file %t/postgres.pod-id
 ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/postgres.pod-id --time 10

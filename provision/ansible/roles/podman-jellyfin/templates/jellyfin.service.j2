@@ -21,6 +21,8 @@ ExecStart=/usr/bin/podman run \
   --conmon-pidfile %t/container-jellyfin.pid \
   --detach \
   --device /dev/dri:/dev/dri \
+  --group-add "{{ getent_group["nas"][1] }}" \
+  --group-add "{{ getent_group["render"][1] }}" \
   --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
   --label "traefik.enable=false" \
   --label "traefik.http.routers.jellyfin.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \

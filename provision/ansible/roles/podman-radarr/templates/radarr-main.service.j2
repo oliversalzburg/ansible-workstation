@@ -8,7 +8,6 @@ BindsTo=radarr.service
 After=radarr.service
 StartLimitIntervalSec=10
 
-
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
@@ -20,7 +19,7 @@ ExecStart=/usr/bin/podman run \
   --cgroups "no-conmon" \
   --cidfile "%t/%n.ctr-id" \
   --detach \
-  --env "PUID=1001" \
+  --env "PUID={{ _user.uid }}" \
   --env "PGID=1001" \
   --env "UMASK=002" \
   --env "TZ={{ config_system_timezone }}" \

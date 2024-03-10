@@ -1,3 +1,9 @@
 ---
+traefik_id: traefik
+traefik_name: traefik
+traefik_groups:
+  - traefik
+  - service
+
 traefik_basedir: /mnt/usb/traefik
 traefik_version: latest

@@ -1,60 +1,89 @@
 ---
+- name: Create groups
+  become: true
+  register: _groups
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+    system: true
+  loop: "{{ traefik_groups }}"
+
+- name: Ensure {{ ansible_user }} is a group member
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: "{{ traefik_groups }}"
+    append: true
+
+- name: Create user
+  become: true
+  register: _user
+  ansible.builtin.user:
+    comment: "{{ traefik_name }}"
+    create_home: false
+    group: "{{ _groups.results[0].gid }}"
+    groups: "{{ traefik_groups }}"
+    home: "{{ traefik_basedir }}"
+    name: "{{ traefik_id }}"
+    password: "!"
+    shell: "/usr/sbin/nologin"
+    system: true
+
+
 - name: Ensure working directory exists
   become: true
   ansible.builtin.file:
     path: "{{ traefik_basedir }}"
     state: directory
-    owner: "{{ ansible_user }}"
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
 
-- name: Ensure ACME storage exists
+- name: Ensure directories exist
   become: true
   ansible.builtin.file:
-    path: "{{ traefik_basedir }}/acme"
+    path: "{{ traefik_basedir }}/{{ item }}"
     state: directory
-    owner: root
-    group: root
-    mode: 0600
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+  loop:
+    - acme
+    - conf.d
 
-- name: Ensure configuration directiony exists
-  become: true
-  ansible.builtin.file:
-    path: "{{ traefik_basedir }}/conf.d"
-    state: directory
-    owner: root
-    group: root
-    mode: 0600
 
 - name: Copy traefik config file
   become: true
   ansible.builtin.template:
     src: "traefik.yml.j2"
     dest: "{{ traefik_basedir }}/traefik.yml"
-    owner: root
-    group: root
-    mode: 0644
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+    mode: 0640
 
 - name: Copy traefik dynamic config file
   become: true
   ansible.builtin.template:
     src: "traefik_dynamic_default.yml.j2"
     dest: "{{ traefik_basedir }}/conf.d/traefik_dynamic_default.yml"
-    owner: root
-    group: root
-    mode: 0644
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+    mode: 0640
 
-- name: Copy traefik service file
+
+- name: Copy service files
   become: true
   ansible.builtin.template:
-    src: "traefik.service.j2"
-    dest: "{{ directory_systemd }}/traefik.service"
+    src: "{{ item }}.j2"
+    dest: "{{ directory_systemd }}/{{ item }}"
     owner: root
     group: root
     mode: 0644
+  loop:
+    - traefik.service
 
-- name: Enable and check traefik service
+- name: Enable and check service
   become: true
   ansible.builtin.systemd:
-    name: traefik
     daemon_reload: true
-    state: restarted
     enabled: true
+    name: traefik
+    state: restarted

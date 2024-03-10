@@ -1,9 +1,9 @@
 database:
   name: "psycopg2"
   args:
-    user: "{{ synapse_user }}"
-    password: "{{ synapse_password }}"
-    database: "{{ synapse_db }}"
+    user: "{{ synapse_pg_user }}"
+    password: "{{ synapse_pg_password }}"
+    database: "{{ synapse_pg_db }}"
     host: "postgres.service.{{ inventory_hostname }}.{{ realm }}"
     port: 5432
 listeners:

@@ -35,7 +35,7 @@ ExecStart=/usr/bin/podman run \
     --pull never \
     --replace \
     --rm \
-    --user "1000:1000" \
+    --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
     prometheus/prometheus:{{ prometheus_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-prometheus.ctr-id --time 10

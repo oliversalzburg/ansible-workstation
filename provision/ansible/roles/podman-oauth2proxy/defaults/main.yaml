@@ -1,3 +1,9 @@
 ---
+oauth2proxy_id: oauth2proxy
+oauth2proxy_name: OAuth2 Proxy
+oauth2proxy_groups:
+  - oauth2proxy
+  - service
+
 oauth2proxy_basedir: /mnt/usb/oauth2proxy
 oauth2proxy_version: latest

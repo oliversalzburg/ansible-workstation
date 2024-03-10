@@ -33,6 +33,7 @@ radarr_version: "release-5.3.6.8612"
 sonarr_version: "release-4.0.2.1183"
 traefik_version: "v2.11.0"
 
+bazarr_api_key: 30a49b8716a96f61f6122881f5e12a5f
 lidarr_api_key: 30a49b8716a96f61f6122881f5e12a5f
 prowlarr_api_key: 30a49b8716a96f61f6122881f5e12a5f
 radarr_api_key: 30a49b8716a96f61f6122881f5e12a5f

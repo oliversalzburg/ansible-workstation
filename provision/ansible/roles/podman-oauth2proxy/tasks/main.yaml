@@ -1,31 +1,69 @@
 ---
+- name: Create groups
+  become: true
+  register: _groups
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+    system: true
+  loop: "{{ oauth2proxy_groups }}"
+
+- name: Ensure {{ ansible_user }} is a group member
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: "{{ oauth2proxy_groups }}"
+    append: true
+
+- name: Create user
+  become: true
+  register: _user
+  ansible.builtin.user:
+    comment: "{{ oauth2proxy_name }}"
+    create_home: false
+    group: "{{ _groups.results[0].gid }}"
+    groups: "{{ oauth2proxy_groups }}"
+    home: "{{ oauth2proxy_basedir }}"
+    name: "{{ oauth2proxy_id }}"
+    password: "!"
+    shell: "/usr/sbin/nologin"
+    system: true
+
+
 - name: Ensure working directory exists
   become: true
   ansible.builtin.file:
     path: "{{ oauth2proxy_basedir }}"
     state: directory
-    owner: "{{ ansible_user }}"
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
 
-- name: Ensure directories exists
+- name: Ensure directories exist
   become: true
   ansible.builtin.file:
-    path: "{{ oauth2proxy_basedir }}/templates"
+    path: "{{ oauth2proxy_basedir }}/{{ item }}"
     state: directory
-    owner: "{{ ansible_user }}"
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+  loop:
+    - templates
 
-- name: Copy oauth2proxy service file
+
+- name: Copy service files
   become: true
   ansible.builtin.template:
-    src: oauth2proxy.service.j2
-    dest: "{{ directory_systemd }}/oauth2proxy.service"
+    src: "{{ item }}.j2"
+    dest: "{{ directory_systemd }}/{{ item }}"
     owner: root
     group: root
     mode: 0644
+  loop:
+    - oauth2proxy.service
 
-- name: Enable and check oauth2proxy service
+- name: Enable and check service
   become: true
   ansible.builtin.systemd:
-    name: oauth2proxy
     daemon_reload: true
-    state: restarted
     enabled: true
+    name: oauth2proxy
+    state: restarted

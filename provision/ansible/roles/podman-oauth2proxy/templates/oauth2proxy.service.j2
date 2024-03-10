@@ -13,41 +13,41 @@ StartLimitBurst=3
 ExecStartPre=/bin/rm --force %t/container-oauth2proxy.pid %t/container-oauth2proxy.ctr-id
 ExecStartPre=-/usr/bin/podman pull quay.io/oauth2-proxy/oauth2-proxy:{{ oauth2proxy_version }}
 ExecStart=/usr/bin/podman run \
-    --cgroups no-conmon \
-    --cidfile %t/container-oauth2proxy.ctr-id \
-    --conmon-pidfile %t/container-oauth2proxy.pid \
-    --detach \
-    --env "OAUTH2_PROXY_HTTP_ADDRESS=0.0.0.0:4180" \
-    --env "OAUTH2_PROXY_COOKIE_SECRET={{ oauth2proxy_cookie_secret }}" \
-    --env "OAUTH2_PROXY_COOKIE_DOMAINS=.web.{{ inventory_hostname }}.{{ realm }}" \
-    --env "OAUTH2_PROXY_WHITELIST_DOMAINS=.web.{{ inventory_hostname }}.{{ realm }}" \
-    --env "OAUTH2_PROXY_PROVIDER=oidc" \
-    --env "OAUTH2_PROXY_CLIENT_ID=oauth2-proxy" \
-    --env "OAUTH2_PROXY_CLIENT_SECRET={{ oauth2proxy_client_secret }}" \
-    --env "OAUTH2_PROXY_EMAIL_DOMAINS=*" \
-    --env "OAUTH2_PROXY_OIDC_ISSUER_URL=https://keycloak.web.{{ inventory_hostname }}.{{ realm }}/realms/{{ realm_name | lower }}" \
-    --env "OAUTH2_PROXY_COOKIE_CSRF_PER_REQUEST=true" \
-    --env "OAUTH2_PROXY_COOKIE_CSRF_EXPIRE=5m" \
-    --env "OAUTH2_PROXY_CUSTOM_TEMPLATES_DIR=/templates" \
-    --env "OAUTH2_PROXY_REVERSE_PROXY=true" \
-    --env "TZ={{ config_system_timezone }}" \
-    --user "1000:1000" \
-    --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
-    --label "traefik.enable=true" \
-    --label "traefik.http.routers.oauth2proxy.entrypoints=websecure" \
-    --label "traefik.http.routers.oauth2proxy.rule=(Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`) && PathPrefix(`/oauth2/`)) || (PathPrefix(`/oauth2/`))" \
-    --label "traefik.http.routers.oauth2proxy.tls.certresolver={{ realm }}" \
-    --label "traefik.http.routers.oauth2proxy.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
-    --label "traefik.http.services.oauth2proxy.loadbalancer.server.port=4180" \
-    --log-driver journald \
-    --mount "type=bind,source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,ro=true" \
-    --mount "type=bind,source={{ oauth2proxy_basedir }}/templates,target=/templates,ro=true" \
-    --name "%n.{{ inventory_hostname }}.{{ realm }}" \
-    --network "service" \
-    --pull never \
-    --replace \
-    --rm \
-    oauth2-proxy/oauth2-proxy:{{ oauth2proxy_version }}
+  --cgroups no-conmon \
+  --cidfile %t/container-oauth2proxy.ctr-id \
+  --conmon-pidfile %t/container-oauth2proxy.pid \
+  --detach \
+  --env "OAUTH2_PROXY_HTTP_ADDRESS=0.0.0.0:4180" \
+  --env "OAUTH2_PROXY_COOKIE_SECRET={{ oauth2proxy_cookie_secret }}" \
+  --env "OAUTH2_PROXY_COOKIE_DOMAINS=.web.{{ inventory_hostname }}.{{ realm }}" \
+  --env "OAUTH2_PROXY_WHITELIST_DOMAINS=.web.{{ inventory_hostname }}.{{ realm }}" \
+  --env "OAUTH2_PROXY_PROVIDER=oidc" \
+  --env "OAUTH2_PROXY_CLIENT_ID=oauth2-proxy" \
+  --env "OAUTH2_PROXY_CLIENT_SECRET={{ oauth2proxy_client_secret }}" \
+  --env "OAUTH2_PROXY_EMAIL_DOMAINS=*" \
+  --env "OAUTH2_PROXY_OIDC_ISSUER_URL=https://keycloak.web.{{ inventory_hostname }}.{{ realm }}/realms/{{ realm_name | lower }}" \
+  --env "OAUTH2_PROXY_COOKIE_CSRF_PER_REQUEST=true" \
+  --env "OAUTH2_PROXY_COOKIE_CSRF_EXPIRE=5m" \
+  --env "OAUTH2_PROXY_CUSTOM_TEMPLATES_DIR=/templates" \
+  --env "OAUTH2_PROXY_REVERSE_PROXY=true" \
+  --env "TZ={{ config_system_timezone }}" \
+  --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --label "traefik.enable=true" \
+  --label "traefik.http.routers.oauth2proxy.entrypoints=websecure" \
+  --label "traefik.http.routers.oauth2proxy.rule=(Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`) && PathPrefix(`/oauth2/`)) || (PathPrefix(`/oauth2/`))" \
+  --label "traefik.http.routers.oauth2proxy.tls.certresolver={{ realm }}" \
+  --label "traefik.http.routers.oauth2proxy.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
+  --label "traefik.http.services.oauth2proxy.loadbalancer.server.port=4180" \
+  --log-driver journald \
+  --mount "type=bind,source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,ro=true" \
+  --mount "type=bind,source={{ oauth2proxy_basedir }}/templates,target=/templates,ro=true" \
+  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --network "service" \
+  --pull never \
+  --replace \
+  --rm \
+  --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  oauth2-proxy/oauth2-proxy:{{ oauth2proxy_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-oauth2proxy.ctr-id --time 10
 ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/container-oauth2proxy.ctr-id
