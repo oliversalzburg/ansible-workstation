@@ -49,6 +49,22 @@
     - templates
 
 
+- name: Create secret oauth2proxy_cookie_secret
+  become: true
+  containers.podman.podman_secret:
+    data: "{{ oauth2proxy_cookie_secret }}"
+    force: true
+    name: oauth2proxy_cookie_secret
+    state: present
+- name: Create secret oauth2proxy_client_secret
+  become: true
+  containers.podman.podman_secret:
+    data: "{{ oauth2proxy_client_secret }}"
+    force: true
+    name: oauth2proxy_client_secret
+    state: present
+
+
 - name: Copy service files
   become: true
   ansible.builtin.template:

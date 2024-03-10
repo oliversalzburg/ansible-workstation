@@ -23,11 +23,10 @@ ExecStart=/usr/bin/podman run \
   --dns=127.0.0.1 \
   --env "FTLCONF_LOCAL_IPV4=192.168.178.52" \
   --env "TZ={{ config_system_timezone }}" \
-  --env "WEBPASSWORD={{ pihole_webpassword }}" \
   --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
   --label "traefik.enable=true" \
   --label "traefik.http.routers.pihole.entrypoints=websecure" \
-  #--label "traefik.http.routers.pihole.middlewares=oauth@file" \
+  --label "traefik.http.routers.pihole.middlewares=oauth@file" \
   --label "traefik.http.routers.pihole.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
   --label "traefik.http.routers.pihole.tls.certresolver={{ realm }}" \
   --label "traefik.http.routers.pihole.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
@@ -43,6 +42,7 @@ ExecStart=/usr/bin/podman run \
   --pull never \
   --replace \
   --rm \
+  --secret "pihole_webpassword,type=env,target=WEBPASSWORD" \
   #--user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
   pihole:{{ pihole_version }}
 

@@ -69,7 +69,7 @@
     owner: "{{ synapse_pg_user }}"
     template: template0
 
-- name: "GRANT ALL PRIVILEGES ON DATABASE 'db'' TO 'user'"
+- name: "GRANT ALL PRIVILEGES ON DATABASE 'db' TO 'user'"
   community.postgresql.postgresql_privs:
     host: localhost
     login_password: "{{ postgres_master_password }}"

@@ -22,8 +22,8 @@ ExecStart=/usr/bin/podman run \
   --cgroups "no-conmon" \
   --cidfile "%t/%n.ctr-id" \
   --detach \
-  --env "POSTGRES_PASSWORD={{ postgres_master_password }}" \
-  --env "POSTGRES_USER={{ postgres_master_user }}" \
+  --secret "postgres_master_password,type=env,target=POSTGRES_PASSWORD" \
+  --secret "postgres_master_user,type=env,target=POSTGRES_USER" \
   --log-driver "journald" \
   --name "%n.{{ inventory_hostname }}.{{ realm }}" \
   --pod-id-file "%t/postgres.pod-id" \

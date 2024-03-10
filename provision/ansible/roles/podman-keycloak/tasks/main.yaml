@@ -65,7 +65,7 @@
     name: "{{ keycloak_pg_db }}"
     owner: "{{ keycloak_pg_user }}"
 
-- name: "GRANT ALL PRIVILEGES ON DATABASE 'db'' TO 'user'"
+- name: "GRANT ALL PRIVILEGES ON DATABASE 'db' TO 'user'"
   community.postgresql.postgresql_privs:
     host: localhost
     login_password: "{{ postgres_master_password }}"

@@ -49,6 +49,22 @@
     - data
 
 
+- name: Create secret postgres_master_password
+  become: true
+  containers.podman.podman_secret:
+    data: "{{ postgres_master_password }}"
+    force: true
+    name: postgres_master_password
+    state: present
+- name: Create secret postgres_master_user
+  become: true
+  containers.podman.podman_secret:
+    data: "{{ postgres_master_user }}"
+    force: true
+    name: postgres_master_user
+    state: present
+
+
 - name: Copy service files
   become: true
   ansible.builtin.template:

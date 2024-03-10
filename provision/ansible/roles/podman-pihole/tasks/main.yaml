@@ -68,6 +68,15 @@
     mode: 0644
 
 
+- name: Create secret pihole_webpassword
+  become: true
+  containers.podman.podman_secret:
+    data: "{{ pihole_webpassword }}"
+    force: true
+    name: pihole_webpassword
+    state: present
+
+
 - name: Copy service files
   become: true
   ansible.builtin.template:
