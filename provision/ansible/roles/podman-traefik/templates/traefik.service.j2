@@ -13,39 +13,33 @@ StartLimitBurst=3
 # docker.io rate-limit delays can abort startup if timeout is too short.
 TimeoutStartSec=300
 TimeoutStopSec=70
-ExecStartPre=/bin/rm --force %t/container-traefik.pid %t/container-traefik.ctr-id
+ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
 ExecStartPre=-/usr/bin/podman pull docker.io/library/traefik:{{ traefik_version }}
 ExecStart=/usr/bin/podman run \
-    --cgroups no-conmon \
-    --cidfile %t/container-traefik.ctr-id \
-    --conmon-pidfile %t/container-traefik.pid \
-    --cgroups=no-conmon \
-    --detach \
-    --dns 192.168.178.52 \
-    #--hostname "{{ inventory_hostname }}.{{ realm }}" \
-    --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
-    #--label "cloudflare.enabled=true" \
-    #--label "cloudflare.name=ingress" \
-    #--label "cloudflare.zone=ffm.ninja" \
-    --label "traefik.enable=false" \
-    --name "%n.{{ inventory_hostname }}.{{ realm }}" \
-    --network "service" \
-    --publish "443:443" \
-    --publish "80:80" \
-    --pull never \
-    --replace \
-    --rm \
-    --security-opt label=disable \
-    --mount "type=bind,source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,ro=true" \
-    --mount "type=bind,source={{ traefik_basedir }}/acme,target=/etc/acme" \
-    --mount "type=bind,source={{ traefik_basedir }}/conf.d,target=/conf.d" \
-    --mount "type=bind,source={{ traefik_basedir }}/traefik.yml,target=/traefik.yml" \
-    --volume "/var/run/podman/podman.sock:/var/run/docker.sock:ro" \
-    traefik:{{ traefik_version }}
+  --cgroups "no-conmon" \
+  --cidfile "%t/%n.ctr-id" \
+  --conmon-pidfile "%t/%n.pid" \
+  --detach \
+  --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --label "traefik.enable=false" \
+  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --network "service" \
+  --publish "443:443" \
+  --publish "80:80" \
+  --pull "never" \
+  --replace \
+  --rm \
+  --security-opt "label=disable" \
+  --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
+  --volume "{{ traefik_basedir }}/acme:/etc/acme:rw" \
+  --volume "{{ traefik_basedir }}/conf.d:/conf.d:ro" \
+  --volume "{{ traefik_basedir }}/traefik.yml:/traefik.yml:ro" \
+  --volume "/var/run/podman/podman.sock:/var/run/docker.sock:ro" \
+  traefik:{{ traefik_version }}
 
-ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-traefik.ctr-id --time 10
-ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/container-traefik.ctr-id
-PIDFile=%t/container-traefik.pid
+ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"
+PIDFile=%t/%n.pid
 Type=forking
 
 [Install]

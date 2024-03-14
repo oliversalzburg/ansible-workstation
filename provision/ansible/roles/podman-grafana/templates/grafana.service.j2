@@ -13,35 +13,35 @@ StartLimitBurst=3
 # docker.io rate-limit delays can abort startup if timeout is too short.
 TimeoutStartSec=300
 TimeoutStopSec=70
-ExecStartPre=/bin/rm --force %t/container-grafana.pid %t/container-grafana.ctr-id
+ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
 ExecStartPre=-/usr/bin/podman pull docker.io/grafana/grafana-oss:{{ grafana_version }}
 ExecStart=/usr/bin/podman run \
-    --cgroups no-conmon \
-    --cidfile %t/container-grafana.ctr-id \
-    --conmon-pidfile %t/container-grafana.pid \
-    --detach \
-    --env "TZ={{ config_system_timezone }}" \
-    --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
-    --label "traefik.enable=true" \
-    --label "traefik.http.routers.grafana.entrypoints=websecure" \
-    --label "traefik.http.routers.grafana.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
-    --label "traefik.http.routers.grafana.tls.certresolver={{ realm }}" \
-    --label "traefik.http.routers.grafana.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
-    --label "traefik.http.services.grafana.loadbalancer.server.port=3000" \
-    --log-driver journald \
-    --mount "type=bind,source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,ro=true" \
-    --mount "type=bind,source={{ grafana_basedir }}/data,target=/var/lib/grafana,rw=true" \
-    --name "%n.{{ inventory_hostname }}.{{ realm }}" \
-    --network "service" \
-    --pull never \
-    --replace \
-    --rm \
-    --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
-    grafana/grafana-oss:{{ grafana_version }}
+  --cgroups "no-conmon" \
+  --cidfile "%t/%n.ctr-id" \
+  --conmon-pidfile "%t/%n.pid" \
+  --detach \
+  --env "TZ={{ config_system_timezone }}" \
+  --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --label "traefik.enable=true" \
+  --label "traefik.http.routers.grafana.entrypoints=websecure" \
+  --label "traefik.http.routers.grafana.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
+  --label "traefik.http.routers.grafana.tls.certresolver={{ realm }}" \
+  --label "traefik.http.routers.grafana.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
+  --label "traefik.http.services.grafana.loadbalancer.server.port=3000" \
+  --log-driver journald \
+  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --network "service" \
+  --pull "never" \
+  --replace \
+  --rm \
+  --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
+  --volume "{{ grafana_basedir }}/data:/var/lib/grafana:rw" \
+  grafana/grafana-oss:{{ grafana_version }}
 
-ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-grafana.ctr-id --time 10
-ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/container-grafana.ctr-id
-PIDFile=%t/container-grafana.pid
+ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"
+PIDFile=%t/%n.pid
 Type=forking
 
 [Install]

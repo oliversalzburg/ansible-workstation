@@ -27,14 +27,14 @@ ExecStart=/usr/bin/podman run \
   --log-driver journald \
   --name "%n.{{ inventory_hostname }}.{{ realm }}" \
   --pod-id-file "%t/prowlarr.pod-id" \
-  --pull never \
+  --pull "never" \
   --replace \
   --rm \
   --sdnotify "conmon" \
   hotio/prowlarr:{{ prowlarr_version }}
 
-ExecStop=/usr/bin/podman stop --ignore --cidfile %t/%n.ctr-id --time 10
-ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/%n.ctr-id
+ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"
 Type=notify
 NotifyAccess=all
 

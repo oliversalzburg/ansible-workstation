@@ -34,8 +34,8 @@ ExecStart=/usr/bin/podman run \
   --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
   postgres:{{ postgres_version }}
 
-ExecStop=/usr/bin/podman stop --ignore --cidfile %t/%n.ctr-id --time 10
-ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/%n.ctr-id
+ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"
 Type=notify
 NotifyAccess=all
 

@@ -10,12 +10,12 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 RestartSec=10
 StartLimitBurst=3
-ExecStartPre=/bin/rm --force %t/container-qbittorrent.pid %t/container-qbittorrent.ctr-id
+ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
 ExecStartPre=-/usr/bin/podman pull ghcr.io/hotio/qbittorrent:{{ qbittorrent_version }}
 ExecStart=/usr/bin/podman run \
-  --cgroups no-conmon \
-  --cidfile %t/container-qbittorrent.ctr-id \
-  --conmon-pidfile %t/container-qbittorrent.pid \
+  --cgroups "no-conmon" \
+  --cidfile "%t/%n.ctr-id" \
+  --conmon-pidfile "%t/%n.pid" \
   --detach \
   --env "PUID={{ _user.uid }}" \
   --env "PGID=1001" \
@@ -31,14 +31,15 @@ ExecStart=/usr/bin/podman run \
   --label "traefik.http.routers.qbittorrent.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
   --label "traefik.http.services.qbittorrent.loadbalancer.server.port=8080" \
   --log-driver journald \
-  --mount "type=bind,source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,ro=true" \
-  --mount "type=bind,source={{ qbittorrent_basedir }}/config,target=/config" \
-  --mount "type=bind,source={{ qbittorrent_mediadir }},target=/data" \
   --name "%n.{{ inventory_hostname }}.{{ realm }}" \
   --network "service" \
-  --pull never \
+  --pull "never" \
   --replace \
   --rm \
+  --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
+  --volume "{{ qbittorrent_basedir }}/config:/config:rw" \
+  --volume "{{ qbittorrent_mediadir }}:/data:rw" \
+  # VPN stuff
   --env "VPN_ENABLED=true" \
   --env "VPN_CONF=wg0" \
   --env "VPN_PROVIDER=proton" \
@@ -48,9 +49,9 @@ ExecStart=/usr/bin/podman run \
   --sysctl "net.ipv6.conf.all.disable_ipv6=1" \
   hotio/qbittorrent:{{ qbittorrent_version }}
 
-ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-qbittorrent.ctr-id --time 10
-ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/container-qbittorrent.ctr-id
-PIDFile=%t/container-qbittorrent.pid
+ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"
+PIDFile=%t/%n.pid
 Type=forking
 
 [Install]

@@ -10,12 +10,12 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 RestartSec=10
 StartLimitBurst=3
-ExecStartPre=/bin/rm --force %t/container-synapse.pid %t/container-synapse.ctr-id
+ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
 ExecStartPre=-/usr/bin/podman pull ghcr.io/matrix-org/synapse:{{ synapse_version }}
 ExecStart=/usr/bin/podman run \
-  --cgroups no-conmon \
-  --cidfile %t/container-synapse.ctr-id \
-  --conmon-pidfile %t/container-synapse.pid \
+  --cgroups "no-conmon" \
+  --cidfile "%t/%n.ctr-id" \
+  --conmon-pidfile "%t/%n.pid" \
   --detach \
   --env "SYNAPSE_CONFIG_PATH=/data/homeserver.yaml" \
   --env "TZ={{ config_system_timezone }}" \
@@ -27,19 +27,19 @@ ExecStart=/usr/bin/podman run \
   --label "traefik.http.routers.synapse.tls.domains[0].main=matrix.web.{{ inventory_hostname }}.{{ realm }}" \
   --label "traefik.http.services.synapse.loadbalancer.server.port=8008" \
   --log-driver journald \
-  --mount "type=bind,source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,ro=true" \
-  --mount "type=bind,source={{ synapse_basedir }}/data,target=/data,rw=true" \
   --name "%n.{{ inventory_hostname }}.{{ realm }}" \
   --network "service" \
-  --pull never \
+  --pull "never" \
   --replace \
   --rm \
   --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
+  --volume "{{ synapse_basedir }}/data:/data:rw" \
   matrix-org/synapse:{{ synapse_version }}
 
-ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-synapse.ctr-id --time 10
-ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/container-synapse.ctr-id
-PIDFile=%t/container-synapse.pid
+ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"
+PIDFile=%t/%n.pid
 Type=forking
 
 [Install]

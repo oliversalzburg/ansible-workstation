@@ -10,12 +10,12 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 RestartSec=10
 StartLimitBurst=3
-ExecStartPre=/bin/rm --force %t/container-keycloak.pid %t/container-keycloak.ctr-id
+ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
 ExecStartPre=-/usr/bin/podman pull quay.io/keycloak/keycloak:{{ keycloak_version }}
 ExecStart=/usr/bin/podman run \
-  --cgroups no-conmon \
-  --cidfile %t/container-keycloak.ctr-id \
-  --conmon-pidfile %t/container-keycloak.pid \
+  --cgroups "no-conmon" \
+  --cidfile "%t/%n.ctr-id" \
+  --conmon-pidfile "%t/%n.pid" \
   --detach \
   --env "TZ={{ config_system_timezone }}" \
   --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
@@ -26,18 +26,16 @@ ExecStart=/usr/bin/podman run \
   --label "traefik.http.routers.keycloak.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
   --label "traefik.http.services.keycloak.loadbalancer.server.port=8080" \
   --log-driver journald \
-  --mount "type=bind,source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,ro=true" \
-  # Data mount is currently not utilized.
-  #--mount "type=bind,source={{ keycloak_basedir }}/data,target=/opt/keycloak/data" \
   --name "%n.{{ inventory_hostname }}.{{ realm }}" \
   --network "service" \
-  --pull never \
+  --pull "never" \
   --replace \
   --rm \
   --secret "keycloak_admin,type=env,target=KEYCLOAK_ADMIN" \
   --secret "keycloak_admin_password,type=env,target=KEYCLOAK_ADMIN_PASSWORD" \
   # Keycloak doesn't seem to support running rootless. Errors on startup.
   #--user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
   keycloak/keycloak:{{ keycloak_version }} \
   start \
   --db="postgres" \
@@ -48,9 +46,9 @@ ExecStart=/usr/bin/podman run \
   --http-enabled="true" \
   --proxy-headers="xforwarded"
 
-ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-keycloak.ctr-id --time 10
-ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/container-keycloak.ctr-id
-PIDFile=%t/container-keycloak.pid
+ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"
+PIDFile=%t/%n.pid
 Type=forking
 
 [Install]

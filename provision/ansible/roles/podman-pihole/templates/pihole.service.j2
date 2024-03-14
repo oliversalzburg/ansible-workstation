@@ -13,12 +13,12 @@ StartLimitBurst=3
 # docker.io rate-limit delays can abort startup if timeout is too short.
 TimeoutStartSec=300
 TimeoutStopSec=70
-ExecStartPre=/bin/rm --force %t/container-pihole.pid %t/container-pihole.ctr-id
+ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
 ExecStartPre=-/usr/bin/podman pull docker.io/pihole/pihole:{{ pihole_version }}
 ExecStart=/usr/bin/podman run \
-  --cgroups no-conmon \
-  --cidfile %t/container-pihole.ctr-id \
-  --conmon-pidfile %t/container-pihole.pid \
+  --cgroups "no-conmon" \
+  --cidfile "%t/%n.ctr-id" \
+  --conmon-pidfile "%t/%n.pid" \
   --detach \
   --dns=127.0.0.1 \
   --env "FTLCONF_LOCAL_IPV4=192.168.178.52" \
@@ -32,23 +32,23 @@ ExecStart=/usr/bin/podman run \
   --label "traefik.http.routers.pihole.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
   --label "traefik.http.services.pihole.loadbalancer.server.port=80" \
   --log-driver journald \
-  --mount "type=bind,source=/etc/ssl/certs/ca-certificates.crt,target=/etc/ssl/certs/ca-certificates.crt,ro=true" \
-  --mount "type=bind,source={{ pihole_basedir }}/etc/pihole,target=/etc/pihole" \
-  --mount "type=bind,source={{ pihole_basedir }}/etc/dnsmasq.d,target=/etc/dnsmasq.d" \
   --name "%n.{{ inventory_hostname }}.{{ realm }}" \
   --network "service" \
   --publish "192.168.178.52:53:53/tcp" \
   --publish "192.168.178.52:53:53/udp" \
-  --pull never \
+  --pull "never" \
   --replace \
   --rm \
   --secret "pihole_webpassword,type=env,target=WEBPASSWORD" \
   #--user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
+  --volume "{{ pihole_basedir }}/etc/pihole:/etc/pihole:rw" \
+  --volume "{{ pihole_basedir }}/etc/dnsmasq.d:/etc/dnsmasq.d:rw" \
   pihole:{{ pihole_version }}
 
-ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-pihole.ctr-id --time 10
-ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile %t/container-pihole.ctr-id
-PIDFile=%t/container-pihole.pid
+ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"
+PIDFile=%t/%n.pid
 Type=forking
 
 [Install]
