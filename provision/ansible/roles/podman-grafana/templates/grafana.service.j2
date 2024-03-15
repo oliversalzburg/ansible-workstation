@@ -28,7 +28,7 @@ ExecStart=/usr/bin/podman run \
   --label "traefik.http.routers.grafana.tls.certresolver={{ realm }}" \
   --label "traefik.http.routers.grafana.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
   --label "traefik.http.services.grafana.loadbalancer.server.port=3000" \
-  --log-driver journald \
+  --log-driver "journald" \
   --name "%n.{{ inventory_hostname }}.{{ realm }}" \
   --network "service" \
   --pull "never" \
@@ -45,4 +45,4 @@ PIDFile=%t/%n.pid
 Type=forking
 
 [Install]
-WantedBy=multi-user.target default.target
+WantedBy=multi-user.target

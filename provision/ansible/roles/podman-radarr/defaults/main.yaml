@@ -2,7 +2,6 @@
 radarr_id: radarr
 radarr_name: Radarr
 radarr_groups:
-  - radarr
   - nas
   - service
 

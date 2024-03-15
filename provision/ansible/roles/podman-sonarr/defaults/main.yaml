@@ -2,7 +2,6 @@
 sonarr_id: sonarr
 sonarr_name: Sonarr
 sonarr_groups:
-  - sonarr
   - nas
   - service
 

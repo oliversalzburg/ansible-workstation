@@ -24,7 +24,7 @@ ExecStart=/usr/bin/podman run \
   --env "ENABLE_ADDITIONAL_METRICS=true" \
   --env "PORT=9707" \
   --env "URL=http://127.0.0.1:8686" \
-  --log-driver journald \
+  --log-driver "journald" \
   --name "%n.{{ inventory_hostname }}.{{ realm }}" \
   --pod-id-file "%t/lidarr.pod-id" \
   --pull "never" \
@@ -40,4 +40,4 @@ Type=notify
 NotifyAccess=all
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target

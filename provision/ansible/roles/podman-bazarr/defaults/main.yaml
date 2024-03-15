@@ -2,7 +2,6 @@
 bazarr_id: bazarr
 bazarr_name: Bazarr
 bazarr_groups:
-  - bazarr
   - nas
   - service
 

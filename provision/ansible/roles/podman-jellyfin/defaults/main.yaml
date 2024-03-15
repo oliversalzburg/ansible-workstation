@@ -2,7 +2,6 @@
 jellyfin_id: jellyfin
 jellyfin_name: Jellyfin
 jellyfin_groups:
-  - jellyfin
   - nas
   - service
 

@@ -16,4 +16,4 @@ ExecStart=/usr/bin/docker run --rm --name "%n.{{ inventory_hostname }}.{{ realm 
   ghcr.io/oliversalzburg/docker-cloudflare-dns:{{ cloudflare_dns_version }}
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target

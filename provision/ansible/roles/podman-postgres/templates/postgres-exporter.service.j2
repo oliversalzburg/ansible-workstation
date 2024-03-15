@@ -21,7 +21,7 @@ ExecStart=/usr/bin/podman run \
   --cidfile "%t/%n.ctr-id" \
   --detach \
   --env "DATA_SOURCE_NAME=postgresql://{{ postgres_master_user }}:{{ postgres_master_password }}@127.0.0.1:5432/postgres?sslmode=disable" \
-  --log-driver journald \
+  --log-driver "journald" \
   --name "%n.{{ inventory_hostname }}.{{ realm }}" \
   --pod-id-file "%t/postgres.pod-id" \
   --pull "never" \
@@ -36,4 +36,4 @@ Type=notify
 NotifyAccess=all
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target

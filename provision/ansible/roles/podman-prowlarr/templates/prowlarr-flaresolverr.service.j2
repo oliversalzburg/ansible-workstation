@@ -21,7 +21,7 @@ ExecStart=/usr/bin/podman run \
   --detach \
   --env "LOG_LEVEL=info" \
   --env "TZ={{ config_system_timezone }}" \
-  --log-driver journald \
+  --log-driver "journald" \
   --name "%n.{{ inventory_hostname }}.{{ realm }}" \
   --pod-id-file "%t/prowlarr.pod-id" \
   --pull "never" \
@@ -36,5 +36,5 @@ Type=notify
 NotifyAccess=all
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target
 

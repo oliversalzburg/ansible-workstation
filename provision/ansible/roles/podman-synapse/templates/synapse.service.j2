@@ -1,46 +1,45 @@
 [Unit]
-Description=Synapse
-Documentation=https://matrix-org.github.io/synapse
+Description=Synapse Root Service
+Documentation=
 Wants=network-online.target
 After=network-online.target
-StartLimitIntervalSec=10
+Requires=synapse-main.service synapse-element.service
+Before=synapse-main.service synapse-element.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
-RestartSec=10
-StartLimitBurst=3
-ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
-ExecStartPre=-/usr/bin/podman pull ghcr.io/matrix-org/synapse:{{ synapse_version }}
-ExecStart=/usr/bin/podman run \
-  --cgroups "no-conmon" \
-  --cidfile "%t/%n.ctr-id" \
-  --conmon-pidfile "%t/%n.pid" \
-  --detach \
-  --env "SYNAPSE_CONFIG_PATH=/data/homeserver.yaml" \
-  --env "TZ={{ config_system_timezone }}" \
+TimeoutStopSec=70
+ExecStartPre=/bin/rm --force %t/synapse.pid %t/synapse.pod-id
+ExecStartPre=/usr/bin/podman pod create \
   --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --infra-conmon-pidfile %t/synapse.pid \
   --label "traefik.enable=true" \
+  --label "traefik.http.routers.element.entrypoints=websecure" \
+  --label "traefik.http.routers.element.rule=Host(`matrix.web.{{ inventory_hostname }}.{{ realm }}`)" \
+  --label "traefik.http.routers.element.service=element" \
+  --label "traefik.http.routers.element.tls.certresolver={{ realm }}" \
+  --label "traefik.http.routers.element.tls.domains[0].main=matrix.web.{{ inventory_hostname }}.{{ realm }}" \
+  --label "traefik.http.services.element.loadbalancer.server.port=80" \
   --label "traefik.http.routers.synapse.entrypoints=websecure" \
-  --label "traefik.http.routers.synapse.rule=Host(`matrix.web.{{ inventory_hostname }}.{{ realm }}`)" \
+  --label "traefik.http.routers.synapse.rule=Host(`synapse.web.{{ inventory_hostname }}.{{ realm }}`)" \
+  --label "traefik.http.routers.synapse.service=synapse" \
   --label "traefik.http.routers.synapse.tls.certresolver={{ realm }}" \
-  --label "traefik.http.routers.synapse.tls.domains[0].main=matrix.web.{{ inventory_hostname }}.{{ realm }}" \
+  --label "traefik.http.routers.synapse.tls.domains[0].main=synapse.web.{{ inventory_hostname }}.{{ realm }}" \
   --label "traefik.http.services.synapse.loadbalancer.server.port=8008" \
-  --log-driver journald \
   --name "%n.{{ inventory_hostname }}.{{ realm }}" \
   --network "service" \
-  --pull "never" \
+  --pod-id-file %t/synapse.pod-id \
   --replace \
-  --rm \
-  --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
-  --volume "{{ synapse_basedir }}/data:/data:rw" \
-  matrix-org/synapse:{{ synapse_version }}
+  --volume "{{ synapse_basedir }}/data:/data:rw"
+  --volume "{{ synapse_basedir }}/element/config.json:/app/config.json:ro"
 
-ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
-ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"
-PIDFile=%t/%n.pid
+ExecStart=/usr/bin/podman pod start --pod-id-file %t/synapse.pod-id
+ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/synapse.pod-id --time 10
+ExecStopPost=/usr/bin/podman pod rm --ignore --force --pod-id-file %t/synapse.pod-id
+PIDFile=%t/synapse.pid
 Type=forking
 
 [Install]
-WantedBy=multi-user.target default.target
+WantedBy=multi-user.target

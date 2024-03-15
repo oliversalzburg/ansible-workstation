@@ -18,7 +18,7 @@ ExecStart=/usr/bin/podman run \
   --conmon-pidfile "%t/%n.pid" \
   --detach \
   --env "PUID={{ _user.uid }}" \
-  --env "PGID=1001" \
+  --env "PGID={{ _groups.results[0].gid }}" \
   --env "UMASK=002" \
   --env "TZ={{ config_system_timezone }}" \
   --env "WEBUI_PORTS=8080/tcp" \
@@ -30,7 +30,7 @@ ExecStart=/usr/bin/podman run \
   --label "traefik.http.routers.qbittorrent.tls.certresolver={{ realm }}" \
   --label "traefik.http.routers.qbittorrent.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
   --label "traefik.http.services.qbittorrent.loadbalancer.server.port=8080" \
-  --log-driver journald \
+  --log-driver "journald" \
   --name "%n.{{ inventory_hostname }}.{{ realm }}" \
   --network "service" \
   --pull "never" \
@@ -55,4 +55,4 @@ PIDFile=%t/%n.pid
 Type=forking
 
 [Install]
-WantedBy=multi-user.target default.target
+WantedBy=multi-user.target

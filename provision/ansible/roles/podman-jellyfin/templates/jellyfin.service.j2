@@ -27,7 +27,7 @@ ExecStart=/usr/bin/podman run \
   --label "traefik.enable=false" \
   --label "traefik.http.routers.jellyfin.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
   --label "traefik.http.services.jellyfin.loadbalancer.server.port=8096" \
-  --log-driver journald \
+  --log-driver "journald" \
   --name "%n.{{ inventory_hostname }}.{{ realm }}" \
   --network host \
   --pull "never" \
@@ -46,4 +46,4 @@ PIDFile=%t/%n.pid
 Type=forking
 
 [Install]
-WantedBy=multi-user.target default.target
+WantedBy=multi-user.target

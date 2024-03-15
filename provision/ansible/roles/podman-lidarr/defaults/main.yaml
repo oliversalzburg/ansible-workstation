@@ -2,7 +2,6 @@
 lidarr_id: lidarr
 lidarr_name: Lidarr
 lidarr_groups:
-  - lidarr
   - nas
   - service
 

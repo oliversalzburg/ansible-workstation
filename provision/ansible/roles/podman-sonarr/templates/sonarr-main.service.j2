@@ -20,10 +20,10 @@ ExecStart=/usr/bin/podman run \
   --cidfile "%t/%n.ctr-id" \
   --detach \
   --env "PUID={{ _user.uid }}" \
-  --env "PGID=1001" \
+  --env "PGID={{ _groups.results[0].gid }}" \
   --env "UMASK=002" \
   --env "TZ={{ config_system_timezone }}" \
-  --log-driver journald \
+  --log-driver "journald" \
   --name "%n.{{ inventory_hostname }}.{{ realm }}" \
   --pod-id-file "%t/sonarr.pod-id" \
   --pull "never" \
@@ -38,5 +38,5 @@ Type=notify
 NotifyAccess=all
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target
 

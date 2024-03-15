@@ -47,6 +47,7 @@
     group: "{{ _groups.results[0].gid }}"
   loop:
     - data
+    - element
 
 
 - name: Create postgres user
@@ -100,6 +101,14 @@
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
     mode: 0640
+- name: Copy configuration
+  become: true
+  ansible.builtin.template:
+    src: config.json.j2
+    dest: "{{ synapse_basedir }}/element/config.json"
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+    mode: 0640
 
 
 - name: Copy service files
@@ -111,6 +120,8 @@
     group: root
     mode: 0644
   loop:
+    - synapse-element.service
+    - synapse-main.service
     - synapse.service
 
 - name: Enable and check service

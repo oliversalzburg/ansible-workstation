@@ -2,7 +2,6 @@
 qbittorrent_id: qbittorrent
 qbittorrent_name: qBittorrent
 qbittorrent_groups:
-  - qbittorrent
   - nas
   - service
 

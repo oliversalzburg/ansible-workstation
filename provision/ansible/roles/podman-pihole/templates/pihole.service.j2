@@ -31,7 +31,7 @@ ExecStart=/usr/bin/podman run \
   --label "traefik.http.routers.pihole.tls.certresolver={{ realm }}" \
   --label "traefik.http.routers.pihole.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
   --label "traefik.http.services.pihole.loadbalancer.server.port=80" \
-  --log-driver journald \
+  --log-driver "journald" \
   --name "%n.{{ inventory_hostname }}.{{ realm }}" \
   --network "service" \
   --publish "192.168.178.52:53:53/tcp" \
@@ -52,4 +52,4 @@ PIDFile=%t/%n.pid
 Type=forking
 
 [Install]
-WantedBy=multi-user.target default.target
+WantedBy=multi-user.target
