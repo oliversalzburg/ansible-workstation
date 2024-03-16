@@ -14,6 +14,10 @@ init-canyon: requirements
 	cd provision/ansible; ansible-playbook site.yml --limit canyon
 update-canyon: requirements
 	cd provision/ansible; ansible-playbook playbooks/10_init-canyon.yml
+init-container: requirements
+	cd provision/ansible; ansible-playbook site.yml --limit container
+update-container: requirements
+	cd provision/ansible; ansible-playbook playbooks/10_init-container.yml
 init-laptop: requirements
 	cd provision/ansible; ansible-playbook site.yml --limit laptop
 init-workstation: requirements

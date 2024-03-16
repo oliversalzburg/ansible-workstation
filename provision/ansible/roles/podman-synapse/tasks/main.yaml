@@ -47,6 +47,8 @@
     group: "{{ _groups.results[0].gid }}"
   loop:
     - data
+    - data/discord
+    - data/whatsapp
     - element
 
 
@@ -66,9 +68,13 @@
     lc_ctype: C
     login_password: "{{ postgres_master_password }}"
     login_user: "{{ postgres_master_user }}"
-    name: "{{ synapse_pg_db }}"
+    name: "{{ item }}"
     owner: "{{ synapse_pg_user }}"
     template: template0
+  loop:
+    - "{{ synapse_pg_db }}"
+    - "{{ synapse_pg_db }}_discord"
+    - "{{ synapse_pg_db }}_whatsapp"
 
 - name: "GRANT ALL PRIVILEGES ON DATABASE 'db' TO 'user'"
   community.postgresql.postgresql_privs:
@@ -78,8 +84,12 @@
     db: postgres
     privs: ALL
     type: database
-    obj: "{{ synapse_pg_db }}"
+    obj: "{{ item }}"
     role: "{{ synapse_pg_user }}"
+  loop:
+    - "{{ synapse_pg_db }}"
+    - "{{ synapse_pg_db }}_discord"
+    - "{{ synapse_pg_db }}_whatsapp"
 
 - name: "GRANT USAGE, CREATE ON SCHEMA PUBLIC TO 'user'"
   community.postgresql.postgresql_privs:
@@ -120,6 +130,8 @@
     group: root
     mode: 0644
   loop:
+    - mautrix-discord.service
+    - mautrix-whatsapp.service
     - synapse-element.service
     - synapse-main.service
     - synapse.service

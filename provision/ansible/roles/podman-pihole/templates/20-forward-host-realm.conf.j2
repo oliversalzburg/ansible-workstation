@@ -1,2 +1,5 @@
-address=/web.{{ inventory_hostname }}.{{ realm }}/{{ podman_service_network_gateway }}
-server=/service.{{ inventory_hostname }}.{{ realm }}/{{ podman_service_network_gateway }}
+local-ttl=60
+{% for node in dns_delegation %}
+address=/web.{{ node }}.{{ realm }}/{{ dns_delegation[ node ].ns }}
+server=/service.{{ node }}.{{ realm }}/{{ dns_delegation[ node ].ns }}
+{% endfor %}

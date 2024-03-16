@@ -1,9 +1,26 @@
 ---
 - hosts: "{{ target_host | default('container') }}"
-  gather_facts: false
+  gather_subset:
+    - "architecture"
+    - "mounts"
   roles:
+    - role: maxhoesel.smallstep.step_bootstrap_host
+      vars:
+        step_cli_version: 0.24.4
+        step_bootstrap_ca_url: https://workstation.labnet:4431
+        step_bootstrap_fingerprint: 20de2454dc737e3518ef6920d3224e36fecf1212ce8bbf3e46abdad1bb22189f
+      become: true
     - role: unique-container
     - role: gpu-intel
-    - role: podman-jellyfin
-    - role: podman-pihole
-    
+    - role: prometheus.prometheus.node_exporter
+      node_exporter_enabled_collectors:
+        - processes
+        - systemd
+    - role: prometheus.prometheus.cadvisor
+    # Required for roles below. Process first.
+    - role: podman-host
+    - role: podman-postgres
+    #- role: podman-prometheus
+    # Application roles. Eventually consistent.
+    - role: podman-grafana
+    - role: podman-traefik

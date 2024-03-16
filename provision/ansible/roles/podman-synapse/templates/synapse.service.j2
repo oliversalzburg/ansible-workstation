@@ -3,8 +3,9 @@ Description=Synapse Root Service
 Documentation=
 Wants=network-online.target
 After=network-online.target
-Requires=synapse-main.service synapse-element.service
-Before=synapse-main.service synapse-element.service
+Requires=synapse-main.service
+Wants=synapse-element.service mautrix-discord.service mautrix-whatsapp.service
+Before=synapse-main.service synapse-element.service mautrix-discord.service mautrix-whatsapp.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n

@@ -17,5 +17,7 @@ collections:
     version: 1.6.7
   - name: containers.podman
     version: 1.12.0
+  - name: maxhoesel.smallstep
+    version: 0.24.5
   - name: prometheus.prometheus
     version: 0.15.0

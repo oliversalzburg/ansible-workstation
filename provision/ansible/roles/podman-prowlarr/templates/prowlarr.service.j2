@@ -4,7 +4,8 @@ Documentation=
 Wants=network-online.target
 After=network-online.target
 RequiresMountsFor=
-Requires=prowlarr-main.service prowlarr-exporter.service prowlarr-flaresolverr.service
+Requires=prowlarr-main.service prowlarr-flaresolverr.service
+Wants=prowlarr-exporter.service
 Before=prowlarr-main.service prowlarr-exporter.service prowlarr-flaresolverr.service
 
 [Service]

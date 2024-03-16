@@ -4,7 +4,8 @@ Documentation=
 Wants=network-online.target
 After=network-online.target
 RequiresMountsFor=
-Requires=lidarr-main.service lidarr-exporter.service
+Requires=lidarr-main.service
+Wants=lidarr-exporter.service
 Before=lidarr-main.service lidarr-exporter.service
 
 [Service]

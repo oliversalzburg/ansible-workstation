@@ -4,7 +4,8 @@ Documentation=
 Wants=network-online.target
 After=network-online.target
 RequiresMountsFor=
-Requires=bazarr-main.service bazarr-exporter.service
+Requires=bazarr-main.service
+Wants=bazarr-exporter.service
 Before=bazarr-main.service bazarr-exporter.service
 
 [Service]

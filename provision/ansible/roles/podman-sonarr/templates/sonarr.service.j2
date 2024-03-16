@@ -4,7 +4,8 @@ Documentation=
 Wants=network-online.target
 After=network-online.target
 RequiresMountsFor=
-Requires=sonarr-main.service sonarr-exporter.service
+Requires=sonarr-main.service
+Wants=sonarr-exporter.service
 Before=sonarr-main.service sonarr-exporter.service
 
 [Service]

@@ -7,3 +7,15 @@ pihole_groups:
 
 pihole_basedir: /mnt/usb/pihole
 pihole_version: latest
+
+#dns_delegation:
+#  "{{ inventory_hostname }}":
+#    ns: "{{ podman_service_network_gateway }}"
+
+dns_delegation:
+  workstation:
+    ns: 192.168.178.26
+  canyon:
+    ns: 10.100.0.1
+  container:
+    ns: 10.100.1.1

@@ -1,4 +1,9 @@
 ---
+- name: Install podman
+  become: true
+  ansible.builtin.apt:
+    name: podman
+
 - name: Create podman service network
   containers.podman.podman_network:
     name: service

@@ -4,7 +4,8 @@ Documentation=
 Wants=network-online.target
 After=network-online.target
 RequiresMountsFor=
-Requires=radarr-main.service radarr-exporter.service
+Requires=radarr-main.service
+Wants=radarr-exporter.service
 Before=radarr-main.service radarr-exporter.service
 
 [Service]

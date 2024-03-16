@@ -4,7 +4,8 @@ Documentation=
 Wants=network.target
 After=network.target
 RequiresMountsFor=
-Requires=postgres-main.service postgres-exporter.service
+Requires=postgres-main.service
+Wants=postgres-exporter.service
 Before=postgres-main.service postgres-exporter.service
 
 [Service]

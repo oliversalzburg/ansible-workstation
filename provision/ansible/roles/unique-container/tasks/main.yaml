@@ -3,28 +3,3 @@
   become: true
   ansible.builtin.hostname:
     name: "{{ inventory_hostname }}.{{ realm }}"
-
-- name: Copy nas-mount.sh
-  become: true
-  ansible.builtin.template:
-    src: nas-mount.sh.j2
-    dest: /root/nas-mount.sh
-    mode: 0700
-    owner: root
-
-- name: Copy nas-mount service file
-  become: true
-  ansible.builtin.template:
-    src: nas-mount.service.j2
-    dest: "{{ directory_systemd }}/nas-mount.service"
-    owner: root
-    group: root
-    mode: 0644
-
-- name: Enable and check nas-mount service
-  become: true
-  ansible.builtin.systemd:
-    name: nas-mount
-    daemon_reload: true
-    state: restarted
-    enabled: true
