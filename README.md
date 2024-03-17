@@ -112,7 +112,7 @@ ansible-playbook playbooks/00_init-all.yml --inventory admin@<ip_address>, --ext
 
 ```shell
 cd provision/ansible
-ansible localhost --module-name ansible.builtin.include_role --args name=docker-pihole
+ansible localhost --module-name ansible.builtin.include_role --args name=podman-pihole
 ```
 
 #### When node not in the inventory

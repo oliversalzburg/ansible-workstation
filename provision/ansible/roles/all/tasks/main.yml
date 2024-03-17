@@ -2,6 +2,15 @@
 - name: Gather facts
   ansible.builtin.gather_facts:
 
+- name: Generate /etc/hosts
+  become: true
+  ansible.builtin.template:
+    src: hosts.j2
+    dest: /etc/hosts
+    owner: root
+    group: root
+    mode: 0644
+
 - name: Update and upgrade apt packages
   become: true
   apt:
@@ -47,6 +56,7 @@
       - wget
       - whois
       - wireguard
+      - wpasupplicant
       - zsh
     update_cache: true
 

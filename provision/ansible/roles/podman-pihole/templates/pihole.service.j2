@@ -3,6 +3,7 @@ Description=Pi-hole
 Documentation=https://pi-hole.net/
 Wants=network.target
 After=network.target
+RequiresMountsFor=/mnt/usb
 StartLimitIntervalSec=10
 
 [Service]
@@ -20,8 +21,10 @@ ExecStart=/usr/bin/podman run \
   --cidfile "%t/%n.ctr-id" \
   --conmon-pidfile "%t/%n.pid" \
   --detach \
+  # We hardcode /etc/resolv.conf to the pihole itself, otherwise unintentional
+  # resolvers can be consumed from DHCP responses that affected the host.
   --dns=127.0.0.1 \
-  --env "FTLCONF_LOCAL_IPV4=192.168.178.52" \
+  --env "FTLCONF_LOCAL_IPV4={{ ansible_default_ipv4.address }}" \
   --env "TZ={{ config_system_timezone }}" \
   --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
   --label "traefik.enable=true" \
@@ -34,12 +37,13 @@ ExecStart=/usr/bin/podman run \
   --log-driver "journald" \
   --name "%n.{{ inventory_hostname }}.{{ realm }}" \
   --network "service" \
-  --publish "192.168.178.52:53:53/tcp" \
-  --publish "192.168.178.52:53:53/udp" \
+  --publish "{{ ansible_default_ipv4.address }}:53:53/tcp" \
+  --publish "{{ ansible_default_ipv4.address }}:53:53/udp" \
   --pull "never" \
   --replace \
   --rm \
   --secret "pihole_webpassword,type=env,target=WEBPASSWORD" \
+  # image does not support rootless. It tries to wildly chown/chmod on the filesystem.
   #--user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
   --volume "{{ pihole_basedir }}/etc/pihole:/etc/pihole:rw" \

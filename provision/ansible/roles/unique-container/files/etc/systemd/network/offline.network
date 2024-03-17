@@ -1,6 +1,6 @@
 [Match]
-#Name=wlp3s0
-Name=eno1
+#Name=wlp2s0
+Name=enp0s25
 
 [Network]
 DHCP=yes

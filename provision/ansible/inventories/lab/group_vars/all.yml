@@ -19,6 +19,17 @@ version_age: 1.1.1
 version_nodejs: 20
 version_sops: 3.7.3
 
+dns_delegation:
+  workstation:
+    ns: 10.100.26.1
+  canyon:
+    ns: 10.100.52.1
+  container:
+    ns: 10.100.2.1
+
+hosts_postgres: [ canyon, container, workstation ]
+hosts_starr: [ canyon ]
+
 exportarr_version: "v1.6.2"
 jellyfin_version: "10.8.13-1-amd64"
 keycloak_version: "24.0.1"

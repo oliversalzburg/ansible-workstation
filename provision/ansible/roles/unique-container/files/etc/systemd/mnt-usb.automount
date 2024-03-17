@@ -1,0 +1,8 @@
+[Unit]
+Description=USB Automount
+
+[Automount]
+Where=/mnt/usb
+
+[Install]
+WantedBy=multi-user.target

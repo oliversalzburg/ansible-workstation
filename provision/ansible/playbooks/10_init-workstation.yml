@@ -11,5 +11,12 @@
       node_exporter_enabled_collectors:
         - processes
         - systemd
+    - role: prometheus.prometheus.cadvisor
     - role: userspace
       userspace_user: adesso-os
+    # Required for roles below. Process first.
+    - role: podman-host
+    - role: podman-postgres
+    # Application roles. Eventually consistent.
+    - role: podman-grafana
+    - role: podman-traefik

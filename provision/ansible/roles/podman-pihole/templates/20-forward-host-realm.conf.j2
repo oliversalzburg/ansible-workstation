@@ -1,4 +1,3 @@
-local-ttl=60
 {% for node in dns_delegation %}
 address=/web.{{ node }}.{{ realm }}/{{ dns_delegation[ node ].ns }}
 server=/service.{{ node }}.{{ realm }}/{{ dns_delegation[ node ].ns }}

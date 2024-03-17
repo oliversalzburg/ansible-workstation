@@ -2,7 +2,8 @@
 Description=qBittorrent
 Documentation=https://www.qbittorrent.org/
 Wants=network-online.target
-After=network-online.target nas-mount.service
+After=network-online.target
+RequiresMountsFor={{ qbittorrent_mediadir }}
 StartLimitIntervalSec=10
 
 [Service]

@@ -21,15 +21,11 @@
     # Required for roles below. Process first.
     - role: podman-host
     - role: podman-postgres
-    - role: podman-prometheus
     # Application roles. Eventually consistent.
-    - role: podman-bazarr
-    - role: podman-grafana
+    #- role: podman-bazarr
     - role: podman-jellyfin
-    - role: podman-keycloak
     - role: podman-lidarr
-    - role: podman-mattermost
-    - role: podman-oauth2proxy
+    #- role: podman-mattermost
     - role: podman-pihole
     - role: podman-prowlarr
     - role: podman-qbittorrent

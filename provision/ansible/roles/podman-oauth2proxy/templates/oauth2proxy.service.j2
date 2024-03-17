@@ -18,12 +18,12 @@ ExecStart=/usr/bin/podman run \
   --conmon-pidfile "%t/%n.pid" \
   --detach \
   --env "OAUTH2_PROXY_HTTP_ADDRESS=0.0.0.0:4180" \
-  --env "OAUTH2_PROXY_COOKIE_DOMAINS=.web.{{ inventory_hostname }}.{{ realm }}" \
-  --env "OAUTH2_PROXY_WHITELIST_DOMAINS=.web.{{ inventory_hostname }}.{{ realm }}" \
+  --env "OAUTH2_PROXY_COOKIE_DOMAINS=.web.{{ inventory_hostname }}.{{ realm }},.web.canyon.{{ realm }}" \
+  --env "OAUTH2_PROXY_WHITELIST_DOMAINS=.web.{{ inventory_hostname }}.{{ realm }},.web.canyon.{{ realm }}" \
   --env "OAUTH2_PROXY_PROVIDER=oidc" \
   --env "OAUTH2_PROXY_CLIENT_ID=oauth2-proxy" \
   --env "OAUTH2_PROXY_EMAIL_DOMAINS=*" \
-  --env "OAUTH2_PROXY_OIDC_ISSUER_URL=https://keycloak.web.{{ inventory_hostname }}.{{ realm }}/realms/{{ realm_name | lower }}" \
+  --env "OAUTH2_PROXY_OIDC_ISSUER_URL=https://keycloak.web.container.{{ realm }}/realms/{{ realm_name | lower }}" \
   --env "OAUTH2_PROXY_COOKIE_CSRF_PER_REQUEST=true" \
   --env "OAUTH2_PROXY_COOKIE_CSRF_EXPIRE=5m" \
   --env "OAUTH2_PROXY_CUSTOM_TEMPLATES_DIR=/templates" \

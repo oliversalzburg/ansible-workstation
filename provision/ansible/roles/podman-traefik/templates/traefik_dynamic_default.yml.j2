@@ -32,13 +32,13 @@ http:
 
     oauth-auth:
       forwardAuth:
-        address: "https://oauth2proxy.web.{{ inventory_hostname }}.{{ realm }}/oauth2/auth"
+        address: "https://oauth2proxy.web.container.{{ realm }}/oauth2/auth"
         trustForwardHeader: true
     oauth-errors:
       errors:
         status:
           - "401-403"
-        service: oauth2proxy@docker
+        service: oauth2proxy@file
         query: "/oauth2/sign_in?rd={url}"
 
   routers:
@@ -49,6 +49,12 @@ http:
       service: api@internal
       tls:
         certresolver: "{{ realm }}"
+
+  services:
+    oauth2proxy:
+      loadBalancer:
+        servers:
+          - url: "https://oauth2proxy.web.container.{{ realm }}"
 
 tls:
   options:

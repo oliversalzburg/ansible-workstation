@@ -2,7 +2,8 @@
 Description=Jellyfin
 Documentation=https://jellyfin.org/docs/
 Wants=network-online.target
-After=network-online.target nas-mount.service
+After=network-online.target
+RequiresMountsFor={{ jellyfin_mediadir }}
 StartLimitIntervalSec=10
 
 [Service]
