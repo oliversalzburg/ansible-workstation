@@ -16,7 +16,7 @@ RestartSec=10
 StartLimitBurst=3
 TimeoutStopSec=70
 ExecStartPre=/bin/rm --force %t/%n.ctr-id
-ExecStartPre=-/usr/bin/podman pull quay.io/prometheuscommunity/postgres-exporter:{{ postgresexporter_version }}
+ExecStartPre=-/usr/bin/podman pull {{ registry_quayio }}/prometheuscommunity/postgres-exporter:{{ postgresexporter_version }}
 ExecStart=/usr/bin/podman run \
   --cgroups "no-conmon" \
   --cidfile "%t/%n.ctr-id" \

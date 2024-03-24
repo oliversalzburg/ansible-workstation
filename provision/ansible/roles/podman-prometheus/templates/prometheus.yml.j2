@@ -1,5 +1,5 @@
 scrape_configs:
-  - job_name: starr
+  - job_name: servaar
     scrape_interval: 1m
     static_configs:
       - targets:
@@ -63,11 +63,20 @@ scrape_configs:
     metrics_path: /snmp
     params:
       auth: [public_v2]
-      module: [if_mib]
+      module: 
+        - hrDevice
+        - hrSWInstalled
+        - hrSWRun
+        - hrSWRunPerf
+        - hrStorage
+        - hrSystem
+        - if_mib
+        - ip_mib
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
       - source_labels: [__param_target]
         target_label: instance
       - target_label: __address__
-        replacement: 127.0.0.1:9116  # The SNMP exporter's real hostname:port.
+        # The SNMP exporter's real hostname:port.
+        replacement: "snmp-exporter.service.{{ inventory_hostname }}:9116"

@@ -14,7 +14,7 @@ StartLimitBurst=3
 TimeoutStartSec=300
 TimeoutStopSec=70
 ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
-ExecStartPre=-/usr/bin/podman pull docker.io/mattermost/mattermost-team-edition:{{ mattermost_version }}
+ExecStartPre=-/usr/bin/podman pull {{ registry_dockerio }}/mattermost/mattermost-team-edition:{{ mattermost_version }}
 ExecStart=/usr/bin/podman run \
   --cgroups "no-conmon" \
   --cidfile "%t/%n.ctr-id" \

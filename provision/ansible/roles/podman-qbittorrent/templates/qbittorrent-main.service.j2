@@ -15,7 +15,7 @@ Restart=on-failure
 RestartSec=10
 StartLimitBurst=3
 ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
-ExecStartPre=-/usr/bin/podman pull ghcr.io/hotio/qbittorrent:{{ qbittorrent_version }}
+ExecStartPre=-/usr/bin/podman pull {{ registry_ghcrio }}/hotio/qbittorrent:{{ qbittorrent_version }}
 ExecStart=/usr/bin/podman run \
   --cgroups "no-conmon" \
   --cidfile "%t/%n.ctr-id" \

@@ -14,7 +14,7 @@ Restart=on-failure
 RestartSec=10
 StartLimitBurst=3
 ExecStartPre=/bin/rm --force %t/%n.ctr-id
-ExecStartPre=-/usr/bin/podman pull ghcr.io/hotio/lidarr:{{ lidarr_version }}
+ExecStartPre=-/usr/bin/podman pull {{ registry_ghcrio }}/hotio/lidarr:{{ lidarr_version }}
 ExecStart=/usr/bin/podman run \
   --cgroups "no-conmon" \
   --cidfile "%t/%n.ctr-id" \

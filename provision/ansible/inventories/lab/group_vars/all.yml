@@ -35,6 +35,10 @@ dns_delegation:
 hosts_postgres: [ canyon, container, workstation ]
 hosts_starr: [ canyon ]
 
+registry_dockerio: dockerio.nexus.web.container.labnet
+registry_ghcrio: ghcrio.nexus.web.container.labnet
+registry_quayio: quayio.nexus.web.container.labnet
+
 exportarr_version: "v1.6.2"
 jellyfin_version: "10.8.13-1-amd64"
 keycloak_version: "24.0.1"

@@ -36,6 +36,18 @@ ExecStart=/usr/bin/podman run \
   --label "traefik.http.routers.dockerio.tls.certresolver={{ realm }}" \
   --label "traefik.http.routers.dockerio.tls.domains[0].main=dockerio.%N.web.{{ inventory_hostname }}" \
   --label "traefik.http.services.dockerio.loadbalancer.server.port=8082" \
+  --label "traefik.http.routers.quayio.entrypoints=websecure" \
+  --label "traefik.http.routers.quayio.rule=Host(`quayio.%N.web.{{ inventory_hostname }}`)" \
+  --label "traefik.http.routers.quayio.service=quayio" \
+  --label "traefik.http.routers.quayio.tls.certresolver={{ realm }}" \
+  --label "traefik.http.routers.quayio.tls.domains[0].main=quayio.%N.web.{{ inventory_hostname }}" \
+  --label "traefik.http.services.quayio.loadbalancer.server.port=8083" \
+  --label "traefik.http.routers.ghcrio.entrypoints=websecure" \
+  --label "traefik.http.routers.ghcrio.rule=Host(`ghcrio.%N.web.{{ inventory_hostname }}`)" \
+  --label "traefik.http.routers.ghcrio.service=ghcrio" \
+  --label "traefik.http.routers.ghcrio.tls.certresolver={{ realm }}" \
+  --label "traefik.http.routers.ghcrio.tls.domains[0].main=ghcrio.%N.web.{{ inventory_hostname }}" \
+  --label "traefik.http.services.ghcrio.loadbalancer.server.port=8084" \
   --log-driver "journald" \
   --name "%n.{{ inventory_hostname }}" \
   --network "service" \

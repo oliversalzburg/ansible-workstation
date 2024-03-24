@@ -44,6 +44,7 @@
       - python3-pip
       - python3-psycopg2
       - ripgrep
+      - snmp
       - software-properties-common
       - strace
       - tzdata

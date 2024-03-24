@@ -17,7 +17,7 @@ StartLimitBurst=3
 TimeoutStartSec=300
 TimeoutStopSec=70
 ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
-ExecStartPre=-/usr/bin/podman pull docker.io/procustodibus/wireguard:{{ wireguard_version }}
+ExecStartPre=-/usr/bin/podman pull {{ registry_dockerio }}/procustodibus/wireguard:{{ wireguard_version }}
 ExecStart=/usr/bin/podman run \
   --cap-add "NET_ADMIN" \
   --cgroups "no-conmon" \
