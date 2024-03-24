@@ -26,16 +26,16 @@ ExecStart=/usr/bin/podman run \
   --dns=127.0.0.1 \
   --env "FTLCONF_LOCAL_IPV4={{ ansible_default_ipv4.address }}" \
   --env "TZ={{ config_system_timezone }}" \
-  --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --hostname "%n.{{ inventory_hostname }}" \
   --label "traefik.enable=true" \
   --label "traefik.http.routers.pihole.entrypoints=websecure" \
   --label "traefik.http.routers.pihole.middlewares=oauth@file" \
-  --label "traefik.http.routers.pihole.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
+  --label "traefik.http.routers.pihole.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
   --label "traefik.http.routers.pihole.tls.certresolver={{ realm }}" \
-  --label "traefik.http.routers.pihole.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
+  --label "traefik.http.routers.pihole.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
   --label "traefik.http.services.pihole.loadbalancer.server.port=80" \
   --log-driver "journald" \
-  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --name "%n.{{ inventory_hostname }}" \
   --network "service" \
   --publish "{{ ansible_default_ipv4.address }}:53:53/tcp" \
   --publish "{{ ansible_default_ipv4.address }}:53:53/udp" \

@@ -20,19 +20,19 @@ ExecStart=/usr/bin/podman run \
   --cidfile "%t/%n.ctr-id" \
   --conmon-pidfile "%t/%n.pid" \
   --detach \
-  --env "MM_SERVICESETTINGS_SITEURL=https://%N.web.{{ inventory_hostname }}.{{ realm }}" \
+  --env "MM_SERVICESETTINGS_SITEURL=https://%N.web.{{ inventory_hostname }}" \
   --env "MM_SQLSETTINGS_DRIVERNAME=postgres" \
-  --env "MM_SQLSETTINGS_DATASOURCE=postgres://{{ mattermost_pg_user }}:{{ mattermost_pg_password }}@postgres.service.{{ inventory_hostname }}.{{ realm }}:5432/{{ mattermost_pg_db }}?sslmode=disable&connect_timeout=10" \
+  --env "MM_SQLSETTINGS_DATASOURCE=postgres://{{ mattermost_pg_user }}:{{ mattermost_pg_password }}@postgres.service.{{ inventory_hostname }}:5432/{{ mattermost_pg_db }}?sslmode=disable&connect_timeout=10" \
   --env "TZ={{ config_system_timezone }}" \
-  --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --hostname "%n.{{ inventory_hostname }}" \
   --label "traefik.enable=true" \
   --label "traefik.http.routers.mattermost.entrypoints=websecure" \
-  --label "traefik.http.routers.mattermost.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
+  --label "traefik.http.routers.mattermost.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
   --label "traefik.http.routers.mattermost.tls.certresolver={{ realm }}" \
-  --label "traefik.http.routers.mattermost.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
+  --label "traefik.http.routers.mattermost.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
   --label "traefik.http.services.mattermost.loadbalancer.server.port=8065" \
   --log-driver "journald" \
-  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --name "%n.{{ inventory_hostname }}" \
   --network "service" \
   --pull "never" \
   --replace \

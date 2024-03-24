@@ -1,3 +1,4 @@
-podman_service_network_ip_range: "10.100.52.0/24"
 podman_service_network_subnet: "10.100.52.0/24"
 podman_service_network_gateway: "10.100.52.1"
+podman_proton_network_subnet: "192.168.52.0/24"
+podman_proton_network_gateway: "192.168.52.1"

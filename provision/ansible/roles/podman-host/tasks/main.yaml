@@ -8,7 +8,21 @@
   containers.podman.podman_network:
     name: service
     ipv6: false
-    ip_range: "{{ podman_service_network_ip_range }}"
+    force: true
+    internal: false
+    opt:
+      isolate: true
     subnet: "{{ podman_service_network_subnet }}"
-    gateway: "{{ podman_service_network_gateway }}"
+  become: true
+
+- name: Create podman Proton network
+  when: podman_proton_network_subnet is defined
+  containers.podman.podman_network:
+    name: proton
+    ipv6: false
+    force: true
+    internal: false
+    opt:
+      isolate: true
+    subnet: "{{ podman_proton_network_subnet }}"
   become: true

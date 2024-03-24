@@ -14,16 +14,16 @@ Restart=on-failure
 TimeoutStopSec=70
 ExecStartPre=/bin/rm --force %t/sonarr.pid %t/sonarr.pod-id
 ExecStartPre=/usr/bin/podman pod create \
-  --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --hostname "%n.{{ inventory_hostname }}" \
   --infra-conmon-pidfile %t/sonarr.pid \
   --label "traefik.enable=true" \
   --label "traefik.http.routers.sonarr.entrypoints=websecure" \
   --label "traefik.http.routers.sonarr.middlewares=oauth@file" \
-  --label "traefik.http.routers.sonarr.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
+  --label "traefik.http.routers.sonarr.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
   --label "traefik.http.routers.sonarr.tls.certresolver={{ realm }}" \
-  --label "traefik.http.routers.sonarr.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
+  --label "traefik.http.routers.sonarr.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
   --label "traefik.http.services.sonarr.loadbalancer.server.port=8989" \
-  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --name "%n.{{ inventory_hostname }}" \
   --network "service" \
   --pod-id-file %t/sonarr.pod-id \
   --replace \

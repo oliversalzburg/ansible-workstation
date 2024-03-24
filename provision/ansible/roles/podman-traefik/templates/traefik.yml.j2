@@ -14,11 +14,11 @@ entryPoints:
       tls:
         certresolver: "{{ realm }}"
         domains:
-          - main: "web.{{ inventory_hostname }}.{{ realm }}"
+          - main: "web.{{ inventory_hostname }}"
             sans:
-              - "*.web.{{ inventory_hostname }}.{{ realm }}"
-              - "*.{{ inventory_hostname }}.{{ realm }}"
-              - "{{ inventory_hostname }}.{{ realm }}"
+              - "*.web.{{ inventory_hostname }}"
+              - "*.{{ inventory_hostname }}"
+              - "{{ inventory_hostname }}"
       middlewares:
         - default@file
 

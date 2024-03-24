@@ -1,8 +1,87 @@
 #!/usr/bin/env ansible-playbook
 
 - import_playbook: playbooks/00_init-all.yml
-- import_playbook: playbooks/10_init-canyon.yml
-- import_playbook: playbooks/10_init-container.yml
-- import_playbook: playbooks/10_init-laptop.yml
-- import_playbook: playbooks/10_init-workstation.yml
-- import_playbook: playbooks/10_init-sandbox.yml
+
+- hosts: canyon.labnet
+  roles:
+  - role: unique-canyon
+- hosts: container.labnet
+  roles:
+  - role: unique-container
+- hosts: laptop.labnet
+  roles:
+  - role: unique-laptop
+- hosts: workstation.labnet
+  roles:
+  - role: unique-workstation
+
+- hosts: all
+  roles:
+    - role: maxhoesel.smallstep.step_bootstrap_host
+      when: "'ca' not in group_names"
+      vars:
+        step_cli_version: 0.24.4
+        step_bootstrap_ca_url: https://workstation.{{ realm }}:4431
+        step_bootstrap_fingerprint: 20de2454dc737e3518ef6920d3224e36fecf1212ce8bbf3e46abdad1bb22189f
+      become: true
+    - role: prometheus.prometheus.node_exporter
+      node_exporter_enabled_collectors:
+        - processes
+        - systemd
+
+- hosts: artifactstores
+  roles:
+    - role: podman-nexus
+
+- hosts: gpu-intel
+  roles:
+    - role: gpu-intel
+
+- hosts: desktops
+  roles:
+    - role: desktop
+- hosts: hires-desktops
+  roles:
+    - role: desktop-hires
+
+- hosts: servicehosts
+  roles:
+    - role: podman-host
+    - role: podman-traefik
+    - role: prometheus.prometheus.cadvisor
+
+- hosts: dbhosts
+  roles:
+    - role: podman-postgres
+
+- hosts: dnsresolvers
+  roles:
+    - role: podman-pihole
+
+- hosts: authservers
+  roles:
+    - role: podman-keycloak
+    - role: podman-oauth2proxy
+
+- hosts: mediaservers
+  roles:
+    - role: podman-jellyfin
+    - role: podman-lidarr
+    - role: podman-prowlarr
+    - role: podman-qbittorrent
+    - role: podman-radarr
+    - role: podman-sonarr
+
+- hosts: metricscollectors
+  roles:
+    - role: podman-prometheus
+
+- hosts: metricsmonitors
+  roles:
+    - role: podman-grafana
+
+#- import_playbook: playbooks/10_init-canyon.yml
+#- import_playbook: playbooks/10_init-container.yml
+#- import_playbook: playbooks/10_init-laptop.yml
+#- import_playbook: playbooks/10_init-workstation.yml
+#- import_playbook: playbooks/10_init-sandbox.yml

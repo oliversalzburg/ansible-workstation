@@ -1,4 +1,6 @@
 {% for node in dns_delegation %}
-address=/web.{{ node }}.{{ realm }}/{{ dns_delegation[ node ].ns }}
-server=/service.{{ node }}.{{ realm }}/{{ dns_delegation[ node ].ns }}
+address=/web.{{ node }}.{{ realm }}/{{ dns_delegation[ node ].service.ns }}
+{% for zone in dns_delegation[ node ] %}
+server=/{{ zone }}.{{ node }}.{{ realm }}/{{ dns_delegation[ node ][ zone ].ns }}
+{% endfor %}
 {% endfor %}

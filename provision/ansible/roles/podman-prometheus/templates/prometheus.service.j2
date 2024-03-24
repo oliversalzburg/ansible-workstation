@@ -1,8 +1,9 @@
 [Unit]
 Description=Prometheus
 Documentation=https://prometheus.io/docs
-Wants=network.target
-After=network.target
+Wants=network-online.target
+Wants=snmp-exporter.service
+After=network-online.target
 StartLimitIntervalSec=10
 
 [Service]
@@ -20,15 +21,15 @@ ExecStart=/usr/bin/podman run \
   --cidfile "%t/%n.ctr-id" \
   --conmon-pidfile "%t/%n.pid" \
   --detach \
-  --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --hostname "%n.{{ inventory_hostname }}" \
   --label "traefik.enable=true" \
   --label "traefik.http.routers.prometheus.entrypoints=websecure" \
-  --label "traefik.http.routers.prometheus.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
+  --label "traefik.http.routers.prometheus.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
   --label "traefik.http.routers.prometheus.tls.certresolver={{ realm }}" \
-  --label "traefik.http.routers.prometheus.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
+  --label "traefik.http.routers.prometheus.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
   --label "traefik.http.services.prometheus.loadbalancer.server.port=9090" \
   --log-driver "journald" \
-  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --name "%n.{{ inventory_hostname }}" \
   --network "service" \
   --pull "never" \
   --replace \

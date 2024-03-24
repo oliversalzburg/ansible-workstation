@@ -21,15 +21,15 @@ ExecStart=/usr/bin/podman run \
   --conmon-pidfile "%t/%n.pid" \
   --detach \
   --env "TZ={{ config_system_timezone }}" \
-  --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --hostname "%n.{{ inventory_hostname }}" \
   --label "traefik.enable=true" \
   --label "traefik.http.routers.grafana.entrypoints=websecure" \
-  --label "traefik.http.routers.grafana.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
+  --label "traefik.http.routers.grafana.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
   --label "traefik.http.routers.grafana.tls.certresolver={{ realm }}" \
-  --label "traefik.http.routers.grafana.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
+  --label "traefik.http.routers.grafana.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
   --label "traefik.http.services.grafana.loadbalancer.server.port=3000" \
   --log-driver "journald" \
-  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --name "%n.{{ inventory_hostname }}" \
   --network "service" \
   --pull "never" \
   --replace \

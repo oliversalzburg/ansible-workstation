@@ -1,8 +1,8 @@
 [Unit]
 Description=PostgreSQL Root Service
 Documentation=
-Wants=network.target
-After=network.target
+Wants=network-online.target
+After=network-online.target
 RequiresMountsFor=
 Requires=postgres-main.service
 Wants=postgres-exporter.service
@@ -14,9 +14,10 @@ Restart=on-failure
 TimeoutStopSec=70
 ExecStartPre=/bin/rm --force %t/postgres.pid %t/postgres.pod-id
 ExecStartPre=/usr/bin/podman pod create \
-  --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --hostname "%n.{{ inventory_hostname }}" \
   --infra-conmon-pidfile %t/postgres.pid \
-  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --label "traefik.enable=false" \
+  --name "%n.{{ inventory_hostname }}" \
   --network "service" \
   --pod-id-file %t/postgres.pod-id \
   --publish "5432:5432/tcp" \

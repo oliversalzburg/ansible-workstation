@@ -25,7 +25,7 @@ ExecStart=/usr/bin/podman run \
   --env "PORT=9707" \
   --env "URL=http://127.0.0.1:8989" \
   --log-driver "journald" \
-  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --name "%n.{{ inventory_hostname }}" \
   --pod-id-file "%t/sonarr.pod-id" \
   --pull "never" \
   --replace \

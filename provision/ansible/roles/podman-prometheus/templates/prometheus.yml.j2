@@ -3,35 +3,43 @@ scrape_configs:
     scrape_interval: 1m
     static_configs:
       - targets:
-{% for host in hosts_starr %}
-        - "lidarr.service.{{ host }}.{{ realm }}:9707"
-        - "prowlarr.service.{{ host }}.{{ realm }}:9707"
-        - "radarr.service.{{ host }}.{{ realm }}:9707"
-        - "sonarr.service.{{ host }}.{{ realm }}:9707"
+{% for host in groups["mediaservers"] %}
+        - "lidarr.service.{{ host }}:9707"
+        - "prowlarr.service.{{ host }}:9707"
+        - "radarr.service.{{ host }}:9707"
+        - "sonarr.service.{{ host }}:9707"
+{% endfor %}
+
+  - job_name: qbittorrent
+    scrape_interval: 15s
+    static_configs:
+      - targets:
+{% for host in groups["mediaservers"] %}
+        - "qbittorrent.service.{{ host }}:8000"
 {% endfor %}
 
   - job_name: cadvisor
     scrape_interval: 15s
     static_configs:
       - targets:
-        - "canyon.{{ realm }}:8080"
-        - "container.{{ realm }}:8080"
-        - "workstation.{{ realm }}:8080"
+{% for host in groups["servicehosts"] %}
+        - "{{ host }}:8080"
+{% endfor %}
 
   - job_name: node
     scrape_interval: 15s
     static_configs:
       - targets:
-        - "canyon.{{ realm }}:9100"
-        - "container.{{ realm }}:9100"
-        - "workstation.{{ realm }}:9100"
+{% for host in groups["all"] %}
+        - "{{ host }}:9100"
+{% endfor %}
 
   - job_name: postgres
     scrape_interval: 15s
     static_configs:
       - targets:
-{% for host in hosts_postgres %}
-        - "postgres.service.{{ host }}.{{ realm }}:9187"
+{% for host in groups["dbhosts"] %}
+        - "postgres.service.{{ host }}:9187"
 {% endfor %}
 
   - job_name: prometheus
@@ -44,6 +52,22 @@ scrape_configs:
     scrape_interval: 15s
     static_configs:
       - targets:
-        - "traefik.service.canyon.{{ realm }}:8081"
-        - "traefik.service.container.{{ realm }}:8081"
-        - "traefik.service.workstation.{{ realm }}:8081"
+{% for host in groups["servicehosts"] %}
+        - "traefik.service.{{ host }}:8081"
+{% endfor %}
+
+  - job_name: snmp
+    static_configs:
+      - targets:
+        - 192.168.178.3
+    metrics_path: /snmp
+    params:
+      auth: [public_v2]
+      module: [if_mib]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 127.0.0.1:9116  # The SNMP exporter's real hostname:port.

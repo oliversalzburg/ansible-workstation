@@ -1,8 +1,9 @@
 [Unit]
 Description=Keycloak
 Documentation=https://www.keycloak.org
-Wants=network.target
-After=network.target
+Wants=network-online.target
+After=network-online.target postgres.service
+Requires=postgres.service
 StartLimitIntervalSec=10
 
 [Service]
@@ -18,15 +19,15 @@ ExecStart=/usr/bin/podman run \
   --conmon-pidfile "%t/%n.pid" \
   --detach \
   --env "TZ={{ config_system_timezone }}" \
-  --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --hostname "%n.{{ inventory_hostname }}" \
   --label "traefik.enable=true" \
   --label "traefik.http.routers.keycloak.entrypoints=websecure" \
-  --label "traefik.http.routers.keycloak.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
+  --label "traefik.http.routers.keycloak.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
   --label "traefik.http.routers.keycloak.tls.certresolver={{ realm }}" \
-  --label "traefik.http.routers.keycloak.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
+  --label "traefik.http.routers.keycloak.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
   --label "traefik.http.services.keycloak.loadbalancer.server.port=8080" \
   --log-driver "journald" \
-  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --name "%n.{{ inventory_hostname }}" \
   --network "service" \
   --pull "never" \
   --replace \
@@ -39,10 +40,10 @@ ExecStart=/usr/bin/podman run \
   keycloak/keycloak:{{ keycloak_version }} \
   start \
   --db="postgres" \
-  --db-url="jdbc:postgresql://postgres.service.{{ inventory_hostname }}.{{ realm }}:5432/{{ keycloak_pg_db }}" \
+  --db-url="jdbc:postgresql://postgres.service.{{ inventory_hostname }}:5432/{{ keycloak_pg_db }}" \
   --db-username="{{ keycloak_pg_user }}" \
   --db-password="{{ keycloak_pg_password }}" \
-  --hostname="%N.web.{{ inventory_hostname }}.{{ realm }}" \
+  --hostname="%N.web.{{ inventory_hostname }}" \
   --http-enabled="true" \
   --proxy-headers="xforwarded"
 

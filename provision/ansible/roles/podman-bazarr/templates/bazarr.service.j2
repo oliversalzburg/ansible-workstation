@@ -14,16 +14,16 @@ Restart=on-failure
 TimeoutStopSec=70
 ExecStartPre=/bin/rm --force %t/bazarr.pid %t/bazarr.pod-id
 ExecStartPre=/usr/bin/podman pod create \
-  --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --hostname "%n.{{ inventory_hostname }}" \
   --infra-conmon-pidfile %t/bazarr.pid \
   --label "traefik.enable=true" \
   --label "traefik.http.routers.bazarr.entrypoints=websecure" \
   --label "traefik.http.routers.bazarr.middlewares=oauth@file" \
-  --label "traefik.http.routers.bazarr.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
+  --label "traefik.http.routers.bazarr.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
   --label "traefik.http.routers.bazarr.tls.certresolver={{ realm }}" \
-  --label "traefik.http.routers.bazarr.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
+  --label "traefik.http.routers.bazarr.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
   --label "traefik.http.services.bazarr.loadbalancer.server.port=6767" \
-  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --name "%n.{{ inventory_hostname }}" \
   --network "service" \
   --pod-id-file %t/bazarr.pod-id \
   --replace \

@@ -24,12 +24,12 @@ ExecStart=/usr/bin/podman run \
   --device /dev/dri:/dev/dri \
   --group-add "{{ getent_group["nas"][1] }}" \
   --group-add "{{ getent_group["render"][1] }}" \
-  --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --hostname "%n.{{ inventory_hostname }}" \
   --label "traefik.enable=false" \
-  --label "traefik.http.routers.jellyfin.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
+  --label "traefik.http.routers.jellyfin.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
   --label "traefik.http.services.jellyfin.loadbalancer.server.port=8096" \
   --log-driver "journald" \
-  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --name "%n.{{ inventory_hostname }}" \
   --network host \
   --pull "never" \
   --replace \

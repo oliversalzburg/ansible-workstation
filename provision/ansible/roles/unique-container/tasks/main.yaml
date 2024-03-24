@@ -2,7 +2,7 @@
 - name: Set hostname
   become: true
   ansible.builtin.hostname:
-    name: "{{ inventory_hostname }}.{{ realm }}"
+    name: "{{ inventory_hostname }}"
 
 - name: "Create network: offline"
   become: true
@@ -54,7 +54,7 @@
 - name: Create storage mounts
   become: true
   ansible.builtin.copy:
-    src: "{{ item }}"
+    src: "{{ role_path }}/files/etc/systemd/{{ item }}"
     dest: "{{ directory_systemd }}/{{ item }}"
     mode: 0644
     owner: root

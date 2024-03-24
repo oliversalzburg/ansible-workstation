@@ -1,59 +1,46 @@
 [Unit]
-Description=qBittorrent
-Documentation=https://www.qbittorrent.org/
+Description=qBittorrent Root Service
+Documentation=
 Wants=network-online.target
 After=network-online.target
-RequiresMountsFor={{ qbittorrent_mediadir }}
-StartLimitIntervalSec=10
+RequiresMountsFor=
+Requires=qbittorrent-main.service qbittorrent-wg.service
+Wants=qbittorrent-exporter.service
+Before=qbittorrent-main.service qbittorrent-exporter.service qbittorrent-wg.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
-RestartSec=10
-StartLimitBurst=3
-ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
-ExecStartPre=-/usr/bin/podman pull ghcr.io/hotio/qbittorrent:{{ qbittorrent_version }}
-ExecStart=/usr/bin/podman run \
-  --cgroups "no-conmon" \
-  --cidfile "%t/%n.ctr-id" \
-  --conmon-pidfile "%t/%n.pid" \
-  --detach \
-  --env "PUID={{ _user.uid }}" \
-  --env "PGID={{ _groups.results[0].gid }}" \
-  --env "UMASK=002" \
-  --env "TZ={{ config_system_timezone }}" \
-  --env "WEBUI_PORTS=8080/tcp" \
-  --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
+TimeoutStopSec=70
+ExecStartPre=/bin/rm --force %t/qbittorrent.pid %t/qbittorrent.pod-id
+ExecStartPre=/usr/bin/podman pod create \
+  --hostname "%N.service.{{ inventory_hostname }}" \
+  --infra-conmon-pidfile %t/qbittorrent.pid \
   --label "traefik.enable=true" \
   --label "traefik.http.routers.qbittorrent.entrypoints=websecure" \
   --label "traefik.http.routers.qbittorrent.middlewares=oauth@file" \
-  --label "traefik.http.routers.qbittorrent.rule=Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`)" \
+  --label "traefik.http.routers.qbittorrent.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
   --label "traefik.http.routers.qbittorrent.tls.certresolver={{ realm }}" \
-  --label "traefik.http.routers.qbittorrent.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
+  --label "traefik.http.routers.qbittorrent.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
   --label "traefik.http.services.qbittorrent.loadbalancer.server.port=8080" \
-  --log-driver "journald" \
-  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --name "%N.service.{{ inventory_hostname }}" \
+  --network "proton:alias=%N.proton.{{ inventory_hostname }}" \
   --network "service" \
-  --pull "never" \
+  --pod-id-file %t/qbittorrent.pod-id \
   --replace \
-  --rm \
+  --sysctl "net.ipv4.conf.all.src_valid_mark=1" \
+  --sysctl "net.ipv6.conf.all.disable_ipv6=1" \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
   --volume "{{ qbittorrent_basedir }}/config:/config:rw" \
   --volume "{{ qbittorrent_mediadir }}:/data:rw" \
-  # VPN stuff
-  --env "VPN_ENABLED=true" \
-  --env "VPN_CONF=wg0" \
-  --env "VPN_PROVIDER=proton" \
-  --env "VPN_AUTO_PORT_FORWARD=true" \
-  --cap-add NET_ADMIN \
-  --sysctl "net.ipv4.conf.all.src_valid_mark=1" \
-  --sysctl "net.ipv6.conf.all.disable_ipv6=1" \
-  hotio/qbittorrent:{{ qbittorrent_version }}
+  --volume "{{ qbittorrent_basedir }}/config/wireguard:/etc/wireguard:ro" \
 
-ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
-ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"
-PIDFile=%t/%n.pid
+ExecStart=/usr/bin/podman pod start --pod-id-file %t/qbittorrent.pod-id
+ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/qbittorrent.pod-id --time 10
+ExecStopPost=/usr/bin/podman pod rm --ignore --force --pod-id-file %t/qbittorrent.pod-id
+PIDFile=%t/qbittorrent.pid
 Type=forking
 
 [Install]
 WantedBy=multi-user.target
+

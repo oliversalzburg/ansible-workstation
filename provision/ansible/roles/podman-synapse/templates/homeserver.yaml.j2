@@ -4,7 +4,7 @@ database:
     user: "{{ synapse_pg_user }}"
     password: "{{ synapse_pg_password }}"
     database: "{{ synapse_pg_db }}"
-    host: "postgres.service.{{ inventory_hostname }}.{{ realm }}"
+    host: "postgres.service.{{ inventory_hostname }}"
     port: 5432
 listeners:
   - port: 8008
@@ -18,7 +18,7 @@ listeners:
       - names: [federation]
         compress: false
 
-server_name: "synapse.web.{{ inventory_hostname }}.{{ realm }}"
+server_name: "synapse.web.{{ inventory_hostname }}"
 pid_file: /homeserver.pid
 web_client: False
 soft_file_limit: 0
@@ -85,7 +85,7 @@ enable_registration: False
 bcrypt_rounds: 12
 allow_guest_access: False
 enable_group_creation: true
-registration_shared_secret_path: "/data/synapse.web.{{ inventory_hostname }}.{{ realm }}.shared.secret"
+registration_shared_secret_path: "/data/synapse.web.{{ inventory_hostname }}.shared.secret"
 
 ## Metrics ###
 
@@ -98,7 +98,7 @@ expire_access_token: False
 
 ## Signing Keys ##
 
-signing_key_path: "/data/synapse.web.{{ inventory_hostname }}.{{ realm }}.signing.key"
+signing_key_path: "/data/synapse.web.{{ inventory_hostname }}.signing.key"
 old_signing_keys: {}
 key_refresh_interval: "1d" # 1 Day.
 

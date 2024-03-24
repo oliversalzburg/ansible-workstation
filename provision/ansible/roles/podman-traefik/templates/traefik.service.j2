@@ -20,9 +20,12 @@ ExecStart=/usr/bin/podman run \
   --cidfile "%t/%n.ctr-id" \
   --conmon-pidfile "%t/%n.pid" \
   --detach \
-  --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --hostname "%n.{{ inventory_hostname }}" \
   --label "traefik.enable=false" \
-  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --name "%n.{{ inventory_hostname }}" \
+{% if podman_proton_network_subnet is defined %}
+  --network "proton:alias=%N.proton.{{ inventory_hostname }}" \
+{% endif %}
   --network "service" \
   --publish "443:443" \
   --publish "80:80" \

@@ -45,7 +45,7 @@ http:
     dashboard:
       #middlewares:
       #  - oauth
-      rule: "Host(`web.{{ inventory_hostname }}.{{ realm }}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+      rule: "Host(`web.{{ inventory_hostname }}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
       service: api@internal
       tls:
         certresolver: "{{ realm }}"

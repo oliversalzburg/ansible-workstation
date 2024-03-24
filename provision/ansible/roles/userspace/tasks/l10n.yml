@@ -1,5 +1,4 @@
 ---
-- ansible.builtin.gather_facts:
 - name: Set timezone to '{{ config_system_timezone }}'
   become: true
   community.general.timezone:

@@ -10,7 +10,7 @@ Type=oneshot
 ExecStartPre=-/usr/bin/docker exec %n stop
 ExecStartPre=-/usr/bin/docker rm %n
 ExecStartPre=/usr/bin/docker pull ghcr.io/oliversalzburg/docker-cloudflare-dns:{{ cloudflare_dns_version }}
-ExecStart=/usr/bin/docker run --rm --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+ExecStart=/usr/bin/docker run --rm --name "%n.{{ inventory_hostname }}" \
   --env "CLOUDFLARE_API_KEY={{ cloudflare_api_key }}" \
   --volume /var/run/docker.sock:/var/run/docker.sock:ro \
   ghcr.io/oliversalzburg/docker-cloudflare-dns:{{ cloudflare_dns_version }}

@@ -22,7 +22,7 @@ ExecStart=/usr/bin/podman run \
   --env "SYNAPSE_CONFIG_PATH=/data/homeserver.yaml" \
   --env "TZ={{ config_system_timezone }}" \
   --log-driver "journald" \
-  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --name "%n.{{ inventory_hostname }}" \
   --pod-id-file "%t/synapse.pod-id" \
   --pull "never" \
   --replace \

@@ -1,6 +1,5 @@
 ---
 - hosts: "{{ target_host | default('laptop') }}"
-  gather_facts: false
   roles:
     - role: maxhoesel.smallstep.step_bootstrap_host
       vars:

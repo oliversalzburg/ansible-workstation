@@ -1,7 +1,4 @@
 ---
-- name: Gather facts
-  ansible.builtin.gather_facts:
-
 - name: Generate SSH key
   become: true
   become_user: "{{ userspace_user }}"

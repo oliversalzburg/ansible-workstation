@@ -3,7 +3,6 @@
 ---
 - name: Wait till ready
   hosts: all
-  gather_facts: false
   pre_tasks:
     - name: Wait for connection
       ansible.builtin.wait_for_connection:
@@ -20,11 +19,8 @@
       changed_when: false
       when: is_cloudinit_exist.rc == 0
 
-    - name: Gather facts
-      ansible.builtin.gather_facts:
-
 - hosts: all
   roles:
     - role: all
     - role: userspace
-      userspace_user: oliver
+      userspace_user: "{{ ansible_user }}"

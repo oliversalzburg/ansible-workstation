@@ -18,8 +18,8 @@ ExecStart=/usr/bin/podman run \
   --conmon-pidfile "%t/%n.pid" \
   --detach \
   --env "OAUTH2_PROXY_HTTP_ADDRESS=0.0.0.0:4180" \
-  --env "OAUTH2_PROXY_COOKIE_DOMAINS=.web.{{ inventory_hostname }}.{{ realm }},.web.canyon.{{ realm }}" \
-  --env "OAUTH2_PROXY_WHITELIST_DOMAINS=.web.{{ inventory_hostname }}.{{ realm }},.web.canyon.{{ realm }}" \
+  --env "OAUTH2_PROXY_COOKIE_DOMAINS=.web.{{ inventory_hostname }},.web.canyon.{{ realm }}" \
+  --env "OAUTH2_PROXY_WHITELIST_DOMAINS=.web.{{ inventory_hostname }},.web.canyon.{{ realm }}" \
   --env "OAUTH2_PROXY_PROVIDER=oidc" \
   --env "OAUTH2_PROXY_CLIENT_ID=oauth2-proxy" \
   --env "OAUTH2_PROXY_EMAIL_DOMAINS=*" \
@@ -29,15 +29,15 @@ ExecStart=/usr/bin/podman run \
   --env "OAUTH2_PROXY_CUSTOM_TEMPLATES_DIR=/templates" \
   --env "OAUTH2_PROXY_REVERSE_PROXY=true" \
   --env "TZ={{ config_system_timezone }}" \
-  --hostname "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --hostname "%n.{{ inventory_hostname }}" \
   --label "traefik.enable=true" \
   --label "traefik.http.routers.oauth2proxy.entrypoints=websecure" \
-  --label "traefik.http.routers.oauth2proxy.rule=(Host(`%N.web.{{ inventory_hostname }}.{{ realm }}`) && PathPrefix(`/oauth2/`)) || (PathPrefix(`/oauth2/`))" \
+  --label "traefik.http.routers.oauth2proxy.rule=(Host(`%N.web.{{ inventory_hostname }}`) && PathPrefix(`/oauth2/`)) || (PathPrefix(`/oauth2/`))" \
   --label "traefik.http.routers.oauth2proxy.tls.certresolver={{ realm }}" \
-  --label "traefik.http.routers.oauth2proxy.tls.domains[0].main=%N.web.{{ inventory_hostname }}.{{ realm }}" \
+  --label "traefik.http.routers.oauth2proxy.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
   --label "traefik.http.services.oauth2proxy.loadbalancer.server.port=4180" \
   --log-driver "journald" \
-  --name "%n.{{ inventory_hostname }}.{{ realm }}" \
+  --name "%n.{{ inventory_hostname }}" \
   --network "service" \
   --pull "never" \
   --replace \

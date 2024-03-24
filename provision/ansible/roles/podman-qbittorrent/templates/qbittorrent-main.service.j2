@@ -1,11 +1,12 @@
 [Unit]
-Description=Bazarr
-Documentation=https://bazarr.media/
+Description=qBittorrent
+Documentation=https://www.qbittorrent.org/
 Wants=network-online.target
-After=network-online.target
+Requires=qbittorrent-wg.service
+After=network-online.target qbittorrent-wg.service
 RequiresMountsFor=%t/containers
-BindsTo=bazarr.service
-After=bazarr.service
+BindsTo=qbittorrent.service
+After=qbittorrent.service
 StartLimitIntervalSec=10
 
 [Service]
@@ -13,8 +14,8 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 RestartSec=10
 StartLimitBurst=3
-ExecStartPre=/bin/rm --force %t/%n.ctr-id
-ExecStartPre=-/usr/bin/podman pull ghcr.io/hotio/bazarr:{{ bazarr_version }}
+ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
+ExecStartPre=-/usr/bin/podman pull ghcr.io/hotio/qbittorrent:{{ qbittorrent_version }}
 ExecStart=/usr/bin/podman run \
   --cgroups "no-conmon" \
   --cidfile "%t/%n.ctr-id" \
@@ -23,14 +24,24 @@ ExecStart=/usr/bin/podman run \
   --env "PGID={{ _groups.results[0].gid }}" \
   --env "UMASK=002" \
   --env "TZ={{ config_system_timezone }}" \
+  --env "WEBUI_PORTS=8080/tcp" \
   --log-driver "journald" \
   --name "%n.{{ inventory_hostname }}" \
-  --pod-id-file "%t/bazarr.pod-id" \
+  --pod-id-file "%t/qbittorrent.pod-id" \
   --pull "never" \
   --replace \
   --rm \
   --sdnotify "conmon" \
-  hotio/bazarr:{{ bazarr_version }}
+  # VPN stuff
+  #--env "VPN_ENABLED=false" \
+  #--env "VPN_CONF=wg0" \
+  #--env "VPN_PROVIDER=proton" \
+  #--env "VPN_AUTO_PORT_FORWARD=true" \
+  #--env "VPN_EXPOSE_PORTS_ON_LAN=8080,8000" \
+  #--cap-add NET_ADMIN \
+  #--sysctl "net.ipv4.conf.all.src_valid_mark=1" \
+  #--sysctl "net.ipv6.conf.all.disable_ipv6=1" \
+  hotio/qbittorrent:{{ qbittorrent_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
 ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"

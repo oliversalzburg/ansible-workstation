@@ -1,11 +1,11 @@
 [Unit]
-Description=Bazarr
-Documentation=https://bazarr.media/
+Description=qBittorrent Wireguard Connection
+Documentation=
 Wants=network-online.target
 After=network-online.target
 RequiresMountsFor=%t/containers
-BindsTo=bazarr.service
-After=bazarr.service
+BindsTo=qbittorrent.service
+After=qbittorrent.service
 StartLimitIntervalSec=10
 
 [Service]
@@ -13,24 +13,27 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 RestartSec=10
 StartLimitBurst=3
-ExecStartPre=/bin/rm --force %t/%n.ctr-id
-ExecStartPre=-/usr/bin/podman pull ghcr.io/hotio/bazarr:{{ bazarr_version }}
+# docker.io rate-limit delays can abort startup if timeout is too short.
+TimeoutStartSec=300
+TimeoutStopSec=70
+ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
+ExecStartPre=-/usr/bin/podman pull docker.io/procustodibus/wireguard:{{ wireguard_version }}
 ExecStart=/usr/bin/podman run \
+  --cap-add "NET_ADMIN" \
   --cgroups "no-conmon" \
   --cidfile "%t/%n.ctr-id" \
   --detach \
-  --env "PUID={{ _user.uid }}" \
-  --env "PGID={{ _groups.results[0].gid }}" \
-  --env "UMASK=002" \
   --env "TZ={{ config_system_timezone }}" \
   --log-driver "journald" \
   --name "%n.{{ inventory_hostname }}" \
-  --pod-id-file "%t/bazarr.pod-id" \
+  --pod-id-file "%t/qbittorrent.pod-id" \
   --pull "never" \
   --replace \
   --rm \
   --sdnotify "conmon" \
-  hotio/bazarr:{{ bazarr_version }}
+  # Image requires root-level access
+  #--user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  procustodibus/wireguard:{{ wireguard_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
 ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"

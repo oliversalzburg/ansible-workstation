@@ -21,11 +21,16 @@ version_sops: 3.7.3
 
 dns_delegation:
   workstation:
-    ns: 10.100.26.1
+    service:
+      ns: 10.100.26.1
   canyon:
-    ns: 10.100.52.1
+    proton:
+      ns: 192.168.52.1
+    service:
+      ns: 10.100.52.1
   container:
-    ns: 10.100.2.1
+    service:
+      ns: 10.100.2.1
 
 hosts_postgres: [ canyon, container, workstation ]
 hosts_starr: [ canyon ]

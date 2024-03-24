@@ -1,0 +1,11 @@
+---
+nexus_id: nexus
+nexus_name: NexusRM
+nexus_groups:
+  - nexus
+  - service
+
+nexus_basedir: /mnt/usb/nexus
+nexus_master_password: nexus
+nexus_master_user: nexus
+nexus_version: latest

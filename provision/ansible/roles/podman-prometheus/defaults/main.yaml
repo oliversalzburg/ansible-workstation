@@ -7,3 +7,4 @@ prometheus_groups:
 
 prometheus_basedir: /mnt/usb/prometheus
 prometheus_version: latest
+snmp_exporter_version: latest
