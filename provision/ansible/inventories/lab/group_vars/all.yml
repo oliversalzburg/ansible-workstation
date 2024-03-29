@@ -47,6 +47,7 @@ mattermost_version: "9.6.0"
 oauth2proxy_version: "v7.6.0-amd64"
 pihole_version: "2024.02.2"
 postgres_version: "16.2-bookworm"
+# renovate: datasource=docker depName=hotio/prowlarr versioning=semver-coerce
 prowlarr_version: "release-1.13.3.4273"
 qbittorrent_version: "release-4.6.3"
 radarr_version: "release-5.3.6.8612"
