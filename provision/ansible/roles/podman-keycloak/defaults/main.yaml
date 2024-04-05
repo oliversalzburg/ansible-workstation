@@ -8,6 +8,6 @@ keycloak_groups:
 keycloak_basedir: /mnt/usb/keycloak
 keycloak_version: latest
 
-keycloak_pg_user: kcuser
-keycloak_pg_password: kcuser_password
+keycloak_pg_user: keycloak
+keycloak_pg_password: keycloak_password
 keycloak_pg_db: keycloak

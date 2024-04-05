@@ -18,7 +18,7 @@ ExecStartPre=/usr/bin/podman pod create \
   --infra-conmon-pidfile %t/lidarr.pid \
   --label "traefik.enable=true" \
   --label "traefik.http.routers.lidarr.entrypoints=websecure" \
-  --label "traefik.http.routers.lidarr.middlewares=oauth@file" \
+  #--label "traefik.http.routers.lidarr.middlewares=oauth@file" \
   --label "traefik.http.routers.lidarr.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
   --label "traefik.http.routers.lidarr.tls.certresolver={{ realm }}" \
   --label "traefik.http.routers.lidarr.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \

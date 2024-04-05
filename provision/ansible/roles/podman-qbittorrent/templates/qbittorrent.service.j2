@@ -18,7 +18,7 @@ ExecStartPre=/usr/bin/podman pod create \
   --infra-conmon-pidfile %t/qbittorrent.pid \
   --label "traefik.enable=true" \
   --label "traefik.http.routers.qbittorrent.entrypoints=websecure" \
-  --label "traefik.http.routers.qbittorrent.middlewares=oauth@file" \
+  #--label "traefik.http.routers.qbittorrent.middlewares=oauth@file" \
   --label "traefik.http.routers.qbittorrent.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
   --label "traefik.http.routers.qbittorrent.tls.certresolver={{ realm }}" \
   --label "traefik.http.routers.qbittorrent.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \

@@ -14,4 +14,10 @@
   <UrlBase></UrlBase>
   <InstanceName>Sonarr</InstanceName>
   <UpdateMechanism>Docker</UpdateMechanism>
+  <PostgresUser>{{ sonarr_pg_user }}</PostgresUser>
+  <PostgresPassword>{{ sonarr_pg_password }}</PostgresPassword>
+  <PostgresPort>5432</PostgresPort>
+  <PostgresHost>postgres.service.{{ inventory_hostname }}</PostgresHost>
+  <PostgresMainDb>{{ sonarr_pg_db }}-main</PostgresMainDb>
+  <PostgresLogDb>{{ sonarr_pg_db }}-log</PostgresLogDb>
 </Config>

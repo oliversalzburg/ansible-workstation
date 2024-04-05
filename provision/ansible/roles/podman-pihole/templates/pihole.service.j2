@@ -29,7 +29,7 @@ ExecStart=/usr/bin/podman run \
   --hostname "%n.{{ inventory_hostname }}" \
   --label "traefik.enable=true" \
   --label "traefik.http.routers.pihole.entrypoints=websecure" \
-  --label "traefik.http.routers.pihole.middlewares=oauth@file" \
+  #--label "traefik.http.routers.pihole.middlewares=oauth@file" \
   --label "traefik.http.routers.pihole.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
   --label "traefik.http.routers.pihole.tls.certresolver={{ realm }}" \
   --label "traefik.http.routers.pihole.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \

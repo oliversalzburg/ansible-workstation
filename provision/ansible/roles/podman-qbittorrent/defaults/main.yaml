@@ -4,6 +4,7 @@ qbittorrent_name: qBittorrent
 qbittorrent_groups:
   - nas
   - service
+  - unpackerr
 
 qbittorrent_basedir: /mnt/usb/qbittorrent
 qbittorrent_mediadir: "{{ media_mount }}"

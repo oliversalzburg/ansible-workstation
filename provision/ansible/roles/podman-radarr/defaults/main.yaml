@@ -8,3 +8,7 @@ radarr_groups:
 radarr_basedir: /mnt/usb/radarr
 radarr_mediadir: "{{ media_mount }}"
 radarr_version: latest
+
+radarr_pg_user: radarr
+radarr_pg_password: radarr_password
+radarr_pg_db: radarr

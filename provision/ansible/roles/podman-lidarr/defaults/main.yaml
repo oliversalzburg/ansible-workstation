@@ -9,3 +9,7 @@ lidarr_basedir: /mnt/usb/lidarr
 lidarr_mediadir: "{{ media_mount }}"
 lidarr_version: latest
 exportarr_version: latest
+
+lidarr_pg_user: lidarr
+lidarr_pg_password: lidarr_password
+lidarr_pg_db: lidarr

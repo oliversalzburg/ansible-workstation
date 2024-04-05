@@ -9,3 +9,7 @@ prowlarr_basedir: /mnt/usb/prowlarr
 prowlarr_version: latest
 exportarr_version: latest
 flaresolverr_version: latest
+
+prowlarr_pg_user: prowlarr
+prowlarr_pg_password: prowlarr_password
+prowlarr_pg_db: prowlarr

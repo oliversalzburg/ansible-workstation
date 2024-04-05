@@ -8,6 +8,8 @@ scrape_configs:
         - "prowlarr.service.{{ host }}:9707"
         - "radarr.service.{{ host }}:9707"
         - "sonarr.service.{{ host }}:9707"
+        # Unpackerr
+        - "{{ host }}:5656"
 {% endfor %}
 
   - job_name: qbittorrent
