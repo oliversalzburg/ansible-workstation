@@ -1,0 +1,9 @@
+---
+gitlab_id: gitlab
+gitlab_name: GitLab
+gitlab_groups:
+  - gitlab
+  - service
+
+gitlab_basedir: /mnt/usb/gitlab
+gitlab_version: "16.9.3-ce.0"

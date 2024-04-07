@@ -1,0 +1,9 @@
+---
+recyclarr_id: recyclarr
+recyclarr_name: Radarr
+recyclarr_groups:
+  - nas
+  - service
+
+recyclarr_basedir: /mnt/usb/recyclarr
+recyclarr_version: latest

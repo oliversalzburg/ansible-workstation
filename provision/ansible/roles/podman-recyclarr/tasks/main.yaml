@@ -1,0 +1,80 @@
+---
+- name: Create groups
+  become: true
+  register: _groups
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+    system: true
+  loop: "{{ recyclarr_groups }}"
+
+- name: Ensure {{ ansible_user }} is a group member
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: "{{ recyclarr_groups }}"
+    append: true
+
+- name: Create user
+  become: true
+  register: _user
+  ansible.builtin.user:
+    comment: "{{ recyclarr_name }}"
+    create_home: false
+    group: "{{ _groups.results[0].gid }}"
+    groups: "{{ recyclarr_groups }}"
+    home: "{{ recyclarr_basedir }}"
+    name: "{{ recyclarr_id }}"
+    password: "!"
+    shell: "/usr/sbin/nologin"
+    system: true
+
+
+- name: Ensure working directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ recyclarr_basedir }}"
+    state: directory
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+
+- name: Ensure directories exist
+  become: true
+  ansible.builtin.file:
+    path: "{{ recyclarr_basedir }}/{{ item }}"
+    state: directory
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+  loop:
+    - config
+
+
+- name: Copy configuration
+  become: true
+  ansible.builtin.template:
+    src: "recyclarr.yml.j2"
+    dest: "{{ recyclarr_basedir }}/config/recyclarr.yml"
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+    mode: 0644
+
+
+- name: Copy service files
+  become: true
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "{{ directory_systemd }}/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - recyclarr-main.service
+    - recyclarr.service
+
+- name: Enable and check service
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    enabled: true
+    name: recyclarr
+    state: restarted

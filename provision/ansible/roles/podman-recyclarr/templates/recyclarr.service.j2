@@ -1,0 +1,32 @@
+[Unit]
+Description=Recyclarr Root Service
+Documentation=
+Wants=network-online.target
+After=network-online.target
+Requires=recyclarr-main.service
+Before=recyclarr-main.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+TimeoutStopSec=70
+ExecStartPre=/bin/rm --force %t/recyclarr.pid %t/recyclarr.pod-id
+ExecStartPre=/usr/bin/podman pod create \
+  --hostname "%n.{{ inventory_hostname }}" \
+  --infra-conmon-pidfile %t/recyclarr.pid \
+  --label "traefik.enable=false" \
+  --name "%n.{{ inventory_hostname }}" \
+  --network "service" \
+  --pod-id-file %t/recyclarr.pod-id \
+  --replace \
+  --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
+  --volume "{{ recyclarr_basedir }}/config:/config:rw"
+
+ExecStart=/usr/bin/podman pod start --pod-id-file %t/recyclarr.pod-id
+ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/recyclarr.pod-id --time 10
+ExecStopPost=/usr/bin/podman pod rm --ignore --force --pod-id-file %t/recyclarr.pod-id
+PIDFile=%t/recyclarr.pid
+Type=forking
+
+[Install]
+WantedBy=multi-user.target
