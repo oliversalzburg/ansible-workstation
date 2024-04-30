@@ -19,9 +19,6 @@ ExecStart=/usr/bin/podman run \
   --cgroups "no-conmon" \
   --cidfile "%t/%n.ctr-id" \
   --detach \
-  --env "PUID={{ _user.uid }}" \
-  --env "PGID={{ _groups.results[0].gid }}" \
-  --env "UMASK=002" \
   --env "TZ={{ config_system_timezone }}" \
   --log-driver "journald" \
   --name "%n.{{ inventory_hostname }}" \
@@ -30,6 +27,7 @@ ExecStart=/usr/bin/podman run \
   --replace \
   --rm \
   --sdnotify "conmon" \
+  --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
   oliversalzburg/containers/prowlarr:{{ prowlarr_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
