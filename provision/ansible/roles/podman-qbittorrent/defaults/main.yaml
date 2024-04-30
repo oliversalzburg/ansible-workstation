@@ -10,5 +10,6 @@ qbittorrent_basedir: /mnt/usb/qbittorrent
 qbittorrent_mediadir: "{{ media_mount }}"
 qbittorrent_version: latest
 qbittorrent_exporter_version: latest
+natmap_version: latest
 wireguard_basedir: /mnt/usb/wireguard
 wireguard_version: latest

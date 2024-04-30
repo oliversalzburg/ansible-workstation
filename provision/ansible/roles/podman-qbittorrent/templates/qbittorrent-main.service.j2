@@ -25,6 +25,7 @@ ExecStart=/usr/bin/podman run \
   --env "UMASK=002" \
   --env "TZ={{ config_system_timezone }}" \
   --env "WEBUI_PORTS=8080/tcp" \
+  --health-cmd "curl --silent --show-error --fail http://localhost:8080" \
   --log-driver "journald" \
   --name "%n.{{ inventory_hostname }}" \
   --pod-id-file "%t/qbittorrent.pod-id" \

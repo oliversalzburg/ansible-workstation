@@ -7,3 +7,5 @@ gitlab_groups:
 
 gitlab_basedir: /mnt/usb/gitlab
 gitlab_version: "16.9.3-ce.0"
+gitlab_runner_basedir: /mnt/usb/gitlab-runner
+gitlab_runner_version: latest

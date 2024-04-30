@@ -1,0 +1,4 @@
+---
+ytdlsub_basedir: "{{ media_mount }}/YTDL-SUB"
+ytdlsub_mediadir: "{{ media_mount }}"
+ytdlsub_version: "edge-2024.04.03"

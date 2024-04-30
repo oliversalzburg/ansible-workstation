@@ -4,9 +4,9 @@ Documentation=
 Wants=network-online.target
 After=network-online.target
 RequiresMountsFor=
-Requires=qbittorrent-main.service qbittorrent-wg.service
+Requires=qbittorrent-main.service qbittorrent-natmap.service qbittorrent-wg.service
 Wants=qbittorrent-exporter.service
-Before=qbittorrent-main.service qbittorrent-exporter.service qbittorrent-wg.service
+Before=qbittorrent-main.service qbittorrent-exporter.service qbittorrent-natmap.service qbittorrent-wg.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
@@ -32,8 +32,9 @@ ExecStartPre=/usr/bin/podman pod create \
   --sysctl "net.ipv6.conf.all.disable_ipv6=1" \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
   --volume "{{ qbittorrent_basedir }}/config:/config:rw" \
-  --volume "{{ qbittorrent_mediadir }}:/data:rw" \
+  --volume "{{ qbittorrent_mediadir }}/INCOMING:/data/INCOMING:rw" \
   --volume "{{ qbittorrent_basedir }}/config/wireguard:/etc/wireguard:ro" \
+  --volume "/var/run/podman/podman.sock:/var/run/docker.sock:rw"
 
 ExecStart=/usr/bin/podman pod start --pod-id-file %t/qbittorrent.pod-id
 ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/qbittorrent.pod-id --time 10

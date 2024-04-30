@@ -50,6 +50,24 @@
     - data
     - logs
 
+- name: Ensure working directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ gitlab_runner_basedir }}"
+    state: directory
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+
+- name: Ensure directories exist
+  become: true
+  ansible.builtin.file:
+    path: "{{ gitlab_runner_basedir }}/{{ item }}"
+    state: directory
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+  loop:
+    - config
+
 
 - name: Copy service files
   become: true
@@ -60,6 +78,7 @@
     group: root
     mode: 0644
   loop:
+    - gitlab-runner.service
     - gitlab.service
 
 - name: Enable and check service

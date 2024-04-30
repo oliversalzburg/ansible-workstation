@@ -110,6 +110,7 @@
   loop:
     - qbittorrent-exporter.service
     - qbittorrent-main.service
+    - qbittorrent-natmap.service
     - qbittorrent-wg.service
     - qbittorrent.service
 

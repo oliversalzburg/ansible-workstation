@@ -3,11 +3,7 @@ PrivateKey = {{ vpn_privatekey }}
 Address = {{ vpn_address }}/32
 DNS = {{ vpn_dns }}
 
-#PostUp = ip route del default
-#PostUp = ip route add default dev wg0
 PostUp = ip route add 192.168.178.0/24 via 192.168.52.1 dev eth0
-#PostUp = ip route add {{ vpn_endpoint_ip }} via {{ podman_proton_network_gateway }} dev eth0
-#PostUp = ip route add {{ podman_service_network_subnet }} via {{ podman_service_network_gateway }} dev eth1
 
 [Peer]
 PublicKey = {{ vpn_publickey }}

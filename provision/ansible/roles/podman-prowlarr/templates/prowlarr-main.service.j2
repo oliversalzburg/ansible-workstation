@@ -14,7 +14,7 @@ Restart=on-failure
 RestartSec=10
 StartLimitBurst=3
 ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
-ExecStartPre=-/usr/bin/podman pull {{ registry_ghcrio }}/hotio/prowlarr:{{ prowlarr_version }}
+ExecStartPre=-/usr/bin/podman pull {{ registry_ghcrio }}/oliversalzburg/containers/prowlarr:{{ prowlarr_version }}
 ExecStart=/usr/bin/podman run \
   --cgroups "no-conmon" \
   --cidfile "%t/%n.ctr-id" \
@@ -30,7 +30,7 @@ ExecStart=/usr/bin/podman run \
   --replace \
   --rm \
   --sdnotify "conmon" \
-  hotio/prowlarr:{{ prowlarr_version }}
+  oliversalzburg/containers/prowlarr:{{ prowlarr_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
 ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"

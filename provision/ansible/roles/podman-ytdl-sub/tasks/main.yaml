@@ -1,0 +1,40 @@
+---
+- name: Ensure working directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ ytdlsub_basedir }}"
+    state: directory
+    owner: 1001
+    group: 1001
+
+- name: Copy configuration
+  become: true
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ ytdlsub_basedir }}/{{ item }}"
+    owner: 1001
+    group: 1001
+    mode: 0644
+    unsafe_writes: true
+  loop:
+    - config.yaml
+    - subscriptions.yaml
+
+- name: Copy service files
+  become: true
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "{{ directory_systemd }}/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - ytdlsub.service
+
+- name: Enable and check service
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    enabled: true
+    name: ytdlsub
+    state: restarted
