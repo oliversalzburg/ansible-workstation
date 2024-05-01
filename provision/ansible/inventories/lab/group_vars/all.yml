@@ -47,7 +47,9 @@ jellyfin_version: "10.8.13-1-amd64"
 keycloak_version: "24.0.1"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/lidarr versioning=loose
 lidarr_version: "2.2.5.4141"
+# renovate: datasource=docker depName=mattermost/mattermost-team-edition versioning=loose
 mattermost_version: "9.6.0"
+# renovate: datasource=docker depName=oauth2-proxy/oauth2-proxy versioning=semver
 oauth2proxy_version: "v7.6.0-amd64"
 # renovate: datasource=docker depName=pihole/pihole versioning=semver-loose
 pihole_version: "2024.02.2"
@@ -55,6 +57,7 @@ pihole_version: "2024.02.2"
 postgres_version: "16.2-bookworm"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/prowlarr versioning=loose
 prowlarr_version: "1.16.2.4435"
+# renovate: datasource=docker depName=hotio/qbittorrent versioning=semver
 qbittorrent_version: "release-4.6.3"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/radarr versioning=loose
 radarr_version: "5.4.6.8723"
