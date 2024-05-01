@@ -44,7 +44,7 @@ exportarr_version: "v1.6.2"
 # renovate: datasource=docker depName=jellyfin/jellyfin versioning=semver
 jellyfin_version: "10.8.13-1-amd64"
 # renovate: datasource=docker depName=quay.io/keycloak/keycloak versioning=semver-loose
-keycloak_version: "24.0.1"
+keycloak_version: "24.0.3"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/lidarr versioning=loose
 lidarr_version: "2.2.5.4141"
 mattermost_version: "9.6.0"
