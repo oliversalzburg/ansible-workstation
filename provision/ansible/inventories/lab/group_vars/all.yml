@@ -46,6 +46,7 @@ keycloak_version: "24.0.1"
 lidarr_version: "2.2.5.4141"
 mattermost_version: "9.6.0"
 oauth2proxy_version: "v7.6.0-amd64"
+# renovate: datasource=docker depName=pihole/pihole versioning=semver-loose
 pihole_version: "2024.02.2"
 # renovate: datasource=docker depName=library/postgres versioning=semver-loose
 postgres_version: "16.2-bookworm"
