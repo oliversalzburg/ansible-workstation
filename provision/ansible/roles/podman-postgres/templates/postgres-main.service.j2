@@ -25,6 +25,7 @@ ExecStart=/usr/bin/podman run \
   --secret "postgres_master_password,type=env,target=POSTGRES_PASSWORD" \
   --secret "postgres_master_user,type=env,target=POSTGRES_USER" \
   --log-driver "journald" \
+  --memory "2g" \
   --name "%n.{{ inventory_hostname }}" \
   --pod-id-file "%t/postgres.pod-id" \
   --pull "never" \

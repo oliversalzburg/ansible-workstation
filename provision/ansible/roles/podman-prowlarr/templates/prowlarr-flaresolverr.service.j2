@@ -22,6 +22,7 @@ ExecStart=/usr/bin/podman run \
   --env "LOG_LEVEL=info" \
   --env "TZ={{ config_system_timezone }}" \
   --log-driver "journald" \
+  --memory "512m" \
   --name "%n.{{ inventory_hostname }}" \
   --pod-id-file "%t/prowlarr.pod-id" \
   --pull "never" \

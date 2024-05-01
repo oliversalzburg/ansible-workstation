@@ -23,6 +23,7 @@ ExecStart=/usr/bin/podman run \
   --detach \
   --env "DATA_SOURCE_NAME=postgresql://{{ postgres_master_user }}:{{ postgres_master_password }}@127.0.0.1:5432/postgres?sslmode=disable" \
   --log-driver "journald" \
+  --memory "256m" \
   --name "%n.{{ inventory_hostname }}" \
   --pod-id-file "%t/postgres.pod-id" \
   --pull "never" \

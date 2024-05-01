@@ -22,6 +22,7 @@ ExecStart=/usr/bin/podman run \
   --detach \
   --hostname "%n.{{ inventory_hostname }}" \
   --label "traefik.enable=false" \
+  --memory "1g" \
   --name "%n.{{ inventory_hostname }}" \
 {% if podman_proton_network_subnet is defined %}
   --network "proton:alias=%N.proton.{{ inventory_hostname }}" \

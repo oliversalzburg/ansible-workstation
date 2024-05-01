@@ -23,6 +23,7 @@ ExecStart=/usr/bin/podman run \
   --hostname "%n.{{ inventory_hostname }}" \
   --label "traefik.enable=false" \
   --log-driver "journald" \
+  --memory "512m" \
   --name "%n.{{ inventory_hostname }}" \
   --network "service" \
   --pull "never" \

@@ -27,6 +27,7 @@ ExecStart=/usr/bin/podman run \
   --label "traefik.http.routers.keycloak.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
   --label "traefik.http.services.keycloak.loadbalancer.server.port=8080" \
   --log-driver "journald" \
+  --memory "512m" \
   --name "%n.{{ inventory_hostname }}" \
   --network "service" \
   --pull "never" \

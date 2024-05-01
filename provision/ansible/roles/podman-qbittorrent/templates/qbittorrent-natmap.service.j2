@@ -27,6 +27,7 @@ ExecStart=/usr/bin/podman run \
   --env "VPN_IF_NAME=wg0" \
   --env "TZ={{ config_system_timezone }}" \
   --log-driver "journald" \
+  --memory "256m" \
   --name "%n.{{ inventory_hostname }}" \
   --pod-id-file "%t/qbittorrent.pod-id" \
   --pull "never" \

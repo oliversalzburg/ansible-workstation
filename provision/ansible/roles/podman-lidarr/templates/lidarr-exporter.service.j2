@@ -25,6 +25,7 @@ ExecStart=/usr/bin/podman run \
   --env "PORT=9707" \
   --env "URL=http://127.0.0.1:8686" \
   --log-driver "journald" \
+  --memory "256m" \
   --name "%n.{{ inventory_hostname }}" \
   --pod-id-file "%t/lidarr.pod-id" \
   --pull "never" \

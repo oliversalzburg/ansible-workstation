@@ -37,6 +37,7 @@ ExecStart=/usr/bin/podman run \
   --label "traefik.http.routers.oauth2proxy.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
   --label "traefik.http.services.oauth2proxy.loadbalancer.server.port=4180" \
   --log-driver "journald" \
+  --memory "256m" \
   --name "%n.{{ inventory_hostname }}" \
   --network "service" \
   --pull "never" \

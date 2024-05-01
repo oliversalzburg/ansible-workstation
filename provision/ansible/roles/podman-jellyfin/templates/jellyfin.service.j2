@@ -29,6 +29,7 @@ ExecStart=/usr/bin/podman run \
   --label "traefik.http.routers.jellyfin.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
   --label "traefik.http.services.jellyfin.loadbalancer.server.port=8096" \
   --log-driver "journald" \
+  --memory "8g" \
   --name "%n.{{ inventory_hostname }}" \
   --network host \
   --pull "never" \

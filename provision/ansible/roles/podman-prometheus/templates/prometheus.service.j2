@@ -29,6 +29,7 @@ ExecStart=/usr/bin/podman run \
   --label "traefik.http.routers.prometheus.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
   --label "traefik.http.services.prometheus.loadbalancer.server.port=9090" \
   --log-driver "journald" \
+  --memory "1g" \
   --name "%n.{{ inventory_hostname }}" \
   --network "service" \
   --pull "never" \
