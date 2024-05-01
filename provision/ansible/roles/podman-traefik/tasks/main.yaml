@@ -69,6 +69,11 @@
     mode: 0640
 
 
+- name: Pull service image
+  become: true
+  containers.podman.podman_image:
+    name: "{{ registry_dockerio }}/library/traefik:{{ traefik_version }}"
+
 - name: Copy service files
   become: true
   ansible.builtin.template:

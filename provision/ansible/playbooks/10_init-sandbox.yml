@@ -1,5 +1,0 @@
----
-- hosts: "{{ target_host | default('sandbox') }}"
-  roles:
-    - role: certbot
-    - role: podman-postgres

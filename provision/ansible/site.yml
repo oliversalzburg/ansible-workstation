@@ -69,6 +69,7 @@
 
 - hosts: mediaservers
   roles:
+    #- role: podman-bazarr
     - role: podman-jellyfin
     - role: podman-lidarr
     - role: podman-prowlarr
@@ -76,7 +77,7 @@
     - role: podman-radarr
     - role: podman-recyclarr
     - role: podman-sonarr
-    - role: podman-ytdl-sub
+    #- role: podman-ytdl-sub
 
 - hosts: metricscollectors
   roles:
