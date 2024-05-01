@@ -42,18 +42,18 @@ registry_quayio: quayio.nexus.web.container.labnet
 exportarr_version: "v1.6.2"
 jellyfin_version: "10.8.13-1-amd64"
 keycloak_version: "24.0.1"
-# renovate: datasource=docker depName=oliversalzburg/containers/lidarr versioning=loose
+# renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/lidarr versioning=loose
 lidarr_version: "2.2.5.4141"
 mattermost_version: "9.6.0"
 oauth2proxy_version: "v7.6.0-amd64"
 pihole_version: "2024.02.2"
 postgres_version: "16.2-bookworm"
-# renovate: datasource=docker depName=oliversalzburg/containers/prowlarr versioning=loose
+# renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/prowlarr versioning=loose
 prowlarr_version: "1.16.2.4435"
 qbittorrent_version: "release-4.6.3"
-# renovate: datasource=docker depName=oliversalzburg/containers/radarr versioning=loose
+# renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/radarr versioning=loose
 radarr_version: "5.4.6.8723"
-# renovate: datasource=docker depName=oliversalzburg/containers/sonarr versioning=loose
+# renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/sonarr versioning=loose
 sonarr_version: "4.0.4.1491"
 traefik_version: "v2.11.0"
 
