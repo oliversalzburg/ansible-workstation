@@ -49,6 +49,11 @@
     - data
 
 
+- name: Pull service image
+  become: true
+  containers.podman.podman_image:
+    name: "{{ registry_dockerio }}/sonatype/nexus3:{{ nexus_version }}"
+
 - name: Copy service files
   become: true
   ansible.builtin.template:
