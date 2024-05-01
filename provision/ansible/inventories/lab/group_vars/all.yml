@@ -57,7 +57,7 @@ radarr_version: "5.4.6.8723"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/sonarr versioning=loose
 sonarr_version: "4.0.4.1491"
 # renovate: datasource=docker depName=library/traefik versioning=semver
-traefik_version: "v2.11.0"
+traefik_version: "v3.0.0"
 
 bazarr_api_key: 30a49b8716a96f61f6122881f5e12a5f
 lidarr_api_key: 30a49b8716a96f61f6122881f5e12a5f
