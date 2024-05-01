@@ -47,6 +47,7 @@ lidarr_version: "2.2.5.4141"
 mattermost_version: "9.6.0"
 oauth2proxy_version: "v7.6.0-amd64"
 pihole_version: "2024.02.2"
+# renovate: datasource=docker depName=library/postgres versioning=semver-loose
 postgres_version: "16.2-bookworm"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/prowlarr versioning=loose
 prowlarr_version: "1.16.2.4435"
