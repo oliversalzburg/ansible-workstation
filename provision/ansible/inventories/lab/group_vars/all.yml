@@ -39,8 +39,11 @@ registry_dockerio: dockerio.nexus.web.container.labnet
 registry_ghcrio: ghcrio.nexus.web.container.labnet
 registry_quayio: quayio.nexus.web.container.labnet
 
+# renovate: datasource=docker depName=ghcr.io/onedr0p/exportarr versioning=semver-loose
 exportarr_version: "v1.6.2"
+# renovate: datasource=docker depName=jellyfin/jellyfin versioning=semver-loose
 jellyfin_version: "10.8.13-1-amd64"
+# renovate: datasource=docker depName=quay.io/keycloak/keycloak versioning=semver-loose
 keycloak_version: "24.0.1"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/lidarr versioning=loose
 lidarr_version: "2.2.5.4141"
