@@ -83,7 +83,6 @@
 
 - hosts: mediaservers
   roles:
-    #- role: podman-bazarr
     - role: podman-jellyfin
     - role: podman-lidarr
     - role: podman-prowlarr

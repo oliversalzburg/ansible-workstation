@@ -39,8 +39,6 @@ registry_dockerio: dockerio.nexus.web.container.labnet
 registry_ghcrio: ghcrio.nexus.web.container.labnet
 registry_quayio: quayio.nexus.web.container.labnet
 
-# renovate: datasource=docker depName=docker.io/hotio/bazarr versioning=semver-coerced
-bazarr_version: "release-1.4.2"
 # renovate: datasource=docker depName=ghcr.io/onedr0p/exportarr versioning=semver
 exportarr_version: "v2.0.1"
 # renovate: datasource=docker depName=ghcr.io/flaresolverr/flaresolverr versioning=semver
@@ -88,7 +86,6 @@ sonarr_version: "4.0.4.1491"
 # renovate: datasource=docker depName=docker.io/library/traefik versioning=semver
 traefik_version: "v2.11.2"
 
-bazarr_api_key: 30a49b8716a96f61f6122881f5e12a5f
 lidarr_api_key: 30a49b8716a96f61f6122881f5e12a5f
 prowlarr_api_key: 30a49b8716a96f61f6122881f5e12a5f
 radarr_api_key: 30a49b8716a96f61f6122881f5e12a5f
