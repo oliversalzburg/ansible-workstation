@@ -39,10 +39,12 @@ registry_dockerio: dockerio.nexus.web.container.labnet
 registry_ghcrio: ghcrio.nexus.web.container.labnet
 registry_quayio: quayio.nexus.web.container.labnet
 
-# renovate: datasource=docker depName=docker.io/hotio/bazarr versioning=semver
-bazarr_version: "latest"
+# renovate: datasource=docker depName=docker.io/hotio/bazarr versioning=semver-coerced
+bazarr_version: "release-1.4.2"
 # renovate: datasource=docker depName=ghcr.io/onedr0p/exportarr versioning=semver
 exportarr_version: "v2.0.1"
+# renovate: datasource=docker depName=ghcr.io/flaresolverr/flaresolverr versioning=semver
+flaresolverr_version: "v3.3.17"
 # renovate: datasource=docker depName=docker.io/gitlab/gitlab-ce versioning=semver-coerced
 gitlab_version: "16.9.3-ce.0"
 # renovate: datasource=docker depName=docker.io/gitlab/gitlab-runner versioning=semver
@@ -57,16 +59,28 @@ keycloak_version: "24.0.3"
 lidarr_version: "2.2.5.4141"
 # renovate: datasource=docker depName=docker.io/mattermost/mattermost-team-edition versioning=semver
 mattermost_version: "9.7.3"
+# renovate: datasource=docker depName=docker.io/sonatype/nexus3 versioning=semver
+nexus_version: "3.67.1"
 # renovate: datasource=docker depName=quay.io/oauth2-proxy/oauth2-proxy versioning=semver
 oauth2proxy_version: "v7.6.0"
 # renovate: datasource=docker depName=docker.io/pihole/pihole versioning=semver
 pihole_version: "2024.02.2"
 # renovate: datasource=docker depName=docker.io/library/postgres versioning=semver-coerced
 postgres_version: "16.2-bookworm"
+# renovate: datasource=docker depName=quay.io/prometheus/prometheus versioning=semver
+prometheus_version: "v2.51.2"
+# renovate: datasource=docker depName=quay.io/prometheus/snmp-exporter versioning=semver
+snmp_exporter_version: "v0.25.0"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/prowlarr versioning=loose
 prowlarr_version: "1.16.2.4435"
-# renovate: datasource=docker depName=docker.io/hotio/qbittorrent versioning=semver
+# renovate: datasource=docker depName=docker.io/hotio/qbittorrent versioning=semver-coerced
 qbittorrent_version: "release-4.6.3"
+# renovate: datasource=docker depName=ghcr.io/esanchezm/prometheus-qbittorrent-exporter versioning=semver
+qbittorrent_exporter_version: "v1.5.1"
+# renovate: datasource=docker depName=ghcr.io/soxfor/qbittorrent-natmap versioning=semver
+natmap_version: "1.1.0"
+# renovate: datasource=docker depName=docker.io/procustodibus/wireguard versioning=semver
+wireguard_version: "v1.0.20210914"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/radarr versioning=loose
 radarr_version: "5.4.6.8723"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/sonarr versioning=loose
