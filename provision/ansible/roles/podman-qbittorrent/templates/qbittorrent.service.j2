@@ -33,7 +33,7 @@ ExecStartPre=/usr/bin/podman pod create \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
   --volume "{{ qbittorrent_basedir }}/config:/config:rw" \
   --volume "{{ qbittorrent_mediadir }}/INCOMING:/data/INCOMING:rw" \
-  --volume "{{ qbittorrent_basedir }}/config/wireguard:/etc/wireguard:ro" \
+  --volume "{{ qbittorrent_basedir }}/wireguard:/etc/wireguard:ro" \
   --volume "/var/run/podman/podman.sock:/var/run/docker.sock:rw"
 
 ExecStart=/usr/bin/podman pod start --pod-id-file %t/qbittorrent.pod-id
