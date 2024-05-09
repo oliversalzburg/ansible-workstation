@@ -66,7 +66,7 @@ pihole_version: "2024.02.2"
 # renovate: datasource=docker depName=docker.io/library/postgres versioning=semver-coerced
 postgres_version: "16.2-bookworm"
 # renovate: datasource=docker depName=quay.io/prometheus/prometheus versioning=semver
-prometheus_version: "v2.51.2"
+prometheus_version: "v2.52.0"
 # renovate: datasource=docker depName=quay.io/prometheus/snmp-exporter versioning=semver
 snmp_exporter_version: "v0.25.0"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/prowlarr versioning=loose
