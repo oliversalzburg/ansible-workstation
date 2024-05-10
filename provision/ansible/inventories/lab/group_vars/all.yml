@@ -64,7 +64,7 @@ oauth2proxy_version: "v7.6.0"
 # renovate: datasource=docker depName=docker.io/pihole/pihole versioning=semver
 pihole_version: "2024.02.2"
 # renovate: datasource=docker depName=docker.io/library/postgres versioning=semver-coerced
-postgres_version: "16.2-bookworm"
+postgres_version: "16.3"
 # renovate: datasource=docker depName=quay.io/prometheus/prometheus versioning=semver
 prometheus_version: "v2.51.2"
 # renovate: datasource=docker depName=quay.io/prometheus/snmp-exporter versioning=semver
