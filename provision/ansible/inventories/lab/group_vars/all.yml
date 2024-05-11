@@ -68,7 +68,7 @@ postgres_version: "16.3"
 # renovate: datasource=docker depName=quay.io/prometheus/prometheus versioning=semver
 prometheus_version: "v2.51.2"
 # renovate: datasource=docker depName=quay.io/prometheus/snmp-exporter versioning=semver
-snmp_exporter_version: "v0.25.0"
+snmp_exporter_version: "v0.26.0"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/prowlarr versioning=loose
 prowlarr_version: "1.16.2.4435"
 # renovate: datasource=docker depName=docker.io/hotio/qbittorrent versioning=semver-coerced
