@@ -80,7 +80,7 @@ natmap_version: "1.1.0"
 # renovate: datasource=docker depName=docker.io/procustodibus/wireguard versioning=semver
 wireguard_version: "v1.0.20210914"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/radarr versioning=loose
-radarr_version: "5.4.6.8723"
+radarr_version: "5.5.3.8819"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/sonarr versioning=loose
 sonarr_version: "4.0.4.1491"
 # renovate: datasource=docker depName=docker.io/library/traefik versioning=semver
