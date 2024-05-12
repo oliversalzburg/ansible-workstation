@@ -55,6 +55,10 @@
 
 
 - name: Create postgres user
+  register: result
+  retries: 3
+  delay: 3
+  until: result is not failed
   community.postgresql.postgresql_user:
     host: localhost
     login_password: "{{ postgres_master_password }}"
@@ -63,6 +67,10 @@
     password: "{{ mattermost_pg_password }}"
 
 - name: Create postgres database
+  register: result
+  retries: 3
+  delay: 3
+  until: result is not failed
   community.postgresql.postgresql_db:
     host: localhost
     login_password: "{{ postgres_master_password }}"
