@@ -5,13 +5,21 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": [
-        ".ya?ml$"
-      ],
+      "fileMatch": [".ya?ml$"],
       "matchStrings": [
         "#\\s*renovate:\\s*datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s*\\w+_version: \"(?<currentValue>.*)\"\\s"
       ],
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["docker"],
+      "matchFileNames": [
+        "provision/ansible/inventories/lab/group_vars/all.yml"
+      ],
+      "matchUpdateTypes": ["digest", "pinDigest"],
+      "enabled": false
     }
   ]
 }
