@@ -10,15 +10,5 @@
         "# renovate: datasource=(?<datasource>[a-z-.]+?) depName=(?<depName>[^\\s]+?)(?: (?:packageName)=(?<packageName>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?(?: registryUrl=(?<registryUrl>[^\\s]+?))?\\s+[A-Za-z0-9_]+?_version\\s*:\\s*[\"']?(?<currentValue>.+?)[\"']?\\s"
       ]
     }
-  ],
-  "packageRules": [
-    {
-      "matchDatasources": ["docker"],
-      "matchFileNames": [
-        "provision/ansible/inventories/lab/group_vars/all.yml"
-      ],
-      "matchUpdateTypes": ["digest", "pinDigest"],
-      "enabled": false
-    }
   ]
 }
