@@ -48,7 +48,7 @@ gitlab_version: "16.9.3-ce.0"
 # renovate: datasource=docker depName=docker.io/gitlab/gitlab-runner versioning=semver
 gitlab_runner_version: "v17.0.0"
 # renovate: datasource=docker depName=docker.io/grafana/grafana-oss versioning=semver
-grafana_version: "10.4.3"
+grafana_version: "11.0.0"
 # renovate: datasource=docker depName=docker.io/jellyfin/jellyfin versioning=semver
 jellyfin_version: "10.9.2"
 # renovate: datasource=docker depName=quay.io/keycloak/keycloak versioning=semver-coerced
