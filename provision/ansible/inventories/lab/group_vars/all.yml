@@ -42,7 +42,7 @@ registry_quayio: quayio.nexus.web.container.labnet
 # renovate: datasource=docker depName=ghcr.io/onedr0p/exportarr versioning=semver
 exportarr_version: "v2.0.1"
 # renovate: datasource=docker depName=ghcr.io/flaresolverr/flaresolverr versioning=semver
-flaresolverr_version: "v3.3.17"
+flaresolverr_version: "v3.3.18"
 # renovate: datasource=docker depName=docker.io/gitlab/gitlab-ce versioning=semver-coerced
 gitlab_version: "16.9.3-ce.0"
 # renovate: datasource=docker depName=docker.io/gitlab/gitlab-runner versioning=semver
