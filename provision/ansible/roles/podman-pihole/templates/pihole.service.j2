@@ -49,7 +49,7 @@ ExecStart=/usr/bin/podman run \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
   --volume "{{ pihole_basedir }}/etc/pihole:/etc/pihole:rw" \
   --volume "{{ pihole_basedir }}/etc/dnsmasq.d:/etc/dnsmasq.d:rw" \
-  pihole:{{ pihole_version }}
+  pihole/pihole:{{ pihole_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
 ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"
