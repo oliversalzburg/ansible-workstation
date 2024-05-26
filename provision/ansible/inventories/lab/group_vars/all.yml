@@ -85,8 +85,3 @@ radarr_version: "5.6.0.8846"
 sonarr_version: "4.0.4.1491"
 # renovate: datasource=docker depName=docker.io/library/traefik versioning=semver
 traefik_version: "v3.0.1"
-
-lidarr_api_key: 30a49b8716a96f61f6122881f5e12a5f
-prowlarr_api_key: 30a49b8716a96f61f6122881f5e12a5f
-radarr_api_key: 30a49b8716a96f61f6122881f5e12a5f
-sonarr_api_key: 30a49b8716a96f61f6122881f5e12a5f
