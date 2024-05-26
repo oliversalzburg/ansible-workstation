@@ -109,6 +109,7 @@
     mode: 0644
   loop:
     - qbittorrent-exporter.service
+    - qbittorrent-flood.service
     - qbittorrent-main.service
     - qbittorrent-natmap.service
     - qbittorrent-wg.service

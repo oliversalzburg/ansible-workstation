@@ -51,7 +51,7 @@ gitlab_runner_version: "v17.0.0"
 grafana_version: "11.0.0"
 # renovate: datasource=docker depName=docker.io/jellyfin/jellyfin versioning=semver
 jellyfin_version: "10.9.2"
-# renovate: datasource=docker depName=quay.io/keycloak/keycloak versioning=semver-coerced
+# renovate: datasource=docker depName=quay.io/keycloak/keycloak versioning=semver
 keycloak_version: "24.0.4"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/lidarr versioning=loose
 lidarr_version: "2.3.3.4204"
@@ -59,29 +59,31 @@ lidarr_version: "2.3.3.4204"
 mattermost_version: "9.8.0"
 # renovate: datasource=docker depName=docker.io/sonatype/nexus3 versioning=semver
 nexus_version: "3.68.1"
-# renovate: datasource=docker depName=quay.io/oauth2-proxy/oauth2-proxy versioning=semver
+# renovate: datasource=docker depName=quay.io/oauth2-proxy/oauth2-proxy versioning=semver-coerced
 oauth2proxy_version: "v7.6.0"
 # renovate: datasource=docker depName=docker.io/pihole/pihole versioning=loose
 pihole_version: "2024.05.0"
 # renovate: datasource=docker depName=docker.io/library/postgres versioning=semver-coerced
 postgres_version: "16.3"
-# renovate: datasource=docker depName=quay.io/prometheus/prometheus versioning=semver
+# renovate: datasource=docker depName=quay.io/prometheus/prometheus versioning=semver-coerced
 prometheus_version: "v2.52.0"
-# renovate: datasource=docker depName=quay.io/prometheus/snmp-exporter versioning=semver
+# renovate: datasource=docker depName=quay.io/prometheus/snmp-exporter versioning=semver-coerced
 snmp_exporter_version: "v0.26.0"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/prowlarr versioning=loose
 prowlarr_version: "1.17.2.4511"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/qbittorrent versioning=semver
 qbittorrent_version: "4.6.4"
-# renovate: datasource=docker depName=ghcr.io/esanchezm/prometheus-qbittorrent-exporter versioning=semver
+# renovate: datasource=docker depName=ghcr.io/esanchezm/prometheus-qbittorrent-exporter versioning=semver-coerced
 qbittorrent_exporter_version: "v1.5.1"
+# renovate: datasource=docker depName=docker.io/jesec/flood versioning=semver
+qbittorrent_flood_version: "4.8.2"
 # renovate: datasource=docker depName=ghcr.io/soxfor/qbittorrent-natmap versioning=semver
 natmap_version: "1.1.0"
-# renovate: datasource=docker depName=docker.io/procustodibus/wireguard versioning=semver
+# renovate: datasource=docker depName=docker.io/procustodibus/wireguard versioning=semver-coerced
 wireguard_version: "v1.0.20210914"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/radarr versioning=loose
 radarr_version: "5.6.0.8846"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/sonarr versioning=loose
 sonarr_version: "4.0.4.1491"
-# renovate: datasource=docker depName=docker.io/library/traefik versioning=semver
+# renovate: datasource=docker depName=docker.io/library/traefik versioning=semver-coerced
 traefik_version: "v3.0.1"
