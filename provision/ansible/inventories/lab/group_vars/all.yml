@@ -72,7 +72,7 @@ snmp_exporter_version: "v0.26.0"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/prowlarr versioning=loose
 prowlarr_version: "1.17.2.4511"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/qbittorrent versioning=semver
-qbittorrent_version: "4.5.5"
+qbittorrent_version: "4.6.4"
 # renovate: datasource=docker depName=ghcr.io/esanchezm/prometheus-qbittorrent-exporter versioning=semver
 qbittorrent_exporter_version: "v1.5.1"
 # renovate: datasource=docker depName=ghcr.io/soxfor/qbittorrent-natmap versioning=semver
