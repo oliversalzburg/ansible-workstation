@@ -84,6 +84,6 @@ wireguard_version: "v1.0.20210914"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/radarr versioning=loose
 radarr_version: "5.6.0.8846"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/sonarr versioning=loose
-sonarr_version: "4.0.4.1491"
+sonarr_version: "4.0.5.1710"
 # renovate: datasource=docker depName=docker.io/library/traefik versioning=semver-coerced
 traefik_version: "v3.0.1"
