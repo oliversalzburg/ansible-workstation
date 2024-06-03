@@ -1,6 +1,10 @@
 ---
 - name: Check if i386 is enabled
-  ansible.builtin.shell: dpkg --print-foreign-architectures | grep i386
+  ansible.builtin.shell:
+    cmd: |
+      set -o pipefail
+      dpkg --print-foreign-architectures | grep i386
+    executable: /bin/bash
   register: result_i386_check
   changed_when: result_i386_check.rc == 1
   failed_when: result_i386_check.rc > 1
@@ -9,11 +13,7 @@
   become: true
   ansible.builtin.command: dpkg --add-architecture i386
   when: result_i386_check.rc == 1
-
-- name: Ensure apt cache is up to date
-  become: true
-  ansible.builtin.apt: update_cache=yes
-  when: result_i386_check.rc == 1
+  changed_when: true
 
 - name: Accept Steam EULA
   become: true
@@ -33,6 +33,7 @@
 - name: Install Steam
   become: true
   ansible.builtin.apt:
+    update_cache: true
     name:
       - libgl1-mesa-dri:i386
       - libglx-mesa0:i386

@@ -1,0 +1,155 @@
+---
+- name: Create groups
+  become: true
+  register: _groups
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+    system: true
+  loop: "{{ podman_synapse_groups }}"
+
+- name: Ensure user is a group member
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: "{{ podman_synapse_groups }}"
+    append: true
+
+- name: Create user
+  become: true
+  register: _user
+  ansible.builtin.user:
+    comment: "{{ podman_synapse_name }}"
+    create_home: false
+    group: "{{ _groups.results[0].gid }}"
+    groups: "{{ podman_synapse_groups }}"
+    home: "{{ podman_synapse_basedir }}"
+    name: "{{ podman_synapse_id }}"
+    password: "!"
+    shell: "/usr/sbin/nologin"
+    system: true
+
+
+- name: Ensure working directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ podman_synapse_basedir }}"
+    state: directory
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+    mode: "0o750"
+
+- name: Ensure directories exist
+  become: true
+  ansible.builtin.file:
+    path: "{{ podman_synapse_basedir }}/{{ item }}"
+    state: directory
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+    mode: "0o750"
+  loop:
+    - data
+    - data/discord
+    - data/whatsapp
+    - element
+
+
+- name: Create postgres user
+  register: result
+  retries: 3
+  delay: 3
+  until: result is not failed
+  community.postgresql.postgresql_user:
+    host: localhost
+    login_password: "{{ podman_postgres_master_password }}"
+    login_user: "{{ podman_postgres_master_user }}"
+    name: "{{ podman_synapse_pg_user }}"
+    password: "{{ podman_synapse_pg_password }}"
+
+- name: Create postgres database
+  register: result
+  retries: 3
+  delay: 3
+  until: result is not failed
+  community.postgresql.postgresql_db:
+    encoding: UTF-8
+    host: localhost
+    lc_collate: C
+    lc_ctype: C
+    login_password: "{{ podman_postgres_master_password }}"
+    login_user: "{{ podman_postgres_master_user }}"
+    name: "{{ item }}"
+    owner: "{{ podman_synapse_pg_user }}"
+    template: template0
+  loop:
+    - "{{ podman_synapse_pg_db }}"
+    - "{{ podman_synapse_pg_db }}_discord"
+    - "{{ podman_synapse_pg_db }}_whatsapp"
+
+- name: "GRANT ALL PRIVILEGES ON DATABASE 'db' TO 'user'"
+  community.postgresql.postgresql_privs:
+    host: localhost
+    login_password: "{{ podman_postgres_master_password }}"
+    login_user: "{{ podman_postgres_master_user }}"
+    db: postgres
+    privs: ALL
+    type: database
+    obj: "{{ item }}"
+    role: "{{ podman_synapse_pg_user }}"
+  loop:
+    - "{{ podman_synapse_pg_db }}"
+    - "{{ podman_synapse_pg_db }}_discord"
+    - "{{ podman_synapse_pg_db }}_whatsapp"
+
+- name: "GRANT USAGE, CREATE ON SCHEMA PUBLIC TO 'user'"
+  community.postgresql.postgresql_privs:
+    host: localhost
+    login_password: "{{ podman_postgres_master_password }}"
+    login_user: "{{ podman_postgres_master_user }}"
+    db: postgres
+    privs: CREATE
+    type: schema
+    obj: public
+    role: "{{ podman_synapse_pg_user }}"
+
+
+- name: Copy configuration
+  become: true
+  ansible.builtin.template:
+    src: homeserver.yaml.j2
+    dest: "{{ podman_synapse_basedir }}/data/homeserver.yaml"
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+    mode: "0o640"
+- name: Copy configuration
+  become: true
+  ansible.builtin.template:
+    src: config.json.j2
+    dest: "{{ podman_synapse_basedir }}/element/config.json"
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+    mode: "0o640"
+
+
+- name: Copy service files
+  become: true
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "{{ directory_systemd }}/{{ item }}"
+    owner: root
+    group: root
+    mode: "0o644"
+  loop:
+    - mautrix-discord.service
+    - mautrix-whatsapp.service
+    - synapse-element.service
+    - synapse-main.service
+    - synapse.service
+
+- name: Enable and check service
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    enabled: true
+    name: synapse
+    state: restarted

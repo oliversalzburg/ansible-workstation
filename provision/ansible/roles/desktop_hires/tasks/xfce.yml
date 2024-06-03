@@ -1,0 +1,13 @@
+---
+- name: Check if we have xfconf-query
+  ansible.builtin.command: xfconf-query --version
+  register: xfconf_query_check
+  changed_when: false
+
+- name: Set window scaling factor
+  community.general.xfconf:
+    channel: "xsettings"
+    property: "/Gdk/WindowScalingFactor"
+    value_type: "int"
+    value: "2"
+  when: xfconf_query_check.rc == 0

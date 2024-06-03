@@ -15,6 +15,7 @@
 - name: Check if we have xfconf-query
   ansible.builtin.command: xfconf-query --version
   register: xfconf_query_check
+  changed_when: false
 
 - name: Set window scaling factor
   community.general.xfconf:
@@ -55,7 +56,7 @@
     value: nodeadkeys
   when: xfconf_query_check.rc == 0
 
-#- name: Don't save session on exit
+# - name: Don't save session on exit
 #  community.general.xfconf:
 #    channel: xfce4-session
 #    property: /general/SaveOnExit
@@ -66,24 +67,29 @@
 - name: Don't save session on exit (manual)
   ansible.builtin.command: xfconf-query -c xfce4-session -p /general/SaveOnExit -t bool -s false -n
   when: xfconf_query_check.rc == 0
+  changed_when: false
 
 - name: Copy .xsessionrc
   ansible.builtin.copy:
     src: "{{ role_path }}/files/home/.xsessionrc"
     dest: ~/.xsessionrc
+    mode: "0o640"
   when: xfconf_query_check.rc == 0
 
 - name: "Ensure default config directory exists: xfce terminal"
-  file: 
+  ansible.builtin.file:
     path: ~/.config/xfce4/terminal/
     state: directory
+    mode: "0o750"
 
 - name: Install Terminal configuration
   ansible.builtin.copy:
     src: "{{ role_path }}/files/home/.config/xfce4/terminal/terminalrc"
     dest: ~/.config/xfce4/terminal/terminalrc
+    mode: "0o640"
   when: xfconf_query_check.rc == 0
 
 - name: Update font cache
   ansible.builtin.command: fc-cache -fv
   when: xfconf_query_check.rc == 0
+  changed_when: true

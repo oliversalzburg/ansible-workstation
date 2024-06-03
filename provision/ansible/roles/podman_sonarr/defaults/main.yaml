@@ -1,0 +1,15 @@
+---
+podman_sonarr_id: sonarr
+podman_sonarr_name: Sonarr
+podman_sonarr_groups:
+  - nas
+  - service
+
+podman_sonarr_basedir: /mnt/usb/sonarr
+podman_sonarr_mediadir: "{{ media_mount }}"
+podman_sonarr_version: latest
+podman_sonarr_exportarr_version: latest
+
+podman_sonarr_pg_user: sonarr
+podman_sonarr_pg_password: podman_sonarr_password
+podman_sonarr_pg_db: sonarr

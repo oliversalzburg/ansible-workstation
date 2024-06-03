@@ -1,0 +1,41 @@
+[Unit]
+Description=Radarr Root Service
+Documentation=
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor={{ podman_radarr_mediadir }}
+Requires=radarr-main.service
+Wants=radarr-exporter.service
+Before=radarr-main.service radarr-exporter.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+TimeoutStopSec=70
+ExecStartPre=/bin/rm --force %t/radarr.pid %t/radarr.pod-id
+ExecStartPre=/usr/bin/podman pod create \
+  --hostname "%n.{{ inventory_hostname }}" \
+  --infra-conmon-pidfile %t/radarr.pid \
+  --label "traefik.enable=true" \
+  --label "traefik.http.routers.radarr.entrypoints=websecure" \
+  #--label "traefik.http.routers.radarr.middlewares=oauth@file" \
+  --label "traefik.http.routers.radarr.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
+  --label "traefik.http.routers.radarr.tls.certresolver={{ realm }}" \
+  --label "traefik.http.routers.radarr.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
+  --label "traefik.http.services.radarr.loadbalancer.server.port=7878" \
+  --name "%n.{{ inventory_hostname }}" \
+  --network "service" \
+  --pod-id-file %t/radarr.pod-id \
+  --replace \
+  --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
+  --volume "{{ podman_radarr_basedir }}/config:/var/lib/radarr:rw" \
+  --volume "{{ podman_radarr_mediadir }}:/data:rw"
+
+ExecStart=/usr/bin/podman pod start --pod-id-file %t/radarr.pod-id
+ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/radarr.pod-id --time 10
+ExecStopPost=/usr/bin/podman pod rm --ignore --force --pod-id-file %t/radarr.pod-id
+PIDFile=%t/radarr.pid
+Type=forking
+
+[Install]
+WantedBy=multi-user.target

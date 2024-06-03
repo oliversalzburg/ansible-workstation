@@ -1,0 +1,16 @@
+---
+podman_synapse_id: synapse
+podman_synapse_name: Grafana
+podman_synapse_groups:
+  - synapse
+  - service
+
+podman_synapse_basedir: /mnt/usb/synapse
+podman_synapse_version: latest
+podman_synapse_element_version: latest
+podman_synapse_mautrix_discord_version: latest
+podman_synapse_mautrix_whatsapp_version: latest
+
+podman_synapse_pg_user: synapse
+podman_synapse_pg_password: podman_synapse_pg_password
+podman_synapse_pg_db: synapse

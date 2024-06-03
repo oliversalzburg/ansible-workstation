@@ -1,0 +1,43 @@
+[Unit]
+Description=Element
+Documentation=https://github.com/element-hq/element-web
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=%t/containers
+BindsTo=synapse.service
+After=synapse.service
+StartLimitIntervalSec=10
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+RestartSec=10
+StartLimitBurst=3
+# docker.io rate-limit delays can abort startup if timeout is too short.
+TimeoutStartSec=300
+ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
+ExecStartPre=-/usr/bin/podman pull {{ registry_dockerio }}/vectorim/element-web:{{ podman_synapse_element_version }}
+ExecStart=/usr/bin/podman run \
+  --cgroups "no-conmon" \
+  --cidfile "%t/%n.ctr-id" \
+  --detach \
+  --env "TZ={{ config_system_timezone }}" \
+  --log-driver "journald" \
+  --memory "512m" \
+  --name "%n.{{ inventory_hostname }}" \
+  --pod-id-file "%t/synapse.pod-id" \
+  --pull "never" \
+  --replace \
+  --rm \
+  --sdnotify "conmon" \
+  # Element Web container expects to run as root
+  #--user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  vectorim/element-web:{{ podman_synapse_element_version }}
+
+ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"
+Type=notify
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target

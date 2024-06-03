@@ -1,0 +1,9 @@
+---
+podman_grafana_id: grafana
+podman_grafana_name: Grafana
+podman_grafana_groups:
+  - grafana
+  - service
+
+podman_grafana_basedir: /mnt/usb/grafana
+podman_grafana_version: latest

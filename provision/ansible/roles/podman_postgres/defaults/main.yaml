@@ -1,0 +1,12 @@
+---
+podman_postgres_id: postgres
+podman_postgres_name: Grafana
+podman_postgres_groups:
+  - postgres
+  - service
+
+podman_postgres_basedir: /mnt/usb/postgres
+podman_postgres_master_password: postgres
+podman_postgres_master_user: postgres
+podman_postgres_version: 16
+podman_postgres_exporter_version: v0.15.0

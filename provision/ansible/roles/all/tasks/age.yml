@@ -4,11 +4,13 @@
     path: "{{ directory_downloads }}"
     state: directory
     owner: "{{ ansible_user }}"
+    mode: "0o750"
 
 - name: Download age archive
   ansible.builtin.get_url:
     url: "https://github.com/FiloSottile/age/releases/download/v{{ version_age }}/age-v{{ version_age }}-linux-amd64.tar.gz"
     dest: "{{ directory_downloads }}"
+    mode: "0o640"
 
 - name: Extract age archive
   ansible.builtin.unarchive:
@@ -21,10 +23,10 @@
   ansible.builtin.copy:
     src: "{{ directory_downloads }}/age/{{ item }}"
     dest: /usr/local/bin/{{ item }}
-    mode: 0755
+    mode: "0o755"
     owner: root
     group: root
     remote_src: true
-  with_items: 
+  with_items:
     - age
     - age-keygen

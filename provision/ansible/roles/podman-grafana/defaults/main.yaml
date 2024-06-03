@@ -1,9 +1,0 @@
----
-grafana_id: grafana
-grafana_name: Grafana
-grafana_groups:
-  - grafana
-  - service
-
-grafana_basedir: /mnt/usb/grafana
-grafana_version: latest

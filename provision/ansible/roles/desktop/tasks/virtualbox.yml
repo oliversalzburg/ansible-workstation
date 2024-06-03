@@ -1,8 +1,3 @@
-- name: Create keyring storage
-  become: true
-  file:
-    path: "{{ directory_keyrings }}"
-    state: directory
 - name: Install APT key
   become: true
   ansible.builtin.apt_key:
@@ -13,7 +8,9 @@
 - name: Add Oracle VirtualBox Repository
   become: true
   ansible.builtin.apt_repository:
-    repo: "deb [signed-by={{ directory_keyrings }}/oracle-virtualbox-2016.gpg] https://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib"
+    repo: >
+      deb [signed-by={{ directory_keyrings }}/oracle-virtualbox-2016.gpg]
+      https://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib
     state: present
 
 - name: Install VirtualBox
@@ -24,7 +21,7 @@
     state: present
     update_cache: true
 
-- name: Add user '{{ ansible_user }}' to VirtualBoxUsers group
+- name: Add user to VirtualBoxUsers group
   become: true
   ansible.builtin.user:
     name: '{{ ansible_user }}'

@@ -1,0 +1,35 @@
+[Unit]
+Description=PostgreSQL Root Service
+Documentation=
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=
+Requires=postgres-main.service
+Wants=postgres-exporter.service
+Before=postgres-main.service postgres-exporter.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+TimeoutStopSec=70
+ExecStartPre=/bin/rm --force %t/postgres.pid %t/postgres.pod-id
+ExecStartPre=/usr/bin/podman pod create \
+  --hostname "%n.{{ inventory_hostname }}" \
+  --infra-conmon-pidfile %t/postgres.pid \
+  --label "traefik.enable=false" \
+  --name "%n.{{ inventory_hostname }}" \
+  --network "service" \
+  --pod-id-file %t/postgres.pod-id \
+  --publish "5432:5432/tcp" \
+  --publish "9187:9187/tcp" \
+  --replace \
+  --volume "{{ podman_postgres_basedir }}/data:/var/lib/postgresql/data:rw"
+
+ExecStart=/usr/bin/podman pod start --pod-id-file %t/postgres.pod-id
+ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/postgres.pod-id --time 10
+ExecStopPost=/usr/bin/podman pod rm --ignore --force --pod-id-file %t/postgres.pod-id
+PIDFile=%t/postgres.pid
+Type=forking
+
+[Install]
+WantedBy=multi-user.target

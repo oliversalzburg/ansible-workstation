@@ -1,0 +1,5 @@
+inventories/lab/group_vars/all.sops.yml yaml[line-length]
+inventories/lab/host_vars/canyon.labnet.sops.yml  yaml[line-length]
+inventories/lab/host_vars/container.labnet.sops.yml  yaml[line-length]
+inventories/lab/host_vars/workstation.labnet.sops.yml  yaml[line-length]
+site.yml var-naming[no-role-prefix]

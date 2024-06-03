@@ -5,11 +5,11 @@
   ansible.builtin.template:
     src: home/.npmrc.j2
     dest: "/home/{{ userspace_user }}/.npmrc"
-    mode: 0600
+    mode: "0o600"
 - name: Copy .yarnrc.yml
   become: true
   become_user: "{{ userspace_user }}"
   ansible.builtin.template:
     src: home/.yarnrc.yml.j2
     dest: "/home/{{ userspace_user }}/.yarnrc.yml"
-    mode: 0600
+    mode: "0o600"

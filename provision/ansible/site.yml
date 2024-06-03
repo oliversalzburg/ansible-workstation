@@ -1,21 +1,51 @@
 #!/usr/bin/env ansible-playbook
 
-- import_playbook: playbooks/00_init-all.yml
+---
+- name: Wait till ready
+  hosts: all
+  pre_tasks:
+    - name: Wait for connection
+      ansible.builtin.wait_for_connection:
+        # wait_for_connection_timeout host var should be increased for newly spawned cloud nodes.
+        timeout: "{{ wait_for_connection_timeout | default(10) }}"
 
-- hosts: canyon.labnet
-  roles:
-    - role: unique-canyon
-- hosts: container.labnet
-  roles:
-    - role: unique-container
-- hosts: laptop.labnet
-  roles:
-    - role: unique-laptop
-- hosts: workstation.labnet
-  roles:
-    - role: unique-workstation
+    - name: Check if we're on a cloud instance
+      ansible.builtin.shell: command -v cloud-init >/dev/null 2>&1
+      register: is_cloudinit_exist
+      changed_when: false
+      ignore_errors: true
 
-- hosts: ca
+    - name: Wait for cloud-init / user-data to finish
+      ansible.builtin.command: cloud-init status --wait
+      changed_when: false
+      when: is_cloudinit_exist.rc == 0
+
+- name: Foundation
+  hosts: all
+  roles:
+    - role: all
+    - role: userspace
+      userspace_user: "{{ ansible_user }}"
+
+- name: Canyon
+  hosts: canyon.labnet
+  roles:
+    - role: unique_canyon
+- name: Container
+  hosts: container.labnet
+  roles:
+    - role: unique_container
+- name: Laptop
+  hosts: laptop.labnet
+  roles:
+    - role: unique_laptop
+- name: Workstation
+  hosts: workstation.labnet
+  roles:
+    - role: unique_workstation
+
+- name: Step CA
+  hosts: ca
   roles:
     - role: maxhoesel.smallstep.step_ca
       become: true
@@ -28,7 +58,8 @@
         step_ca_address: ":4431"
         step_ca_url: "https://{{ inventory_hostname }}:4431"
 
-- hosts: all
+- name: Step CA Client
+  hosts: all
   roles:
     - role: maxhoesel.smallstep.step_bootstrap_host
       when: "'ca' not in group_names"
@@ -43,59 +74,74 @@
         - processes
         - systemd
 
-- hosts: artifactstores
+- name: Artifact Stores
+  hosts: artifactstores
   roles:
-    - role: podman-nexus
+    - role: podman_nexus
 
-- hosts: gpu-intel
+- name: GPU Intel
+  hosts: gpu_intel
   roles:
-    - role: gpu-intel
+    - role: gpu_intel
 
-- hosts: desktops
+- name: Desktops
+  hosts: desktops
   roles:
     - role: desktop
-- hosts: hires-desktops
+- name: Hires Desktops
+  hosts: hires_desktops
   roles:
-    - role: desktop-hires
+    - role: desktop_hires
 
-- hosts: servicehosts
+- name: Service Hosts
+  hosts: servicehosts
   roles:
-    - role: podman-host
-    - role: podman-traefik
+    - role: podman_host
+    - role: podman_traefik
     - role: prometheus.prometheus.cadvisor
 
-- hosts: dbhosts
+- name: DB Hosts
+  hosts: dbhosts
   roles:
-    - role: podman-postgres
+    - role: podman_postgres
 
-- hosts: dnsresolvers
+- name: DNS Resolvers
+  hosts: dnsresolvers
   roles:
-    - role: podman-pihole
+    - role: podman_pihole
 
-- hosts: authservers
+- name: Auth Servers
+  hosts: authservers
   roles:
-    - role: podman-keycloak
-    - role: podman-oauth2proxy
+    - role: podman_keycloak
+      vars:
+        podman_keycloak_admin: "{{ keycloak_admin }}"
+        podman_keycloak_admin_password: "{{ keycloak_admin_password }}"
+    - role: podman_oauth2proxy
 
-- hosts: gitlabs
+- name: GitLabs
+  hosts: gitlabs
   roles:
-    - role: podman-gitlab
+    - role: podman_gitlab
 
-- hosts: mediaservers
+- name: Media Servers
+  hosts: mediaservers
   roles:
-    - role: podman-jellyfin
-    - role: podman-lidarr
-    - role: podman-prowlarr
-    - role: podman-qbittorrent
-    - role: podman-radarr
-    - role: podman-recyclarr
-    - role: podman-sonarr
-    #- role: podman-ytdl-sub
+    - role: podman_jellyfin
+    - role: podman_lidarr
+    - role: podman_prowlarr
+    - role: podman_qbittorrent
+    - role: podman_radarr
+    - role: podman_recyclarr
+    - role: podman_sonarr
+    # - role: podman_ytdlsub
 
-- hosts: metricscollectors
+- name: Metrics Collectors
+  hosts: metricscollectors
   roles:
-    - role: podman-prometheus
+    - role: podman_prometheus
 
-- hosts: metricsmonitors
+- name: Metrics Monitors
+  hosts: metricsmonitors
   roles:
-    - role: podman-grafana
+    - role: podman_grafana

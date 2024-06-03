@@ -1,0 +1,50 @@
+[Unit]
+Description=GitLab
+Documentation=https://docs.gitlab.com
+Wants=network-online.target gitlab-runner.service
+After=network-online.target
+StartLimitIntervalSec=10
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+RestartSec=10
+StartLimitBurst=3
+# docker.io rate-limit delays can abort startup if timeout is too short.
+TimeoutStartSec=300
+TimeoutStopSec=70
+ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
+ExecStartPre=-/usr/bin/podman pull {{ registry_dockerio }}/gitlab/gitlab-ce:{{ podman_gitlab_version }}
+ExecStart=/usr/bin/podman run \
+  --cgroups "no-conmon" \
+  --cidfile "%t/%n.ctr-id" \
+  --conmon-pidfile "%t/%n.pid" \
+  --detach \
+  --env "GITLAB_OMNIBUS_CONFIG=external_url 'https://%n.{{ inventory_hostname }}'; letsencrypt['acme_staging_endpoint'] = 'https://workstation.{{ realm }}:4431/acme/acme/directory'; letsencrypt['acme_production_endpoint'] = 'https://workstation.{{ realm }}:4431/acme/acme/directory'" \
+  --env "TZ={{ config_system_timezone }}" \
+  --hostname "%n.{{ inventory_hostname }}" \
+  --label "traefik.enable=false" \
+  --log-driver "journald" \
+  --memory "8g" \
+  --name "%n.{{ inventory_hostname }}" \
+  --network "service" \
+  --pull "never" \
+  --replace \
+  --rm \
+  --shm-size "256m" \
+  # GitLab's monolithic image makes no sense to attempt rootless
+  #--user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-bundle.crt:ro" \
+  --volume "/etc/ssl/certs/ca-certificates.crt:/opt/gitlab/embedded/ssl/certs/cacert.pem:ro" \
+  --volume "{{ podman_gitlab_basedir }}/config:/etc/gitlab:rw" \
+  --volume "{{ podman_gitlab_basedir }}/logs:/var/log/gitlab:rw" \
+  --volume "{{ podman_gitlab_basedir }}/data:/var/opt/gitlab:rw" \
+  gitlab/gitlab-ce:{{ podman_gitlab_version }}
+
+ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"
+PIDFile=%t/%n.pid
+Type=forking
+
+[Install]
+WantedBy=multi-user.target

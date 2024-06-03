@@ -1,0 +1,15 @@
+---
+podman_lidarr_id: lidarr
+podman_lidarr_name: Lidarr
+podman_lidarr_groups:
+  - nas
+  - service
+
+podman_lidarr_basedir: /mnt/usb/lidarr
+podman_lidarr_mediadir: "{{ media_mount }}"
+podman_lidarr_version: latest
+podman_lidarr_exportarr_version: latest
+
+podman_lidarr_pg_user: lidarr
+podman_lidarr_pg_password: podman_lidarr_password
+podman_lidarr_pg_db: lidarr

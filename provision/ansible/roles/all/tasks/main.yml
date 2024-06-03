@@ -6,11 +6,17 @@
     dest: /etc/hosts
     owner: root
     group: root
-    mode: 0644
+    mode: "0o644"
 
+- name: Create keyring storage
+  become: true
+  ansible.builtin.file:
+    path: "{{ directory_keyrings }}"
+    state: directory
+    mode: "0o755"
 - name: Update and upgrade apt packages
   become: true
-  apt:
+  ansible.builtin.apt:
     upgrade: true
     update_cache: true
     cache_valid_time: 86400
@@ -67,8 +73,13 @@
     name: editor
     path: /usr/bin/vim
 
-- include_tasks: age.yml
-- include_tasks: coding-environment.yml
-- include_tasks: nodejs.yml
-- include_tasks: sops.yml
-- include_tasks: terraform.yml
+- name: Age
+  ansible.builtin.include_tasks: age.yml
+- name: Coding environment
+  ansible.builtin.include_tasks: coding-environment.yml
+- name: NodeJS
+  ansible.builtin.include_tasks: nodejs.yml
+- name: SOPS
+  ansible.builtin.include_tasks: sops.yml
+- name: Terraform
+  ansible.builtin.include_tasks: terraform.yml

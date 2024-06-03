@@ -9,6 +9,9 @@
 
 - name: Provision certificate
   become: true
-  ansible.builtin.command: certbot certonly --standalone --agree-tos --cert-name '{{ ansible_host }}' -d '{{ ansible_host }}' -m '{{ letsencrypt_email_address }}'
+  ansible.builtin.command:
+    cmd: >
+      certbot certonly --standalone --agree-tos
+      --cert-name '{{ ansible_host }}' -d '{{ ansible_host }}' -m '{{ letsencrypt_email_address }}'
   args:
     creates: "/etc/letsencrypt/live/{{ ansible_host }}/privkey.pem"

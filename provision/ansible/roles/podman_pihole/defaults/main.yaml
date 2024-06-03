@@ -1,0 +1,9 @@
+---
+podman_pihole_id: pihole
+podman_pihole_name: PiHole
+podman_pihole_groups:
+  - pihole
+  - service
+
+podman_pihole_basedir: /mnt/usb/pihole
+podman_pihole_version: latest

@@ -1,6 +1,5 @@
 ---
 - name: Install VS Code
-  ignore_errors: true
   ansible.builtin.include_role:
     name: gantsign.visual-studio-code
   vars:

@@ -1,0 +1,89 @@
+---
+- name: Create groups
+  become: true
+  register: _groups
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+    system: true
+  loop: "{{ podman_postgres_groups }}"
+
+- name: Ensure user is a group member
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: "{{ podman_postgres_groups }}"
+    append: true
+
+- name: Create user
+  become: true
+  register: _user
+  ansible.builtin.user:
+    comment: "{{ podman_postgres_name }}"
+    create_home: false
+    group: "{{ _groups.results[0].gid }}"
+    groups: "{{ podman_postgres_groups }}"
+    home: "{{ podman_postgres_basedir }}"
+    name: "{{ podman_postgres_id }}"
+    password: "!"
+    shell: "/usr/sbin/nologin"
+    system: true
+
+
+- name: Ensure working directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ podman_postgres_basedir }}"
+    state: directory
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+    mode: "0o750"
+
+- name: Ensure directories exist
+  become: true
+  ansible.builtin.file:
+    path: "{{ podman_postgres_basedir }}/{{ item }}"
+    state: directory
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+    mode: "0o750"
+  loop:
+    - data
+
+
+- name: Create secret podman_postgres_master_password
+  become: true
+  containers.podman.podman_secret:
+    data: "{{ podman_postgres_master_password }}"
+    force: true
+    name: podman_postgres_master_password
+    state: present
+- name: Create secret podman_postgres_master_user
+  become: true
+  containers.podman.podman_secret:
+    data: "{{ podman_postgres_master_user }}"
+    force: true
+    name: podman_postgres_master_user
+    state: present
+
+
+- name: Copy service files
+  become: true
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "{{ directory_systemd }}/{{ item }}"
+    owner: root
+    group: root
+    mode: "0o644"
+  loop:
+    - postgres-exporter.service
+    - postgres-main.service
+    - postgres.service
+
+- name: Enable and check service
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    enabled: true
+    name: postgres
+    state: restarted

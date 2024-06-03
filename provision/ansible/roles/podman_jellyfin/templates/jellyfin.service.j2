@@ -1,0 +1,51 @@
+[Unit]
+Description=Jellyfin
+Documentation=https://jellyfin.org/docs/
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor={{ podman_jellyfin_mediadir }}
+StartLimitIntervalSec=10
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+RestartSec=10
+StartLimitBurst=3
+# docker.io rate-limit delays can abort startup if timeout is too short.
+TimeoutStartSec=300
+TimeoutStopSec=70
+ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
+ExecStartPre=-/usr/bin/podman pull {{ registry_dockerio }}/jellyfin/jellyfin:{{ podman_jellyfin_version }}
+ExecStart=/usr/bin/podman run \
+  --cgroups "no-conmon" \
+  --cidfile "%t/%n.ctr-id" \
+  --conmon-pidfile "%t/%n.pid" \
+  --detach \
+  --device /dev/dri:/dev/dri \
+  --group-add "{{ getent_group["nas"][1] }}" \
+  --group-add "{{ getent_group["render"][1] }}" \
+  --hostname "%n.{{ inventory_hostname }}" \
+  --label "traefik.enable=false" \
+  --label "traefik.http.routers.jellyfin.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
+  --label "traefik.http.services.jellyfin.loadbalancer.server.port=8096" \
+  --log-driver "journald" \
+  --memory "8g" \
+  --name "%n.{{ inventory_hostname }}" \
+  --network host \
+  --pull "never" \
+  --replace \
+  --rm \
+  --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
+  --volume "{{ podman_jellyfin_mediadir }}:/media:rw" \
+  --volume "{{ podman_jellyfin_basedir }}/cache:/cache:rw" \
+  --volume "{{ podman_jellyfin_basedir }}/config:/config:rw" \
+  jellyfin/jellyfin:{{ podman_jellyfin_version }}
+
+ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"
+PIDFile=%t/%n.pid
+Type=forking
+
+[Install]
+WantedBy=multi-user.target

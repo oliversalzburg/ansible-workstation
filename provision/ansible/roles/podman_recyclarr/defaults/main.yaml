@@ -1,0 +1,9 @@
+---
+podman_recyclarr_id: recyclarr
+podman_recyclarr_name: Radarr
+podman_recyclarr_groups:
+  - nas
+  - service
+
+podman_recyclarr_basedir: /mnt/usb/recyclarr
+podman_recyclarr_version: latest

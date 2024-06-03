@@ -1,0 +1,55 @@
+[Unit]
+Description=ytdl-sub
+Documentation=https://ytdl-sub.readthedocs.io/en/latest/index.html
+Wants=network.target
+After=network.target
+StartLimitIntervalSec=10
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+RestartSec=10
+StartLimitBurst=3
+ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
+ExecStartPre=-/usr/bin/podman pull {{ registry_ghcrio }}/oliversalzburg/containers/ytdl-sub:{{ podman_ytdlsub_version }}
+ExecStart=/usr/bin/podman run \
+  --cgroups "no-conmon" \
+  --cidfile "%t/%n.ctr-id" \
+  --conmon-pidfile "%t/%n.pid" \
+  --detach \
+  --device "/dev/dri:/dev/dri" \
+  --env "TZ={{ config_system_timezone }}" \
+  --hostname "%n.{{ inventory_hostname }}" \
+  --label "traefik.enable=true" \
+  --label "traefik.http.routers.ytdlsub.entrypoints=websecure" \
+  --label "traefik.http.routers.ytdlsub.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
+  --label "traefik.http.routers.ytdlsub.tls.certresolver={{ realm }}" \
+  --label "traefik.http.routers.ytdlsub.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
+  --label "traefik.http.services.ytdlsub.loadbalancer.server.port=8443" \
+  --log-driver "journald" \
+  --memory "2g" \
+  --name "%n.{{ inventory_hostname }}" \
+  --network "service" \
+  --pull "never" \
+  --replace \
+  --rm \
+  --user "1001:1001" \
+  --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
+  --volume "{{ podman_ytdlsub_mediadir }}/YTDL-SUB:/config:rw" \
+  --volume "{{ podman_ytdlsub_mediadir }}/MOVIES:/movies:rw" \
+  --volume "{{ podman_ytdlsub_mediadir }}/MUSIC:/music:rw" \
+  --volume "{{ podman_ytdlsub_mediadir }}/MUSIC_VIDEOS:/music_videos:rw" \
+  --volume "{{ podman_ytdlsub_mediadir }}/TV:/tv_shows:rw" \
+  oliversalzburg/containers/ytdl-sub:{{ podman_ytdlsub_version }} \
+  --config "/config/config.yaml" \
+  #--log-level "debug" \
+  sub \
+  subscriptions.yaml
+
+ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"
+PIDFile=%t/%n.pid
+Type=forking
+
+[Install]
+WantedBy=multi-user.target

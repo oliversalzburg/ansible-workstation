@@ -1,0 +1,23 @@
+<Config>
+  <BindAddress>*</BindAddress>
+  <Port>9696</Port>
+  <SslPort>6969</SslPort>
+  <EnableSsl>False</EnableSsl>
+  <LaunchBrowser>True</LaunchBrowser>
+  <ApiKey>{{ podman_prowlarr_api_key }}</ApiKey>
+  <AuthenticationMethod>Forms</AuthenticationMethod>
+  <AuthenticationRequired>DisabledForLocalAddresses</AuthenticationRequired>
+  <Branch>master</Branch>
+  <LogLevel>info</LogLevel>
+  <SslCertPath></SslCertPath>
+  <SslCertPassword></SslCertPassword>
+  <UrlBase></UrlBase>
+  <InstanceName>Prowlarr</InstanceName>
+  <UpdateMechanism>Docker</UpdateMechanism>
+  <PostgresUser>{{ podman_prowlarr_pg_user }}</PostgresUser>
+  <PostgresPassword>{{ podman_prowlarr_pg_password }}</PostgresPassword>
+  <PostgresPort>5432</PostgresPort>
+  <PostgresHost>postgres.service.{{ inventory_hostname }}</PostgresHost>
+  <PostgresMainDb>{{ podman_prowlarr_pg_db }}-main</PostgresMainDb>
+  <PostgresLogDb>{{ podman_prowlarr_pg_db }}-log</PostgresLogDb>
+</Config>

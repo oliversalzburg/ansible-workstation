@@ -1,0 +1,15 @@
+---
+podman_prowlarr_id: prowlarr
+podman_prowlarr_name: Prowlarr
+podman_prowlarr_groups:
+  - prowlarr
+  - service
+
+podman_prowlarr_basedir: /mnt/usb/prowlarr
+podman_prowlarr_version: latest
+podman_prowlarr_exportarr_version: latest
+podman_prowlarr_flaresolverr_version: latest
+
+podman_prowlarr_pg_user: prowlarr
+podman_prowlarr_pg_password: podman_prowlarr_password
+podman_prowlarr_pg_db: prowlarr

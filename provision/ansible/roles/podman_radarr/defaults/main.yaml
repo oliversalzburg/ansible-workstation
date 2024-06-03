@@ -1,0 +1,14 @@
+---
+podman_radarr_id: radarr
+podman_radarr_name: Radarr
+podman_radarr_groups:
+  - nas
+  - service
+
+podman_radarr_basedir: /mnt/usb/radarr
+podman_radarr_mediadir: "{{ media_mount }}"
+podman_radarr_version: latest
+
+podman_radarr_pg_user: radarr
+podman_radarr_pg_password: podman_radarr_password
+podman_radarr_pg_db: radarr

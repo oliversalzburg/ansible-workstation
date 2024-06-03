@@ -1,0 +1,45 @@
+[Unit]
+Description=qBittorrent Wireguard Connection
+Documentation=
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=%t/containers
+BindsTo=qbittorrent.service
+After=qbittorrent.service
+StartLimitIntervalSec=10
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+RestartSec=10
+StartLimitBurst=3
+# docker.io rate-limit delays can abort startup if timeout is too short.
+TimeoutStartSec=300
+TimeoutStopSec=70
+ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
+ExecStartPre=-/usr/bin/podman pull {{ registry_dockerio }}/procustodibus/wireguard:{{ podman_qbittorrent_wireguard_version }}
+ExecStart=/usr/bin/podman run \
+  --cap-add "NET_ADMIN" \
+  --cgroups "no-conmon" \
+  --cidfile "%t/%n.ctr-id" \
+  --detach \
+  --env "TZ={{ config_system_timezone }}" \
+  --log-driver "journald" \
+  --memory "256m" \
+  --name "%n.{{ inventory_hostname }}" \
+  --pod-id-file "%t/qbittorrent.pod-id" \
+  --pull "never" \
+  --replace \
+  --rm \
+  --sdnotify "conmon" \
+  # Image requires root-level access
+  #--user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  procustodibus/wireguard:{{ podman_qbittorrent_wireguard_version }}
+
+ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"
+Type=notify
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target

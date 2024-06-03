@@ -1,0 +1,10 @@
+---
+podman_jellyfin_id: jellyfin
+podman_jellyfin_name: Jellyfin
+podman_jellyfin_groups:
+  - nas
+  - service
+
+podman_jellyfin_basedir: /mnt/usb/jellyfin
+podman_jellyfin_mediadir: "{{ media_mount }}"
+podman_jellyfin_version: latest

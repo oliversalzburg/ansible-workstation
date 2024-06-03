@@ -1,0 +1,13 @@
+---
+podman_mattermost_id: mattermost
+podman_mattermost_name: Mattermost
+podman_mattermost_groups:
+  - mattermost
+  - service
+
+podman_mattermost_basedir: /mnt/usb/mattermost
+podman_mattermost_version: latest
+
+podman_mattermost_pg_user: mmuser
+podman_mattermost_pg_password: mmuser_password
+podman_mattermost_pg_db: mattermost

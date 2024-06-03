@@ -13,14 +13,14 @@
     dest: "/etc/ddclient.conf"
     owner: root
     group: root
-    mode: 0600
+    mode: "0o600"
 
 - name: Create ddclient service
   become: true
   ansible.builtin.copy:
     src: "{{ role_path }}/files/ddclient.service"
     dest: "{{ directory_systemd }}/ddclient.service"
-    mode: 0644
+    mode: "0o644"
 
 - name: Enable and check ddclient service
   become: true

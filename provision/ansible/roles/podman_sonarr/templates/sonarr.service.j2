@@ -1,0 +1,41 @@
+[Unit]
+Description=Sonarr Root Service
+Documentation=
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor={{ podman_sonarr_mediadir }}
+Requires=sonarr-main.service
+Wants=sonarr-exporter.service
+Before=sonarr-main.service sonarr-exporter.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+TimeoutStopSec=70
+ExecStartPre=/bin/rm --force %t/sonarr.pid %t/sonarr.pod-id
+ExecStartPre=/usr/bin/podman pod create \
+  --hostname "%n.{{ inventory_hostname }}" \
+  --infra-conmon-pidfile %t/sonarr.pid \
+  --label "traefik.enable=true" \
+  --label "traefik.http.routers.sonarr.entrypoints=websecure" \
+  #--label "traefik.http.routers.sonarr.middlewares=oauth@file" \
+  --label "traefik.http.routers.sonarr.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
+  --label "traefik.http.routers.sonarr.tls.certresolver={{ realm }}" \
+  --label "traefik.http.routers.sonarr.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
+  --label "traefik.http.services.sonarr.loadbalancer.server.port=8989" \
+  --name "%n.{{ inventory_hostname }}" \
+  --network "service" \
+  --pod-id-file %t/sonarr.pod-id \
+  --replace \
+  --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
+  --volume "{{ podman_sonarr_basedir }}/config:/var/lib/sonarr:rw" \
+  --volume "{{ podman_sonarr_mediadir }}:/data:rw"
+
+ExecStart=/usr/bin/podman pod start --pod-id-file %t/sonarr.pod-id
+ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/sonarr.pod-id --time 10
+ExecStopPost=/usr/bin/podman pod rm --ignore --force --pod-id-file %t/sonarr.pod-id
+PIDFile=%t/sonarr.pid
+Type=forking
+
+[Install]
+WantedBy=multi-user.target

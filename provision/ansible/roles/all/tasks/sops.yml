@@ -4,8 +4,9 @@
     path: "{{ directory_downloads }}"
     state: directory
     owner: "{{ ansible_user }}"
+    mode: "0o750"
 
-- name: Download sops binary
+- name: Download SOPS binary
   register: result
   retries: 3
   delay: 3
@@ -13,14 +14,14 @@
   ansible.builtin.get_url:
     url: "https://github.com/mozilla/sops/releases/download/v{{ version_sops }}/sops-v{{ version_sops }}.linux"
     dest: "{{ directory_downloads }}"
-    mode: 0600
+    mode: "0o600"
 
-- name: Copy sops binary to destination directory
+- name: Copy SOPS binary to destination directory
   become: true
   ansible.builtin.copy:
     src: "{{ directory_downloads }}/sops-v{{ version_sops }}.linux"
     dest: /usr/local/bin/sops
-    mode: 0755
+    mode: "0o755"
     owner: root
     group: root
     remote_src: true

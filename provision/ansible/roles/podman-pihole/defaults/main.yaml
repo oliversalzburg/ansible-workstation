@@ -1,9 +1,0 @@
----
-pihole_id: pihole
-pihole_name: PiHole
-pihole_groups:
-  - pihole
-  - service
-
-pihole_basedir: /mnt/usb/pihole
-pihole_version: latest

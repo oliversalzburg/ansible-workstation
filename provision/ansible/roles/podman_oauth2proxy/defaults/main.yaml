@@ -1,0 +1,12 @@
+---
+podman_oauth2proxy_id: oauth2proxy
+podman_oauth2proxy_name: OAuth2 Proxy
+podman_oauth2proxy_groups:
+  - oauth2proxy
+  - service
+
+podman_oauth2proxy_basedir: /mnt/usb/oauth2proxy
+podman_oauth2proxy_version: latest
+
+podman_oauth2proxy_client_secret: invalid
+podman_oauth2proxy_cookie_secret: invalid

@@ -1,0 +1,11 @@
+---
+podman_nexus_id: nexus
+podman_nexus_name: NexusRM
+podman_nexus_groups:
+  - nexus
+  - service
+
+podman_nexus_basedir: /mnt/usb/nexus
+podman_nexus_master_password: nexus
+podman_nexus_master_user: nexus
+podman_nexus_version: latest

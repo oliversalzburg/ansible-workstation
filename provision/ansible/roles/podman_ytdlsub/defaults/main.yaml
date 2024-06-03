@@ -1,0 +1,4 @@
+---
+podman_ytdlsub_basedir: "{{ media_mount }}/YTDL-SUB"
+podman_ytdlsub_mediadir: "{{ media_mount }}"
+podman_ytdlsub_version: "edge-2024.04.03"

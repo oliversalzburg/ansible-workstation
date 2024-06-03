@@ -1,0 +1,15 @@
+---
+podman_qbittorrent_id: qbittorrent
+podman_qbittorrent_name: qBittorrent
+podman_qbittorrent_groups:
+  - nas
+  - service
+  - unpackerr
+
+podman_qbittorrent_basedir: /mnt/usb/qbittorrent
+podman_qbittorrent_mediadir: "{{ media_mount }}"
+podman_qbittorrent_version: latest
+podman_qbittorrent_exporter_version: latest
+podman_qbittorrent_flood_version: latest
+podman_qbittorrent_natmap_version: latest
+podman_qbittorrent_wireguard_version: latest

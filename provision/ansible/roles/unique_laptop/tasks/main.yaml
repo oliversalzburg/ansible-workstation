@@ -1,0 +1,57 @@
+---
+- name: Set hostname
+  become: true
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}"
+
+- name: "Create network: offline"
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/systemd/network/offline.network"
+    dest: "{{ directory_networkd }}/offline.network"
+    owner: root
+    group: root
+    mode: "0o644"
+
+- name: "Store WPA config: offline"
+  become: true
+  ansible.builtin.template:
+    src: wpa_supplicant-wlp2s0.conf.j2
+    dest: /etc/wpa_supplicant/wpa_supplicant-wlp2s0.conf
+    owner: root
+    group: root
+    mode: "0o600"
+
+- name: Install systemd-resolved
+  become: true
+  ansible.builtin.apt:
+    name:
+      - systemd-resolved
+
+- name: Enable wpa_supplicant@wlp2s0
+  become: true
+  ansible.builtin.systemd:
+    name: wpa_supplicant@wlp2s0
+    state: started
+    enabled: true
+
+- name: Enable systemd-resolved
+  become: true
+  ansible.builtin.systemd:
+    name: systemd-resolved
+    state: started
+    enabled: true
+
+- name: Enable systemd-networkd
+  become: true
+  ansible.builtin.systemd:
+    name: systemd-networkd
+    state: started
+    enabled: true
+
+- name: Disable NetworkManager
+  become: true
+  ansible.builtin.systemd:
+    name: NetworkManager
+    state: stopped
+    enabled: false

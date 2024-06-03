@@ -32,8 +32,12 @@ dns_delegation:
     service:
       ns: 10.100.2.1
 
-hosts_postgres: [ canyon, container, workstation ]
-hosts_starr: [ canyon ]
+hosts_postgres:
+  - canyon
+  - container
+  - workstation
+hosts_starr:
+  - canyon
 
 registry_dockerio: dockerio.nexus.web.container.labnet
 registry_ghcrio: ghcrio.nexus.web.container.labnet
@@ -42,48 +46,48 @@ registry_quayio: quayio.nexus.web.container.labnet
 # renovate: datasource=docker depName=ghcr.io/onedr0p/exportarr versioning=semver
 exportarr_version: "v2.0.1"
 # renovate: datasource=docker depName=ghcr.io/flaresolverr/flaresolverr versioning=semver
-flaresolverr_version: "v3.3.19"
+podman_prowlarr_flaresolverr_version: "v3.3.19"
 # renovate: datasource=docker depName=docker.io/gitlab/gitlab-ce versioning=semver-coerced
-gitlab_version: "16.9.3-ce.0"
+podman_gitlab_version: "16.9.3-ce.0"
 # renovate: datasource=docker depName=docker.io/gitlab/gitlab-runner versioning=semver
-gitlab_runner_version: "v17.0.0"
+podman_gitlab_runner_version: "v17.0.0"
 # renovate: datasource=docker depName=docker.io/grafana/grafana-oss versioning=semver
-grafana_version: "11.0.0"
+podman_grafana_version: "11.0.0"
 # renovate: datasource=docker depName=docker.io/jellyfin/jellyfin versioning=semver
-jellyfin_version: "10.9.4"
+podman_jellyfin_version: "10.9.4"
 # renovate: datasource=docker depName=quay.io/keycloak/keycloak versioning=semver
-keycloak_version: "24.0.4"
+podman_keycloak_version: "24.0.4"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/lidarr versioning=loose
-lidarr_version: "2.3.3.4204"
+podman_lidarr_version: "2.3.3.4204"
 # renovate: datasource=docker depName=docker.io/mattermost/mattermost-team-edition versioning=semver
-mattermost_version: "9.9.0"
+podman_mattermost_version: "9.9.0"
 # renovate: datasource=docker depName=docker.io/sonatype/nexus3 versioning=semver
-nexus_version: "3.68.1"
+podman_nexus_version: "3.68.1"
 # renovate: datasource=docker depName=quay.io/oauth2-proxy/oauth2-proxy versioning=semver-coerced
-oauth2proxy_version: "v7.6.0"
+podman_oauth2proxy_version: "v7.6.0"
 # renovate: datasource=docker depName=docker.io/pihole/pihole versioning=loose
-pihole_version: "2024.05.0"
+podman_pihole_version: "2024.05.0"
 # renovate: datasource=docker depName=docker.io/library/postgres versioning=semver-coerced
-postgres_version: "16.3"
+podman_postgres_version: "16.3"
 # renovate: datasource=docker depName=quay.io/prometheus/prometheus versioning=semver-coerced
-prometheus_version: "v2.52.0"
+podman_prometheus_version: "v2.52.0"
 # renovate: datasource=docker depName=quay.io/prometheus/snmp-exporter versioning=semver-coerced
-snmp_exporter_version: "v0.26.0"
+podman_prometheus_snmp_exporter_version: "v0.26.0"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/prowlarr versioning=loose
-prowlarr_version: "1.17.2.4511"
+podman_prowlarr_version: "1.17.2.4511"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/qbittorrent versioning=semver
-qbittorrent_version: "4.6.5"
+podman_qbittorrent_version: "4.6.5"
 # renovate: datasource=docker depName=ghcr.io/esanchezm/prometheus-qbittorrent-exporter versioning=semver-coerced
-qbittorrent_exporter_version: "v1.5.1"
+podman_qbittorrent_exporter_version: "v1.5.1"
 # renovate: datasource=docker depName=docker.io/jesec/flood versioning=semver
-qbittorrent_flood_version: "4.8.2"
+podman_qbittorrent_flood_version: "4.8.2"
 # renovate: datasource=docker depName=ghcr.io/soxfor/qbittorrent-natmap versioning=semver
-natmap_version: "1.1.0"
+podman_qbittorrent_natmap_version: "1.1.0"
 # renovate: datasource=docker depName=docker.io/procustodibus/wireguard versioning=semver-coerced
-wireguard_version: "v1.0.20210914"
+podman_qbittorrent_wireguard_version: "v1.0.20210914"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/radarr versioning=loose
-radarr_version: "5.6.0.8846"
+podman_radarr_version: "5.6.0.8846"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/sonarr versioning=loose
-sonarr_version: "4.0.5.1710"
+podman_sonarr_version: "4.0.5.1710"
 # renovate: datasource=docker depName=docker.io/library/traefik versioning=semver-coerced
-traefik_version: "v3.0.1"
+podman_traefik_version: "v3.0.1"

@@ -1,7 +1,13 @@
 ---
-- include_tasks: keepassxc.yml
-- include_tasks: steam.yml
-- include_tasks: syncthing.yml
-- include_tasks: virtualbox.yml
-- include_tasks: vscode.yml
-- include_tasks: xfce.yml
+- name: KeePassXC
+  ansible.builtin.include_tasks: keepassxc.yml
+- name: Steam
+  ansible.builtin.include_tasks: steam.yml
+- name: Syncthing
+  ansible.builtin.include_tasks: syncthing.yml
+- name: VirtualBox
+  ansible.builtin.include_tasks: virtualbox.yml
+- name: VS Code
+  ansible.builtin.include_tasks: vscode.yml
+- name: Xfce
+  ansible.builtin.include_tasks: xfce.yml

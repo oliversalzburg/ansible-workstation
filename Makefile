@@ -1,3 +1,6 @@
+lint:
+	cd provision/ansible; ansible-lint
+
 age.agekey:
 	age-keygen -o age.agekey
 	mkdir --parents ~/.config/sops/age

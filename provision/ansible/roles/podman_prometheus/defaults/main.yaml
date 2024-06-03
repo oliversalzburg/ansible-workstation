@@ -1,0 +1,10 @@
+---
+podman_prometheus_id: prometheus
+podman_prometheus_name: Prometheus
+podman_prometheus_groups:
+  - prometheus
+  - service
+
+podman_prometheus_basedir: /mnt/usb/prometheus
+podman_prometheus_version: latest
+podman_prometheus_snmp_exporter_version: latest

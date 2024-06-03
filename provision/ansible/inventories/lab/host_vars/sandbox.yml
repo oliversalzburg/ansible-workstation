@@ -1,1 +1,1 @@
-postgres_basedir: /opt/postgres
+podman_postgres_basedir: /opt/postgres

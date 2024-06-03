@@ -1,0 +1,69 @@
+[Unit]
+Description=Pi-hole
+Documentation=https://pi-hole.net/
+Wants=network.target
+After=network.target
+RequiresMountsFor=/mnt/usb
+StartLimitIntervalSec=10
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+RestartSec=10
+StartLimitBurst=3
+# docker.io rate-limit delays can abort startup if timeout is too short.
+TimeoutStartSec=300
+TimeoutStopSec=70
+ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
+ExecStartPre=-/usr/bin/podman pull {{ registry_dockerio }}/sonatype/nexus3:{{ podman_nexus_version }}
+ExecStart=/usr/bin/podman run \
+  --cgroups "no-conmon" \
+  --cidfile "%t/%n.ctr-id" \
+  --conmon-pidfile "%t/%n.pid" \
+  --detach \
+  --env "TZ={{ config_system_timezone }}" \
+  --hostname "%n.{{ inventory_hostname }}" \
+  --label "traefik.enable=true" \
+  --label "traefik.http.routers.nexus.entrypoints=websecure" \
+  --label "traefik.http.routers.nexus.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
+  --label "traefik.http.routers.nexus.service=nexus" \
+  --label "traefik.http.routers.nexus.tls.certresolver={{ realm }}" \
+  --label "traefik.http.routers.nexus.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
+  --label "traefik.http.services.nexus.loadbalancer.server.port=8081" \
+  --label "traefik.http.routers.dockerio.entrypoints=websecure" \
+  --label "traefik.http.routers.dockerio.rule=Host(`dockerio.%N.web.{{ inventory_hostname }}`)" \
+  --label "traefik.http.routers.dockerio.service=dockerio" \
+  --label "traefik.http.routers.dockerio.tls.certresolver={{ realm }}" \
+  --label "traefik.http.routers.dockerio.tls.domains[0].main=dockerio.%N.web.{{ inventory_hostname }}" \
+  --label "traefik.http.services.dockerio.loadbalancer.server.port=8082" \
+  --label "traefik.http.routers.quayio.entrypoints=websecure" \
+  --label "traefik.http.routers.quayio.rule=Host(`quayio.%N.web.{{ inventory_hostname }}`)" \
+  --label "traefik.http.routers.quayio.service=quayio" \
+  --label "traefik.http.routers.quayio.tls.certresolver={{ realm }}" \
+  --label "traefik.http.routers.quayio.tls.domains[0].main=quayio.%N.web.{{ inventory_hostname }}" \
+  --label "traefik.http.services.quayio.loadbalancer.server.port=8083" \
+  --label "traefik.http.routers.ghcrio.entrypoints=websecure" \
+  --label "traefik.http.routers.ghcrio.rule=Host(`ghcrio.%N.web.{{ inventory_hostname }}`)" \
+  --label "traefik.http.routers.ghcrio.service=ghcrio" \
+  --label "traefik.http.routers.ghcrio.tls.certresolver={{ realm }}" \
+  --label "traefik.http.routers.ghcrio.tls.domains[0].main=ghcrio.%N.web.{{ inventory_hostname }}" \
+  --label "traefik.http.services.ghcrio.loadbalancer.server.port=8084" \
+  --log-driver "journald" \
+  --memory "8g" \
+  --name "%n.{{ inventory_hostname }}" \
+  --network "service" \
+  --pull "never" \
+  --replace \
+  --rm \
+  --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
+  --volume "{{ podman_nexus_basedir }}/data:/nexus-data:rw" \
+  sonatype/nexus3:{{ podman_nexus_version }}
+
+ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"
+PIDFile=%t/%n.pid
+Type=forking
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,3 @@
+---
+- name: Xfce
+  ansible.builtin.include_tasks: xfce.yml

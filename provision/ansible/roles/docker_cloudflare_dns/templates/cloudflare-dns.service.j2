@@ -1,0 +1,19 @@
+[Unit]
+Description=cloudflare-dns
+Documentation=https://github.com/oliversalzburg/docker-cloudflare-dns
+After=docker.service
+Requires=docker.service systemd-networkd-wait-online.service
+Wants=cloudflare-dns.timer
+
+[Service]
+Type=oneshot
+ExecStartPre=-/usr/bin/docker exec %n stop
+ExecStartPre=-/usr/bin/docker rm %n
+ExecStartPre=/usr/bin/docker pull ghcr.io/oliversalzburg/docker-cloudflare-dns:{{ docker_cloudflare_dns__version }}
+ExecStart=/usr/bin/docker run --rm --name "%n.{{ inventory_hostname }}" \
+  --env "CLOUDFLARE_API_KEY={{ cloudflare_api_key }}" \
+  --volume /var/run/docker.sock:/var/run/docker.sock:ro \
+  ghcr.io/oliversalzburg/docker-cloudflare-dns:{{ docker_cloudflare_dns__version }}
+
+[Install]
+WantedBy=multi-user.target
