@@ -1,0 +1,6 @@
+- name: Prepare
+  hosts: debian
+  tasks:
+    - name: Update apt
+      ansible.builtin.apt:
+        update_cache: true

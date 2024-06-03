@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: clients
+  gather_facts: false
+  tasks:
+    - name: Testing role
+      ansible.builtin.include_role:
+        name: podman_pihole
+        tasks_from: main.yml

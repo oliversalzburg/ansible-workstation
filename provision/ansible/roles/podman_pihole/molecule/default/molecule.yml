@@ -1,0 +1,18 @@
+---
+driver:
+  name: podman
+
+platforms:
+  - name: instance
+    groups:
+      - clients
+      - debian
+    # you might want to add your own variables here based on what provisioning
+    # you are doing like:
+    image: docker.io/geerlingguy/docker-debian12-ansible
+    pre_build_image: true
+
+provisioner:
+  playbooks:
+    # verify: ../verify.yml
+    converge: ../converge.yml
