@@ -41,10 +41,10 @@ ExecStart=/usr/bin/podman run \
   --volume "{{ podman_ytdlsub_mediadir }}/MUSIC_VIDEOS:/music_videos:rw" \
   --volume "{{ podman_ytdlsub_mediadir }}/TV:/tv_shows:rw" \
   oliversalzburg/containers/ytdl-sub:{{ podman_ytdlsub_version }} \
-  --config "/config/config.yaml" \
+  --config "/config/config.yml" \
   #--log-level "debug" \
   sub \
-  subscriptions.yaml
+  subscriptions.yml
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
 ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"

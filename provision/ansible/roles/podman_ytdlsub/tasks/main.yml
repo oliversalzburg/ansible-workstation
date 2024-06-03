@@ -18,8 +18,8 @@
     mode: "0o644"
     unsafe_writes: true
   loop:
-    - config.yaml
-    - subscriptions.yaml
+    - config.yml
+    - subscriptions.yml
 
 - name: Copy service files
   become: true

@@ -19,7 +19,7 @@ ExecStart=/usr/bin/podman run \
   --cgroups "no-conmon" \
   --cidfile "%t/%n.ctr-id" \
   --detach \
-  --env "SYNAPSE_CONFIG_PATH=/data/homeserver.yaml" \
+  --env "SYNAPSE_CONFIG_PATH=/data/homeserver.yml" \
   --env "TZ={{ config_system_timezone }}" \
   --log-driver "journald" \
   --memory "4g" \

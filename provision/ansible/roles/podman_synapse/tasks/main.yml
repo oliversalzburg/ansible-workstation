@@ -116,8 +116,8 @@
 - name: Copy configuration
   become: true
   ansible.builtin.template:
-    src: homeserver.yaml.j2
-    dest: "{{ podman_synapse_basedir }}/data/homeserver.yaml"
+    src: homeserver.yml.j2
+    dest: "{{ podman_synapse_basedir }}/data/homeserver.yml"
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
     mode: "0o640"

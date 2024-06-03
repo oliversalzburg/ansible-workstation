@@ -3,6 +3,6 @@
 provision/
 tmpl/
 .gitignore
-.sops.yaml
+.sops.yml
 ansible.cfg
 README.md
