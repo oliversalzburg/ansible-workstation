@@ -9,7 +9,10 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
+      - run: |
+          pipx install ansible ansible-dev-tools ansible-lint
+          make requirements
       - name: Run ansible-lint
-        uses: ansible/ansible-lint@main
-        with:
-          working_directory: provision/ansible
+        run: |
+          cd provision/ansible
+          ansible-lint
