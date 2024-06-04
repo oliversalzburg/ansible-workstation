@@ -82,6 +82,7 @@
 - name: Pull service image
   become: true
   containers.podman.podman_image:
+    #force: "{{ podman_pihole_version == 'latest' }}"
     name: "{{ registry_dockerio }}/pihole/pihole:{{ podman_pihole_version }}"
 
 - name: Copy service files

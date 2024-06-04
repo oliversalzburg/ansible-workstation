@@ -1,7 +1,58 @@
 ---
-- name: Converge
-  hosts: clients
+- name: Fail if molecule group is missing
+  hosts: localhost
   tasks:
+    - name: Print some info
+      ansible.builtin.debug:
+        msg: "{{ groups }}"
+
+    - name: Assert group existence
+      ansible.builtin.assert:
+        that: "'molecule' in groups"
+        fail_msg: |
+          molecule group was not found inside inventory groups: {{ groups }}
+
+- name: Converge
+  hosts: molecule
+  # We disable gather facts because it would fail due to our container not
+  # having python installed. This will not prevent use from running 'raw'
+  # commands. Most molecule users are expected to use containers that already
+  # have python installed in order to avoid notable delays installing it.
+  gather_facts: false
+  tasks:
+  
+    - name: Update APT sources
+      ansible.builtin.raw: apt-get update
+
+    - name: Install Python
+      ansible.builtin.raw: apt-get install --yes python3
+
+    - name: Install OS dependencies
+      ansible.builtin.apt:
+        name:
+          - iproute2
+          - net-tools
+          - podman
+          - sudo
+        state: present
+        update_cache: true
+
+    - name: Gather facts
+      ansible.builtin.setup:
+        gather_subset:
+          - all
+
+    - name: Create podman service network
+      containers.podman.podman_network:
+        name: service
+        ipv6: false
+        force: true
+        internal: false
+        opt:
+          isolate: true
+        subnet: 10.0.1.0/24
+      become: true
+
     - name: Testing role
       block:
         - name: Call role
@@ -10,7 +61,7 @@
             tasks_from: main.yml
       rescue:
         - name: get errors
-          shell: journalctl -xeu pihole.service
+          shell: journalctl -xe
           register: err_msg
         - name: Print error message to console
           debug:

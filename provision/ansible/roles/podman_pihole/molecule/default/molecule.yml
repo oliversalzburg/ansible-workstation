@@ -1,30 +1,29 @@
 ---
-driver:
-  name: podman
+dependency:
+  name: galaxy
+  options:
+    requirements-file: requirements.yml
 
 platforms:
-  - name: instance
-    groups:
-      - clients
-      - debian
-
-    capabilities:
-      - MKNOD
-      - NET_ADMIN
-      - SYS_ADMIN
-    cgroup_manager: cgroupfs
-    devices:
-      - /dev/fuse
+  - name: molecule-debian
     image: docker.io/geerlingguy/docker-debian12-ansible
-    override_command: false
-    pre_build_image: true
-    security_opts:
-      - label=disable
-      - unmask=/proc/*
-    storage_driver: vfs
-    systemd: always
+    privileged: true
+
+  - name: molecule-ubuntu
+    image: docker.io/geerlingguy/docker-ubuntu2404-ansible
+    privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
+      - /run:/run
+      - /var/lib/containers:/var/lib/containers
+
+driver:
+  name: podman
+  options:
+    managed: false
+    login_cmd_template: "podman exec -ti {instance} bash"
+    ansible_connection_options:
+      ansible_connection: podman
 
 provisioner:
   playbooks:

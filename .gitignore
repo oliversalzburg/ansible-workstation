@@ -1,2 +1,3 @@
 .decrypted*
 age.agekey
+.venv/
