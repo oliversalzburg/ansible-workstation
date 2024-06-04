@@ -1,9 +1,17 @@
 ---
 - name: Converge
   hosts: clients
-  gather_facts: false
   tasks:
     - name: Testing role
-      ansible.builtin.include_role:
-        name: podman_pihole
-        tasks_from: main.yml
+      block:
+        - name: Call role
+          ansible.builtin.include_role:
+            name: podman_pihole
+            tasks_from: main.yml
+      rescue:
+        - name: get errors
+          shell: journalctl -xeu pihole.service
+          register: err_msg
+        - name: Print error message to console
+          debug:
+            msg: "{{ err_msg.stdout }}"

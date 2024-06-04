@@ -7,10 +7,24 @@ platforms:
     groups:
       - clients
       - debian
-    # you might want to add your own variables here based on what provisioning
-    # you are doing like:
+
+    capabilities:
+      - MKNOD
+      - NET_ADMIN
+      - SYS_ADMIN
+    cgroup_manager: cgroupfs
+    devices:
+      - /dev/fuse
     image: docker.io/geerlingguy/docker-debian12-ansible
+    override_command: false
     pre_build_image: true
+    security_opts:
+      - label=disable
+      - unmask=/proc/*
+    storage_driver: vfs
+    systemd: always
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
 
 provisioner:
   playbooks:

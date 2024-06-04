@@ -1,6 +1,20 @@
 - name: Prepare
   hosts: debian
   tasks:
-    - name: Update apt
+    - name: Install APT dependencies
       ansible.builtin.apt:
+        name:
+          - podman
+        state: present
         update_cache: true
+
+    - name: Create podman service network
+      containers.podman.podman_network:
+        name: service
+        ipv6: false
+        force: true
+        internal: false
+        opt:
+          isolate: true
+        subnet: 10.0.1.0/24
+      become: true

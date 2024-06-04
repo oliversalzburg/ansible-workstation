@@ -3,17 +3,17 @@
   become: true
   register: _groups
   ansible.builtin.group:
-    name: "{{ item }}"
+    name: "{{ podman_pihole_group }}"
     state: present
     system: true
-  loop: "{{ podman_pihole_groups }}"
 
-- name: Ensure user is a group member
+- name: Join members into group
   become: true
   ansible.builtin.user:
-    name: "{{ ansible_user }}"
-    groups: "{{ podman_pihole_groups }}"
+    name: "{{ item }}"
+    groups: "{{ podman_pihole_group }}"
     append: true
+  loop: "{{ podman_pihole_group_members }}"
 
 - name: Create user
   become: true
@@ -21,8 +21,7 @@
   ansible.builtin.user:
     comment: "{{ podman_pihole_name }}"
     create_home: false
-    group: "{{ _groups.results[0].gid }}"
-    groups: "{{ podman_pihole_groups }}"
+    group: "{{ podman_pihole_group }}"
     home: "{{ podman_pihole_basedir }}"
     name: "{{ podman_pihole_id }}"
     password: "!"
@@ -36,7 +35,7 @@
     path: "{{ podman_pihole_basedir }}"
     state: directory
     owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    group: "{{ podman_pihole_group }}"
     mode: "0o750"
 
 - name: Ensure directories exist
@@ -45,10 +44,11 @@
     path: "{{ podman_pihole_basedir }}/{{ item }}"
     state: directory
     owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    group: "{{ _groups.gid }}"
     mode: "0o750"
   loop:
-    - etc
+    - etc/dnsmasq.d
+    - etc/pihole
 
 
 - name: Forward the host DNS zone to the aardvark DNS backend on the host
@@ -57,7 +57,7 @@
     src: "20-forward-host-realm.conf.j2"
     dest: "{{ podman_pihole_basedir }}/etc/dnsmasq.d/20-forward-host-realm.conf"
     owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    group: "{{ _groups.gid }}"
     mode: "0o644"
 
 - name: Copy custom hosts list
@@ -66,7 +66,7 @@
     src: "custom.list"
     dest: "{{ podman_pihole_basedir }}/etc/pihole/custom.list"
     owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    group: "{{ _groups.gid }}"
     mode: "0o644"
 
 
@@ -98,7 +98,6 @@
 - name: Enable and check service
   become: true
   ansible.builtin.systemd:
-    daemon_reload: true
     enabled: true
     name: pihole
     state: restarted

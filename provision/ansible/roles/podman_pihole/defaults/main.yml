@@ -1,9 +1,13 @@
 ---
 podman_pihole_id: pihole
 podman_pihole_name: PiHole
-podman_pihole_groups:
-  - pihole
-  - service
-
+podman_pihole_group: pihole
+podman_pihole_group_members: []
 podman_pihole_basedir: /mnt/usb/pihole
 podman_pihole_version: latest
+podman_pihole_webpassword: password
+config_system_timezone: UTC
+directory_systemd: /etc/systemd/system
+dns_delegation: {}
+realm: localhost
+registry_dockerio: docker.io

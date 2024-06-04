@@ -45,7 +45,7 @@ ExecStart=/usr/bin/podman run \
   --rm \
   --secret "podman_pihole_webpassword,type=env,target=WEBPASSWORD" \
   # image does not support rootless. It tries to wildly chown/chmod on the filesystem.
-  #--user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  #--user "{{ _user.uid }}:{{ _groups.gid }}" \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
   --volume "{{ podman_pihole_basedir }}/etc/pihole:/etc/pihole:rw" \
   --volume "{{ podman_pihole_basedir }}/etc/dnsmasq.d:/etc/dnsmasq.d:rw" \
