@@ -15,7 +15,7 @@ StartLimitBurst=3
 TimeoutStartSec=300
 TimeoutStopSec=70
 ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
-ExecStartPre=-/usr/bin/podman pull {{ registry_dockerio }}/pihole/pihole:{{ podman_pihole_version }}
+ExecStartPre=-/usr/bin/podman pull {{ podman_pihole_registry }}/pihole/pihole:{{ podman_pihole_version }}
 ExecStart=/usr/bin/podman run \
   --cgroups "no-conmon" \
   --cidfile "%t/%n.ctr-id" \
@@ -25,13 +25,13 @@ ExecStart=/usr/bin/podman run \
   # resolvers can be consumed from DHCP responses that affected the host.
   --dns=127.0.0.1 \
   --env "FTLCONF_LOCAL_IPV4={{ ansible_default_ipv4.address }}" \
-  --env "TZ={{ config_system_timezone }}" \
+  --env "TZ={{ podman_pihole_timezone }}" \
   --hostname "%n.{{ inventory_hostname }}" \
   --label "traefik.enable=true" \
   --label "traefik.http.routers.pihole.entrypoints=websecure" \
   #--label "traefik.http.routers.pihole.middlewares=oauth@file" \
   --label "traefik.http.routers.pihole.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
-  --label "traefik.http.routers.pihole.tls.certresolver={{ realm }}" \
+  --label "traefik.http.routers.pihole.tls.certresolver={{ podman_pihole_realm }}" \
   --label "traefik.http.routers.pihole.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
   --label "traefik.http.services.pihole.loadbalancer.server.port=80" \
   --log-driver "journald" \

@@ -109,6 +109,11 @@
   hosts: dnsresolvers
   roles:
     - role: podman_pihole
+      vars:
+        podman_pihole_dns_delegation: "{{ dns_delegation }}"
+        podman_pihole_realm: "{{ realm }}"
+        podman_pihole_registry: "{{ registry_dockerio }}"
+        podman_pihole_timezone: "{{ config_system_timezone }}"
 
 - name: Auth Servers
   hosts: authservers

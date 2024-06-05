@@ -6,8 +6,8 @@ podman_pihole_group_members: []
 podman_pihole_basedir: /mnt/usb/pihole
 podman_pihole_version: latest
 podman_pihole_webpassword: password
-config_system_timezone: UTC
-directory_systemd: /etc/systemd/system
-dns_delegation: {}
-realm: localhost
-registry_dockerio: docker.io
+podman_pihole_timezone: UTC
+podman_pihole_directory_systemd: /etc/systemd/system
+podman_pihole_dns_delegation: {}
+podman_pihole_realm: localhost
+podman_pihole_registry: docker.io

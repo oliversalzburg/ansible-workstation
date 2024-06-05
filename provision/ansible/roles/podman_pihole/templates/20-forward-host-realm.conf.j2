@@ -1,6 +1,6 @@
-{% for node in dns_delegation %}
-address=/web.{{ node }}.{{ realm }}/{{ dns_delegation[ node ].service.ns }}
-{% for zone in dns_delegation[ node ] %}
-server=/{{ zone }}.{{ node }}.{{ realm }}/{{ dns_delegation[ node ][ zone ].ns }}
+{% for node in podman_pihole_dns_delegation %}
+address=/web.{{ node }}.{{ podman_pihole_realm }}/{{ podman_pihole_dns_delegation[ node ].service.ns }}
+{% for zone in podman_pihole_dns_delegation[ node ] %}
+server=/{{ zone }}.{{ node }}.{{ podman_pihole_realm }}/{{ podman_pihole_dns_delegation[ node ][ zone ].ns }}
 {% endfor %}
 {% endfor %}

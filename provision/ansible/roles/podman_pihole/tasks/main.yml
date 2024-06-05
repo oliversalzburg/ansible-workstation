@@ -82,14 +82,14 @@
 - name: Pull service image
   become: true
   containers.podman.podman_image:
-    #force: "{{ podman_pihole_version == 'latest' }}"
+    force: "{{ podman_pihole_version == 'latest' }}"
     name: "{{ registry_dockerio }}/pihole/pihole:{{ podman_pihole_version }}"
 
 - name: Copy service files
   become: true
   ansible.builtin.template:
     src: "{{ item }}.j2"
-    dest: "{{ directory_systemd }}/{{ item }}"
+    dest: "{{ podman_pihole_directory_systemd }}/{{ item }}"
     owner: root
     group: root
     mode: "0o644"
