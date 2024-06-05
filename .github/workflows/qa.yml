@@ -22,3 +22,9 @@ jobs:
           cd provision/ansible
           ansible-lint
 
+      - name: test
+        if: always()
+        run: |
+          cd provision/ansible
+          cd roles/podman_pihole
+          molecule converge
