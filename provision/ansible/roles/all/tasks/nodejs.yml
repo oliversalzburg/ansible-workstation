@@ -9,14 +9,14 @@
   ansible.builtin.apt_repository:
     repo: >
       deb [signed-by={{ directory_keyrings }}/nodesource.gpg]
-      https://deb.nodesource.com/node_{{ version_nodejs }}.x {{ ansible_distribution_release }} main
+      https://deb.nodesource.com/node_{{ version_nodejs }}.x nodistro main
     state: present
 - name: Add Nodesource sources Repository
   become: true
   ansible.builtin.apt_repository:
     repo: >
       deb-src [signed-by={{ directory_keyrings }}/nodesource.gpg]
-      https://deb.nodesource.com/node_{{ version_nodejs }}.x {{ ansible_distribution_release }} main
+      https://deb.nodesource.com/node_{{ version_nodejs }}.x nodistro main
     state: present
 
 - name: Install NodeJs

@@ -7,7 +7,9 @@
 - name: Add Hashicorp Repository
   become: true
   ansible.builtin.apt_repository:
-    repo: "deb [signed-by={{ directory_keyrings }}/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
+    repo: |
+      deb [signed-by={{ directory_keyrings }}/hashicorp-archive-keyring.gpg]
+      https://apt.releases.hashicorp.com bookworm main
     state: present
 
 - name: Install Terraform
