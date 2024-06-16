@@ -25,6 +25,7 @@ ExecStart=/usr/bin/podman run \
   # resolvers can be consumed from DHCP responses that affected the host.
   --dns=127.0.0.1 \
   --env "FTLCONF_LOCAL_IPV4={{ ansible_default_ipv4.address }}" \
+  --env "PIHOLE_UID=0" \
   --env "TZ={{ podman_pihole_timezone }}" \
   --hostname "%n.{{ inventory_hostname }}" \
   --label "traefik.enable=true" \
