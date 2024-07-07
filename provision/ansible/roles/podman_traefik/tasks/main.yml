@@ -7,6 +7,7 @@
     state: present
     system: true
   loop: "{{ podman_traefik_groups }}"
+  notify: Restart traefik
 
 - name: Ensure user is a group member
   become: true
@@ -14,6 +15,7 @@
     name: "{{ ansible_user }}"
     groups: "{{ podman_traefik_groups }}"
     append: true
+  notify: Restart traefik
 
 - name: Create user
   become: true
@@ -28,6 +30,7 @@
     password: "!"
     shell: "/usr/sbin/nologin"
     system: true
+  notify: Restart traefik
 
 
 - name: Ensure working directory exists
@@ -38,6 +41,7 @@
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
     mode: "0o750"
+  notify: Restart traefik
 
 - name: Ensure directories exist
   become: true
@@ -50,6 +54,7 @@
   loop:
     - acme
     - conf.d
+  notify: Restart traefik
 
 
 - name: Copy traefik config file
@@ -60,6 +65,7 @@
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
     mode: "0o640"
+  notify: Restart traefik
 
 - name: Copy traefik dynamic config file
   become: true
@@ -69,10 +75,15 @@
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
     mode: "0o640"
+  notify: Restart traefik
 
 
 - name: Pull service image
   become: true
+  register: result
+  retries: 3
+  delay: 3
+  until: result is not failed
   containers.podman.podman_image:
     name: "{{ registry_dockerio }}/library/traefik:{{ podman_traefik_version }}"
 
@@ -86,11 +97,11 @@
     mode: "0o644"
   loop:
     - traefik.service
+  notify: Restart traefik
 
 - name: Enable and check service
   become: true
   ansible.builtin.systemd:
-    daemon_reload: true
-    enabled: true
     name: traefik
-    state: restarted
+    enabled: true
+  notify: Restart traefik

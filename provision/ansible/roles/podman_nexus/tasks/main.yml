@@ -7,6 +7,7 @@
     state: present
     system: true
   loop: "{{ podman_nexus_groups }}"
+  notify: Restart nexus
 
 - name: Ensure user is a group member
   become: true
@@ -14,6 +15,7 @@
     name: "{{ ansible_user }}"
     groups: "{{ podman_nexus_groups }}"
     append: true
+  notify: Restart nexus
 
 - name: Create user
   become: true
@@ -28,6 +30,7 @@
     password: "!"
     shell: "/usr/sbin/nologin"
     system: true
+  notify: Restart nexus
 
 
 - name: Ensure working directory exists
@@ -38,6 +41,7 @@
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
     mode: "0o750"
+  notify: Restart nexus
 
 - name: Ensure directories exist
   become: true
@@ -49,10 +53,15 @@
     mode: "0o750"
   loop:
     - data
+  notify: Restart nexus
 
 
 - name: Pull service image
   become: true
+  register: result
+  retries: 3
+  delay: 3
+  until: result is not failed
   containers.podman.podman_image:
     name: "{{ registry_dockerio }}/sonatype/nexus3:{{ podman_nexus_version }}"
 
@@ -66,11 +75,11 @@
     mode: "0o644"
   loop:
     - nexus.service
+  notify: Restart nexus
 
 - name: Enable and check service
   become: true
   ansible.builtin.systemd:
-    daemon_reload: true
-    enabled: true
     name: nexus
-    state: restarted
+    enabled: true
+  notify: Restart nexus

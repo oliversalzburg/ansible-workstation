@@ -81,6 +81,10 @@
 
 - name: Pull service image
   become: true
+  register: result
+  retries: 3
+  delay: 3
+  until: result is not failed
   containers.podman.podman_image:
     force: "{{ podman_pihole_version == 'latest' }}"
     name: "{{ registry_dockerio }}/pihole/pihole:{{ podman_pihole_version }}"
