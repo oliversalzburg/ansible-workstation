@@ -58,6 +58,12 @@ scrape_configs:
         - "traefik.service.{{ host }}:8081"
 {% endfor %}
 
+  - job_name: "kittens"
+    scrape_interval: 5s
+    static_configs:
+      - targets: 
+        - "workstation:9091"
+
   - job_name: snmp
     static_configs:
       - targets:
