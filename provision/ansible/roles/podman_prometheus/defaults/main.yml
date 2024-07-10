@@ -7,4 +7,5 @@ podman_prometheus_groups:
 
 podman_prometheus_basedir: /mnt/usb/prometheus
 podman_prometheus_version: latest
+podman_prometheus_pushgateway_version: latest
 podman_prometheus_snmp_exporter_version: latest

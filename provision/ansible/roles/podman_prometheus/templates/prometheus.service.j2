@@ -2,7 +2,7 @@
 Description=Prometheus
 Documentation=https://prometheus.io/docs
 Wants=network-online.target
-Wants=snmp-exporter.service
+Wants=pushgateway.service snmp-exporter.service
 After=network-online.target
 StartLimitIntervalSec=10
 
