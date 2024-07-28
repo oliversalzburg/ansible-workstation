@@ -29,6 +29,13 @@
     group: "unpackerr"
     mode: "0o600"
 
+- name: Ensure unpackerr is a group member
+  become: true
+  ansible.builtin.user:
+    name: unpackerr
+    groups: "{{ podman_qbittorrent_groups }}"
+    append: true
+
 # qBittorrent
 
 - name: Create groups
