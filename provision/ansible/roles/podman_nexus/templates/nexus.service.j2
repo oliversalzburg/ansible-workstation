@@ -1,6 +1,6 @@
 [Unit]
-Description=Pi-hole
-Documentation=https://pi-hole.net/
+Description=Sonatype Nexus
+Documentation=https://www.sonatype.com/products/sonatype-nexus-repository
 Wants=network.target
 After=network.target
 RequiresMountsFor=/mnt/usb
@@ -15,7 +15,8 @@ StartLimitBurst=3
 TimeoutStartSec=300
 TimeoutStopSec=70
 ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
-ExecStartPre=-/usr/bin/podman pull {{ registry_dockerio }}/sonatype/nexus3:{{ podman_nexus_version }}
+# Do not load this from Nexus itself! It makes no sense if Nexus is not running!
+ExecStartPre=-/usr/bin/podman pull docker.io/sonatype/nexus3:{{ podman_nexus_version }}
 ExecStart=/usr/bin/podman run \
   --cgroups "no-conmon" \
   --cidfile "%t/%n.ctr-id" \
