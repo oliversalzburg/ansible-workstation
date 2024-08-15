@@ -63,7 +63,7 @@
   delay: 3
   until: result is not failed
   containers.podman.podman_image:
-    name: "{{ registry_dockerio }}/sonatype/nexus3:{{ podman_nexus_version }}"
+    name: "docker.io/sonatype/nexus3:{{ podman_nexus_version }}"
 
 - name: Copy service files
   become: true

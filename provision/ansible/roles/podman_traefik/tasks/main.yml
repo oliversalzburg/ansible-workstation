@@ -85,7 +85,7 @@
   delay: 3
   until: result is not failed
   containers.podman.podman_image:
-    name: "{{ registry_dockerio }}/library/traefik:{{ podman_traefik_version }}"
+    name: "docker.io/library/traefik:{{ podman_traefik_version }}"
 
 - name: Copy service files
   become: true
