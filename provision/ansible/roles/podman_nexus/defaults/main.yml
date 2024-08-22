@@ -9,7 +9,3 @@ podman_nexus_basedir: /mnt/usb/nexus
 podman_nexus_master_password: nexus
 podman_nexus_master_user: nexus
 podman_nexus_version: latest
-
-podman_nexus_pg_user: nexus
-podman_nexus_pg_password: podman_nexus_password
-podman_nexus_pg_db: nexus

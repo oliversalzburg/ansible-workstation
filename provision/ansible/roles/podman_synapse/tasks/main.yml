@@ -113,7 +113,7 @@
     role: "{{ podman_synapse_pg_user }}"
 
 
-- name: Copy homeserver configuration
+- name: Copy configuration
   become: true
   ansible.builtin.template:
     src: homeserver.yml.j2
@@ -121,7 +121,7 @@
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
     mode: "0o640"
-- name: Copy element configuration
+- name: Copy configuration
   become: true
   ansible.builtin.template:
     src: config.json.j2
