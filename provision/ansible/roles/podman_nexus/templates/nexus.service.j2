@@ -59,6 +59,7 @@ ExecStart=/usr/bin/podman run \
   --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
   --volume "{{ podman_nexus_basedir }}/data:/nexus-data:rw" \
+  --volume "{{ podman_nexus_basedir }}/etc:/opt/sonatype/sonatype-work/nexus3/etc:rw" \
   sonatype/nexus3:{{ podman_nexus_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
