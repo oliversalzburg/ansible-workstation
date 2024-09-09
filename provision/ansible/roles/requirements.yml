@@ -14,7 +14,7 @@ collections:
   - name: community.postgresql
     version: 3.5.0
   - name: community.sops
-    version: 1.8.2
+    version: 1.9.0
   - name: containers.podman
     version: 1.15.4
   - name: maxhoesel.smallstep
