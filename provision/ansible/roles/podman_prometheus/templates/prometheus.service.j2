@@ -41,6 +41,7 @@ ExecStart=/usr/bin/podman run \
   --volume "{{ podman_prometheus_basedir }}/etc:/etc/prometheus:ro" \
   prometheus/prometheus:{{ podman_prometheus_version }} \
   --config.file="/etc/prometheus/prometheus.yml" \
+  --enable-feature="promql-experimental-functions" \
   --storage.tsdb.path="/prometheus" \
   --storage.tsdb.retention.time="90d" \
   --web.console.libraries="/usr/share/prometheus/console_libraries" \
