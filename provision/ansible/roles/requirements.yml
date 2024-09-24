@@ -16,7 +16,7 @@ collections:
   - name: community.sops
     version: 1.9.0
   - name: containers.podman
-    version: 1.15.4
+    version: 1.16.0
   - name: maxhoesel.smallstep
     version: 0.24.5
   - name: prometheus.prometheus
