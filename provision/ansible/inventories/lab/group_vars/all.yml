@@ -64,7 +64,7 @@ podman_mattermost_version: "10.1.0"
 # renovate: datasource=docker depName=docker.io/sonatype/nexus3 versioning=semver
 podman_nexus_version: "3.72.0"
 # renovate: datasource=docker depName=quay.io/oauth2-proxy/oauth2-proxy versioning=semver-coerced
-podman_oauth2proxy_version: "v7.6.0"
+podman_oauth2proxy_version: "v7.7.0"
 # renovate: datasource=docker depName=docker.io/pihole/pihole versioning=loose
 podman_pihole_version: "2024.07.0"
 # renovate: datasource=docker depName=docker.io/library/postgres versioning=semver-coerced
