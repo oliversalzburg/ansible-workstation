@@ -80,7 +80,7 @@ podman_prowlarr_version: "1.25.4.4818"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/qbittorrent versioning=semver
 podman_qbittorrent_version: "4.6.7"
 # renovate: datasource=docker depName=ghcr.io/esanchezm/prometheus-qbittorrent-exporter versioning=semver-coerced
-podman_qbittorrent_exporter_version: "v1.5.1"
+podman_qbittorrent_exporter_version: "v1.6.0"
 # renovate: datasource=docker depName=docker.io/jesec/flood versioning=semver
 podman_qbittorrent_flood_version: "4.8.4"
 # renovate: datasource=docker depName=ghcr.io/soxfor/qbittorrent-natmap versioning=semver
