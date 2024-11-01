@@ -20,4 +20,4 @@ collections:
   - name: maxhoesel.smallstep
     version: 0.24.5
   - name: prometheus.prometheus
-    version: 0.21.0
+    version: 0.22.0
