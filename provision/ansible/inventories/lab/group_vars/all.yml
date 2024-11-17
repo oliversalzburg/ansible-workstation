@@ -68,7 +68,7 @@ podman_oauth2proxy_version: "v7.7.1"
 # renovate: datasource=docker depName=docker.io/pihole/pihole versioning=loose
 podman_pihole_version: "2024.07.0"
 # renovate: datasource=docker depName=docker.io/library/postgres versioning=semver-coerced
-podman_postgres_version: "16.4"
+podman_postgres_version: "16.5"
 # renovate: datasource=docker depName=quay.io/prometheus/prometheus versioning=semver-coerced
 podman_prometheus_version: "v2.55.1"
 # renovate: datasource=docker depName=docker.io/prom/pushgateway versioning=semver-coerced
