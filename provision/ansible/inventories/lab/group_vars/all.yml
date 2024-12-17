@@ -58,7 +58,7 @@ podman_jellyfin_version: "10.10.3"
 # renovate: datasource=docker depName=quay.io/keycloak/keycloak versioning=semver
 podman_keycloak_version: "26.0.7"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/lidarr versioning=loose
-podman_lidarr_version: "2.7.1.4417"
+podman_lidarr_version: "2.8.2.4493"
 # renovate: datasource=docker depName=docker.io/mattermost/mattermost-team-edition versioning=semver
 podman_mattermost_version: "10.3.1"
 # renovate: datasource=docker depName=docker.io/sonatype/nexus3 versioning=semver
