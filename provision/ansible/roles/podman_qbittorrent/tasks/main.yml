@@ -1,16 +1,15 @@
 ---
-- name: Install APT key
-  become: true
-  ansible.builtin.apt_key:
-    url: https://packagecloud.io/golift/pkgs/gpgkey
-    keyring: "{{ directory_keyrings }}/golift.gpg"
-    state: present
-
 - name: Add GoLift Repository
   become: true
-  ansible.builtin.apt_repository:
-    repo: "deb [signed-by={{ directory_keyrings }}/golift.gpg] https://packagecloud.io/golift/pkgs/ubuntu focal main"
+  ansible.builtin.deb822_repository:
+    name: golift
+    types: [deb]
+    uris: https://packagecloud.io/golift/pkgs/ubuntu
+    suites: [focal]
+    components: [main]
+    signed_by: https://packagecloud.io/golift/pkgs/gpgkey
     state: present
+    enabled: true
 
 - name: Install Unpackerr
   become: true
@@ -88,14 +87,14 @@
     mode: "0o750"
   loop:
     - config
-    - config/wireguard
+    - wireguard
 
 
 - name: Copy wireguard configuration
   become: true
   ansible.builtin.template:
     src: wg0.conf.j2
-    dest: "{{ podman_qbittorrent_basedir }}/config/wireguard/wg0.conf"
+    dest: "{{ podman_qbittorrent_basedir }}/wireguard/wg0.conf"
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
     mode: "0o600"

@@ -1,0 +1,72 @@
+---
+- name: Set hostname
+  become: true
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}"
+
+- name: Configure DNS
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/systemd/resolved.conf"
+    dest: /etc/systemd/resolved.conf
+    owner: root
+    group: root
+    mode: "0o644"
+
+- name: Install systemd-resolved
+  become: true
+  ansible.builtin.apt:
+    name:
+      - systemd-resolved
+
+- name: Enable systemd-resolved
+  become: true
+  ansible.builtin.systemd:
+    name: systemd-resolved
+    state: restarted
+    enabled: true
+
+- name: Enable systemd-networkd
+  become: true
+  ansible.builtin.systemd:
+    name: systemd-networkd
+    state: started
+    enabled: true
+
+- name: Create mounts
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/systemd/{{ item }}"
+    dest: "{{ directory_systemd }}/{{ item }}"
+    mode: "0o644"
+    owner: root
+    group: root
+  loop:
+    - mnt-storage.automount
+    - mnt-storage.mount
+    - mnt-usb.automount
+    - mnt-usb.mount
+
+- name: Reload systemd
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Configure mounts
+  become: true
+  ansible.builtin.systemd:
+    enabled: false
+    name: "{{ item }}"
+    state: started
+  loop:
+    - mnt-storage.mount
+    - mnt-usb.mount
+
+- name: Configure automounts
+  become: true
+  ansible.builtin.systemd:
+    enabled: true
+    name: "{{ item }}"
+  loop:
+    - mnt-storage.automount
+    - mnt-usb.automount

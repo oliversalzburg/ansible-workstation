@@ -56,14 +56,14 @@
   ansible.builtin.file:
     path: "{{ userspace_downloads }}"
     state: directory
+    owner: "{{ userspace_user }}"
     mode: "0o750"
 
 - name: Download Oh My Zsh installer
-  become: true
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
     dest: "{{ userspace_downloads }}/install-ohmyzsh.sh"
-    mode: "0o755"
+    mode: "0o750"
 - name: Execute the installer
   become: true
   become_user: "{{ userspace_user }}"

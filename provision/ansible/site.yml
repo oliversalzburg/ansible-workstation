@@ -39,6 +39,10 @@
   hosts: laptop.labnet
   roles:
     - role: unique_laptop
+- name: Storage Server
+  hosts: storage-server.labnet
+  roles:
+    - role: unique_storage-server
 - name: Workstation
   hosts: workstation.labnet
   roles:

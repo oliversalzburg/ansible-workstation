@@ -22,6 +22,8 @@ init-container: requirements
 	cd provision/ansible; ../../.venv/bin/ansible-playbook site.yml --limit container.labnet
 init-laptop: requirements
 	cd provision/ansible; ../../.venv/bin/ansible-playbook site.yml --limit laptop.labnet
+init-storage-server: requirements
+	cd provision/ansible; ../../.venv/bin/ansible-playbook site.yml --limit storage-server.labnet
 init-workstation: requirements
 	cd provision/ansible; ../../.venv/bin/ansible-playbook site.yml --limit workstation.labnet
 

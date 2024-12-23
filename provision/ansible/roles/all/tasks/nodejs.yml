@@ -1,16 +1,14 @@
-- name: Install APT key
-  become: true
-  ansible.builtin.apt_key:
-    url: https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
-    keyring: "{{ directory_keyrings }}/nodesource.gpg"
-    state: present
 - name: Add Nodesource Repository
   become: true
-  ansible.builtin.apt_repository:
-    repo: >
-      deb [signed-by={{ directory_keyrings }}/nodesource.gpg]
-      https://deb.nodesource.com/node_{{ version_nodejs }}.x nodistro main
+  ansible.builtin.deb822_repository:
+    name: nodesource
+    types: [deb]
+    uris: https://deb.nodesource.com/node_{{ version_nodejs }}.x
+    suites: [nodistro]
+    components: [main]
+    signed_by: https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
     state: present
+    enabled: true
 
 - name: Install NodeJs
   become: true

@@ -1,15 +1,14 @@
-- name: Install APT key
-  become: true
-  ansible.builtin.apt_key:
-    url: https://syncthing.net/release-key.gpg
-    keyring: "{{ directory_keyrings }}/syncthing.gpg"
-    state: present
-
 - name: Add Syncthing Repository
   become: true
-  ansible.builtin.apt_repository:
-    repo: "deb [signed-by={{ directory_keyrings }}/syncthing.gpg] https://apt.syncthing.net/ syncthing stable"
+  ansible.builtin.deb822_repository:
+    name: syncthing
+    types: [deb]
+    uris: https://apt.syncthing.net/
+    suites: [syncthing]
+    components: [stable]
+    signed_by: https://syncthing.net/release-key.gpg
     state: present
+    enabled: true
 
 - name: Install Syncthing
   become: true

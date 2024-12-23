@@ -1,16 +1,14 @@
-- name: Install APT key
-  become: true
-  ansible.builtin.apt_key:
-    url: https://apt.releases.hashicorp.com/gpg
-    keyring: "{{ directory_keyrings }}/hashicorp-archive-keyring.gpg"
-    state: present
 - name: Add Hashicorp Repository
   become: true
-  ansible.builtin.apt_repository:
-    repo: |
-      deb [signed-by={{ directory_keyrings }}/hashicorp-archive-keyring.gpg]
-      https://apt.releases.hashicorp.com bookworm main
+  ansible.builtin.deb822_repository:
+    name: hashicorp
+    types: [deb]
+    uris: https://apt.releases.hashicorp.com
+    suites: [bookworm]
+    components: [main]
+    signed_by: https://apt.releases.hashicorp.com/gpg
     state: present
+    enabled: true
 
 - name: Install Terraform
   become: true

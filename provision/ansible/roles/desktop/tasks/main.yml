@@ -5,7 +5,5 @@
   ansible.builtin.include_tasks: steam.yml
 - name: Syncthing
   ansible.builtin.include_tasks: syncthing.yml
-- name: VS Code
-  ansible.builtin.include_tasks: vscode.yml
 - name: Xfce
   ansible.builtin.include_tasks: xfce.yml

@@ -1,0 +1,5 @@
+media_mount: /mnt/storage
+podman_service_network_subnet: "10.100.4.0/24"
+podman_service_network_gateway: "10.100.4.1"
+podman_proton_network_subnet: "192.168.4.0/24"
+podman_proton_network_gateway: "192.168.4.1"
