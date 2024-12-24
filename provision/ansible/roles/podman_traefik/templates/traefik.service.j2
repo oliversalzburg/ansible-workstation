@@ -35,6 +35,7 @@ ExecStart=/usr/bin/podman run \
   --replace \
   --rm \
   --security-opt "label=disable" \
+  --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
   --volume "{{ podman_traefik_basedir }}/acme:/etc/acme:rw" \
   --volume "{{ podman_traefik_basedir }}/conf.d:/conf.d:ro" \

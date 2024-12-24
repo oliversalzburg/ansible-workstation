@@ -19,6 +19,7 @@ version_age: 1.1.1
 version_nodejs: 22
 version_sops: 3.7.3
 
+# This configuration also reflects the gateway routes.
 dns_delegation:
   canyon:
     proton:

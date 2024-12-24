@@ -36,7 +36,8 @@
     state: directory
     owner: "{{ _user.uid }}"
     group: "{{ podman_pihole_group }}"
-    mode: "0o750"
+    mode: "u=rwX,g=rX"
+    recurse: true
 
 - name: Ensure directories exist
   become: true
@@ -45,7 +46,8 @@
     state: directory
     owner: "{{ _user.uid }}"
     group: "{{ _groups.gid }}"
-    mode: "0o750"
+    mode: "u=rwX,g=rX"
+    recurse: true
   loop:
     - etc/dnsmasq.d
     - etc/pihole

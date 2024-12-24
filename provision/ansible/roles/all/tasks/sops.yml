@@ -4,7 +4,8 @@
     path: "{{ directory_downloads }}"
     state: directory
     owner: "{{ ansible_user }}"
-    mode: "0o750"
+    mode: "u=rwX,g=rX"
+    recurse: true
 
 - name: Download SOPS binary
   register: result

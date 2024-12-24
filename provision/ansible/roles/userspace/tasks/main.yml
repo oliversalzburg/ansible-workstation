@@ -41,7 +41,8 @@
     path: "/home/{{ userspace_user }}/.config/htop"
     state: directory
     owner: "{{ userspace_user }}"
-    mode: "0o750"
+    mode: "u=rwX,g=rX"
+    recurse: true
 - name: "Install default configs: htop"
   become: true
   become_user: "{{ userspace_user }}"
@@ -57,7 +58,8 @@
     path: "{{ userspace_downloads }}"
     state: directory
     owner: "{{ userspace_user }}"
-    mode: "0o750"
+    mode: "u=rwX,g=rX"
+    recurse: true
 
 - name: Download Oh My Zsh installer
   ansible.builtin.get_url:

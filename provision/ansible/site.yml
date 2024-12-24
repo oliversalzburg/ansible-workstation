@@ -143,7 +143,6 @@
     - role: podman_radarr
     - role: podman_recyclarr
     - role: podman_sonarr
-    # - role: podman_ytdlsub
 
 - name: Metrics Collectors
   hosts: metricscollectors

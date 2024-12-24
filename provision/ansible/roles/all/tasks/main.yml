@@ -13,7 +13,8 @@
   ansible.builtin.file:
     path: "{{ directory_keyrings }}"
     state: directory
-    mode: "0o755"
+    mode: "u=rwX,g=rX"
+    recurse: true
 - name: Update and upgrade apt packages
   become: true
   ansible.builtin.apt:

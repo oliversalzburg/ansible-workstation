@@ -40,7 +40,8 @@
     state: directory
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
-    mode: "0o750"
+    mode: "u=rwX,g=rX"
+    recurse: true
   notify: Restart traefik
 
 - name: Ensure directories exist
@@ -50,7 +51,8 @@
     state: directory
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
-    mode: "0o750"
+    mode: "u=rwX,g=rX"
+    recurse: true
   loop:
     - acme
     - conf.d

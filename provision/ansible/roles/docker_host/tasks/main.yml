@@ -54,7 +54,8 @@
   ansible.builtin.file:
     path: /etc/docker
     state: directory
-    mode: "0o750"
+    mode: "u=rwX,g=rX"
+    recurse: true
 - name: Enable IPv6 networking in Docker
   become: true
   ansible.builtin.copy:
