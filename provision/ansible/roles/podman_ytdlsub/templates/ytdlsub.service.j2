@@ -3,6 +3,7 @@ Description=ytdl-sub
 Documentation=https://ytdl-sub.readthedocs.io/en/latest/index.html
 Wants=network.target
 After=network.target
+RequiresMountsFor={{ podman_ytdlsub_mediadir }}
 StartLimitIntervalSec=10
 
 [Service]

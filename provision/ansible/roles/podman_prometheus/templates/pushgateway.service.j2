@@ -3,6 +3,7 @@ Description=Push Gateway for Prometheus
 Documentation=https://github.com/prometheus/pushgateway
 Wants=network-online.target
 After=network-online.target
+RequiresMountsFor={{ podman_prometheus_basedir }}
 StartLimitIntervalSec=10
 
 [Service]

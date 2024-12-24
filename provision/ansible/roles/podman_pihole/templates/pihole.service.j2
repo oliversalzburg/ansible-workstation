@@ -3,7 +3,7 @@ Description=Pi-hole
 Documentation=https://pi-hole.net/
 Wants=network.target
 After=network.target
-RequiresMountsFor=/mnt/usb
+RequiresMountsFor={{ podman_pihole_basedir }}
 StartLimitIntervalSec=10
 
 [Service]

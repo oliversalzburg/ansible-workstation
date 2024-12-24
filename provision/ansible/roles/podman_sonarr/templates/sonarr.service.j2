@@ -3,8 +3,8 @@ Description=Sonarr Root Service
 Documentation=
 Wants=network-online.target
 After=network-online.target
-RequiresMountsFor={{ podman_sonarr_mediadir }}
-Requires=sonarr-main.service
+RequiresMountsFor={{ podman_sonarr_basedir }} {{ podman_sonarr_mediadir }}
+Requires=sonarr-main.service postgres.service
 Wants=sonarr-exporter.service
 Before=sonarr-main.service sonarr-exporter.service
 

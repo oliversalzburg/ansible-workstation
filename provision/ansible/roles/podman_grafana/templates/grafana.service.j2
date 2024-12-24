@@ -3,6 +3,7 @@ Description=Grafana
 Documentation=https://grafana.com/docs
 Wants=network.target
 After=network.target
+RequiresMountsFor={{ podman_grafana_basedir }}
 StartLimitIntervalSec=10
 
 [Service]

@@ -3,8 +3,8 @@ Description=Prowlarr Root Service
 Documentation=
 Wants=network-online.target
 After=network-online.target
-RequiresMountsFor=
-Requires=prowlarr-main.service prowlarr-flaresolverr.service
+RequiresMountsFor={{ podman_prowlarr_basedir }}
+Requires=prowlarr-main.service prowlarr-flaresolverr.service postgres.service
 Wants=prowlarr-exporter.service
 Before=prowlarr-main.service prowlarr-exporter.service prowlarr-flaresolverr.service
 

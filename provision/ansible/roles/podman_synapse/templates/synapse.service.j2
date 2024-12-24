@@ -4,6 +4,7 @@ Documentation=
 Wants=network-online.target
 After=network-online.target
 Requires=synapse-main.service
+RequiresMountsFor={{ podman_synapse_basedir }}
 Wants=synapse-element.service mautrix-discord.service mautrix-whatsapp.service
 Before=synapse-main.service synapse-element.service mautrix-discord.service mautrix-whatsapp.service
 

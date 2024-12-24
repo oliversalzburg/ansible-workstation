@@ -2,7 +2,7 @@
 Description=NAS
 
 [Mount]
-What=/dev/sdb
+What=/dev/disk/by-uuid/ecc2692a-3cf8-48d5-9c97-ec55a118e2f9
 Where=/mnt/storage
 Type=ext4
 

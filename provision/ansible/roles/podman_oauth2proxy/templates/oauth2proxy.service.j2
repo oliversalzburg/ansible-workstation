@@ -3,6 +3,7 @@ Description=OAuth2 Proxy
 Documentation=https://github.com/oauth2-proxy/oauth2-proxy
 Wants=network.target
 After=network.target
+RequiresMountsFor={{ podman_oauth2proxy_basedir }}
 StartLimitIntervalSec=10
 
 [Service]

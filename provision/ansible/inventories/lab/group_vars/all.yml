@@ -20,9 +20,6 @@ version_nodejs: 22
 version_sops: 3.7.3
 
 dns_delegation:
-  workstation:
-    service:
-      ns: 10.100.26.1
   canyon:
     proton:
       ns: 192.168.52.1
@@ -31,6 +28,14 @@ dns_delegation:
   container:
     service:
       ns: 10.100.2.1
+  storage-server:
+    proton:
+      ns: 192.168.4.1
+    service:
+      ns: 10.100.4.1
+  workstation:
+    service:
+      ns: 10.100.26.1
 
 hosts_postgres:
   - canyon

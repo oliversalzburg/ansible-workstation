@@ -3,7 +3,7 @@ Description=Jellyfin
 Documentation=https://jellyfin.org/docs/
 Wants=network-online.target
 After=network-online.target
-RequiresMountsFor={{ podman_jellyfin_mediadir }}
+RequiresMountsFor={{ podman_jellyfin_basedir }} {{ podman_jellyfin_mediadir }}
 StartLimitIntervalSec=10
 
 [Service]

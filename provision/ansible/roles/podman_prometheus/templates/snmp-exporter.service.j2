@@ -3,6 +3,7 @@ Description=SNMP Exporter for Prometheus
 Documentation=https://github.com/prometheus/snmp_exporter
 Wants=network-online.target
 After=network-online.target
+RequiresMountsFor={{ podman_prometheus_basedir }}
 StartLimitIntervalSec=10
 
 [Service]

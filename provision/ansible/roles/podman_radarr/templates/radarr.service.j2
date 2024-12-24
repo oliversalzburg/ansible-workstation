@@ -3,8 +3,8 @@ Description=Radarr Root Service
 Documentation=
 Wants=network-online.target
 After=network-online.target
-RequiresMountsFor={{ podman_radarr_mediadir }}
-Requires=radarr-main.service
+RequiresMountsFor={{ podman_radarr_basedir }} {{ podman_radarr_mediadir }}
+Requires=radarr-main.service postgres.service
 Wants=radarr-exporter.service
 Before=radarr-main.service radarr-exporter.service
 

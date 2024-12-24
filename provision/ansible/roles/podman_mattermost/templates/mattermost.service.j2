@@ -3,6 +3,8 @@ Description=Mattermost
 Documentation=https://docs.mattermost.com/
 Wants=network-online.target
 After=network-online.target
+Requires=postgres.service
+RequiresMountsFor={{ podman_mattermost_basedir }}
 StartLimitIntervalSec=10
 
 [Service]

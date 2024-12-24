@@ -2,7 +2,7 @@
 Description=USB
 
 [Mount]
-What=/dev/sdc1
+What=/dev/disk/by-uuid/62f1f933-1168-40bf-8c79-b992974bbaf4
 Where=/mnt/usb
 Type=ext4
 

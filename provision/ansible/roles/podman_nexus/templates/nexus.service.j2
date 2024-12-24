@@ -3,7 +3,7 @@ Description=Sonatype Nexus
 Documentation=https://www.sonatype.com/products/sonatype-nexus-repository
 Wants=network.target
 After=network.target
-RequiresMountsFor=/mnt/usb
+RequiresMountsFor={{ podman_nexus_basedir }}
 StartLimitIntervalSec=10
 
 [Service]

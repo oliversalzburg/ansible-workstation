@@ -3,8 +3,8 @@ Description=Lidarr Root Service
 Documentation=
 Wants=network-online.target
 After=network-online.target
-RequiresMountsFor={{ podman_lidarr_mediadir }}
-Requires=lidarr-main.service
+RequiresMountsFor={{ podman_lidarr_basedir }} {{ podman_lidarr_mediadir }}
+Requires=lidarr-main.service postgres.service
 Wants=lidarr-exporter.service
 Before=lidarr-main.service lidarr-exporter.service
 

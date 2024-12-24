@@ -3,6 +3,7 @@ Description=traefik
 Documentation=https://doc.traefik.io/traefik
 Wants=network-online.target
 After=network-online.target
+RequiresMountsFor={{ podman_traefik_basedir }}
 StartLimitIntervalSec=10
 
 [Service]
