@@ -30,6 +30,7 @@ ExecStart=/usr/bin/podman run \
   --label "traefik.http.routers.grafana.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
   --label "traefik.http.routers.grafana.tls.certresolver={{ realm }}" \
   --label "traefik.http.routers.grafana.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
+  --label "traefik.http.services.grafana.loadbalancer.healthcheck.path=/api/health" \
   --label "traefik.http.services.grafana.loadbalancer.server.port=3000" \
   --log-driver "journald" \
   --memory "2g" \

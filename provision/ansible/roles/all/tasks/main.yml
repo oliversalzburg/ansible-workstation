@@ -18,109 +18,16 @@
     group: root
     mode: "0o644"
 
-- name: Check APT contrib
-  ansible.builtin.shell:
-    cmd: |
-      set -o pipefail
-      apt-cache policy | grep {{ ansible_distribution_release }}/contrib
-    executable: /bin/bash
-  register: result_check_contrib
-  changed_when: result_check_contrib.rc == 1
-  failed_when: result_check_contrib.rc > 1
-- name: Enable contrib APT
-  become: true
-  ansible.builtin.command: apt-add-repository --yes contrib
-  when: result_check_contrib.rc == 1
-  changed_when: true
-
-- name: Check APT non-free
-  ansible.builtin.shell:
-    cmd: |
-      set -o pipefail
-      apt-cache policy | grep {{ ansible_distribution_release }}/non-free
-    executable: /bin/bash
-  register: result_check_nonfree
-  changed_when: result_check_nonfree.rc == 1
-  failed_when: result_check_nonfree.rc > 1
-- name: Enable non-free APT
-  become: true
-  ansible.builtin.command: apt-add-repository --yes non-free
-  when: result_check_nonfree.rc == 1
-  changed_when: true
-
-- name: Check APT non-free-firmware
-  ansible.builtin.shell:
-    cmd: |
-      set -o pipefail
-      apt-cache policy | grep {{ ansible_distribution_release }}/non-free-firmware
-    executable: /bin/bash
-  register: result_check_nonfreefirmware
-  changed_when: result_check_nonfreefirmware.rc == 1
-  failed_when: result_check_nonfreefirmware.rc > 1
-- name: Enable non-free-firmware APT
-  become: true
-  ansible.builtin.command: apt-add-repository --yes non-free-firmware
-  when: result_check_nonfreefirmware.rc == 1
-  changed_when: true
-
-- name: Update and upgrade apt packages
-  become: true
-  ansible.builtin.apt:
-    upgrade: true
-    update_cache: true
-    cache_valid_time: 86400
-
-- name: Install commonly used dependencies
-  become: true
-  ansible.builtin.apt:
-    name:
-      - apparmor-profiles
-      - apparmor-utils
-      - bash
-      - ca-certificates
-      - cifs-utils
-      - cmake
-      - curl
-      - dnsutils
-      - file
-      - git
-      - htop
-      - iputils-tracepath
-      - jq
-      - keychain
-      - kitty-terminfo
-      - lshw
-      - lsof
-      - man-db
-      - ncdu
-      - nmap
-      - openssh-client
-      - psmisc
-      - python3
-      - python3-pip
-      - python3-psycopg2
-      - ripgrep
-      - snmp
-      - software-properties-common
-      - strace
-      - tzdata
-      - unrar
-      - unzip
-      - vim
-      - wakeonlan
-      - wget
-      - whois
-      - wireguard
-      - wireguard-tools
-      - wpasupplicant
-      - zsh
-    update_cache: true
-
 - name: Set default editor
   become: true
   community.general.alternatives:
     name: editor
     path: /usr/bin/vim
+
+- name: APT
+  ansible.builtin.include_tasks: apt.yml
+# - name: DNS
+#   ansible.builtin.include_tasks: dns.yml
 
 - name: Age
   ansible.builtin.include_tasks: age.yml

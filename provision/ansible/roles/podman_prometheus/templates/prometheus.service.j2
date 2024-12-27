@@ -4,7 +4,7 @@
 Description=Prometheus
 Documentation=https://prometheus.io/docs
 Wants=network-online.target
-Wants=pushgateway.service snmp-exporter.service
+Wants=snmp-exporter.service
 RequiresMountsFor={{ podman_prometheus_basedir }}
 After=network-online.target
 StartLimitIntervalSec=10

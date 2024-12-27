@@ -7,6 +7,7 @@
     state: present
     system: true
   loop: "{{ podman_lidarr_groups }}"
+  notify: Restart lidarr
 
 - name: Ensure user is a group member
   become: true
@@ -14,6 +15,7 @@
     name: "{{ ansible_user }}"
     groups: "{{ podman_lidarr_groups }}"
     append: true
+  notify: Restart lidarr
 
 - name: Create user
   become: true
@@ -28,6 +30,7 @@
     password: "!"
     shell: "/usr/sbin/nologin"
     system: true
+  notify: Restart lidarr
 
 
 - name: Ensure working directory exists
@@ -39,6 +42,7 @@
     group: "{{ _groups.results[0].gid }}"
     mode: "u=rwX,g=rX"
     recurse: true
+  notify: Restart lidarr
 
 - name: Ensure directories exist
   become: true
@@ -51,6 +55,7 @@
     recurse: true
   loop:
     - config
+  notify: Restart lidarr
 
 
 - name: Create postgres user
@@ -64,6 +69,7 @@
     login_user: "{{ podman_postgres_master_user }}"
     name: "{{ podman_lidarr_pg_user }}"
     password: "{{ podman_lidarr_pg_password }}"
+  notify: Restart lidarr
 
 - name: Create postgres database
   register: result
@@ -79,6 +85,7 @@
   loop:
     - main
     - log
+  notify: Restart lidarr
 
 - name: "GRANT ALL PRIVILEGES ON DATABASE 'db' TO 'user'"
   community.postgresql.postgresql_privs:
@@ -93,6 +100,7 @@
   loop:
     - main
     - log
+  notify: Restart lidarr
 
 - name: "GRANT USAGE, CREATE ON SCHEMA PUBLIC TO 'user'"
   community.postgresql.postgresql_privs:
@@ -104,6 +112,7 @@
     type: schema
     obj: public
     role: "{{ podman_lidarr_pg_user }}"
+  notify: Restart lidarr
 
 
 - name: Copy configuration
@@ -114,6 +123,7 @@
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
     mode: "0o644"
+  notify: Restart lidarr
 
 
 - name: Copy service files
@@ -128,11 +138,11 @@
     - lidarr-exporter.service
     - lidarr-main.service
     - lidarr.service
+  notify: Restart lidarr
 
 - name: Enable and check lidarr service
   become: true
   ansible.builtin.systemd:
-    daemon_reload: true
     enabled: true
     name: lidarr
-    state: restarted
+  notify: Restart lidarr

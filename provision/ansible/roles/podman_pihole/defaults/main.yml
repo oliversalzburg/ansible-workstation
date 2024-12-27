@@ -1,7 +1,4 @@
 ---
-podman_pihole_id: pihole
-podman_pihole_name: PiHole
-podman_pihole_group: pihole
 podman_pihole_group_members: []
 podman_pihole_basedir: /mnt/usb/pihole
 podman_pihole_version: latest

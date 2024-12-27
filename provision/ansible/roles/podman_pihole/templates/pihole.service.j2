@@ -27,7 +27,6 @@ ExecStart=/usr/bin/podman run \
   # resolvers can be consumed from DHCP responses that affected the host.
   --dns=127.0.0.1 \
   --env "FTLCONF_LOCAL_IPV4={{ ansible_default_ipv4.address }}" \
-  --env "PIHOLE_UID=0" \
   --env "TZ={{ podman_pihole_timezone }}" \
   --hostname "%n.{{ inventory_hostname }}" \
   --label "traefik.enable=true" \
@@ -36,9 +35,10 @@ ExecStart=/usr/bin/podman run \
   --label "traefik.http.routers.pihole.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
   --label "traefik.http.routers.pihole.tls.certresolver={{ podman_pihole_realm }}" \
   --label "traefik.http.routers.pihole.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
+  --label "traefik.http.services.pihole.loadbalancer.healthcheck.path=/admin/" \
   --label "traefik.http.services.pihole.loadbalancer.server.port=80" \
   --log-driver "journald" \
-  --memory "1024m" \
+  --memory "4096m" \
   --name "%n.{{ inventory_hostname }}" \
   --network "service" \
   --publish "{{ ansible_default_ipv4.address }}:53:53/tcp" \
@@ -49,7 +49,7 @@ ExecStart=/usr/bin/podman run \
   --secret "podman_pihole_webpassword,type=env,target=WEBPASSWORD" \
   --shm-size "256m" \
   # image does not support rootless. It tries to wildly chown/chmod on the filesystem.
-  #--user "{{ _user.uid }}:{{ _groups.gid }}" \
+  #--user "root:root" \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
   --volume "{{ podman_pihole_basedir }}/etc/pihole:/etc/pihole:rw" \
   --volume "{{ podman_pihole_basedir }}/etc/dnsmasq.d:/etc/dnsmasq.d:rw" \

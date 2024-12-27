@@ -118,7 +118,7 @@
 - name: Copy configuration
   become: true
   ansible.builtin.template:
-    src: "config.xml.j2"
+    src: config.xml.j2
     dest: "{{ podman_sonarr_basedir }}/config/config.xml"
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
