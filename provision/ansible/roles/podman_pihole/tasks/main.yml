@@ -36,7 +36,7 @@
     state: directory
     owner: "{{ _user.uid }}"
     group: "{{ podman_pihole_group }}"
-    mode: "u=rwX,g=rX"
+    mode: "u=rwX,g=rX,o="
     recurse: true
 
 - name: Ensure directories exist
@@ -46,7 +46,7 @@
     state: directory
     owner: "{{ _user.uid }}"
     group: "{{ _groups.gid }}"
-    mode: "u=rwX,g=rX"
+    mode: "u=rwX,g=rX,o="
     recurse: true
   loop:
     - etc/dnsmasq.d
@@ -60,7 +60,7 @@
     dest: "{{ podman_pihole_basedir }}/etc/dnsmasq.d/20-forward-host-realm.conf"
     owner: "{{ _user.uid }}"
     group: "{{ _groups.gid }}"
-    mode: "0o644"
+    mode: "0o640"
 
 - name: Copy custom hosts list
   become: true
@@ -69,7 +69,7 @@
     dest: "{{ podman_pihole_basedir }}/etc/pihole/custom.list"
     owner: "{{ _user.uid }}"
     group: "{{ _groups.gid }}"
-    mode: "0o644"
+    mode: "0o640"
 
 
 - name: Create secret podman_pihole_webpassword

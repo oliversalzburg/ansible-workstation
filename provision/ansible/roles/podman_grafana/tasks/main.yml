@@ -7,6 +7,7 @@
     state: present
     system: true
   loop: "{{ podman_grafana_groups }}"
+  notify: Restart grafana
 
 - name: Ensure user is a group member
   become: true
@@ -14,6 +15,7 @@
     name: "{{ ansible_user }}"
     groups: "{{ podman_grafana_groups }}"
     append: true
+  notify: Restart grafana
 
 - name: Create user
   become: true
@@ -28,6 +30,7 @@
     password: "!"
     shell: "/usr/sbin/nologin"
     system: true
+  notify: Restart grafana
 
 
 - name: Ensure working directory exists
@@ -37,8 +40,9 @@
     state: directory
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
-    mode: "u=rwX,g=rX"
+    mode: "u=rwX,g=rX,o="
     recurse: true
+  notify: Restart grafana
 
 - name: Ensure directories exist
   become: true
@@ -47,10 +51,11 @@
     state: directory
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
-    mode: "u=rwX,g=rX"
+    mode: "u=rwX,g=rX,o="
     recurse: true
   loop:
     - data
+  notify: Restart grafana
 
 
 - name: Copy service files
@@ -63,11 +68,11 @@
     mode: "0o644"
   loop:
     - grafana.service
+  notify: Restart grafana
 
 - name: Enable and check service
   become: true
   ansible.builtin.systemd:
-    daemon_reload: true
     enabled: true
     name: grafana
-    state: restarted
+  notify: Restart grafana

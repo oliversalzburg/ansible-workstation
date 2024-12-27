@@ -6,7 +6,7 @@
     state: directory
     owner: root
     group: root
-    mode: "u=rwX,g=rX"
+    mode: "u=rwX,g=,o="
     recurse: true
   notify: Restart traefik
 
@@ -19,7 +19,7 @@
     group: root
     # acme.json must not be group-readable.
     # Might as well lock everything down.
-    mode: "u=rwX,g="
+    mode: "u=rwX,g=,o="
     recurse: true
   loop:
     - acme
@@ -34,7 +34,7 @@
     dest: "{{ podman_traefik_basedir }}/traefik.yml"
     owner: root
     group: root
-    mode: "0o640"
+    mode: "0o600"
   notify: Restart traefik
 
 - name: Copy traefik dynamic config file
@@ -44,7 +44,7 @@
     dest: "{{ podman_traefik_basedir }}/conf.d/traefik_dynamic_default.yml"
     owner: root
     group: root
-    mode: "0o640"
+    mode: "0o600"
   notify: Restart traefik
 
 

@@ -1,4 +1,14 @@
 ---
+- name: Write noswap systemd service config file
+  become: true
+  ansible.builtin.template:
+    src: noswap.service.j2
+    dest: /etc/systemd/system/noswap.service
+    owner: root
+    group: root
+    mode: "0o644"
+  notify: Enable noswap service
+
 - name: Generate /etc/hosts
   become: true
   ansible.builtin.template:
@@ -8,13 +18,6 @@
     group: root
     mode: "0o644"
 
-- name: Create keyring storage
-  become: true
-  ansible.builtin.file:
-    path: "{{ directory_keyrings }}"
-    state: directory
-    mode: "u=rwX,g=rX"
-    recurse: true
 - name: Update and upgrade apt packages
   become: true
   ansible.builtin.apt:

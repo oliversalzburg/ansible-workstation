@@ -41,7 +41,7 @@
     path: "/home/{{ userspace_user }}/.config/htop"
     state: directory
     owner: "{{ userspace_user }}"
-    mode: "u=rwX,g=rX"
+    mode: "u=rwX,g=,o="
     recurse: true
 - name: "Install default configs: htop"
   become: true
@@ -58,7 +58,7 @@
     path: "{{ userspace_downloads }}"
     state: directory
     owner: "{{ userspace_user }}"
-    mode: "u=rwX,g=rX"
+    mode: "u=rwX,g=rX,o="
     recurse: true
 
 - name: Download Oh My Zsh installer
@@ -127,7 +127,7 @@
   ansible.builtin.copy:
     src: "{{ role_path }}/files/home/.local/share/fonts"
     dest: "/home/{{ userspace_user }}/.local/share/fonts"
-    mode: "0o644"
+    mode: "0o600"
     owner: "{{ userspace_user }}"
 
 - name: Coding Environment

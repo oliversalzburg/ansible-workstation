@@ -1,3 +1,5 @@
+{{ ansible_managed|comment }}
+
 sonarr:
   sonarr.service:
     base_url: "http://sonarr.service.{{ inventory_hostname }}:8989"

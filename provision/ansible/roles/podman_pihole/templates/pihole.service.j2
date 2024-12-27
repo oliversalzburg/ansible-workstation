@@ -1,3 +1,5 @@
+{{ ansible_managed|comment }}
+
 [Unit]
 Description=Pi-hole
 Documentation=https://pi-hole.net/
@@ -36,7 +38,7 @@ ExecStart=/usr/bin/podman run \
   --label "traefik.http.routers.pihole.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
   --label "traefik.http.services.pihole.loadbalancer.server.port=80" \
   --log-driver "journald" \
-  --memory "512m" \
+  --memory "1024m" \
   --name "%n.{{ inventory_hostname }}" \
   --network "service" \
   --publish "{{ ansible_default_ipv4.address }}:53:53/tcp" \
@@ -45,6 +47,7 @@ ExecStart=/usr/bin/podman run \
   --replace \
   --rm \
   --secret "podman_pihole_webpassword,type=env,target=WEBPASSWORD" \
+  --shm-size "256m" \
   # image does not support rootless. It tries to wildly chown/chmod on the filesystem.
   #--user "{{ _user.uid }}:{{ _groups.gid }}" \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \

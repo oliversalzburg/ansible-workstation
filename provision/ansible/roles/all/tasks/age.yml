@@ -4,7 +4,7 @@
     path: "{{ directory_downloads }}"
     state: directory
     owner: "{{ ansible_user }}"
-    mode: "u=rwX,g=rX"
+    mode: "u=rwX,g=rX,o="
     recurse: true
 
 - name: Download age archive
@@ -24,7 +24,7 @@
   ansible.builtin.copy:
     src: "{{ directory_downloads }}/age/{{ item }}"
     dest: /usr/local/bin/{{ item }}
-    mode: "0o755"
+    mode: "0o750"
     owner: root
     group: root
     remote_src: true

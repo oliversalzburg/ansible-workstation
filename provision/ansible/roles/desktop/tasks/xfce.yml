@@ -80,7 +80,7 @@
   ansible.builtin.file:
     path: ~/.config/xfce4/terminal/
     state: directory
-    mode: "u=rwX,g=rX"
+    mode: "u=rwX,g=rX,o="
     recurse: true
 
 - name: Install Terminal configuration

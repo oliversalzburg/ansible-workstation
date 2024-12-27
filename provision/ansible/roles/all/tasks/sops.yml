@@ -4,7 +4,7 @@
     path: "{{ directory_downloads }}"
     state: directory
     owner: "{{ ansible_user }}"
-    mode: "u=rwX,g=rX"
+    mode: "u=rwX,g=rX,o="
     recurse: true
 
 - name: Download SOPS binary
@@ -15,7 +15,7 @@
   ansible.builtin.get_url:
     url: "https://github.com/mozilla/sops/releases/download/v{{ version_sops }}/sops-v{{ version_sops }}.linux"
     dest: "{{ directory_downloads }}"
-    mode: "0o600"
+    mode: "0o750"
 
 - name: Copy SOPS binary to destination directory
   become: true
