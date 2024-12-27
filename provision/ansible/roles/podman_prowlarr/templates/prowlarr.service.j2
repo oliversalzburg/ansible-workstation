@@ -24,6 +24,7 @@ ExecStartPre=/usr/bin/podman pod create \
   --label "traefik.http.routers.prowlarr.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
   --label "traefik.http.routers.prowlarr.tls.certresolver={{ realm }}" \
   --label "traefik.http.routers.prowlarr.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
+  --label "traefik.http.services.prowlarr.loadbalancer.healthcheck.path=/api/v1/health" \
   --label "traefik.http.services.prowlarr.loadbalancer.server.port=9696" \
   --name "%n.{{ inventory_hostname }}" \
   --network "service" \
