@@ -1,0 +1,6 @@
+- name: Restart sonarr
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: sonarr
+    state: restarted

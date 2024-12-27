@@ -1,45 +1,11 @@
 ---
-- name: Create groups
-  become: true
-  register: _groups
-  ansible.builtin.group:
-    name: "{{ item }}"
-    state: present
-    system: true
-  loop: "{{ podman_traefik_groups }}"
-  notify: Restart traefik
-
-- name: Ensure user is a group member
-  become: true
-  ansible.builtin.user:
-    name: "{{ ansible_user }}"
-    groups: "{{ podman_traefik_groups }}"
-    append: true
-  notify: Restart traefik
-
-- name: Create user
-  become: true
-  register: _user
-  ansible.builtin.user:
-    comment: "{{ podman_traefik_name }}"
-    create_home: false
-    group: "{{ _groups.results[0].gid }}"
-    groups: "{{ podman_traefik_groups }}"
-    home: "{{ podman_traefik_basedir }}"
-    name: "{{ podman_traefik_id }}"
-    password: "!"
-    shell: "/usr/sbin/nologin"
-    system: true
-  notify: Restart traefik
-
-
 - name: Ensure working directory exists
   become: true
   ansible.builtin.file:
     path: "{{ podman_traefik_basedir }}"
     state: directory
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: root
+    group: root
     mode: "u=rwX,g=rX"
     recurse: true
   notify: Restart traefik
@@ -49,9 +15,11 @@
   ansible.builtin.file:
     path: "{{ podman_traefik_basedir }}/{{ item }}"
     state: directory
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
-    mode: "u=rwX,g=rX"
+    owner: root
+    group: root
+    # acme.json must not be group-readable.
+    # Might as well lock everything down.
+    mode: "u=rwX,g="
     recurse: true
   loop:
     - acme
@@ -64,8 +32,8 @@
   ansible.builtin.template:
     src: "traefik.yml.j2"
     dest: "{{ podman_traefik_basedir }}/traefik.yml"
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: root
+    group: root
     mode: "0o640"
   notify: Restart traefik
 
@@ -74,8 +42,8 @@
   ansible.builtin.template:
     src: "traefik_dynamic_default.yml.j2"
     dest: "{{ podman_traefik_basedir }}/conf.d/traefik_dynamic_default.yml"
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: root
+    group: root
     mode: "0o640"
   notify: Restart traefik
 

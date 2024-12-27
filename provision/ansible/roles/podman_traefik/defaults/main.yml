@@ -1,9 +1,3 @@
 ---
-podman_traefik_id: traefik
-podman_traefik_name: traefik
-podman_traefik_groups:
-  - traefik
-  - service
-
 podman_traefik_basedir: /mnt/usb/traefik
 podman_traefik_version: latest

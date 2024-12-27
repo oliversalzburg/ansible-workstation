@@ -40,9 +40,9 @@
   roles:
     - role: unique_laptop
 - name: Storage Server
-  hosts: storage-server.labnet
+  hosts: fireeye.labnet
   roles:
-    - role: unique_storage-server
+    - role: unique_fireeye
 - name: Workstation
   hosts: workstation.labnet
   roles:

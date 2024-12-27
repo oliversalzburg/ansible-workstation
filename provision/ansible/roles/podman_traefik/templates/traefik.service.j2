@@ -34,8 +34,8 @@ ExecStart=/usr/bin/podman run \
   --pull "never" \
   --replace \
   --rm \
-  --security-opt "label=disable" \
-  --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  # We need to run this as root, so we can use the system podman.sock
+  # --user "root:root" \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
   --volume "{{ podman_traefik_basedir }}/acme:/etc/acme:rw" \
   --volume "{{ podman_traefik_basedir }}/conf.d:/conf.d:ro" \
