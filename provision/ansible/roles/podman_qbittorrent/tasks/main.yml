@@ -10,6 +10,7 @@
     signed_by: https://packagecloud.io/golift/pkgs/gpgkey
     state: present
     enabled: true
+  notify: Restart qbittorrent
 
 - name: Install Unpackerr
   become: true
@@ -18,6 +19,7 @@
       - unpackerr
     state: present
     update_cache: true
+  notify: Restart qbittorrent
 
 - name: Copy Unpackerr configuration
   become: true
@@ -27,6 +29,7 @@
     owner: "unpackerr"
     group: "unpackerr"
     mode: "0o600"
+  notify: Restart qbittorrent
 
 - name: Ensure unpackerr is a group member
   become: true
@@ -34,6 +37,7 @@
     name: unpackerr
     groups: "{{ podman_qbittorrent_groups }}"
     append: true
+  notify: Restart qbittorrent
 
 # qBittorrent
 
@@ -45,6 +49,7 @@
     state: present
     system: true
   loop: "{{ podman_qbittorrent_groups }}"
+  notify: Restart qbittorrent
 
 - name: Ensure user is a group member
   become: true
@@ -52,6 +57,7 @@
     name: "{{ ansible_user }}"
     groups: "{{ podman_qbittorrent_groups }}"
     append: true
+  notify: Restart qbittorrent
 
 - name: Ensure root is a group member
   become: true
@@ -59,6 +65,7 @@
     name: root
     groups: "{{ podman_qbittorrent_groups }}"
     append: true
+  notify: Restart qbittorrent
 
 - name: Create user
   become: true
@@ -73,6 +80,7 @@
     password: "!"
     shell: "/usr/sbin/nologin"
     system: true
+  notify: Restart qbittorrent
 
 
 - name: Ensure working directory exists
@@ -84,6 +92,7 @@
     group: "{{ _groups.results[0].gid }}"
     mode: "u=rwX,g=rX"
     recurse: true
+  notify: Restart qbittorrent
 
 - name: Ensure directories exist
   become: true
@@ -97,6 +106,7 @@
   loop:
     - config
     - wireguard
+  notify: Restart qbittorrent
 
 
 - name: Copy wireguard configuration
@@ -107,6 +117,7 @@
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
     mode: "0o600"
+  notify: Restart qbittorrent
 
 
 - name: Copy service files
@@ -124,11 +135,11 @@
     - qbittorrent-natmap.service
     - qbittorrent-wg.service
     - qbittorrent.service
+  notify: Restart qbittorrent
 
 - name: Enable and check service
   become: true
   ansible.builtin.systemd:
-    daemon_reload: true
     enabled: true
     name: qbittorrent
-    state: restarted
+  notify: Restart qbittorrent

@@ -1,4 +1,4 @@
-{{ ansible_managed|comment(xml) }}
+{{ ansible_managed|comment("xml") }}
 
 <Config>
   <BindAddress>*</BindAddress>
@@ -14,7 +14,7 @@
   <SslCertPath></SslCertPath>
   <SslCertPassword></SslCertPassword>
   <UrlBase></UrlBase>
-  <InstanceName>Lidarr</InstanceName>
+  <InstanceName>{{ inventory_hostname }}</InstanceName>
   <UpdateMechanism>Docker</UpdateMechanism>
   <PostgresUser>{{ podman_lidarr_pg_user }}</PostgresUser>
   <PostgresPassword>{{ podman_lidarr_pg_password }}</PostgresPassword>

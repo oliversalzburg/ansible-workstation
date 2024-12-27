@@ -1,0 +1,6 @@
+- name: Restart qbittorrent
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: qbittorrent
+    state: restarted
