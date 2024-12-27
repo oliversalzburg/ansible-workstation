@@ -140,7 +140,7 @@
     - radarr.service
   notify: Restart radarr
 
-- name: Enable and check service
+- name: Enable and check radarr service
   become: true
   ansible.builtin.systemd:
     enabled: true

@@ -77,7 +77,7 @@
     - pushgateway.service
     - snmp-exporter.service
 
-- name: Enable and check service
+- name: Enable and check prometheus service
   become: true
   ansible.builtin.systemd:
     daemon_reload: true

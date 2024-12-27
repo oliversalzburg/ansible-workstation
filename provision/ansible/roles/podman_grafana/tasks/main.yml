@@ -70,7 +70,7 @@
     - grafana.service
   notify: Restart grafana
 
-- name: Enable and check service
+- name: Enable and check grafana service
   become: true
   ansible.builtin.systemd:
     enabled: true

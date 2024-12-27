@@ -89,7 +89,7 @@
     - gitlab-runner.service
     - gitlab.service
 
-- name: Enable and check service
+- name: Enable and check gitlab service
   become: true
   ansible.builtin.systemd:
     daemon_reload: true

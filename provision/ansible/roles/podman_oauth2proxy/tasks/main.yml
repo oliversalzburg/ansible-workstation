@@ -80,7 +80,7 @@
   loop:
     - oauth2proxy.service
 
-- name: Enable and check service
+- name: Enable and check oauth2proxy service
   become: true
   ansible.builtin.systemd:
     daemon_reload: true

@@ -79,7 +79,7 @@
     - nexus.service
   notify: Restart nexus
 
-- name: Enable and check service
+- name: Enable and check nexus service
   become: true
   ansible.builtin.systemd:
     name: nexus

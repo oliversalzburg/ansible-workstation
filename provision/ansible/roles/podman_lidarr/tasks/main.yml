@@ -129,7 +129,7 @@
     - lidarr-main.service
     - lidarr.service
 
-- name: Enable and check service
+- name: Enable and check lidarr service
   become: true
   ansible.builtin.systemd:
     daemon_reload: true

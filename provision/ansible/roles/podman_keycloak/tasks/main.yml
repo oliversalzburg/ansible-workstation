@@ -127,7 +127,7 @@
   loop:
     - keycloak.service
 
-- name: Enable and check service
+- name: Enable and check keycloack service
   become: true
   ansible.builtin.systemd:
     daemon_reload: true

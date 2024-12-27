@@ -116,7 +116,7 @@
   loop:
     - mattermost.service
 
-- name: Enable and check service
+- name: Enable and check mattermost service
   become: true
   ansible.builtin.systemd:
     daemon_reload: true

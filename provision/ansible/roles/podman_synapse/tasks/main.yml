@@ -148,7 +148,7 @@
     - synapse-main.service
     - synapse.service
 
-- name: Enable and check service
+- name: Enable and check synapse service
   become: true
   ansible.builtin.systemd:
     daemon_reload: true

@@ -102,7 +102,7 @@
   loop:
     - pihole.service
 
-- name: Enable and check service
+- name: Enable and check pihole service
   become: true
   ansible.builtin.systemd:
     enabled: true

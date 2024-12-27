@@ -75,7 +75,7 @@
     - jellyfin.timer
   notify: Restart jellyfin
 
-- name: Enable and check service
+- name: Enable and check jellyfin service
   become: true
   ansible.builtin.systemd:
     enabled: true

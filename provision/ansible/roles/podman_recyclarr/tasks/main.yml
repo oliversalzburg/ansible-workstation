@@ -75,7 +75,7 @@
     - recyclarr-main.service
     - recyclarr.service
 
-- name: Enable and check service
+- name: Enable and check recyclarr service
   become: true
   ansible.builtin.systemd:
     daemon_reload: true

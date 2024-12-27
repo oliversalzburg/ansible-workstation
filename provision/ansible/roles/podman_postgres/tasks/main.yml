@@ -82,7 +82,7 @@
     - postgres-main.service
     - postgres.service
 
-- name: Enable and check service
+- name: Enable and check postgres service
   become: true
   ansible.builtin.systemd:
     daemon_reload: true

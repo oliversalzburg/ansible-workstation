@@ -90,7 +90,7 @@
     state: directory
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
-    mode: "u=rwX,g=rX"
+    mode: "u=rwX,g=,o="
     recurse: true
   notify: Restart qbittorrent
 
@@ -101,7 +101,7 @@
     state: directory
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
-    mode: "u=rwX,g=rX"
+    mode: "u=rwX,g=,o="
     recurse: true
   loop:
     - config
@@ -137,7 +137,7 @@
     - qbittorrent.service
   notify: Restart qbittorrent
 
-- name: Enable and check service
+- name: Enable and check qbittorrent service
   become: true
   ansible.builtin.systemd:
     enabled: true
