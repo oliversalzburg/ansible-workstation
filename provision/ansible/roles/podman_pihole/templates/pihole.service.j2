@@ -26,6 +26,7 @@ ExecStart=/usr/bin/podman run \
   # We hardcode /etc/resolv.conf to the pihole itself, otherwise unintentional
   # resolvers can be consumed from DHCP responses that affected the host.
   --dns=127.0.0.1 \
+  --env "DNSMASQ_USER=root" \
   --env "FTLCONF_LOCAL_IPV4={{ ansible_default_ipv4.address }}" \
   --env "TZ={{ podman_pihole_timezone }}" \
   --hostname "%n.{{ inventory_hostname }}" \

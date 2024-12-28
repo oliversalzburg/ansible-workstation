@@ -1,6 +1,10 @@
 ---
 - name: Add GoLift Repository
   become: true
+  register: result
+  retries: 3
+  delay: 3
+  until: result is not failed
   ansible.builtin.deb822_repository:
     name: golift
     types: [deb]
@@ -14,6 +18,10 @@
 
 - name: Install Unpackerr
   become: true
+  register: result
+  retries: 3
+  delay: 3
+  until: result is not failed
   ansible.builtin.apt:
     name:
       - unpackerr
