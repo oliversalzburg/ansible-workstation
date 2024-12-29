@@ -32,7 +32,7 @@ ExecStartPre=/usr/bin/podman pod create \
   --label "traefik.http.routers.synapse.tls.domains[0].main=synapse.web.{{ inventory_hostname }}" \
   --label "traefik.http.services.synapse.loadbalancer.server.port=8008" \
   --name "%n.{{ inventory_hostname }}" \
-  --network "service" \
+  --network "service.{{ inventory_hostname }}" \
   --pod-id-file %t/synapse.pod-id \
   --replace \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \

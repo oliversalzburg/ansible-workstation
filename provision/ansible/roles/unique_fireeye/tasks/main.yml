@@ -4,6 +4,15 @@
   ansible.builtin.hostname:
     name: "{{ inventory_hostname }}"
 
+- name: "Create network: labnet"
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/systemd/network/labnet.network"
+    dest: "{{ directory_networkd }}/labnet.network"
+    owner: root
+    group: root
+    mode: "0o644"
+
 - name: Configure DNS
   become: true
   ansible.builtin.copy:
@@ -23,7 +32,7 @@
   become: true
   ansible.builtin.systemd:
     name: systemd-resolved
-    state: restarted
+    state: started
     enabled: true
 
 - name: Enable systemd-networkd

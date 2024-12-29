@@ -27,7 +27,7 @@ ExecStartPre=/usr/bin/podman pod create \
   --label "traefik.http.services.sonarr.loadbalancer.healthcheck.path=/ping" \
   --label "traefik.http.services.sonarr.loadbalancer.server.port=8989" \
   --name "%n.{{ inventory_hostname }}" \
-  --network "service" \
+  --network "service.{{ inventory_hostname }}" \
   --pod-id-file %t/sonarr.pod-id \
   --replace \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \

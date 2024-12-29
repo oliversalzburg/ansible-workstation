@@ -30,7 +30,7 @@ ExecStart=/usr/bin/podman run \
 {% if podman_proton_network_subnet is defined %}
   --network "proton:alias=%N.proton.{{ inventory_hostname }}" \
 {% endif %}
-  --network "service" \
+  --network "service.{{ inventory_hostname }}" \
   --publish "443:443" \
   --publish "80:80" \
   --pull "never" \

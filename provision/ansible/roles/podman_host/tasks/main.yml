@@ -4,18 +4,31 @@
   ansible.builtin.apt:
     name: podman
 
-- name: Create podman service network
+- name: Create podman network service
+  become: true
   containers.podman.podman_network:
-    name: service
+    name: service.{{ inventory_hostname }}
     ipv6: false
     force: true
     internal: false
     opt:
       isolate: true
     subnet: "{{ podman_service_network_subnet }}"
-  become: true
 
-- name: Create podman Proton network
+#- name: Create quadlet for network service
+#  become: true
+#  containers.podman.podman_network:
+#    name: service.{{ inventory_hostname }}
+#    state: quadlet
+#    ipv6: false
+#    force: true
+#    internal: false
+#    opt:
+#      isolate: true
+#    subnet: "{{ podman_service_network_subnet }}"
+
+- name: Create podman network proton
+  become: true
   when: podman_proton_network_subnet is defined
   containers.podman.podman_network:
     name: proton
@@ -25,4 +38,3 @@
     opt:
       isolate: true
     subnet: "{{ podman_proton_network_subnet }}"
-  become: true

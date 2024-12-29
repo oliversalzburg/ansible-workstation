@@ -19,7 +19,7 @@ ExecStartPre=/usr/bin/podman pod create \
   --infra-conmon-pidfile %t/recyclarr.pid \
   --label "traefik.enable=false" \
   --name "%n.{{ inventory_hostname }}" \
-  --network "service" \
+  --network "service.{{ inventory_hostname }}" \
   --pod-id-file %t/recyclarr.pod-id \
   --replace \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \

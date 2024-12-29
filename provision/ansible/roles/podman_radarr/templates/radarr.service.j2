@@ -27,7 +27,7 @@ ExecStartPre=/usr/bin/podman pod create \
   --label "traefik.http.services.radarr.loadbalancer.healthcheck.path=/ping" \
   --label "traefik.http.services.radarr.loadbalancer.server.port=7878" \
   --name "%n.{{ inventory_hostname }}" \
-  --network "service" \
+  --network "service.{{ inventory_hostname }}" \
   --pod-id-file %t/radarr.pod-id \
   --replace \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \

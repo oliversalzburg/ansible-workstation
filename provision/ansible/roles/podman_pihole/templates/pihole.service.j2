@@ -41,7 +41,7 @@ ExecStart=/usr/bin/podman run \
   --log-driver "journald" \
   --memory "4096m" \
   --name "%n.{{ inventory_hostname }}" \
-  --network "service" \
+  --network "service.{{ inventory_hostname }}" \
   --publish "{{ ansible_default_ipv4.address }}:53:53/tcp" \
   --publish "{{ ansible_default_ipv4.address }}:53:53/udp" \
   --pull "never" \

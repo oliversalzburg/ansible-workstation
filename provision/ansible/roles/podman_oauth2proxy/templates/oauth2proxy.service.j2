@@ -42,7 +42,7 @@ ExecStart=/usr/bin/podman run \
   --log-driver "journald" \
   --memory "256m" \
   --name "%n.{{ inventory_hostname }}" \
-  --network "service" \
+  --network "service.{{ inventory_hostname }}" \
   --pull "never" \
   --replace \
   --rm \

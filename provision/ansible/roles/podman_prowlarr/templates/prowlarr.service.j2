@@ -27,7 +27,7 @@ ExecStartPre=/usr/bin/podman pod create \
   --label "traefik.http.services.prowlarr.loadbalancer.healthcheck.path=/ping" \
   --label "traefik.http.services.prowlarr.loadbalancer.server.port=9696" \
   --name "%n.{{ inventory_hostname }}" \
-  --network "service" \
+  --network "service.{{ inventory_hostname }}" \
   --pod-id-file %t/prowlarr.pod-id \
   --replace \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \

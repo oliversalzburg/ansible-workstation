@@ -20,7 +20,7 @@ ExecStartPre=/usr/bin/podman pod create \
   --infra-conmon-pidfile %t/postgres.pid \
   --label "traefik.enable=false" \
   --name "%n.{{ inventory_hostname }}" \
-  --network "service" \
+  --network "service.{{ inventory_hostname }}" \
   --pod-id-file %t/postgres.pod-id \
   --publish "5432:5432/tcp" \
   --publish "9187:9187/tcp" \

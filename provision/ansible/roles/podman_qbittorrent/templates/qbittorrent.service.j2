@@ -35,7 +35,7 @@ ExecStartPre=/usr/bin/podman pod create \
   --label "traefik.http.services.qbittorrent.loadbalancer.server.port=8080" \
   --name "%N.service.{{ inventory_hostname }}" \
   --network "proton:alias=%N.proton.{{ inventory_hostname }}" \
-  --network "service" \
+  --network "service.{{ inventory_hostname }}" \
   --pod-id-file %t/qbittorrent.pod-id \
   --replace \
   --sysctl "net.ipv4.conf.all.src_valid_mark=1" \
