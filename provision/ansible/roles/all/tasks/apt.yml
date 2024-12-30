@@ -101,6 +101,5 @@
       - whois
       - wireguard
       - wireguard-tools
-      - wpasupplicant
       - zsh
     update_cache: true

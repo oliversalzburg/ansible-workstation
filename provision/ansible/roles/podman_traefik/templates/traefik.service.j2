@@ -5,6 +5,7 @@ Description=traefik
 Documentation=https://doc.traefik.io/traefik
 Wants=network-online.target
 After=network-online.target
+Requires=service.{{ inventory_hostname }}-network.service
 RequiresMountsFor={{ podman_traefik_basedir }}
 StartLimitIntervalSec=10
 
@@ -28,7 +29,7 @@ ExecStart=/usr/bin/podman run \
   --memory "1g" \
   --name "%n.{{ inventory_hostname }}" \
 {% if podman_proton_network_subnet is defined %}
-  --network "proton:alias=%N.proton.{{ inventory_hostname }}" \
+  --network "proton.{{ inventory_hostname }}:alias=%N.proton.{{ inventory_hostname }}" \
 {% endif %}
   --network "service.{{ inventory_hostname }}" \
   --publish "443:443" \

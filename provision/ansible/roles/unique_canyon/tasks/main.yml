@@ -1,4 +1,15 @@
 ---
+- name: Install commonly used dependencies
+  become: true
+  register: result
+  retries: 3
+  delay: 3
+  until: result is not failed
+  ansible.builtin.apt:
+    name:
+      - wpasupplicant
+    update_cache: true
+
 - name: Set hostname
   become: true
   ansible.builtin.hostname:

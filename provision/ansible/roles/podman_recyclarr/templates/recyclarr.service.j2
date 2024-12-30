@@ -6,6 +6,7 @@ Documentation=
 Wants=network-online.target
 After=network-online.target
 Requires=recyclarr-main.service
+Requires=service.{{ inventory_hostname }}-network.service
 RequiresMountsFor={{ podman_recyclarr_basedir }}
 Before=recyclarr-main.service
 

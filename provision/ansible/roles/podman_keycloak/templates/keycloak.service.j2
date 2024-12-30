@@ -6,6 +6,7 @@ Documentation=https://www.keycloak.org
 Wants=network-online.target
 After=network-online.target postgres.service
 Requires=postgres.service
+Requires=service.{{ inventory_hostname }}-network.service
 StartLimitIntervalSec=10
 
 [Service]

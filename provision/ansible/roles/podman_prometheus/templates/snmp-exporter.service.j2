@@ -6,6 +6,7 @@ Documentation=https://github.com/prometheus/snmp_exporter
 Wants=network-online.target
 After=network-online.target
 RequiresMountsFor={{ podman_prometheus_basedir }}
+Requires=service.{{ inventory_hostname }}-network.service
 StartLimitIntervalSec=10
 
 [Service]

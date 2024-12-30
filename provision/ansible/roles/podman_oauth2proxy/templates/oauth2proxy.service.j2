@@ -6,6 +6,7 @@ Documentation=https://github.com/oauth2-proxy/oauth2-proxy
 Wants=network.target
 After=network.target
 RequiresMountsFor={{ podman_oauth2proxy_basedir }}
+Requires=service.{{ inventory_hostname }}-network.service
 StartLimitIntervalSec=10
 
 [Service]

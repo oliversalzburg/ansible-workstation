@@ -7,6 +7,7 @@ Wants=network-online.target
 After=network-online.target
 BindsTo=synapse.service
 After=synapse.service
+Requires=service.{{ inventory_hostname }}-network.service
 StartLimitIntervalSec=10
 
 [Service]

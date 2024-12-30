@@ -5,6 +5,7 @@ Description=Grafana
 Documentation=https://grafana.com/docs
 Wants=network.target
 After=network.target
+Requires=service.{{ inventory_hostname }}-network.service
 RequiresMountsFor={{ podman_grafana_basedir }}
 StartLimitIntervalSec=10
 

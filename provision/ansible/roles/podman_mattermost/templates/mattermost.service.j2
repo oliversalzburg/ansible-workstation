@@ -6,6 +6,7 @@ Documentation=https://docs.mattermost.com/
 Wants=network-online.target
 After=network-online.target
 Requires=postgres.service
+Requires=service.{{ inventory_hostname }}-network.service
 RequiresMountsFor={{ podman_mattermost_basedir }}
 StartLimitIntervalSec=10
 

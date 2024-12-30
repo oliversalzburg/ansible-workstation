@@ -8,6 +8,10 @@
     recurse: true
 
 - name: Download age archive
+  register: result
+  retries: 3
+  delay: 3
+  until: result is not failed
   ansible.builtin.get_url:
     url: "https://github.com/FiloSottile/age/releases/download/v{{ version_age }}/age-v{{ version_age }}-linux-amd64.tar.gz"
     dest: "{{ directory_downloads }}"

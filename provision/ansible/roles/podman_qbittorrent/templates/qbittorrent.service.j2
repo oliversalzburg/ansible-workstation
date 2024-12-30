@@ -7,6 +7,8 @@ Wants=network-online.target
 After=network-online.target
 RequiresMountsFor={{ podman_qbittorrent_basedir }} {{ podman_qbittorrent_mediadir }}
 Requires=qbittorrent-main.service qbittorrent-natmap.service qbittorrent-wg.service
+Requires=proton.{{ inventory_hostname }}-network.service
+Requires=service.{{ inventory_hostname }}-network.service
 Wants=qbittorrent-exporter.service qbittorrent-flood.service
 Before=qbittorrent-main.service qbittorrent-exporter.service qbittorrent-flood.service qbittorrent-natmap.service qbittorrent-wg.service
 
@@ -34,7 +36,9 @@ ExecStartPre=/usr/bin/podman pod create \
   --label "traefik.http.routers.qbittorrent.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
   --label "traefik.http.services.qbittorrent.loadbalancer.server.port=8080" \
   --name "%N.service.{{ inventory_hostname }}" \
-  --network "proton:alias=%N.proton.{{ inventory_hostname }}" \
+{% if podman_proton_network_subnet is defined %}
+  --network "proton.{{ inventory_hostname }}:alias=%N.proton.{{ inventory_hostname }}" \
+{% endif %}
   --network "service.{{ inventory_hostname }}" \
   --pod-id-file %t/qbittorrent.pod-id \
   --replace \

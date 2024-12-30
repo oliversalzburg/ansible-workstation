@@ -7,6 +7,7 @@ Wants=network-online.target
 After=network-online.target
 RequiresMountsFor={{ podman_lidarr_basedir }} {{ podman_lidarr_mediadir }}
 Requires=lidarr-main.service postgres.service
+Requires=service.{{ inventory_hostname }}-network.service
 Wants=lidarr-exporter.service
 Before=lidarr-main.service lidarr-exporter.service
 
@@ -27,7 +28,6 @@ ExecStartPre=/usr/bin/podman pod create \
   --label "traefik.http.services.lidarr.loadbalancer.healthcheck.path=/ping" \
   --label "traefik.http.services.lidarr.loadbalancer.server.port=8686" \
   --name "%n.{{ inventory_hostname }}" \
-  --network "proton" \
   --network "service.{{ inventory_hostname }}" \
   --pod-id-file %t/lidarr.pod-id \
   --replace \

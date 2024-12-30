@@ -5,6 +5,7 @@ Description=GitLab
 Documentation=https://docs.gitlab.com
 Wants=network-online.target gitlab-runner.service
 After=network-online.target
+Requires=service.{{ inventory_hostname }}-network.service
 RequiresMountsFor={{ podman_gitlab_basedir }}
 StartLimitIntervalSec=10
 
