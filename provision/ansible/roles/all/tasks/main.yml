@@ -1,4 +1,24 @@
 ---
+- name: Install systemd-resolved
+  become: true
+  ansible.builtin.apt:
+    name:
+      - systemd-resolved
+
+- name: Enable systemd-resolved
+  become: true
+  ansible.builtin.systemd:
+    name: systemd-resolved
+    state: started
+    enabled: true
+
+- name: Enable systemd-networkd
+  become: true
+  ansible.builtin.systemd:
+    name: systemd-networkd
+    state: started
+    enabled: true
+
 - name: Write noswap systemd service config file
   become: true
   ansible.builtin.template:

@@ -21,6 +21,7 @@
     owner: root
     group: root
     mode: "0o644"
+  notify: Restart systemd-networkd
 
 - name: "Create network: offline"
   become: true
@@ -30,6 +31,7 @@
     owner: root
     group: root
     mode: "0o644"
+  notify: Restart systemd-networkd
 
 - name: Install wpasupplicant
   become: true
@@ -41,6 +43,7 @@
     name:
       - wpasupplicant
     update_cache: true
+  notify: Restart systemd-networkd
 
 - name: "Store WPA config: offline"
   become: true
@@ -50,6 +53,7 @@
     owner: root
     group: root
     mode: "0o600"
+  notify: Restart systemd-networkd
 
 - name: Configure DNS
   become: true
@@ -59,26 +63,7 @@
     owner: root
     group: root
     mode: "0o644"
-
-- name: Install systemd-resolved
-  become: true
-  ansible.builtin.apt:
-    name:
-      - systemd-resolved
-
-- name: Enable systemd-resolved
-  become: true
-  ansible.builtin.systemd:
-    name: systemd-resolved
-    state: restarted
-    enabled: true
-
-- name: Enable systemd-networkd
-  become: true
-  ansible.builtin.systemd:
-    name: systemd-networkd
-    state: started
-    enabled: true
+  notify: Restart systemd-resolved
 
 - name: Create storage mounts
   become: true
@@ -91,11 +76,7 @@
   loop:
     - mnt-usb.automount
     - mnt-usb.mount
-
-- name: Reload systemd
-  become: true
-  ansible.builtin.systemd:
-    daemon_reload: true
+  notify: Reload systemd
 
 - name: Configure USB mount
   become: true
@@ -103,9 +84,11 @@
     enabled: false
     name: mnt-usb.mount
     state: started
+  notify: Reload systemd
 
 - name: Configure USB automount
   become: true
   ansible.builtin.systemd:
     enabled: true
     name: mnt-usb.automount
+  notify: Reload systemd

@@ -45,24 +45,3 @@
     name: wpa_supplicant@wlp2s0
     state: started
     enabled: true
-
-- name: Enable systemd-resolved
-  become: true
-  ansible.builtin.systemd:
-    name: systemd-resolved
-    state: started
-    enabled: true
-
-- name: Enable systemd-networkd
-  become: true
-  ansible.builtin.systemd:
-    name: systemd-networkd
-    state: started
-    enabled: true
-
-- name: Disable NetworkManager
-  become: true
-  ansible.builtin.systemd:
-    name: NetworkManager
-    state: stopped
-    enabled: false

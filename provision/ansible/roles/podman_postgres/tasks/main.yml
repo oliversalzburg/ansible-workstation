@@ -7,6 +7,7 @@
     state: present
     system: true
   loop: "{{ podman_postgres_groups }}"
+  notify: Restart postgres
 
 - name: Ensure user is a group member
   become: true
@@ -14,6 +15,7 @@
     name: "{{ ansible_user }}"
     groups: "{{ podman_postgres_groups }}"
     append: true
+  notify: Restart postgres
 
 - name: Create user
   become: true
@@ -28,6 +30,7 @@
     password: "!"
     shell: "/usr/sbin/nologin"
     system: true
+  notify: Restart postgres
 
 
 - name: Ensure working directory exists
@@ -37,8 +40,9 @@
     state: directory
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
-    mode: "u=rwX,g=rX,o="
+    mode: "u=rwX,g=,o="
     recurse: true
+  notify: Restart postgres
 
 - name: Ensure directories exist
   become: true
@@ -47,10 +51,11 @@
     state: directory
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
-    mode: "u=rwX,g=rX,o="
+    mode: "u=rwX,g=,o="
     recurse: true
   loop:
     - data
+  notify: Restart postgres
 
 
 - name: Create secret podman_postgres_master_password
@@ -60,6 +65,7 @@
     force: true
     name: podman_postgres_master_password
     state: present
+  notify: Restart postgres
 - name: Create secret podman_postgres_master_user
   become: true
   containers.podman.podman_secret:
@@ -67,6 +73,7 @@
     force: true
     name: podman_postgres_master_user
     state: present
+  notify: Restart postgres
 
 
 - name: Copy service files
@@ -81,11 +88,11 @@
     - postgres-exporter.service
     - postgres-main.service
     - postgres.service
+  notify: Restart postgres
 
 - name: Enable and check postgres service
   become: true
   ansible.builtin.systemd:
-    daemon_reload: true
     enabled: true
     name: postgres
-    state: restarted
+  notify: Restart postgres

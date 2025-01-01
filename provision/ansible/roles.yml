@@ -93,11 +93,6 @@
     - role: podman_recyclarr
     - role: podman_sonarr
 
-- name: Metrics Collectors
-  hosts: metricscollectors
-  roles:
-    - role: podman_prometheus
-
 - name: Metrics Monitors
   hosts: metricsmonitors
   roles:

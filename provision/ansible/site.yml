@@ -103,6 +103,7 @@
     - role: podman_host
     - role: podman_traefik
     - role: prometheus.prometheus.cadvisor
+    - role: podman_prometheus
 
 - name: DB Hosts
   hosts: dbhosts
@@ -143,11 +144,6 @@
     - role: podman_radarr
     - role: podman_recyclarr
     - role: podman_sonarr
-
-- name: Metrics Collectors
-  hosts: metricscollectors
-  roles:
-    - role: podman_prometheus
 
 - name: Metrics Monitors
   hosts: metricsmonitors

@@ -7,20 +7,30 @@
     owner: root
     group: root
     mode: "u=rwX,g=rX,o="
-    recurse: true
+    recurse: false
+  notify: Restart pihole
 
-- name: Ensure directories exist
+- name: Ensure directories exist dnsmasq.d
   become: true
   ansible.builtin.file:
-    path: "{{ podman_pihole_basedir }}/{{ item }}"
+    path: "{{ podman_pihole_basedir }}/etc/dnsmasq.d"
     state: directory
     owner: 1000
     group: 33
     mode: "u=rwX,g=rX,o="
-    recurse: true
-  loop:
-    - etc/dnsmasq.d
-    - etc/pihole
+    recurse: false
+  notify: Restart pihole
+
+- name: Ensure directories exist pihole
+  become: true
+  ansible.builtin.file:
+    path: "{{ podman_pihole_basedir }}/etc/pihole"
+    state: directory
+    owner: 999
+    group: 1000
+    mode: "u=rwX,g=rwX,o="
+    recurse: false
+  notify: Restart pihole
 
 
 - name: Forward the host DNS zone to the aardvark DNS backend on the host
@@ -31,6 +41,7 @@
     owner: 1000
     group: 33
     mode: "0o640"
+  notify: Restart pihole
 
 - name: Copy custom hosts list
   become: true
@@ -40,6 +51,7 @@
     owner: 1000
     group: 33
     mode: "0o640"
+  notify: Restart pihole
 
 
 - name: Create secret podman_pihole_webpassword
@@ -49,6 +61,7 @@
     force: true
     name: podman_pihole_webpassword
     state: present
+  notify: Restart pihole
 
 
 - name: Pull service image
@@ -60,6 +73,7 @@
   containers.podman.podman_image:
     force: "{{ podman_pihole_version == 'latest' }}"
     name: "{{ registry_dockerio }}/pihole/pihole:{{ podman_pihole_version }}"
+  notify: Restart pihole
 
 - name: Copy service files
   become: true
@@ -71,10 +85,11 @@
     mode: "0o644"
   loop:
     - pihole.service
+  notify: Restart pihole
 
 - name: Enable and check pihole service
   become: true
   ansible.builtin.systemd:
     enabled: true
     name: pihole
-    state: restarted
+  notify: Restart pihole

@@ -1,0 +1,6 @@
+- name: Restart postgres
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: postgres
+    state: restarted
