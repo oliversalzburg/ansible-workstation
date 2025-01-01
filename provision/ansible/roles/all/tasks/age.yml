@@ -1,11 +1,11 @@
 ---
-- name: Ensure working directory exists
+- name: Ensure downloads exists
   ansible.builtin.file:
     path: "{{ directory_downloads }}"
     state: directory
     owner: "{{ ansible_user }}"
     mode: "u=rwX,g=rX,o="
-    recurse: true
+    recurse: false
 
 - name: Download age archive
   register: result

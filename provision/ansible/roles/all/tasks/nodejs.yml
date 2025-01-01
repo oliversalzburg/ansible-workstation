@@ -17,8 +17,4 @@
       - nodejs
     state: present
     update_cache: true
-
-- name: Enable Corepack
-  become: true
-  ansible.builtin.command: corepack enable
-  changed_when: true
+  notify: Enable Corepack

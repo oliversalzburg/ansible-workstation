@@ -7,6 +7,7 @@
     state: present
     system: true
   loop: "{{ podman_prometheus_groups }}"
+  notify: Restart prometheus
 
 - name: Ensure user is a group member
   become: true
@@ -14,6 +15,7 @@
     name: "{{ ansible_user }}"
     groups: "{{ podman_prometheus_groups }}"
     append: true
+  notify: Restart prometheus
 
 - name: Create user
   become: true
@@ -28,6 +30,7 @@
     password: "!"
     shell: "/usr/sbin/nologin"
     system: true
+  notify: Restart prometheus
 
 
 - name: Ensure working directory exists
@@ -39,6 +42,7 @@
     group: "{{ _groups.results[0].gid }}"
     mode: "u=rwX,g=rX"
     recurse: true
+  notify: Restart prometheus
 
 - name: Ensure directories exist
   become: true
@@ -52,6 +56,7 @@
   loop:
     - data
     - etc
+  notify: Restart prometheus
 
 
 - name: Copy configuration
@@ -62,6 +67,7 @@
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
     mode: "0o644"
+  notify: Restart prometheus
 
 
 - name: Copy service files
@@ -75,11 +81,11 @@
   loop:
     - prometheus.service
     - snmp-exporter.service
+  notify: Restart prometheus
 
 - name: Enable and check prometheus service
   become: true
   ansible.builtin.systemd:
-    daemon_reload: true
     enabled: true
     name: prometheus
-    state: restarted
+  notify: Restart prometheus

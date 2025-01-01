@@ -24,3 +24,7 @@
     name: systemd-networkd
     state: restarted
     enabled: true
+
+- name: Enable Corepack
+  become: true
+  ansible.builtin.command: corepack enable
