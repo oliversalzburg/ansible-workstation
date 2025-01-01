@@ -1,0 +1,15 @@
+[Match]
+Name=eno1
+
+[Network]
+Address=192.168.178.9/24
+Description=LabNet
+DNS=192.168.178.2
+DNSDefaultRoute=yes
+Domains=~.
+
+[Route]
+Destination=0.0.0.0/0
+Gateway=192.168.178.1
+GatewayOnLink=yes
+Metric=100

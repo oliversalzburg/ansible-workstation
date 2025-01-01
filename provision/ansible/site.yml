@@ -78,20 +78,6 @@
   roles:
     - role: podman_nexus
 
-- name: GPU Intel
-  hosts: gpu_intel
-  roles:
-    - role: gpu_intel
-
-- name: Desktops
-  hosts: desktops
-  roles:
-    - role: desktop
-- name: Hires Desktops
-  hosts: hires_desktops
-  roles:
-    - role: desktop_hires
-
 - name: Service Hosts
   hosts: servicehosts
   roles:
@@ -152,3 +138,17 @@
       node_exporter_enabled_collectors:
         - processes
         - systemd
+
+- name: GPU Intel
+  hosts: gpu_intel
+  roles:
+    - role: gpu_intel
+
+- name: Desktops
+  hosts: desktops
+  roles:
+    - role: desktop
+- name: Hires Desktops
+  hosts: hires_desktops
+  roles:
+    - role: desktop_hires

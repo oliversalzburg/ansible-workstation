@@ -12,6 +12,7 @@
     owner: root
     group: root
     mode: "0o644"
+  notify: Restart systemd-networkd
 
 - name: Configure DNS
   become: true
@@ -21,6 +22,7 @@
     owner: root
     group: root
     mode: "0o644"
+  notify: Restart systemd-resolved
 
 - name: Create mounts
   become: true
@@ -35,11 +37,7 @@
     - mnt-storage.mount
     - mnt-usb.automount
     - mnt-usb.mount
-
-- name: Reload systemd
-  become: true
-  ansible.builtin.systemd:
-    daemon_reload: true
+  notify: Reload systemd
 
 - name: Configure mounts
   become: true
@@ -50,6 +48,7 @@
   loop:
     - mnt-storage.mount
     - mnt-usb.mount
+  notify: Reload systemd
 
 - name: Configure automounts
   become: true
@@ -59,3 +58,4 @@
   loop:
     - mnt-storage.automount
     - mnt-usb.automount
+  notify: Reload systemd

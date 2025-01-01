@@ -20,22 +20,10 @@ version_sops: 3.7.3
 
 # This configuration also reflects the gateway routes.
 dns_delegation:
-  canyon:
-    proton:
-      ns: 192.168.52.1
-    service:
-      ns: 10.100.52.1
-  container:
-    service:
-      ns: 10.100.2.1
-  fireeye:
-    proton:
-      ns: 192.168.4.1
-    service:
-      ns: 10.100.4.1
-  workstation:
-    service:
-      ns: 10.100.26.1
+  canyon: 192.168.178.52
+  container: 192.168.178.2
+  fireeye: 192.168.178.4
+  workstation: 192.168.178.10
 
 hosts_postgres:
   - canyon

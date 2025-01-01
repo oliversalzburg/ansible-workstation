@@ -1,6 +1,5 @@
-[Match]
+#[Match]
 #Name=wlp3s0
-Name=eno1
-
-[Network]
-DHCP=yes
+#
+#[Network]
+#DHCP=yes

@@ -1,8 +1,5 @@
 {{ ansible_managed|comment }}
 
 {% for node in podman_pihole_dns_delegation %}
-address=/web.{{ node }}.{{ podman_pihole_realm }}/{{ ansible_default_ipv4.address }}
-{% for zone in podman_pihole_dns_delegation[ node ] %}
-server=/{{ zone }}.{{ node }}.{{ podman_pihole_realm }}/{{ podman_pihole_dns_delegation[ node ][ zone ].ns }}
-{% endfor %}
+address=/web.{{ node }}.{{ podman_pihole_realm }}/{{ podman_pihole_dns_delegation[ node ] }}
 {% endfor %}
