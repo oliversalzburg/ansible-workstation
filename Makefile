@@ -30,5 +30,15 @@ init-workstation: requirements
 init-localhost: requirements
 	cd provision/ansible; ../../.venv/bin/ansible localhost --module-name include_role --args name=all
 
+update: requirements
+	cd provision/ansible; ../../.venv/bin/ansible-playbook roles.yml
+
+update-container: requirements
+	cd provision/ansible; ../../.venv/bin/ansible-playbook roles.yml --limit container.labnet
+update-fireeye: requirements
+	cd provision/ansible; ../../.venv/bin/ansible-playbook roles.yml --limit fireeye.labnet
+update-workstation: requirements
+	cd provision/ansible; ../../.venv/bin/ansible-playbook roles.yml --limit workstation.labnet
+
 sandbox:
 	cd provision/terraform; terraform init; terraform apply -var id_ed25519_pub=${HOME}/.ssh/id_ed25519.pub

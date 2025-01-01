@@ -1,6 +1,6 @@
 ---
 podman_synapse_id: synapse
-podman_synapse_name: Grafana
+podman_synapse_name: Synapse
 podman_synapse_groups:
   - synapse
   - service

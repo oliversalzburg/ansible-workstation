@@ -45,7 +45,7 @@
 - name: Create mounts
   become: true
   ansible.builtin.copy:
-    src: "{{ role_path }}/files/etc/systemd/{{ item }}"
+    src: "{{ role_path }}/files/etc/systemd/system/{{ item }}"
     dest: "{{ directory_systemd }}/{{ item }}"
     mode: "0o644"
     owner: root
@@ -55,6 +55,7 @@
     - mnt-storage.mount
     - mnt-usb.automount
     - mnt-usb.mount
+    - service0-network.service
 
 - name: Reload systemd
   become: true
@@ -79,3 +80,12 @@
   loop:
     - mnt-storage.automount
     - mnt-usb.automount
+
+- name: Enable services
+  become: true
+  ansible.builtin.systemd:
+    enabled: true
+    name: "{{ item }}"
+    state: started
+  loop:
+    - service0-network.service

@@ -1,6 +1,6 @@
 ---
 podman_postgres_id: postgres
-podman_postgres_name: Grafana
+podman_postgres_name: PostgreSQL
 podman_postgres_groups:
   - postgres
   - service

@@ -7,7 +7,6 @@ Description=LabNet
 DNS=192.168.178.2
 DNSDefaultRoute=yes
 Domains=~.
-Gateway=192.168.178.1
 
 [Route]
 Destination=0.0.0.0/0

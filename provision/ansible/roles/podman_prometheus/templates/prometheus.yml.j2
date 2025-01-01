@@ -5,30 +5,30 @@ scrape_configs:
     scrape_interval: 1m
     static_configs:
       - targets:
-{% for host in groups["mediaservers"] %}
-        - "lidarr.service.{{ host }}:9707"
-        - "prowlarr.service.{{ host }}:9707"
-        - "radarr.service.{{ host }}:9707"
-        - "sonarr.service.{{ host }}:9707"
+{% if "mediaservers" in group_names %}
+        - "lidarr.service.{{ inventory_hostname }}:9707"
+        - "prowlarr.service.{{ inventory_hostname }}:9707"
+        - "radarr.service.{{ inventory_hostname }}:9707"
+        - "sonarr.service.{{ inventory_hostname }}:9707"
         # Unpackerr
-        - "{{ host }}:5656"
-{% endfor %}
+        - "{{ inventory_hostname }}:5656"
+{% endif %}
 
   - job_name: qbittorrent
     scrape_interval: 15s
     static_configs:
       - targets:
-{% for host in groups["mediaservers"] %}
-        - "qbittorrent.service.{{ host }}:8000"
-{% endfor %}
+{% if "mediaservers" in group_names %}
+        - "qbittorrent.service.{{ inventory_hostname }}:8000"
+{% endif %}
 
   - job_name: cadvisor
     scrape_interval: 15s
     static_configs:
       - targets:
-{% for host in groups["servicehosts"] %}
-        - "{{ host }}:8080"
-{% endfor %}
+{% if "servicehosts" in group_names %}
+        - "{{ inventory_hostname }}:8080"
+{% endif %}
 
   - job_name: node
     scrape_interval: 15s
@@ -42,9 +42,9 @@ scrape_configs:
     scrape_interval: 15s
     static_configs:
       - targets:
-{% for host in groups["dbhosts"] %}
-        - "postgres.service.{{ host }}:9187"
-{% endfor %}
+{% if "dbhosts" in group_names %}
+        - "postgres.service.{{ inventory_hostname }}:9187"
+{% endif %}
 
   - job_name: prometheus
     scrape_interval: 15s
@@ -62,9 +62,9 @@ scrape_configs:
     scrape_interval: 15s
     static_configs:
       - targets:
-{% for host in groups["servicehosts"] %}
-        - "traefik.service.{{ host }}:8081"
-{% endfor %}
+{% if "servicehosts" in group_names %}
+        - "traefik.service.{{ inventory_hostname }}:8081"
+{% endif %}
 
   - job_name: "kittens"
     scrape_interval: 5s

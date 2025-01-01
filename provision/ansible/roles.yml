@@ -1,0 +1,104 @@
+#!/usr/bin/env ansible-playbook
+
+---
+- name: Wait till ready
+  hosts: all
+  pre_tasks:
+    - name: Wait for connection
+      ansible.builtin.wait_for_connection:
+        # wait_for_connection_timeout host var should be increased for newly spawned cloud nodes.
+        timeout: "{{ wait_for_connection_timeout | default(10) }}"
+
+    - name: Check if we're on a cloud instance
+      ansible.builtin.shell: command -v cloud-init >/dev/null 2>&1
+      register: is_cloudinit_exist
+      changed_when: false
+      ignore_errors: true
+
+    - name: Wait for cloud-init / user-data to finish
+      ansible.builtin.command: cloud-init status --wait
+      changed_when: false
+      when: is_cloudinit_exist.rc == 0
+
+- name: Service Hosts
+  hosts: servicehosts
+  roles:
+    - role: podman_host
+    - role: podman_traefik
+    - role: prometheus.prometheus.cadvisor
+
+- name: Canyon
+  hosts: canyon.labnet
+  roles:
+    - role: unique_canyon
+- name: Container
+  hosts: container.labnet
+  roles:
+    - role: unique_container
+- name: Laptop
+  hosts: laptop.labnet
+  roles:
+    - role: unique_laptop
+- name: Storage Server
+  hosts: fireeye.labnet
+  roles:
+    - role: unique_fireeye
+- name: Workstation
+  hosts: workstation.labnet
+  roles:
+    - role: unique_workstation
+
+- name: Artifact Stores
+  hosts: artifactstores
+  roles:
+    - role: podman_nexus
+
+- name: DB Hosts
+  hosts: dbhosts
+  roles:
+    - role: podman_postgres
+
+- name: DNS Resolvers
+  hosts: dnsresolvers
+  roles:
+    - role: podman_pihole
+      vars:
+        podman_pihole_dns_delegation: "{{ dns_delegation }}"
+        podman_pihole_realm: "{{ realm }}"
+        podman_pihole_registry: "{{ registry_dockerio }}"
+        podman_pihole_timezone: "{{ config_system_timezone }}"
+
+- name: Auth Servers
+  hosts: authservers
+  roles:
+    - role: podman_keycloak
+      vars:
+        podman_keycloak_admin: "{{ keycloak_admin }}"
+        podman_keycloak_admin_password: "{{ keycloak_admin_password }}"
+    - role: podman_oauth2proxy
+
+- name: GitLabs
+  hosts: gitlabs
+  roles:
+    - role: podman_gitlab
+
+- name: Media Servers
+  hosts: mediaservers
+  roles:
+    - role: podman_jellyfin
+    - role: podman_lidarr
+    - role: podman_prowlarr
+    - role: podman_qbittorrent
+    - role: podman_radarr
+    - role: podman_recyclarr
+    - role: podman_sonarr
+
+- name: Metrics Collectors
+  hosts: metricscollectors
+  roles:
+    - role: podman_prometheus
+
+- name: Metrics Monitors
+  hosts: metricsmonitors
+  roles:
+    - role: podman_grafana
