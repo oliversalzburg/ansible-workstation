@@ -73,11 +73,6 @@
         step_bootstrap_ca_url: "https://workstation.{{ realm }}:4431"
         step_bootstrap_fingerprint: 20de2454dc737e3518ef6920d3224e36fecf1212ce8bbf3e46abdad1bb22189f
 
-    - role: prometheus.prometheus.node_exporter
-      node_exporter_enabled_collectors:
-        - processes
-        - systemd
-
 - name: Artifact Stores
   hosts: artifactstores
   roles:
@@ -149,3 +144,11 @@
   hosts: metricsmonitors
   roles:
     - role: podman_grafana
+
+- name: Node Metrics Exporter
+  hosts: all
+  roles:
+    - role: prometheus.prometheus.node_exporter
+      node_exporter_enabled_collectors:
+        - processes
+        - systemd

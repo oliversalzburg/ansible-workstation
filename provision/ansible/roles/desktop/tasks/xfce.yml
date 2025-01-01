@@ -89,8 +89,3 @@
     dest: ~/.config/xfce4/terminal/terminalrc
     mode: "0o640"
   when: xfconf_query_check.rc == 0
-
-- name: Update font cache
-  ansible.builtin.command: fc-cache -fv
-  when: xfconf_query_check.rc == 0
-  changed_when: true

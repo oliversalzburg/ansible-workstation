@@ -40,7 +40,7 @@
     state: directory
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
-    mode: "u=rwX,g=rX"
+    mode: "u=rwX,g=rX,o="
     recurse: true
   notify: Restart radarr
 
@@ -51,7 +51,7 @@
     state: directory
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
-    mode: "u=rwX,g=rX"
+    mode: "u=rwX,g=rX,o="
     recurse: true
   loop:
     - config
@@ -122,7 +122,7 @@
     dest: "{{ podman_radarr_basedir }}/config/config.xml"
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
-    mode: "0o644"
+    mode: "0o640"
   notify: Restart radarr
 
 

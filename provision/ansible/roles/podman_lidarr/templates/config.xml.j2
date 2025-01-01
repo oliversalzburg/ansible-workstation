@@ -1,5 +1,3 @@
-{{ ansible_managed|comment("xml") }}
-
 <Config>
   <BindAddress>*</BindAddress>
   <Port>8686</Port>
@@ -15,7 +13,7 @@
   <SslCertPassword></SslCertPassword>
   <UrlBase></UrlBase>
   <InstanceName>Lidarr - {{ inventory_hostname }}</InstanceName>
-  <UpdateMechanism>Docker</UpdateMechanism>
+  <UpdateMechanism>BuiltIn</UpdateMechanism>
   <PostgresUser>{{ podman_lidarr_pg_user }}</PostgresUser>
   <PostgresPassword>{{ podman_lidarr_pg_password }}</PostgresPassword>
   <PostgresPort>5432</PostgresPort>

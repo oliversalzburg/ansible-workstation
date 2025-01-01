@@ -99,7 +99,7 @@
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
     mode: "u=rwX,g=,o="
-    recurse: true
+    recurse: false
   notify: Restart qbittorrent
 
 - name: Ensure directories exist
@@ -110,7 +110,7 @@
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
     mode: "u=rwX,g=,o="
-    recurse: true
+    recurse: false
   loop:
     - config
     - wireguard

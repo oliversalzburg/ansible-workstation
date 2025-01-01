@@ -35,7 +35,6 @@
     - mnt-storage.mount
     - mnt-usb.automount
     - mnt-usb.mount
-    - service0-network.service
 
 - name: Reload systemd
   become: true
@@ -60,12 +59,3 @@
   loop:
     - mnt-storage.automount
     - mnt-usb.automount
-
-- name: Enable services
-  become: true
-  ansible.builtin.systemd:
-    enabled: true
-    name: "{{ item }}"
-    state: started
-  loop:
-    - service0-network.service

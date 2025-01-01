@@ -7,6 +7,7 @@
     state: present
     system: true
   loop: "{{ podman_recyclarr_groups }}"
+  notify: Restart recyclarr
 
 - name: Ensure user is a group member
   become: true
@@ -14,6 +15,7 @@
     name: "{{ ansible_user }}"
     groups: "{{ podman_recyclarr_groups }}"
     append: true
+  notify: Restart recyclarr
 
 - name: Create user
   become: true
@@ -28,6 +30,7 @@
     password: "!"
     shell: "/usr/sbin/nologin"
     system: true
+  notify: Restart recyclarr
 
 
 - name: Ensure working directory exists
@@ -39,6 +42,7 @@
     group: "{{ _groups.results[0].gid }}"
     mode: "u=rwX,g=rX"
     recurse: true
+  notify: Restart recyclarr
 
 - name: Ensure directories exist
   become: true
@@ -51,6 +55,7 @@
     recurse: true
   loop:
     - config
+  notify: Restart recyclarr
 
 
 - name: Copy configuration
@@ -61,6 +66,7 @@
     owner: "{{ _user.uid }}"
     group: "{{ _groups.results[0].gid }}"
     mode: "0o644"
+  notify: Restart recyclarr
 
 
 - name: Copy service files
@@ -74,11 +80,11 @@
   loop:
     - recyclarr-main.service
     - recyclarr.service
+  notify: Restart recyclarr
 
 - name: Enable and check recyclarr service
   become: true
   ansible.builtin.systemd:
-    daemon_reload: true
     enabled: true
     name: recyclarr
-    state: restarted
+  notify: Restart recyclarr

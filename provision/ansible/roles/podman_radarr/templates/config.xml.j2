@@ -1,5 +1,3 @@
-{{ ansible_managed|comment("xml") }}
-
 <Config>
   <BindAddress>*</BindAddress>
   <Port>7878</Port>
@@ -15,7 +13,7 @@
   <SslCertPassword></SslCertPassword>
   <UrlBase></UrlBase>
   <InstanceName>Radarr - {{ inventory_hostname }}</InstanceName>
-  <UpdateMechanism>Docker</UpdateMechanism>
+  <UpdateMechanism>BuiltIn</UpdateMechanism>
   <PostgresUser>{{ podman_radarr_pg_user }}</PostgresUser>
   <PostgresPassword>{{ podman_radarr_pg_password }}</PostgresPassword>
   <PostgresPort>5432</PostgresPort>

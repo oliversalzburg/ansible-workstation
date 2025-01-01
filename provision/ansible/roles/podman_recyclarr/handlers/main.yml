@@ -1,0 +1,6 @@
+- name: Restart recyclarr
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: recyclarr
+    state: restarted

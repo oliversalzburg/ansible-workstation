@@ -44,16 +44,16 @@
   when: result_check_nonfreefirmware.rc == 1
   changed_when: true
 
-- name: Update and upgrade apt packages
-  become: true
-  register: result
-  retries: 3
-  delay: 3
-  until: result is not failed
-  ansible.builtin.apt:
-    upgrade: true
-    update_cache: true
-    cache_valid_time: 86400
+#- name: Update and upgrade apt packages
+#  become: true
+#  register: result
+#  retries: 3
+#  delay: 3
+#  until: result is not failed
+#  ansible.builtin.apt:
+#    upgrade: true
+#    update_cache: true
+#    cache_valid_time: 86400
 
 - name: Install commonly used dependencies
   become: true
