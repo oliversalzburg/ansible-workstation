@@ -33,6 +33,8 @@ init-localhost: requirements
 update: requirements
 	cd provision/ansible; ../../.venv/bin/ansible-playbook roles.yml
 
+update-canyon: requirements
+	cd provision/ansible; ../../.venv/bin/ansible-playbook roles.yml --limit canyon.labnet
 update-container: requirements
 	cd provision/ansible; ../../.venv/bin/ansible-playbook roles.yml --limit container.labnet
 update-fireeye: requirements
