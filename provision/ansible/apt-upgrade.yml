@@ -1,0 +1,16 @@
+#!/usr/bin/env ansible-playbook
+
+---
+- name: APT upgrade
+  hosts: all
+  pre_tasks:
+    - name: Update and upgrade apt packages
+      become: true
+      register: result
+      retries: 3
+      delay: 3
+      until: result is not failed
+      ansible.builtin.apt:
+        upgrade: true
+        update_cache: true
+        cache_valid_time: 86400

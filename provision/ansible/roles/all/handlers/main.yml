@@ -9,3 +9,4 @@
 - name: Enable Corepack
   become: true
   ansible.builtin.command: corepack enable
+  changed_when: true

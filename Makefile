@@ -13,6 +13,9 @@ requirements: .venv
 	.venv/bin/pip install -r requirements.txt
 	.venv/bin/ansible-galaxy install -r provision/ansible/roles/requirements.yml
 
+apt-upgrade: requirements
+	cd provision/ansible; ../../.venv/bin/ansible-playbook apt-upgrade.yml
+
 init: requirements
 	cd provision/ansible; ../../.venv/bin/ansible-playbook site.yml
 
