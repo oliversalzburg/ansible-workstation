@@ -1,14 +1,13 @@
 {{ ansible_managed|comment }}
 
 [Unit]
-Description=qBittorrent
-Documentation=https://www.qbittorrent.org/
+Description=Whisparr
+Documentation=
 Wants=network-online.target
-Requires=qbittorrent-wg.service
-After=network-online.target qbittorrent-wg.service
+After=network-online.target
 RequiresMountsFor=%t/containers
-BindsTo=qbittorrent.service
-After=qbittorrent.service
+BindsTo=whisparr.service
+After=whisparr.service
 StartLimitIntervalSec=10
 
 [Service]
@@ -17,23 +16,22 @@ Restart=on-failure
 RestartSec=10
 StartLimitBurst=3
 ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
-ExecStartPre=-/usr/bin/podman pull {{ registry_ghcrio }}/oliversalzburg/containers/qbittorrent:{{ podman_qbittorrent_version }}
+ExecStartPre=-/usr/bin/podman pull {{ registry_ghcrio }}/oliversalzburg/containers/whisparr:{{ podman_whisparr_version }}
 ExecStart=/usr/bin/podman run \
   --cgroups "no-conmon" \
   --cidfile "%t/%n.ctr-id" \
   --detach \
   --env "TZ={{ config_system_timezone }}" \
-  --health-cmd "curl --silent --show-error --fail http://localhost:8080" \
   --log-driver "journald" \
-  --memory "8g" \
+  --memory "4g" \
   --name "%n.{{ inventory_hostname }}" \
-  --pod-id-file "%t/qbittorrent.pod-id" \
+  --pod-id-file "%t/whisparr.pod-id" \
   --pull "never" \
   --replace \
   --rm \
   --sdnotify "conmon" \
   --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
-  oliversalzburg/containers/qbittorrent:{{ podman_qbittorrent_version }}
+  oliversalzburg/containers/whisparr:{{ podman_whisparr_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
 ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"
@@ -42,3 +40,4 @@ NotifyAccess=all
 
 [Install]
 WantedBy=multi-user.target
+

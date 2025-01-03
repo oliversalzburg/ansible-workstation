@@ -1,0 +1,45 @@
+{{ ansible_managed|comment }}
+
+[Unit]
+Description=Whisparr Exporter
+Documentation=https://github.com/onedr0p/exportarr
+Wants=network.target
+After=network.target
+RequiresMountsFor=%t/containers
+BindsTo=whisparr.service
+After=whisparr.service whisparr-main.service
+StartLimitIntervalSec=10
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+RestartSec=10
+StartLimitBurst=3
+TimeoutStopSec=70
+ExecStartPre=/bin/rm --force %t/%n.ctr-id
+ExecStartPre=-/usr/bin/podman pull {{ registry_ghcrio }}/onedr0p/exportarr:{{ exportarr_version }}
+ExecStart=/usr/bin/podman run \
+  --cgroups "no-conmon" \
+  --cidfile "%t/%n.ctr-id" \
+  --detach \
+  --env "APIKEY={{ podman_whisparr_api_key }}" \
+  --env "ENABLE_ADDITIONAL_METRICS=true" \
+  --env "PORT=9707" \
+  --env "URL=http://127.0.0.1:7878" \
+  --log-driver "journald" \
+  --memory "256m" \
+  --name "%n.{{ inventory_hostname }}" \
+  --pod-id-file "%t/whisparr.pod-id" \
+  --pull "never" \
+  --replace \
+  --rm \
+  --sdnotify "conmon" \
+  onedr0p/exportarr:{{ exportarr_version }} whisparr
+
+ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
+ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"
+Type=notify
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target

@@ -26,6 +26,7 @@
     - role: podman_host
     - role: podman_traefik
     - role: prometheus.prometheus.cadvisor
+    - role: podman_prometheus
 
 - name: Canyon
   hosts: canyon.labnet
@@ -92,6 +93,7 @@
     - role: podman_radarr
     - role: podman_recyclarr
     - role: podman_sonarr
+    - role: podman_whisparr
 
 - name: Metrics Monitors
   hosts: metricsmonitors

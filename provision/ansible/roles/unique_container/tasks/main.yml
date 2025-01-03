@@ -1,5 +1,5 @@
 ---
-- name: Install commonly used dependencies
+- name: Install wpasupplicant
   become: true
   register: result
   retries: 3

@@ -1,0 +1,148 @@
+---
+- name: Create groups
+  become: true
+  register: _groups
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+    system: true
+  loop: "{{ podman_whisparr_groups }}"
+  notify: Restart whisparr
+
+- name: Ensure user is a group member
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: "{{ podman_whisparr_groups }}"
+    append: true
+  notify: Restart whisparr
+
+- name: Create user
+  become: true
+  register: _user
+  ansible.builtin.user:
+    comment: "{{ podman_whisparr_name }}"
+    create_home: false
+    group: "{{ _groups.results[0].gid }}"
+    groups: "{{ podman_whisparr_groups }}"
+    home: "{{ podman_whisparr_basedir }}"
+    name: "{{ podman_whisparr_id }}"
+    password: "!"
+    shell: "/usr/sbin/nologin"
+    system: true
+  notify: Restart whisparr
+
+
+- name: Ensure working directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ podman_whisparr_basedir }}"
+    state: directory
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+    mode: "u=rwX,g=rX,o="
+    recurse: true
+  notify: Restart whisparr
+
+- name: Ensure directories exist
+  become: true
+  ansible.builtin.file:
+    path: "{{ podman_whisparr_basedir }}/{{ item }}"
+    state: directory
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+    mode: "u=rwX,g=rX,o="
+    recurse: true
+  loop:
+    - config
+  notify: Restart whisparr
+
+
+- name: Create postgres user
+  register: result
+  retries: 3
+  delay: 3
+  until: result is not failed
+  community.postgresql.postgresql_user:
+    host: localhost
+    login_password: "{{ podman_postgres_master_password }}"
+    login_user: "{{ podman_postgres_master_user }}"
+    name: "{{ podman_whisparr_pg_user }}"
+    password: "{{ podman_whisparr_pg_password }}"
+  notify: Restart whisparr
+
+- name: Create postgres database
+  register: result
+  retries: 3
+  delay: 3
+  until: result is not failed
+  community.postgresql.postgresql_db:
+    host: localhost
+    login_password: "{{ podman_postgres_master_password }}"
+    login_user: "{{ podman_postgres_master_user }}"
+    name: "{{ podman_whisparr_pg_db }}-{{ item }}"
+    owner: "{{ podman_whisparr_pg_user }}"
+  loop:
+    - main
+    - log
+  notify: Restart whisparr
+
+- name: "GRANT ALL PRIVILEGES ON DATABASE 'db' TO 'user'"
+  community.postgresql.postgresql_privs:
+    host: localhost
+    login_password: "{{ podman_postgres_master_password }}"
+    login_user: "{{ podman_postgres_master_user }}"
+    db: postgres
+    privs: ALL
+    type: database
+    obj: "{{ podman_whisparr_pg_db }}-{{ item }}"
+    role: "{{ podman_whisparr_pg_user }}"
+  loop:
+    - main
+    - log
+  notify: Restart whisparr
+
+- name: "GRANT USAGE, CREATE ON SCHEMA PUBLIC TO 'user'"
+  community.postgresql.postgresql_privs:
+    host: localhost
+    login_password: "{{ podman_postgres_master_password }}"
+    login_user: "{{ podman_postgres_master_user }}"
+    db: postgres
+    privs: CREATE
+    type: schema
+    obj: public
+    role: "{{ podman_whisparr_pg_user }}"
+  notify: Restart whisparr
+
+
+- name: Copy configuration
+  become: true
+  ansible.builtin.template:
+    src: "config.xml.j2"
+    dest: "{{ podman_whisparr_basedir }}/config/config.xml"
+    owner: "{{ _user.uid }}"
+    group: "{{ _groups.results[0].gid }}"
+    mode: "0o640"
+  notify: Restart whisparr
+
+
+- name: Copy service files
+  become: true
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "{{ directory_systemd }}/{{ item }}"
+    owner: root
+    group: root
+    mode: "0o644"
+  loop:
+    - whisparr-exporter.service
+    - whisparr-main.service
+    - whisparr.service
+  notify: Restart whisparr
+
+- name: Enable and check whisparr service
+  become: true
+  ansible.builtin.systemd:
+    enabled: true
+    name: whisparr
+  notify: Restart whisparr

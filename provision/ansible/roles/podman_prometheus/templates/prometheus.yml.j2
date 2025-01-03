@@ -10,6 +10,7 @@ scrape_configs:
         - "prowlarr.service.{{ inventory_hostname }}:9707"
         - "radarr.service.{{ inventory_hostname }}:9707"
         - "sonarr.service.{{ inventory_hostname }}:9707"
+        - "whisparr.service.{{ inventory_hostname }}:9707"
         # Unpackerr
         - "{{ inventory_hostname }}:5656"
 {% endif %}
@@ -39,7 +40,7 @@ scrape_configs:
 {% endfor %}
 
   - job_name: postgres
-    scrape_interval: 15s
+    scrape_interval: 30s
     static_configs:
       - targets:
 {% if "dbhosts" in group_names %}
@@ -47,7 +48,7 @@ scrape_configs:
 {% endif %}
 
   - job_name: prometheus
-    scrape_interval: 15s
+    scrape_interval: 60s
     static_configs:
       - targets:
         - "localhost:9090"

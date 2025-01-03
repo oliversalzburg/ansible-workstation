@@ -89,7 +89,7 @@ dir_mode = "0755"
 
 {% for host in groups["mediaservers"] %}
 [[sonarr]]
-url = "http://sonarr.service.{{ host }}:8989"
+url = "https://sonarr.web.{{ host }}"
 api_key = "{{ podman_sonarr_api_key }}"
 # File system path where downloaded Sonarr items are located.
 paths = ['{{ podman_qbittorrent_mediadir }}/INCOMING']
@@ -107,7 +107,7 @@ paths = ['{{ podman_qbittorrent_mediadir }}/INCOMING']
 # syncthing = false
 
 [[radarr]]
-url = "http://radarr.service.{{ host }}:7878"
+url = "https://radarr.web.{{ host }}"
 api_key = "{{ podman_radarr_api_key }}"
 # File system path where downloaded Radarr items are located.
 paths = ['{{ podman_qbittorrent_mediadir }}/INCOMING']
@@ -125,7 +125,7 @@ paths = ['{{ podman_qbittorrent_mediadir }}/INCOMING']
 # syncthing = false
 
 [[lidarr]]
-url = "http://lidarr.service.{{ host }}:8686"
+url = "https://lidarr.web.{{ host }}"
 api_key = "{{ podman_lidarr_api_key }}"
 # File system path where downloaded Lidarr items are located.
 paths = ['{{ podman_qbittorrent_mediadir }}/INCOMING']
@@ -143,7 +143,7 @@ paths = ['{{ podman_qbittorrent_mediadir }}/INCOMING']
 # syncthing = false
 
 #[[readarr]]
-# url = "http://readarr.service.{{ host }}:8787"
+# url = "https://readarr.web.{{ host }}"
 # api_key = "0123456789abcdef0123456789abc"
 ## File system path where downloaded Readarr items are located.
 # paths = ['/downloads']
@@ -161,9 +161,10 @@ paths = ['{{ podman_qbittorrent_mediadir }}/INCOMING']
 # syncthing = false
 
 
-#[[whisparr]]
-# url = "http://whisparr.service.{{ host }}:6969"
-# api_key = "0123456789abcdef0123456789abc"
+[[whisparr]]
+url = "https://whisparr.web.{{ host }}"
+api_key = "{{ podman_whisparr_api_key }}"
+paths = ['{{ podman_qbittorrent_mediadir }}/INCOMING']
 ## Whisparr shares the same settings as the other starr apps.
 {% endfor %}
 

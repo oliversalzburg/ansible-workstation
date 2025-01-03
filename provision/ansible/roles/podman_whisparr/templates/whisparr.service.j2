@@ -1,0 +1,45 @@
+{{ ansible_managed|comment }}
+
+[Unit]
+Description=Whisparr Root Service
+Documentation=
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor={{ podman_whisparr_basedir }} {{ podman_whisparr_mediadir }}
+Requires=whisparr-main.service postgres.service
+Requires=service.{{ inventory_hostname }}-network.service
+Wants=whisparr-exporter.service
+Before=whisparr-main.service whisparr-exporter.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+TimeoutStopSec=70
+ExecStartPre=/bin/rm --force %t/whisparr.pid %t/whisparr.pod-id
+ExecStartPre=/usr/bin/podman pod create \
+  --hostname "%n.{{ inventory_hostname }}" \
+  --infra-conmon-pidfile %t/whisparr.pid \
+  --label "traefik.enable=true" \
+  --label "traefik.http.routers.whisparr.entrypoints=websecure" \
+  #--label "traefik.http.routers.whisparr.middlewares=oauth@file" \
+  --label "traefik.http.routers.whisparr.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
+  --label "traefik.http.routers.whisparr.tls.certresolver={{ realm }}" \
+  --label "traefik.http.routers.whisparr.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
+  --label "traefik.http.services.whisparr.loadbalancer.healthcheck.path=/ping" \
+  --label "traefik.http.services.whisparr.loadbalancer.server.port=6969" \
+  --name "%n.{{ inventory_hostname }}" \
+  --network "service.{{ inventory_hostname }}" \
+  --pod-id-file %t/whisparr.pod-id \
+  --replace \
+  --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
+  --volume "{{ podman_whisparr_basedir }}/config:/var/lib/whisparr:rw" \
+  --volume "{{ podman_whisparr_mediadir }}:/data:rw"
+
+ExecStart=/usr/bin/podman pod start --pod-id-file %t/whisparr.pod-id
+ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/whisparr.pod-id --time 10
+ExecStopPost=/usr/bin/podman pod rm --ignore --force --pod-id-file %t/whisparr.pod-id
+PIDFile=%t/whisparr.pid
+Type=forking
+
+[Install]
+WantedBy=multi-user.target

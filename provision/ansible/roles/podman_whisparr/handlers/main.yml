@@ -1,0 +1,6 @@
+- name: Restart whisparr
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: whisparr
+    state: restarted

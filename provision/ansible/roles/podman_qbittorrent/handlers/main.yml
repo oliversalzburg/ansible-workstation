@@ -4,3 +4,10 @@
     daemon_reload: true
     name: qbittorrent
     state: restarted
+
+- name: Restart unpackerr
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: unpackerr
+    state: restarted

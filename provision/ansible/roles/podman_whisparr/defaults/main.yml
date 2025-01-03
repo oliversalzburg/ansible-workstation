@@ -1,0 +1,14 @@
+---
+podman_whisparr_id: whisparr
+podman_whisparr_name: Whisparr
+podman_whisparr_groups:
+  - nas
+  - service
+
+podman_whisparr_basedir: /mnt/usb/whisparr
+podman_whisparr_mediadir: "{{ media_mount }}"
+podman_whisparr_version: latest
+
+podman_whisparr_pg_user: whisparr
+podman_whisparr_pg_password: podman_whisparr_password
+podman_whisparr_pg_db: whisparr
