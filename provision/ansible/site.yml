@@ -74,4 +74,5 @@
   roles:
     - role: desktop_hires
 
-- import_playbook: roles.yml
+- name: Apply roles
+  import_playbook: roles.yml
