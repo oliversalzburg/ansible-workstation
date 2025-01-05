@@ -29,9 +29,15 @@ ExecStart=/usr/bin/podman run \
   --replace \
   --rm \
   --sdnotify "conmon" \
+  --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
   jesec/flood:{{ podman_qbittorrent_flood_version }} \
   --allowedpath "/data" \
-  --port "3000"
+  --auth "none" \
+  --port "3000" \
+  --qbpass \
+  --qburl "http://qbittorrent.service.{{ inventory_hostname }}:8080" \
+  --qbuser \
+  --rundir "/config"
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
 ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"
