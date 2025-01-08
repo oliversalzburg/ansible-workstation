@@ -135,7 +135,6 @@
     group: root
     mode: "0o644"
   loop:
-    - whisparr-exporter.service
     - whisparr-main.service
     - whisparr.service
   notify: Restart whisparr

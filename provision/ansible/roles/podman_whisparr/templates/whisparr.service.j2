@@ -8,8 +8,7 @@ After=network-online.target
 RequiresMountsFor={{ podman_whisparr_basedir }} {{ podman_whisparr_mediadir }}
 Requires=whisparr-main.service postgres.service
 Requires=service.{{ inventory_hostname }}-network.service
-Wants=whisparr-exporter.service
-Before=whisparr-main.service whisparr-exporter.service
+Before=whisparr-main.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
