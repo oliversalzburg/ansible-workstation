@@ -65,7 +65,7 @@ podman_postgres_version: "17.2"
 # renovate: datasource=docker depName=quay.io/prometheus/prometheus versioning=semver-coerced
 podman_prometheus_version: "v3.1.0"
 # renovate: datasource=docker depName=docker.io/prom/pushgateway versioning=semver-coerced
-podman_prometheus_pushgateway_version: "v1.10.0"
+podman_prometheus_pushgateway_version: "v1.11.0"
 # renovate: datasource=docker depName=quay.io/prometheus/snmp-exporter versioning=semver-coerced
 podman_prometheus_snmp_exporter_version: "v0.27.0"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/prowlarr versioning=loose
