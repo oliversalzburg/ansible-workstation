@@ -49,8 +49,9 @@
       become: true
       vars:
         step_cli_version: 0.24.4
-        step_bootstrap_ca_url: "https://workstation.{{ realm }}:4431"
-        step_bootstrap_fingerprint: 20de2454dc737e3518ef6920d3224e36fecf1212ce8bbf3e46abdad1bb22189f
+        step_bootstrap_ca_url: "https://container.{{ realm }}:4431"
+        step_bootstrap_fingerprint: 0e6b5947ad1f7032b34ce7b8af22cc98445eef9c69a5f19832afefc726529cbc
+        step_bootstrap_force: true
 
 - name: Node Metrics Exporter
   hosts: all

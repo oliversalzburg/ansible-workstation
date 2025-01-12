@@ -1,3 +1,4 @@
+ca_root_password: ENC[AES256_GCM,data:gDg/3OexEF5IcbbqSOfQc/sIRMitQnJZMC6i/XSDtsI=,iv:xdR6IexLEMBZZVjOhisUhqvR4/IFw475fm91ters0OA=,tag:PIYHdCU89lQ1sy8OCvnYEA==,type:str]
 media_credentials_file: ENC[AES256_GCM,data:7DiISv2NYS1W4O8CCcobOgbH+SJvXteU,iv:KEF87dlA9xaWp1mSIqorsGtKcuXtj3bcvd4UWFYT8tU=,tag:FWoh9BmrGtGy3CNVCkTRWQ==,type:str]
 media_ip_address: ENC[AES256_GCM,data:B0aXW6bSNnqaIN8yWA==,iv:OiQXUoiOzdVqCrxC8dRrVsmslMBjtiGNJiZPndpfvIU=,tag:C1wplBVnd9IMuHDQ0t2ADg==,type:str]
 media_location: ENC[AES256_GCM,data:dZ6qzXbtWUYGX/tIuNLYGnHqCeBIhys=,iv:r5odFEcEN4TRDJ1pXPRkvikWAL5o5TNXTgqIwp/lLyc=,tag:n26slFMNI2H8GUV1LiKrOQ==,type:str]
@@ -20,8 +21,8 @@ sops:
             ei9iam02cWZOTjBEK0JiM2VJNlh4OVkKOcd8+wLEG/May3gaiwT+4oqg49vCuYbN
             MOQLSBXhiMD5KLPlpDBDgCB0td6Ulh7QlcjSwXWUGhDDDykAMh0OZQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-06-03T10:36:40Z"
-    mac: ENC[AES256_GCM,data:Ll902PeRiVddQs2tlErEb6VbxmdGtjCI0kRH74bgmRKrgzYZW/4EmJ9ygzDlmtBEer2BBvgLjPaaWwiBRdE2BRamReZ5P5WJdNSvjX+bXo4wSkA356X8CgoSR8I3Dr9Goguym0gCoRTMvMENDWYnt9bYt5F9uxPPLgAbRhHa6c4=,iv:nBEDOGYE9iTuw/DJMQ5+/ypuVbw2GW+LFb3/6Da7mRw=,tag:mvt8/l0GvOlBLwBlfpFPew==,type:str]
+    lastmodified: "2025-01-12T15:36:47Z"
+    mac: ENC[AES256_GCM,data:3tPQHPYEmkqRVFYXnMJqkizwoa51/dlvK+rwyvvxsiEgxHmq9pBYcdNWy8wOcGvrbBll1Ec12gcPrTtC3VuN4zCf1RvQJRbAQzO/pB72grwNy5qhkS9xKsZUdnF96uK3lNVk7ndGD+VdXQaPAvAggOApbaDM/ri4JGjHeb8hdLM=,iv:MAfTvVIXTcrI6yhBfKWIVi0NzPeaBM+epgedUmdf9Kw=,tag:vCeY/VeuytE6LHvL9j1zcg==,type:str]
     pgp: []
     unencrypted_regex: ^(kind)$
     version: 3.7.3

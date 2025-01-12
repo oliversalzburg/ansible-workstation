@@ -30,7 +30,7 @@ api:
 certificatesResolvers:
   {{ realm }}:
     acme:
-      caServer: "https://workstation.{{ realm }}:4431/acme/acme/directory"
+      caServer: "https://container.{{ realm }}:4431/acme/acme/directory"
       email: "{{ letsencrypt_email_address }}"
       storage: "/etc/acme/acme.json"
       httpChallenge:

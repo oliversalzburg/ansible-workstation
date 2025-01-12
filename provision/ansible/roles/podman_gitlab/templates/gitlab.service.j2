@@ -24,7 +24,7 @@ ExecStart=/usr/bin/podman run \
   --cidfile "%t/%n.ctr-id" \
   --conmon-pidfile "%t/%n.pid" \
   --detach \
-  --env "GITLAB_OMNIBUS_CONFIG=external_url 'https://%n.{{ inventory_hostname }}'; letsencrypt['acme_staging_endpoint'] = 'https://workstation.{{ realm }}:4431/acme/acme/directory'; letsencrypt['acme_production_endpoint'] = 'https://workstation.{{ realm }}:4431/acme/acme/directory'" \
+  --env "GITLAB_OMNIBUS_CONFIG=external_url 'https://%n.{{ inventory_hostname }}'; letsencrypt['acme_staging_endpoint'] = 'https://container.{{ realm }}:4431/acme/acme/directory'; letsencrypt['acme_production_endpoint'] = 'https://container.{{ realm }}:4431/acme/acme/directory'" \
   --env "TZ={{ config_system_timezone }}" \
   --hostname "%n.{{ inventory_hostname }}" \
   --label "traefik.enable=false" \

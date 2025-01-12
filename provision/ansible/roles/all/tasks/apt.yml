@@ -52,6 +52,7 @@
   until: result is not failed
   ansible.builtin.apt:
     name:
+      - acl
       - apparmor-profiles
       - apparmor-utils
       - bash
