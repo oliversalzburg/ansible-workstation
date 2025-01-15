@@ -63,6 +63,7 @@
       - dnsutils
       - file
       - git
+      - glances
       - htop
       - iputils-tracepath
       - jq
