@@ -43,7 +43,7 @@ podman_prowlarr_flaresolverr_version: "v3.3.21"
 # renovate: datasource=docker depName=docker.io/gitlab/gitlab-ce versioning=semver-coerced
 podman_gitlab_version: "16.9.3-ce.0"
 # renovate: datasource=docker depName=docker.io/gitlab/gitlab-runner versioning=semver
-podman_gitlab_runner_version: "v17.8.2"
+podman_gitlab_runner_version: "v17.8.3"
 # renovate: datasource=docker depName=docker.io/grafana/grafana-oss versioning=semver
 podman_grafana_version: "11.4.0"
 # renovate: datasource=docker depName=docker.io/jellyfin/jellyfin versioning=semver
