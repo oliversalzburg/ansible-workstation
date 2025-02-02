@@ -55,6 +55,8 @@
   ansible.builtin.include_tasks: coding-environment.yml
 - name: NodeJS
   ansible.builtin.include_tasks: nodejs.yml
+- name: OpenTofu
+  ansible.builtin.include_tasks: opentofu.yml
 - name: SOPS
   ansible.builtin.include_tasks: sops.yml
 - name: Terraform
