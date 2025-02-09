@@ -33,9 +33,9 @@
   become: true
   ansible.builtin.template:
     src: unpackerr.conf.j2
-    dest: "/etc/unpackerr/unpackerr.conf"
-    owner: "unpackerr"
-    group: "unpackerr"
+    dest: /etc/unpackerr/unpackerr.conf
+    owner: qbittorrent
+    group: nas
     mode: "0o600"
   notify: Restart unpackerr
 

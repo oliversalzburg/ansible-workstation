@@ -24,4 +24,3 @@ jobs:
         run: |
           cd provision/ansible
           ansible-lint
-
