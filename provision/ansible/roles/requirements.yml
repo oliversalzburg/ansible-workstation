@@ -1,7 +1,3 @@
-roles:
-  - src: gantsign.keyboard
-    version: 1.5.0
-
 collections:
   - name: community.crypto
     version: 2.25.0
