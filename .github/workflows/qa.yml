@@ -18,8 +18,6 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           install-cmd: pip install -r requirements.txt
 
-      - run: make requirements
-
       - name: Run ansible-lint
         run: |
           cd provision/ansible
