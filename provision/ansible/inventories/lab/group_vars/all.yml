@@ -83,6 +83,6 @@ podman_qbittorrent_wireguard_version: "v1.0.20210914"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/radarr versioning=loose
 podman_radarr_version: "5.18.4.9674"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/sonarr versioning=loose
-podman_sonarr_version: "4.0.12.2823"
+podman_sonarr_version: "4.0.13.2932"
 # renovate: datasource=docker depName=docker.io/library/traefik versioning=semver-coerced
 podman_traefik_version: "v3.3.3"
