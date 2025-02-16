@@ -10,7 +10,6 @@ scrape_configs:
         - "prowlarr.service.{{ inventory_hostname }}:9707"
         - "radarr.service.{{ inventory_hostname }}:9707"
         - "sonarr.service.{{ inventory_hostname }}:9707"
-        - "whisparr.service.{{ inventory_hostname }}:9707"
         # Unpackerr
         - "{{ inventory_hostname }}:5656"
 {% endif %}
