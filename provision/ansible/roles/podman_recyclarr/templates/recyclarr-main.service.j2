@@ -30,6 +30,7 @@ ExecStart=/usr/bin/podman run \
   --replace \
   --rm \
   --sdnotify "conmon" \
+  --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
   recyclarr/recyclarr:{{ podman_recyclarr_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10

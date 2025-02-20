@@ -83,7 +83,7 @@ sonarr:
         - cfa5fbd8f02a86fc55d8d223d06a5e1f # DTS-HD HRA
         - c1a25cd67b5d2e08287c957b1eb903ec # DTS-ES
         - 5964f2a8b3be407d083498e4459d05d0 # DTS
-        quality_profiles:
+        assign_scores_to:
           - name: WEB-1080p
             score: -10000
           - name: WEB-2160p
@@ -152,7 +152,7 @@ sonarr:
         - 58790d4e2fdcd9733aa7ae68ba2bb503 # WEB Tier 02
         - d84935abd3f8556dcd51d4f27e22d0a6 # WEB Tier 03
         - d0c516558625b04b363fa6c5c2c7cfd4 # WEB Scene ❗
-        quality_profiles:
+        assign_scores_to:
           - name: WEB-1080p
           - name: WEB-2160p
           - name: Best Compatible
@@ -250,6 +250,28 @@ radarr:
               - WEBRip-1080p
           - name: Bluray-720p
 
+      - name: Best Compatible Foreign
+        reset_unmatched_scores:
+          enabled: true
+        upgrade:
+          allowed: true
+          until_quality: Remux-2160p
+          until_score: 10000
+        qualities:
+          - name: Remux-2160p
+          - name: Bluray-2160p
+          - name: WEB 2160p
+            qualities:
+              - WEBDL-2160p
+              - WEBRip-2160p
+          - name: Remux-1080p
+          - name: Bluray-1080p
+          - name: WEB 1080p
+            qualities:
+              - WEBDL-1080p
+              - WEBRip-1080p
+          - name: Bluray-720p
+
     custom_formats:
       - trash_ids:
         # Incompatible with primary TV unit
@@ -261,7 +283,7 @@ radarr:
         - 8e109e50e0a0b83a5098b056e13bf6db # DTS-HD HRA
         - f9f847ac70a0af62ea4a08280b859636 # DTS-ES
         - 1c1a4c5e823891c75bc50380a6866f73 # DTS
-        quality_profiles:
+        assign_scores_to:
           - name: HD Bluray + WEB
             score: -10000
           - name: UHD Bluray + WEB
@@ -347,7 +369,7 @@ radarr:
         - e36a0ba1bc902b26ee40818a1d59b8bd # PMTP
         - c9fd353f8f5f1baf56dc601c4cb29920 # PCOK
         - c2863d2a50c9acad1fb50e53ece60817 # STAN
-        quality_profiles:
+        assign_scores_to:
           - name: HD Bluray + WEB
           - name: UHD Bluray + WEB
           - name: Remux + WEB 1080p
