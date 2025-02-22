@@ -69,7 +69,7 @@ podman_prometheus_pushgateway_version: "v1.11.0"
 # renovate: datasource=docker depName=quay.io/prometheus/snmp-exporter versioning=semver-coerced
 podman_prometheus_snmp_exporter_version: "v0.28.0"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/prowlarr versioning=loose
-podman_prowlarr_version: "1.30.2.4939"
+podman_prowlarr_version: "1.31.2.4975"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/qbittorrent versioning=semver
 podman_qbittorrent_version: "4.6.7"
 # renovate: datasource=docker depName=ghcr.io/esanchezm/prometheus-qbittorrent-exporter versioning=semver-coerced
