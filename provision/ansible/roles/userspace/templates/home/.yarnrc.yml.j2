@@ -1,6 +1,11 @@
 {{ ansible_managed|comment }}
 
+defaultSemverRangePrefix: ""
+
 enableTelemetry: false
+
+nodeLinker: node-modules
+
 npmRegistries:
 {% if auth_token_npmjs is defined %}
   //registry.npmjs.org:
@@ -12,3 +17,13 @@ npmRegistries:
     npmAuthToken: {{ auth_token_github }}
     npmAlwaysAuth: true
 {% endif %}
+
+supportedArchitectures:
+  cpu:
+    - x64
+  libc:
+    - current
+    # Some tools specifically request musl :'(
+    - musl
+  os:
+    - linux
