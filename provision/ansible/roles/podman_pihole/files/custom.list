@@ -1,14 +1,4 @@
-{{ ansible_managed|comment }}
-
-127.0.0.1 localhost
-{{ ansible_default_ipv4.address }} {{ inventory_hostname }}
-
-# The following lines are desirable for IPv6 capable hosts
-::1     localhost ip6-localhost ip6-loopback
-ff02::1 ip6-allnodes
-ff02::2 ip6-allrouters
-
-192.168.178.1   gateway.labnet fritz.box
+192.168.178.1   gateway.labnet
 192.168.178.2   container.labnet web.container.labnet
 192.168.178.3   nasbox.labnet
 192.168.178.4   fireeye.labnet web.fireeye.labnet
@@ -17,7 +7,6 @@ ff02::2 ip6-allrouters
 192.168.178.10  workstation.labnet web.workstation.labnet
 192.168.178.20  fairphonefp4.labnet
 192.168.178.23  galaxy-s22.labnet
-192.168.178.23  shield.labnet
 192.168.178.33  ipmi-fireeye.labnet
 192.168.178.37  lgwebostvw.labnet
 192.168.178.47  lgwebostv.labnet
