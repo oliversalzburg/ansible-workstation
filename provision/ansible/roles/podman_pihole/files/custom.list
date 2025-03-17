@@ -7,6 +7,7 @@
 192.168.178.10  workstation.labnet web.workstation.labnet
 192.168.178.20  fairphonefp4.labnet
 192.168.178.23  galaxy-s22.labnet
+192.168.178.25  shield.labnet
 192.168.178.33  ipmi-fireeye.labnet
 192.168.178.37  lgwebostvw.labnet
 192.168.178.47  lgwebostv.labnet
