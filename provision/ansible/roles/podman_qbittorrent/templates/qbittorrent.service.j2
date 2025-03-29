@@ -6,10 +6,10 @@ Documentation=
 Wants=network-online.target
 After=network-online.target
 RequiresMountsFor={{ podman_qbittorrent_basedir }} {{ podman_qbittorrent_mediadir }}
-Requires=qbittorrent-main.service qbittorrent-natmap.service qbittorrent-wg.service
+Requires=qbittorrent-main.service qbittorrent-wg.service
 Requires=proton.{{ inventory_hostname }}-network.service
 Requires=service.{{ inventory_hostname }}-network.service
-Wants=qbittorrent-exporter.service qbittorrent-flood.service
+Wants=qbittorrent-exporter.service qbittorrent-flood.service qbittorrent-natmap.service
 Before=qbittorrent-main.service qbittorrent-exporter.service qbittorrent-flood.service qbittorrent-natmap.service qbittorrent-wg.service
 
 [Service]

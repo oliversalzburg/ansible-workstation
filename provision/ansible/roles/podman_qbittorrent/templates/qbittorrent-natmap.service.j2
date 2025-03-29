@@ -14,17 +14,19 @@ StartLimitIntervalSec=10
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
-RestartSec=10
+RestartSec=30
 StartLimitBurst=3
 ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
 ExecStartPre=-/usr/bin/podman pull {{ registry_ghcrio }}/soxfor/qbittorrent-natmap:{{ podman_qbittorrent_natmap_version }}
 ExecStart=/usr/bin/podman run \
   --cap-add NET_ADMIN \
+  --cap-add NET_RAW \
   --cgroups "no-conmon" \
   --cidfile "%t/%n.ctr-id" \
   --detach \
-  --env "QBITTORRENT_SERVER=10.2.0.2" \
-  --env "VPN_GATEWAY=10.2.0.1" \
+  --env "QBITTORRENT_SERVER={{ vpn_address }}" \
+  --env "VPN_GATEWAY={{ vpn_dns }}" \
+  # Use a container in the pod that actually has a health check.
   --env "VPN_CT_NAME=qbittorrent-main.service.{{ inventory_hostname }}" \
   --env "VPN_IF_NAME=wg0" \
   --env "TZ={{ config_system_timezone }}" \

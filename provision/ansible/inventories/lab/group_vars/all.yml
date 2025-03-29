@@ -71,7 +71,7 @@ podman_prometheus_snmp_exporter_version: "v0.28.0"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/prowlarr versioning=loose
 podman_prowlarr_version: "v1.32.2.4987"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/qbittorrent versioning=semver
-podman_qbittorrent_version: "4.6.7"
+podman_qbittorrent_version: "v4.6.7"
 # renovate: datasource=docker depName=ghcr.io/esanchezm/prometheus-qbittorrent-exporter versioning=semver-coerced
 podman_qbittorrent_exporter_version: "v1.6.0"
 # renovate: datasource=docker depName=docker.io/jesec/flood versioning=semver
