@@ -9,6 +9,7 @@ RequiresMountsFor={{ podman_qbittorrent_basedir }} {{ podman_qbittorrent_mediadi
 Requires=qbittorrent-main.service qbittorrent-wg.service
 Requires=proton.{{ inventory_hostname }}-network.service
 Requires=service.{{ inventory_hostname }}-network.service
+Requires=podman.socket
 Wants=qbittorrent-exporter.service qbittorrent-flood.service qbittorrent-natmap.service
 Before=qbittorrent-main.service qbittorrent-exporter.service qbittorrent-flood.service qbittorrent-natmap.service qbittorrent-wg.service
 
