@@ -25,7 +25,7 @@ ExecStart=/usr/bin/podman run \
   --env "TZ={{ config_system_timezone }}" \
   --health-cmd "curl --silent --show-error --fail http://localhost:8080" \
   --log-driver "journald" \
-  --memory "32g" \
+  --memory "8g" \
   --name "%n.{{ inventory_hostname }}" \
   --pod-id-file "%t/qbittorrent.pod-id" \
   --pull "never" \

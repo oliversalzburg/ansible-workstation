@@ -69,10 +69,6 @@
   hosts: desktops
   roles:
     - role: desktop
-- name: Hires Desktops
-  hosts: hires_desktops
-  roles:
-    - role: desktop_hires
 
 - name: Apply roles
   import_playbook: roles.yml
