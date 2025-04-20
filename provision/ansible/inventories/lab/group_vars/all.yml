@@ -37,7 +37,7 @@ registry_ghcrio: ghcrio.nexus.web.container.labnet
 registry_quayio: quayio.nexus.web.container.labnet
 
 # renovate: datasource=docker depName=ghcr.io/onedr0p/exportarr versioning=semver
-exportarr_version: "v2.1.0"
+exportarr_version: "v2.2.0"
 # renovate: datasource=docker depName=ghcr.io/flaresolverr/flaresolverr versioning=semver
 podman_prowlarr_flaresolverr_version: "v3.3.21"
 # renovate: datasource=docker depName=docker.io/gitlab/gitlab-ce versioning=semver-coerced
