@@ -4,14 +4,37 @@
   community.general.timezone:
     name: "{{ config_system_timezone }}"
 
-- name: Ensure localisation files are available
+- name: Configure locales to be generated
   become: true
-  community.general.locale_gen:
-    name: "{{ config_system_locale }}"
-    state: present
+  ansible.builtin.debconf:
+    name: locales
+    question: locales/locales_to_be_generated
+    value: de_DE.UTF-8 UTF-8, en_US.UTF-8 UTF-8
+    vtype: multiselect
 
-- name: Ensure localisation files are available
+- name: Reconfigure locales
+  become: true
+  ansible.builtin.command:
+    cmd: "dpkg-reconfigure locales"
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+
+- name: Ensure default locales are available
   become: true
   community.general.locale_gen:
-    name: "{{ config_system_language }}"
+    name: "{{ item }}"
     state: present
+  with_items:
+    - de_DE
+    - de_DE.UTF-8
+    - en_US
+    - en_US.UTF-8
+
+- name: Define locale 'en_DE.UTF-8'
+  become: true
+  command: localedef -i de_DE -f UTF-8 en_DE.UTF-8
+
+- name: Configure locale
+  become: true
+  ignore_errors: true
+  command: localectl set-locale {{ config_system_locale }}

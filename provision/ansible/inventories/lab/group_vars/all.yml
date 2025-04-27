@@ -6,7 +6,7 @@ realm_name: Lab
 git_email: oliver.salzburg@gmail.com
 git_name: Oliver Salzburg
 
-config_system_locale: en_US.UTF-8
+config_system_locale: en_DE.UTF-8
 config_system_language: en_US.UTF-8
 config_system_timezone: Europe/Berlin
 
