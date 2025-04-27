@@ -30,3 +30,6 @@
     owner: root
     group: root
     mode: "0o644"
+
+- name: Steam
+  ansible.builtin.include_tasks: steam.yml

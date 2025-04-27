@@ -1,7 +1,5 @@
 ---
 - name: KeePassXC
   ansible.builtin.include_tasks: keepassxc.yml
-- name: Steam
-  ansible.builtin.include_tasks: steam.yml
 - name: Syncthing
   ansible.builtin.include_tasks: syncthing.yml

@@ -44,21 +44,6 @@
   when: result_check_contrib.rc == 1
   changed_when: true
 
-- name: Check APT i386
-  ansible.builtin.shell:
-    cmd: |
-      set -o pipefail
-      dpkg --print-foreign-architectures | grep i386
-    executable: /bin/bash
-  register: result_i386_check
-  changed_when: result_i386_check.rc == 1
-  failed_when: result_i386_check.rc > 1
-- name: Enable i386 architecture
-  become: true
-  ansible.builtin.command: dpkg --add-architecture i386
-  when: result_i386_check.rc == 1
-  changed_when: true
-
 - name: Install Nvidia driver
   become: true
   ansible.builtin.apt:
@@ -68,6 +53,5 @@
       - firmware-misc-nonfree
       - linux-headers-amd64
       - nvidia-driver
-      - nvidia-driver-libs:i386
       - vainfo
       - vdpauinfo
