@@ -43,11 +43,11 @@
     mode: "0o640"
   notify: Restart pihole
 
-- name: Copy custom hosts list
+- name: Copy configuration
   become: true
   ansible.builtin.copy:
-    src: "custom.list"
-    dest: "{{ podman_pihole_basedir }}/etc/pihole/custom.list"
+    src: "pihole.toml"
+    dest: "{{ podman_pihole_basedir }}/etc/pihole/pihole.toml"
     owner: 1000
     group: 33
     mode: "0o640"

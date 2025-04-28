@@ -27,7 +27,6 @@ ExecStart=/usr/bin/podman run \
   # Don't mess with the DNS of this container.
   --dns "none" \
   --env "DNSMASQ_USER=root" \
-  --env "FTLCONF_LOCAL_IPV4={{ ansible_default_ipv4.address }}" \
   --env "TZ={{ podman_pihole_timezone }}" \
   --hostname "%n.{{ inventory_hostname }}" \
   --label "traefik.enable=true" \
@@ -36,7 +35,7 @@ ExecStart=/usr/bin/podman run \
   --label "traefik.http.routers.pihole.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
   --label "traefik.http.routers.pihole.tls.certresolver={{ podman_pihole_realm }}" \
   --label "traefik.http.routers.pihole.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
-  --label "traefik.http.services.pihole.loadbalancer.healthcheck.path=/admin/" \
+  #--label "traefik.http.services.pihole.loadbalancer.healthcheck.path=/admin/login" \
   --label "traefik.http.services.pihole.loadbalancer.server.port=80" \
   --log-driver "journald" \
   --memory "4096m" \
