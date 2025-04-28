@@ -31,5 +31,17 @@
     group: root
     mode: "0o644"
 
+- name: Install workstation dependencies
+  become: true
+  register: result
+  retries: 3
+  delay: 3
+  until: result is not failed
+  ansible.builtin.apt:
+    name:
+      - chromium
+      - radicale
+      - thunderbird
+
 - name: Steam
   ansible.builtin.include_tasks: steam.yml

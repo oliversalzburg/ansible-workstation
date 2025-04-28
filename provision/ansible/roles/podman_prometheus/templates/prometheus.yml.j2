@@ -1,50 +1,11 @@
 {{ ansible_managed|comment }}
 
 scrape_configs:
-  - job_name: servaar
-    scrape_interval: 1m
-    static_configs:
-      - targets:
-{% if "mediaservers" in group_names %}
-        - "lidarr.service.{{ inventory_hostname }}:9707"
-        - "prowlarr.service.{{ inventory_hostname }}:9707"
-        - "radarr.service.{{ inventory_hostname }}:9707"
-        - "sonarr.service.{{ inventory_hostname }}:9707"
-        # Unpackerr
-        - "{{ inventory_hostname }}:5656"
-{% endif %}
-
-  - job_name: qbittorrent
-    scrape_interval: 15s
-    static_configs:
-      - targets:
-{% if "mediaservers" in group_names %}
-        - "qbittorrent.service.{{ inventory_hostname }}:8000"
-{% endif %}
-
-  - job_name: cadvisor
-    scrape_interval: 15s
-    static_configs:
-      - targets:
-{% if "servicehosts" in group_names %}
-        - "{{ inventory_hostname }}:8080"
-{% endif %}
-
   - job_name: node
     scrape_interval: 15s
     static_configs:
       - targets:
-{% for host in groups["all"] %}
-        - "{{ host }}:9100"
-{% endfor %}
-
-  - job_name: postgres
-    scrape_interval: 30s
-    static_configs:
-      - targets:
-{% if "dbhosts" in group_names %}
-        - "postgres.service.{{ inventory_hostname }}:9187"
-{% endif %}
+        - "{{ inventory_hostname }}:9100"
 
   - job_name: prometheus
     scrape_interval: 60s
@@ -52,48 +13,79 @@ scrape_configs:
       - targets:
         - "localhost:9090"
 
-#  - job_name: pushgateway
-#    scrape_interval: 5s
-#    static_configs:
-#      - targets:
-#        - "pushgateway.service.{{ inventory_hostname }}:9091"
+{% if "mediaservers" in group_names %}
+  - job_name: servaar
+    scrape_interval: 1m
+    static_configs:
+      - targets:
+        - "lidarr.service.{{ inventory_hostname }}:9707"
+        - "prowlarr.service.{{ inventory_hostname }}:9707"
+        - "radarr.service.{{ inventory_hostname }}:9707"
+        - "sonarr.service.{{ inventory_hostname }}:9707"
+        # Unpackerr
+        - "{{ inventory_hostname }}:5656"
 
+  - job_name: qbittorrent
+    scrape_interval: 15s
+    static_configs:
+      - targets:
+        - "qbittorrent.service.{{ inventory_hostname }}:8000"
+{% endif %}
+
+{% if "servicehosts" in group_names %}
+  - job_name: cadvisor
+    scrape_interval: 15s
+    static_configs:
+      - targets:
+        - "{{ inventory_hostname }}:8080"
+{% endif %}
+
+{% if "dbhosts" in group_names %}
+  - job_name: postgres
+    scrape_interval: 30s
+    static_configs:
+      - targets:
+        - "postgres.service.{{ inventory_hostname }}:9187"
+{% endif %}
+
+{% if "servicehosts" in group_names %}
   - job_name: traefik
     scrape_interval: 15s
     static_configs:
       - targets:
-{% if "servicehosts" in group_names %}
         - "traefik.service.{{ inventory_hostname }}:8081"
 {% endif %}
 
+{% if "kittens" in group_names %}
   - job_name: "kittens"
     scrape_interval: 5s
     static_configs:
       - targets:
         # - "canyon.labnet:9091"
         - "workstation.labnet:9091"
+{% endif %}
 
-  - job_name: snmp
-    static_configs:
-      - targets:
-        - 192.168.178.3
-    metrics_path: /snmp
-    params:
-      auth: [public_v2]
-      module: 
-        - hrDevice
-        - hrSWInstalled
-        - hrSWRun
-        - hrSWRunPerf
-        - hrStorage
-        - hrSystem
-        - if_mib
-        - ip_mib
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        # The SNMP exporter's real hostname:port.
-        replacement: "snmp-exporter.service.{{ inventory_hostname }}:9116"
+#  - job_name: snmp
+#    static_configs:
+#      - targets:
+#        - 192.168.178.3
+#    metrics_path: /snmp
+#    params:
+#      auth: [public_v2]
+#      module: 
+#        - hrDevice
+#        - hrSWInstalled
+#        - hrSWRun
+#        - hrSWRunPerf
+#        - hrStorage
+#        - hrSystem
+#        - if_mib
+#        - ip_mib
+#    relabel_configs:
+#      - source_labels: [__address__]
+#        target_label: __param_target
+#      - source_labels: [__param_target]
+#        target_label: instance
+#      - target_label: __address__
+#        # The SNMP exporter's real hostname:port.
+#        replacement: "snmp-exporter.service.{{ inventory_hostname }}:9116"
