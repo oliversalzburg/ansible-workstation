@@ -4,6 +4,16 @@
   community.general.timezone:
     name: "{{ config_system_timezone }}"
 
+- name: Get current locale configuration
+  ansible.builtin.command:
+    cmd: localectl status
+  register: locale_status
+  changed_when: false
+
+- name: Parse 'LANG' from current locale configuration
+  ansible.builtin.set_fact:
+    locale_lang: "{{ locale_status.stdout | regex_search('LANG=([^\n]+)', '\\1') | first }}"
+
 - name: Configure locales to be generated
   become: true
   ansible.builtin.debconf:
@@ -14,6 +24,7 @@
 
 - name: Reconfigure locales
   become: true
+  changed_when: locale_lang != config_system_locale
   ansible.builtin.command:
     cmd: "dpkg-reconfigure locales"
   environment:
@@ -32,11 +43,12 @@
 
 - name: Define locale 'en_DE.UTF-8'
   become: true
+  changed_when: locale_lang != config_system_locale
   ansible.builtin.command:
     cmd: localedef -i de_DE -f UTF-8 en_DE.UTF-8
 
 - name: Configure locale
   become: true
-  ignore_errors: true
+  changed_when: locale_lang != config_system_locale
   ansible.builtin.command:
     cmd: localectl set-locale {{ config_system_locale }}
