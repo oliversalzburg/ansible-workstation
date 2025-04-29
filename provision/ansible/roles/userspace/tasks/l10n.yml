@@ -32,9 +32,11 @@
 
 - name: Define locale 'en_DE.UTF-8'
   become: true
-  command: localedef -i de_DE -f UTF-8 en_DE.UTF-8
+  ansible.builtin.command:
+    cmd: localedef -i de_DE -f UTF-8 en_DE.UTF-8
 
 - name: Configure locale
   become: true
   ignore_errors: true
-  command: localectl set-locale {{ config_system_locale }}
+  ansible.builtin.command:
+    cmd: localectl set-locale {{ config_system_locale }}
