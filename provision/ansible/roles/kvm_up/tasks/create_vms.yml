@@ -1,0 +1,45 @@
+---
+- name: Configure the image
+  ansible.builtin.command: |
+    virt-customize -a {{ kvm_up_libvirt_pool_dir }}/{{ item.key }}.qcow2 \
+      --hostname {{ item.key }} \
+      --root-password "password:{{ kvm_up_vm_root_pass }}" \
+      --ssh-inject "root:file:{{ kvm_up_ssh_key }}" \
+      --uninstall cloud-init \
+      --selinux-relabel
+  changed_when: true
+  become: true
+
+- name: Define VMs
+  community.libvirt.virt:
+    command: define
+    xml: "{{ lookup('template', '{{ item.value.vm_template }}.xml.j2') }}"
+  become: true
+
+- name: Create second disk images if needed
+  ansible.builtin.command:
+    cmd: |
+      qemu-img create -f {{ item.value.file_type }} \
+        {{ kvm_up_libvirt_pool_dir }}/{{ item.key }}-vdb.{{ item.value.file_type }} {{ item.value.second_hdd_size }}
+    creates: "{{ kvm_up_libvirt_pool_dir }}/{{ item.key }}-vdb.{{ item.value.file_type }}"
+  become: true
+  when: item.value.second_hdd|bool
+
+- name: Attach second disk image to domain
+  ansible.builtin.command: |
+    virsh attach-disk {{ item.key }} \
+      --source "{{ kvm_up_libvirt_pool_dir }}/{{ item.key }}-vdb.{{ item.value.file_type }}" \
+      --target vdb \
+      --persistent
+  become: true
+  when: item.value.second_hdd|bool
+  changed_when: true
+
+- name: Ensure VMs are started
+  community.libvirt.virt:
+    name: "{{ item.key }}"
+    state: running
+  register: vm_start_results
+  until: vm_start_results is success
+  retries: 15
+  delay: 2

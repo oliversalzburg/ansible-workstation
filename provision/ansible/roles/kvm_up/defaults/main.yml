@@ -1,0 +1,33 @@
+---
+kvm_up_libvirt_pool_dir: /var/lib/libvirt/images
+kvm_up_vm_root_pass: "123456"
+kvm_up_ssh_key: /tmp/invalid
+
+kvm_up_nets:
+  test:
+    net_template: network-template
+    title: Labnet Local Domain
+    description: Labnet Local Domain Network
+    nic: eth0
+
+kvm_up_guests:
+  test:
+    vm_ram_mb: 512
+    vm_vcpus: 1
+    vm_net: default
+    os_type: debian12
+    file_type: qcow2
+    base_image_name: debian-template
+    vm_template: debian-template
+    second_hdd: false
+    second_hdd_size: ""
+  test2:
+    vm_ram_mb: 512
+    vm_vcpus: 1
+    vm_net: default
+    os_type: debian12
+    file_type: qcow2
+    base_image_name: debian-template
+    vm_template: debian-template
+    second_hdd: true
+    second_hdd_size: "100M"

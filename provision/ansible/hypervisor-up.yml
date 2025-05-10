@@ -1,0 +1,10 @@
+---
+- name: KVM Hosts
+  hosts: hypervisor
+  roles:
+    - role: kvm_up
+
+- name: KVM Guests
+  hosts: domains
+  roles:
+    - role: domain_up

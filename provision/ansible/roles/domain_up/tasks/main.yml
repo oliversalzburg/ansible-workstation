@@ -1,0 +1,47 @@
+---
+- name: Upgrade to latest
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: full
+  become: true
+
+- name: Remove sources.list
+  ansible.builtin.file:
+    src: /etc/apt/sources.list
+    state: absent
+
+- name: Clean apt cache
+  ansible.builtin.apt:
+    clean: true
+  become: true
+
+- name: Add trixie
+  ansible.builtin.deb822_repository:
+    name: debian
+    types: deb
+    uris: http://deb.debian.org/debian
+    suites: trixie
+    components:
+      - main
+      - contrib
+      - non-free
+      - non-free-firmware
+  become: true
+
+- name: Add trixie-security
+  ansible.builtin.deb822_repository:
+    name: debian
+    types: deb
+    uris: http://security.debian.org/debian-security/
+    suites: trixie-security
+    components:
+      - main
+      - contrib
+      - non-free
+      - non-free-firmware
+  become: true
+
+- name: Upgrade to trixie
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: full

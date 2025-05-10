@@ -10,6 +10,8 @@ config_system_locale: en_DE.UTF-8
 config_system_language: en_US.UTF-8
 config_system_timezone: Europe/Berlin
 
+kvm_up_ssh_key: /home/oliver/.ssh/id_ed25519.pub
+
 directory_downloads: /tmp/.ansible-downloads
 directory_networkd: /etc/systemd/network
 directory_systemd: /etc/systemd/system
