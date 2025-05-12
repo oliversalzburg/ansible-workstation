@@ -4,9 +4,13 @@
   <description>{{ item.value.description }}</description>
   <bridge name="{{ item.key }}"/>
   <forward mode="route" dev="{{ item.value.nic }}"/>
-  <ip address="10.0.10.1" netmask="255.255.255.0">
+  <domain name="network"/>
+  <ip address="{{ item.value.network }}" netmask="{{ item.value.network_mask }}">
     <dhcp>
-      <range start="10.0.10.2" end="10.0.10.254"/>
+      <range start="{{ item.value.dhcp_start }}" end="{{ item.value.dhcp_end }}"/>
+      {% for host in item.value.dhcp_reserve | dict2items %}
+      <host mac="{{ host.key }}" name="{{ host.value.name }}" ip="{{ host.value.ip }}"/>
+      {% endfor %}
     </dhcp>
   </ip>
 </network>

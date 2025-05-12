@@ -1,4 +1,9 @@
 ---
+- name: Debug
+  ansible.builtin.debug:
+    msg: '<host mac="{{ item.key }}" name="{{ item.value.name }}" ip="{{ item.value.ip }}"/>'
+  loop: "{{ item.value.dhcp_reserve | dict2items }}"
+
 - name: Define networks
   community.libvirt.virt_net:
     command: define

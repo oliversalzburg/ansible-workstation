@@ -7,8 +7,9 @@
 
 - name: Remove sources.list
   ansible.builtin.file:
-    src: /etc/apt/sources.list
+    path: /etc/apt/sources.list
     state: absent
+  become: true
 
 - name: Clean apt cache
   ansible.builtin.apt:
@@ -17,7 +18,7 @@
 
 - name: Add trixie
   ansible.builtin.deb822_repository:
-    name: debian
+    name: debian-trixie
     types: deb
     uris: http://deb.debian.org/debian
     suites: trixie
@@ -30,7 +31,7 @@
 
 - name: Add trixie-security
   ansible.builtin.deb822_repository:
-    name: debian
+    name: debian-trixie-security
     types: deb
     uris: http://security.debian.org/debian-security/
     suites: trixie-security
@@ -45,3 +46,4 @@
   ansible.builtin.apt:
     update_cache: true
     upgrade: full
+  become: true

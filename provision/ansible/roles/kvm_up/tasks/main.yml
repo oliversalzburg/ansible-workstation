@@ -27,6 +27,7 @@
     remote_src: true
     mode: "0o660"
     group: libvirt-qemu
+    owner: libvirt-qemu
   register: copy_results
   with_dict: "{{ kvm_up_guests }}"
   become: true

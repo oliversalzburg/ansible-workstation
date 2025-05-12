@@ -83,7 +83,6 @@
       - samba
       - smbclient
       - snmp
-      - software-properties-common
       - strace
       - tzdata
       - unrar

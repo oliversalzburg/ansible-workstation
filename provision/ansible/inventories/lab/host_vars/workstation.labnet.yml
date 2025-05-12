@@ -1,5 +1,5 @@
-podman_service_network_subnet: "10.100.26.0/24"
-podman_service_network_gateway: "10.100.26.1"
+podman_service_network_subnet: "10.100.10.0/24"
+podman_service_network_gateway: "10.100.10.1"
 
 kvm_up_nets:
   domain:
@@ -7,12 +7,21 @@ kvm_up_nets:
     title: Labnet Local Domain
     description: Labnet Local Domain Network
     nic: enp0s25
+    network: 10.0.10.1
+    network_mask: 255.255.255.0
+    dhcp_start: 10.0.10.10
+    dhcp_end: 10.0.10.254
+    dhcp_reserve:
+      64:16:7F:78:EC:45:
+        name: media
+        ip: 10.0.10.2
 
 kvm_up_guests:
   media:
     vm_ram_mb: 16384
     vm_vcpus: 6
     vm_net: domain
+    mac_address: "64:16:7F:78:EC:45"
     os_type: debian12
     file_type: qcow2
     base_image_name: debian-template

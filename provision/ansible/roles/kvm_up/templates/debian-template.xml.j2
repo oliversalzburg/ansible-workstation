@@ -150,6 +150,7 @@
     </controller>
     <interface type='network'>
       <source network='{{ item.value.vm_net }}'/>
+      <mac address='{{ item.value.mac_address }}'/>
       <target dev='vnet1'/>
       <model type='virtio'/>
       <alias name='net0'/>

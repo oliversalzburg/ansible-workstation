@@ -51,4 +51,5 @@
   become: true
   changed_when: locale_lang != config_system_locale
   ansible.builtin.command:
-    cmd: localectl set-locale {{ config_system_locale }}
+    # cmd: localectl set-locale LANG={{ config_system_locale }}
+    cmd: update-locale LANG={{ config_system_locale }} LANGUAGE={{ config_system_locale }} LC_ALL={{ config_system_locale }}

@@ -12,6 +12,7 @@
     state: started
     enabled: true
 
+# Ideally, just reboot fresh machines after this is applied. Then re-run.
 - name: Enable systemd-networkd
   become: true
   ansible.builtin.systemd:
@@ -38,22 +39,22 @@
     group: root
     mode: "0o644"
 
+- name: APT
+  ansible.builtin.include_tasks: apt.yml
+# - name: DNS
+#   ansible.builtin.include_tasks: dns.yml
+
 - name: Set default editor
   become: true
   community.general.alternatives:
     name: editor
     path: /usr/bin/vim
 
-- name: APT
-  ansible.builtin.include_tasks: apt.yml
-# - name: DNS
-#   ansible.builtin.include_tasks: dns.yml
-
 - name: Age
   ansible.builtin.include_tasks: age.yml
 - name: Coding environment
   ansible.builtin.include_tasks: coding-environment.yml
-- name: NodeJS
+- name: NodeJs
   ansible.builtin.include_tasks: nodejs.yml
 - name: OpenTofu
   ansible.builtin.include_tasks: opentofu.yml
