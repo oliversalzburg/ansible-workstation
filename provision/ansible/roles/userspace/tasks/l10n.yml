@@ -26,7 +26,7 @@
   become: true
   changed_when: locale_lang != config_system_locale
   ansible.builtin.command:
-    cmd: "dpkg-reconfigure locales"
+    cmd: dpkg-reconfigure locales
   environment:
     DEBIAN_FRONTEND: noninteractive
 
