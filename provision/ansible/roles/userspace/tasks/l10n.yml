@@ -47,9 +47,14 @@
   ansible.builtin.command:
     cmd: localedef -i de_DE -f UTF-8 en_DE.UTF-8
 
-- name: Configure locale
+- name: Set locale with localectl
   become: true
   changed_when: locale_lang != config_system_locale
   ansible.builtin.command:
-    # cmd: localectl set-locale LANG={{ config_system_locale }}
+    cmd: localectl set-locale LANG={{ config_system_locale }}
+
+- name: Set locale with update-locale
+  become: true
+  changed_when: locale_lang != config_system_locale
+  ansible.builtin.command:
     cmd: update-locale LANG={{ config_system_locale }} LANGUAGE={{ config_system_locale }} LC_ALL={{ config_system_locale }}
