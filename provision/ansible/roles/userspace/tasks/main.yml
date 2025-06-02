@@ -136,7 +136,5 @@
 
 - name: Coding Environment
   ansible.builtin.include_tasks: coding-environment.yml
-- name: Localization
-  ansible.builtin.include_tasks: l10n.yml
 - name: NodeJs
   ansible.builtin.include_tasks: nodejs.yml
