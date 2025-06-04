@@ -10,7 +10,7 @@ collections:
   - name: community.sops
     version: 2.0.5
   - name: containers.podman
-    version: 1.16.3
+    version: 1.16.4
   - name: https://github.com/maxhoesel-ansible/ansible-collection-smallstep
     type: git
     version: 187c10bb7c42a5b573d90df09bd8c27994ee5b96
