@@ -8,7 +8,7 @@ collections:
   - name: community.postgresql
     version: 4.1.0
   - name: community.sops
-    version: 2.0.5
+    version: 2.1.0
   - name: containers.podman
     version: 1.16.4
   - name: https://github.com/maxhoesel-ansible/ansible-collection-smallstep
