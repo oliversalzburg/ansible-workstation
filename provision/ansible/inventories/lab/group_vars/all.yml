@@ -87,6 +87,6 @@ podman_radarr_version: "v5.26.2.10099"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/sonarr versioning=loose
 podman_sonarr_version: "v4.0.15.2941"
 # renovate: datasource=docker depName=docker.io/library/traefik versioning=semver-coerced
-podman_traefik_version: "v3.4.3"
+podman_traefik_version: "v3.4.4"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/whisparr versioning=loose
 podman_whisparr_version: "v2.0.0.1112"
