@@ -43,5 +43,8 @@
       - radicale
       - thunderbird
 
+- name: Signal
+  ansible.builtin.include_tasks: signal.yml
+
 - name: Steam
   ansible.builtin.include_tasks: steam.yml

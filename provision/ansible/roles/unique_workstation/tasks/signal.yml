@@ -1,0 +1,19 @@
+- name: Add Signal Repository
+  become: true
+  ansible.builtin.deb822_repository:
+    name: signal
+    types: [deb]
+    uris: https://updates.signal.org/desktop/apt
+    suites: [xenial]
+    components: [main]
+    signed_by: https://updates.signal.org/desktop/apt/keys.asc
+    state: present
+    enabled: true
+
+- name: Install Signal
+  become: true
+  ansible.builtin.apt:
+    name:
+      - signal-desktop
+    state: present
+    update_cache: true
