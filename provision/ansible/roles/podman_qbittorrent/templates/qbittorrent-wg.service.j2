@@ -35,7 +35,7 @@ ExecStart=/usr/bin/podman run \
   --rm \
   --sdnotify "conmon" \
   # Image requires root-level access
-  #--user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  #--user "{{ _podman_qbittorrent_user.uid }}:{{ _podman_qbittorrent_groups.results[0].gid }}" \
   procustodibus/wireguard:{{ podman_qbittorrent_wireguard_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10

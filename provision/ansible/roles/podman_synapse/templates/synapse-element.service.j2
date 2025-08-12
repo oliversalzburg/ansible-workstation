@@ -33,7 +33,7 @@ ExecStart=/usr/bin/podman run \
   --rm \
   --sdnotify "conmon" \
   # Element Web container expects to run as root
-  #--user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  #--user "{{ _podman_synapse_user.uid }}:{{ _podman_synapse_groups.results[0].gid }}" \
   vectorim/element-web:{{ podman_synapse_element_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10

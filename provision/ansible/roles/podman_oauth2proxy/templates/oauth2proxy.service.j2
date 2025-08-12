@@ -49,7 +49,7 @@ ExecStart=/usr/bin/podman run \
   --rm \
   --secret "podman_oauth2proxy_cookie_secret,type=env,target=OAUTH2_PROXY_COOKIE_SECRET" \
   --secret "podman_oauth2proxy_client_secret,type=env,target=OAUTH2_PROXY_CLIENT_SECRET" \
-  --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  --user "{{ _podman_oauth2proxy_user.uid }}:{{ _podman_oauth2proxy_groups.results[0].gid }}" \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
   --volume "{{ podman_oauth2proxy_basedir }}/templates:/templates:ro" \
   oauth2-proxy/oauth2-proxy:{{ podman_oauth2proxy_version }}

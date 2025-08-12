@@ -59,7 +59,7 @@ ExecStart=/usr/bin/podman run \
   --pull "never" \
   --replace \
   --rm \
-  --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  --user "{{ _podman_nexus_user.uid }}:{{ _podman_nexus_groups.results[0].gid }}" \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
   --volume "{{ podman_nexus_basedir }}/data:/nexus-data:rw" \
   sonatype/nexus3:{{ podman_nexus_version }}

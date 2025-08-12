@@ -40,7 +40,7 @@ ExecStart=/usr/bin/podman run \
   --pull "never" \
   --replace \
   --rm \
-  --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  --user "{{ _podman_grafana_user.uid }}:{{ _podman_grafana_groups.results[0].gid }}" \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
   --volume "{{ podman_grafana_basedir }}/data:/var/lib/grafana:rw" \
   grafana/grafana-oss:{{ podman_grafana_version }}-ubuntu

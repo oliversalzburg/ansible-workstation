@@ -31,7 +31,7 @@ ExecStart=/usr/bin/podman run \
   --replace \
   --rm \
   --sdnotify "conmon" \
-  --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  --user "{{ _podman_synapse_user.uid }}:{{ _podman_synapse_groups.results[0].gid }}" \
   matrix-org/synapse:{{ podman_synapse_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10

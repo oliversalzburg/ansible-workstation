@@ -29,7 +29,7 @@ ExecStart=/usr/bin/podman run \
   --replace \
   --rm \
   --sdnotify "conmon" \
-  --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  --user "{{ _podman_qbittorrent_user.uid }}:{{ _podman_qbittorrent_groups.results[0].gid }}" \
   jesec/flood:{{ podman_qbittorrent_flood_version }} \
   --allowedpath "/data" \
   --auth "none" \

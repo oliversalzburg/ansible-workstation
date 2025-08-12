@@ -37,7 +37,7 @@ ExecStart=/usr/bin/podman run \
   --rm \
   --shm-size "256m" \
   # GitLab's monolithic image makes no sense to attempt rootless
-  #--user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  #--user "{{ _podman_gitlab_user.uid }}:{{ _podman_gitlab_groups.results[0].gid }}" \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-bundle.crt:ro" \
   --volume "/etc/ssl/certs/ca-certificates.crt:/opt/gitlab/embedded/ssl/certs/cacert.pem:ro" \
   --volume "{{ podman_gitlab_basedir }}/config:/etc/gitlab:rw" \

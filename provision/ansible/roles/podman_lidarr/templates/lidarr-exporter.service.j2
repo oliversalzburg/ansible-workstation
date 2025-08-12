@@ -34,7 +34,7 @@ ExecStart=/usr/bin/podman run \
   --replace \
   --rm \
   --sdnotify "conmon" \
-  --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  --user "{{ _podman_lidarr_user.uid }}:{{ _podman_lidarr_groups.results[0].gid }}" \
   onedr0p/exportarr:{{ podman_lidarr_exportarr_version }} lidarr
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10

@@ -120,7 +120,7 @@
   ansible.builtin.template:
     src: homeserver.yml.j2
     dest: "{{ podman_synapse_basedir }}/data/homeserver.yml"
-    owner: "{{ _user.uid }}"
+    owner: "{{ _podman_synapse_user.uid }}"
     group: "{{ _podman_synapse_groups.results[0].gid }}"
     mode: "0o640"
 - name: Copy configuration
@@ -128,7 +128,7 @@
   ansible.builtin.template:
     src: config.json.j2
     dest: "{{ podman_synapse_basedir }}/element/config.json"
-    owner: "{{ _user.uid }}"
+    owner: "{{ _podman_synapse_user.uid }}"
     group: "{{ _podman_synapse_groups.results[0].gid }}"
     mode: "0o640"
 

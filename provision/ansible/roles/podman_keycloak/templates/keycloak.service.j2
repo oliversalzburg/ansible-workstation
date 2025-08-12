@@ -39,7 +39,7 @@ ExecStart=/usr/bin/podman run \
   --secret "podman_keycloak_admin,type=env,target=KEYCLOAK_ADMIN" \
   --secret "podman_keycloak_admin_password,type=env,target=KEYCLOAK_ADMIN_PASSWORD" \
   # Keycloak doesn't seem to support running rootless. Errors on startup.
-  #--user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  #--user "{{ _podman_keycloak_user.uid }}:{{ _podman_keycloak_groups.results[0].gid }}" \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
   keycloak/keycloak:{{ podman_keycloak_version }} \
   start \

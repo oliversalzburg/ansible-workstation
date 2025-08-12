@@ -30,7 +30,7 @@ ExecStart=/usr/bin/podman run \
   --replace \
   --rm \
   --sdnotify "conmon" \
-  --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  --user "{{ _podman_sonarr_user.uid }}:{{ _podman_sonarr_groups.results[0].gid }}" \
   oliversalzburg/containers/sonarr:{{ podman_sonarr_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10

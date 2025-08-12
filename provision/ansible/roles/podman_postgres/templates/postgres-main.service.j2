@@ -34,7 +34,7 @@ ExecStart=/usr/bin/podman run \
   --replace \
   --rm \
   --sdnotify "conmon" \
-  --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  --user "{{ _podman_postgres_user.uid }}:{{ _podman_postgres_groups.results[0].gid }}" \
   postgres:{{ podman_postgres_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10

@@ -22,8 +22,8 @@ ExecStart=/usr/bin/podman run \
   --cidfile "%t/%n.ctr-id" \
   --conmon-pidfile "%t/%n.pid" \
   --detach \
-  --env "UID={{ _user.uid }}" \
-  --env "GID={{ _groups.results[0].gid }}" \
+  --env "UID={{ _podman_synapse_user.uid }}" \
+  --env "GID={{ _podman_synapse_groups.results[0].gid }}" \
   --env "TZ={{ config_system_timezone }}" \
   --hostname "%n.{{ inventory_hostname }}" \
   --label "traefik.enable=false" \
@@ -35,7 +35,7 @@ ExecStart=/usr/bin/podman run \
   --replace \
   --rm \
   # Another garbage image with root requirement
-  #--user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  #--user "{{ _podman_synapse_user.uid }}:{{ _podman_synapse_groups.results[0].gid }}" \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
   --volume "{{ podman_synapse_basedir }}/data/discord:/data:rw" \
   mautrix/discord:{{ podman_synapse_mautrix_discord_version }}

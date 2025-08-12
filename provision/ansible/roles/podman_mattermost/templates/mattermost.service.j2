@@ -43,7 +43,7 @@ ExecStart=/usr/bin/podman run \
   --pull "never" \
   --replace \
   --rm \
-  --user "{{ _user.uid }}:{{ _groups.results[0].gid }}" \
+  --user "{{ _podman_mattermost_user.uid }}:{{ _podman_mattermost_groups.results[0].gid }}" \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
   --volume "{{ podman_mattermost_basedir }}/config:/mattermost/config:rw" \
   --volume "{{ podman_mattermost_basedir }}/data:/mattermost/data:rw" \
