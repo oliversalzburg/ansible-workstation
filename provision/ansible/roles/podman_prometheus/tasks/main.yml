@@ -1,7 +1,7 @@
 ---
 - name: Create groups
   become: true
-  register: _groups
+  register: _podman_prometheus_groups
   ansible.builtin.group:
     name: "{{ item }}"
     state: present
@@ -19,11 +19,11 @@
 
 - name: Create user
   become: true
-  register: _user
+  register: _podman_prometheus_user
   ansible.builtin.user:
     comment: "{{ podman_prometheus_name }}"
     create_home: false
-    group: "{{ _groups.results[0].gid }}"
+    group: "{{ _podman_prometheus_groups.results[0].gid }}"
     groups: "{{ podman_prometheus_groups }}"
     home: "{{ podman_prometheus_basedir }}"
     name: "{{ podman_prometheus_id }}"
@@ -38,8 +38,8 @@
   ansible.builtin.file:
     path: "{{ podman_prometheus_basedir }}"
     state: directory
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: "{{ _podman_prometheus_user.uid }}"
+    group: "{{ _podman_prometheus_groups.results[0].gid }}"
     mode: "u=rwX,g=rX"
     recurse: true
   notify: Restart prometheus
@@ -49,8 +49,8 @@
   ansible.builtin.file:
     path: "{{ podman_prometheus_basedir }}/{{ item }}"
     state: directory
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: "{{ _podman_prometheus_user.uid }}"
+    group: "{{ _podman_prometheus_groups.results[0].gid }}"
     mode: "u=rwX,g=rX"
     recurse: true
   loop:
@@ -64,8 +64,8 @@
   ansible.builtin.template:
     src: prometheus.yml.j2
     dest: "{{ podman_prometheus_basedir }}/etc/prometheus.yml"
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: "{{ _podman_prometheus_user.uid }}"
+    group: "{{ _podman_prometheus_groups.results[0].gid }}"
     mode: "0o644"
   notify: Restart prometheus
 

@@ -5,13 +5,13 @@
       set -o pipefail
       apt-cache policy | grep {{ ansible_distribution_release }}/contrib
     executable: /bin/bash
-  register: result_check_contrib
-  changed_when: result_check_contrib.rc == 1
-  failed_when: result_check_contrib.rc > 1
+  register: all_result_check_contrib
+  changed_when: all_result_check_contrib.rc == 1
+  failed_when: all_result_check_contrib.rc > 1
 - name: Enable contrib APT
   become: true
   ansible.builtin.command: apt-add-repository --yes contrib
-  when: result_check_contrib.rc == 1
+  when: all_result_check_contrib.rc == 1
   changed_when: true
 
 - name: Check APT non-free
@@ -20,13 +20,13 @@
       set -o pipefail
       apt-cache policy | grep {{ ansible_distribution_release }}/non-free
     executable: /bin/bash
-  register: result_check_nonfree
-  changed_when: result_check_nonfree.rc == 1
-  failed_when: result_check_nonfree.rc > 1
+  register: all_result_check_nonfree
+  changed_when: all_result_check_nonfree.rc == 1
+  failed_when: all_result_check_nonfree.rc > 1
 - name: Enable non-free APT
   become: true
   ansible.builtin.command: apt-add-repository --yes non-free
-  when: result_check_nonfree.rc == 1
+  when: all_result_check_nonfree.rc == 1
   changed_when: true
 
 - name: Check APT non-free-firmware
@@ -35,21 +35,21 @@
       set -o pipefail
       apt-cache policy | grep {{ ansible_distribution_release }}/non-free-firmware
     executable: /bin/bash
-  register: result_check_nonfreefirmware
-  changed_when: result_check_nonfreefirmware.rc == 1
-  failed_when: result_check_nonfreefirmware.rc > 1
+  register: all_result_check_nonfreefirmware
+  changed_when: all_result_check_nonfreefirmware.rc == 1
+  failed_when: all_result_check_nonfreefirmware.rc > 1
 - name: Enable non-free-firmware APT
   become: true
   ansible.builtin.command: apt-add-repository --yes non-free-firmware
-  when: result_check_nonfreefirmware.rc == 1
+  when: all_result_check_nonfreefirmware.rc == 1
   changed_when: true
 
 - name: Install commonly used dependencies
   become: true
-  register: result
+  register: all_result
   retries: 3
   delay: 3
-  until: result is not failed
+  until: all_result is not failed
   ansible.builtin.apt:
     name:
       - acl

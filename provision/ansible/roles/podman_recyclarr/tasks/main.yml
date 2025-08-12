@@ -1,7 +1,7 @@
 ---
 - name: Create groups
   become: true
-  register: _groups
+  register: _podman_recyclarr_groups
   ansible.builtin.group:
     name: "{{ item }}"
     state: present
@@ -19,11 +19,11 @@
 
 - name: Create user
   become: true
-  register: _user
+  register: _podman_recyclarr_user
   ansible.builtin.user:
     comment: "{{ podman_recyclarr_name }}"
     create_home: false
-    group: "{{ _groups.results[0].gid }}"
+    group: "{{ _podman_recyclarr_groups.results[0].gid }}"
     groups: "{{ podman_recyclarr_groups }}"
     home: "{{ podman_recyclarr_basedir }}"
     name: "{{ podman_recyclarr_id }}"
@@ -38,8 +38,8 @@
   ansible.builtin.file:
     path: "{{ podman_recyclarr_basedir }}"
     state: directory
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: "{{ _podman_recyclarr_user.uid }}"
+    group: "{{ _podman_recyclarr_groups.results[0].gid }}"
     mode: "u=rwX,g=rX"
     recurse: true
   notify: Restart recyclarr
@@ -49,8 +49,8 @@
   ansible.builtin.file:
     path: "{{ podman_recyclarr_basedir }}/{{ item }}"
     state: directory
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: "{{ _podman_recyclarr_user.uid }}"
+    group: "{{ _podman_recyclarr_groups.results[0].gid }}"
     mode: "u=rwX,g=rX"
     recurse: true
   loop:
@@ -63,8 +63,8 @@
   ansible.builtin.template:
     src: "recyclarr.yml.j2"
     dest: "{{ podman_recyclarr_basedir }}/config/recyclarr.yml"
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: "{{ _podman_recyclarr_user.uid }}"
+    group: "{{ _podman_recyclarr_groups.results[0].gid }}"
     mode: "0o644"
   notify: Restart recyclarr
 

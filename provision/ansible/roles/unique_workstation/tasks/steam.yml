@@ -5,14 +5,14 @@
       set -o pipefail
       dpkg --print-foreign-architectures | grep i386
     executable: /bin/bash
-  register: result_i386_check
-  changed_when: result_i386_check.rc == 1
-  failed_when: result_i386_check.rc > 1
+  register: unique_workstation_result_i386_check
+  changed_when: unique_workstation_result_i386_check.rc == 1
+  failed_when: unique_workstation_result_i386_check.rc > 1
 
 - name: Enable i386 architecture
   become: true
   ansible.builtin.command: dpkg --add-architecture i386
-  when: result_i386_check.rc == 1
+  when: unique_workstation_result_i386_check.rc == 1
   changed_when: true
 
 - name: Accept Steam EULA

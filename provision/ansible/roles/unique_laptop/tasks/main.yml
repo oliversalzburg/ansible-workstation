@@ -1,10 +1,10 @@
 ---
 - name: Install commonly used dependencies
   become: true
-  register: result
+  register: unique_laptop_result
   retries: 3
   delay: 3
-  until: result is not failed
+  until: unique_laptop_result is not failed
   ansible.builtin.apt:
     name:
       - wpasupplicant

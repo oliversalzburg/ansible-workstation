@@ -8,10 +8,10 @@
     recurse: false
 
 - name: Download SOPS binary
-  register: result
+  register: all_result
   retries: 3
   delay: 3
-  until: result is not failed
+  until: all_result is not failed
   ansible.builtin.get_url:
     url: "https://github.com/mozilla/sops/releases/download/v{{ version_sops }}/sops-v{{ version_sops }}.linux"
     dest: "{{ directory_downloads }}"

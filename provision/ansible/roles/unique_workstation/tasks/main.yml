@@ -33,10 +33,10 @@
 
 - name: Install workstation dependencies
   become: true
-  register: result
+  register: unique_workstation_result
   retries: 3
   delay: 3
-  until: result is not failed
+  until: unique_workstation_result is not failed
   ansible.builtin.apt:
     name:
       - chromium

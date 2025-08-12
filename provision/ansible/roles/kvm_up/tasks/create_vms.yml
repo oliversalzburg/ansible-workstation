@@ -39,7 +39,7 @@
   community.libvirt.virt:
     name: "{{ item.key }}"
     state: running
-  register: vm_start_results
-  until: vm_start_results is success
+  register: kvm_up_vm_start_results
+  until: kvm_up_vm_start_results is success
   retries: 15
   delay: 2

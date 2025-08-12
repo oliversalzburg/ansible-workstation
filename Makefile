@@ -1,4 +1,5 @@
-lint:
+lint: requirements
+	. .venv/bin/activate
 	cd provision/ansible; ansible-lint
 
 age.agekey:
