@@ -1,7 +1,7 @@
 ---
 - name: Create groups
   become: true
-  register: _groups
+  register: _podman_prowlarr_groups
   ansible.builtin.group:
     name: "{{ item }}"
     state: present
@@ -19,11 +19,11 @@
 
 - name: Create user
   become: true
-  register: _user
+  register: _podman_prowlarr_user
   ansible.builtin.user:
     comment: "{{ podman_prowlarr_name }}"
     create_home: false
-    group: "{{ _groups.results[0].gid }}"
+    group: "{{ _podman_prowlarr_groups.results[0].gid }}"
     groups: "{{ podman_prowlarr_groups }}"
     home: "{{ podman_prowlarr_basedir }}"
     name: "{{ podman_prowlarr_id }}"
@@ -38,8 +38,8 @@
   ansible.builtin.file:
     path: "{{ podman_prowlarr_basedir }}"
     state: directory
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: "{{ _podman_prowlarr_user.uid }}"
+    group: "{{ _podman_prowlarr_groups.results[0].gid }}"
     mode: "u=rwX,g=rX,o="
     recurse: true
   notify: Restart prowlarr
@@ -49,8 +49,8 @@
   ansible.builtin.file:
     path: "{{ podman_prowlarr_basedir }}/{{ item }}"
     state: directory
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: "{{ _podman_prowlarr_user.uid }}"
+    group: "{{ _podman_prowlarr_groups.results[0].gid }}"
     mode: "u=rwX,g=rX,o="
     recurse: true
   loop:
@@ -59,10 +59,10 @@
 
 
 - name: Create postgres user
-  register: result
+  register: podman_prowlarr_result
   retries: 3
   delay: 3
-  until: result is not failed
+  until: podman_prowlarr_result is not failed
   community.postgresql.postgresql_user:
     host: localhost
     login_password: "{{ podman_postgres_master_password }}"
@@ -72,10 +72,10 @@
   notify: Restart prowlarr
 
 - name: Create postgres database
-  register: result
+  register: podman_prowlarr_result
   retries: 3
   delay: 3
-  until: result is not failed
+  until: podman_prowlarr_result is not failed
   community.postgresql.postgresql_db:
     host: localhost
     login_password: "{{ podman_postgres_master_password }}"
@@ -120,8 +120,8 @@
   ansible.builtin.template:
     src: config.xml.j2
     dest: "{{ podman_prowlarr_basedir }}/config/config.xml"
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: "{{ _podman_prowlarr_user.uid }}"
+    group: "{{ _podman_prowlarr_groups.results[0].gid }}"
     mode: "0o640"
   notify: Restart prowlarr
 

@@ -62,10 +62,10 @@
     recurse: true
 
 - name: Download Oh My Zsh installer
-  register: result
+  register: userspace_result
   retries: 3
   delay: 3
-  until: result is not failed
+  until: userspace_result is not failed
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
     dest: "{{ userspace_downloads }}/install-ohmyzsh.sh"

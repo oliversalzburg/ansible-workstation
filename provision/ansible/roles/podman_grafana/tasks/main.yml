@@ -1,7 +1,7 @@
 ---
 - name: Create groups
   become: true
-  register: _groups
+  register: _podman_grafana_groups
   ansible.builtin.group:
     name: "{{ item }}"
     state: present
@@ -19,11 +19,11 @@
 
 - name: Create user
   become: true
-  register: _user
+  register: _podman_grafana_user
   ansible.builtin.user:
     comment: "{{ podman_grafana_name }}"
     create_home: false
-    group: "{{ _groups.results[0].gid }}"
+    group: "{{ _podman_grafana_groups.results[0].gid }}"
     groups: "{{ podman_grafana_groups }}"
     home: "{{ podman_grafana_basedir }}"
     name: "{{ podman_grafana_id }}"
@@ -38,8 +38,8 @@
   ansible.builtin.file:
     path: "{{ podman_grafana_basedir }}"
     state: directory
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: "{{ _podman_grafana_user.uid }}"
+    group: "{{ _podman_grafana_groups.results[0].gid }}"
     mode: "u=rwX,g=rX,o="
     recurse: true
   notify: Restart grafana
@@ -49,8 +49,8 @@
   ansible.builtin.file:
     path: "{{ podman_grafana_basedir }}/{{ item }}"
     state: directory
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: "{{ _podman_grafana_user.uid }}"
+    group: "{{ _podman_grafana_groups.results[0].gid }}"
     mode: "u=rwX,g=rX,o="
     recurse: true
   loop:

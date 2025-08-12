@@ -1,7 +1,7 @@
 ---
 - name: Create groups
   become: true
-  register: _groups
+  register: _podman_synapse_groups
   ansible.builtin.group:
     name: "{{ item }}"
     state: present
@@ -17,11 +17,11 @@
 
 - name: Create user
   become: true
-  register: _user
+  register: _podman_synapse_user
   ansible.builtin.user:
     comment: "{{ podman_synapse_name }}"
     create_home: false
-    group: "{{ _groups.results[0].gid }}"
+    group: "{{ _podman_synapse_groups.results[0].gid }}"
     groups: "{{ podman_synapse_groups }}"
     home: "{{ podman_synapse_basedir }}"
     name: "{{ podman_synapse_id }}"
@@ -35,8 +35,8 @@
   ansible.builtin.file:
     path: "{{ podman_synapse_basedir }}"
     state: directory
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: "{{ _podman_synapse_user.uid }}"
+    group: "{{ _podman_synapse_groups.results[0].gid }}"
     mode: "u=rwX,g=rX"
     recurse: true
 
@@ -45,8 +45,8 @@
   ansible.builtin.file:
     path: "{{ podman_synapse_basedir }}/{{ item }}"
     state: directory
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: "{{ _podman_synapse_user.uid }}"
+    group: "{{ _podman_synapse_groups.results[0].gid }}"
     mode: "u=rwX,g=rX"
     recurse: true
   loop:
@@ -57,10 +57,10 @@
 
 
 - name: Create postgres user
-  register: result
+  register: podman_synapse_result
   retries: 3
   delay: 3
-  until: result is not failed
+  until: podman_synapse_result is not failed
   community.postgresql.postgresql_user:
     host: localhost
     login_password: "{{ podman_postgres_master_password }}"
@@ -69,10 +69,10 @@
     password: "{{ podman_synapse_pg_password }}"
 
 - name: Create postgres database
-  register: result
+  register: podman_synapse_result
   retries: 3
   delay: 3
-  until: result is not failed
+  until: podman_synapse_result is not failed
   community.postgresql.postgresql_db:
     encoding: UTF-8
     host: localhost
@@ -121,7 +121,7 @@
     src: homeserver.yml.j2
     dest: "{{ podman_synapse_basedir }}/data/homeserver.yml"
     owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    group: "{{ _podman_synapse_groups.results[0].gid }}"
     mode: "0o640"
 - name: Copy configuration
   become: true
@@ -129,7 +129,7 @@
     src: config.json.j2
     dest: "{{ podman_synapse_basedir }}/element/config.json"
     owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    group: "{{ _podman_synapse_groups.results[0].gid }}"
     mode: "0o640"
 
 

@@ -1,7 +1,7 @@
 ---
 - name: Create groups
   become: true
-  register: _groups
+  register: _podman_postgres_groups
   ansible.builtin.group:
     name: "{{ item }}"
     state: present
@@ -19,11 +19,11 @@
 
 - name: Create user
   become: true
-  register: _user
+  register: _podman_postgres_user
   ansible.builtin.user:
     comment: "{{ podman_postgres_name }}"
     create_home: false
-    group: "{{ _groups.results[0].gid }}"
+    group: "{{ _podman_postgres_groups.results[0].gid }}"
     groups: "{{ podman_postgres_groups }}"
     home: "{{ podman_postgres_basedir }}"
     name: "{{ podman_postgres_id }}"
@@ -38,8 +38,8 @@
   ansible.builtin.file:
     path: "{{ podman_postgres_basedir }}"
     state: directory
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: "{{ _podman_postgres_user.uid }}"
+    group: "{{ _podman_postgres_groups.results[0].gid }}"
     mode: "u=rwX,g=,o="
     recurse: true
   notify: Restart postgres
@@ -49,8 +49,8 @@
   ansible.builtin.file:
     path: "{{ podman_postgres_basedir }}/{{ item }}"
     state: directory
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: "{{ _podman_postgres_user.uid }}"
+    group: "{{ _podman_postgres_groups.results[0].gid }}"
     mode: "u=rwX,g=,o="
     recurse: true
   loop:

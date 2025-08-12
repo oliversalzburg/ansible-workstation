@@ -1,7 +1,7 @@
 ---
 - name: Create groups
   become: true
-  register: _groups
+  register: _podman_nexus_groups
   ansible.builtin.group:
     name: "{{ item }}"
     state: present
@@ -19,11 +19,11 @@
 
 - name: Create user
   become: true
-  register: _user
+  register: _podman_nexus_user
   ansible.builtin.user:
     comment: "{{ podman_nexus_name }}"
     create_home: false
-    group: "{{ _groups.results[0].gid }}"
+    group: "{{ _podman_nexus_groups.results[0].gid }}"
     groups: "{{ podman_nexus_groups }}"
     home: "{{ podman_nexus_basedir }}"
     name: "{{ podman_nexus_id }}"
@@ -38,8 +38,8 @@
   ansible.builtin.file:
     path: "{{ podman_nexus_basedir }}"
     state: directory
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: "{{ _podman_nexus_user.uid }}"
+    group: "{{ _podman_nexus_groups.results[0].gid }}"
     mode: "u=rwX,g=rX"
     recurse: true
   notify: Restart nexus
@@ -49,8 +49,8 @@
   ansible.builtin.file:
     path: "{{ podman_nexus_basedir }}/{{ item }}"
     state: directory
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: "{{ _podman_nexus_user.uid }}"
+    group: "{{ _podman_nexus_groups.results[0].gid }}"
     mode: "u=rwX,g=rX"
     recurse: true
   loop:
@@ -60,10 +60,10 @@
 
 - name: Pull service image
   become: true
-  register: result
+  register: podman_nexus_result
   retries: 3
   delay: 3
-  until: result is not failed
+  until: podman_nexus_result is not failed
   containers.podman.podman_image:
     name: "docker.io/sonatype/nexus3:{{ podman_nexus_version }}"
 

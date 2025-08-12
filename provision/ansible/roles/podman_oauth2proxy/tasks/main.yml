@@ -1,7 +1,7 @@
 ---
 - name: Create groups
   become: true
-  register: _groups
+  register: _podman_oauth2proxy_groups
   ansible.builtin.group:
     name: "{{ item }}"
     state: present
@@ -17,11 +17,11 @@
 
 - name: Create user
   become: true
-  register: _user
+  register: _podman_oauth2proxy_user
   ansible.builtin.user:
     comment: "{{ podman_oauth2proxy_name }}"
     create_home: false
-    group: "{{ _groups.results[0].gid }}"
+    group: "{{ _podman_oauth2proxy_groups.results[0].gid }}"
     groups: "{{ podman_oauth2proxy_groups }}"
     home: "{{ podman_oauth2proxy_basedir }}"
     name: "{{ podman_oauth2proxy_id }}"
@@ -35,8 +35,8 @@
   ansible.builtin.file:
     path: "{{ podman_oauth2proxy_basedir }}"
     state: directory
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: "{{ _podman_oauth2proxy_user.uid }}"
+    group: "{{ _podman_oauth2proxy_groups.results[0].gid }}"
     mode: "u=rwX,g=rX"
     recurse: true
 
@@ -45,8 +45,8 @@
   ansible.builtin.file:
     path: "{{ podman_oauth2proxy_basedir }}/{{ item }}"
     state: directory
-    owner: "{{ _user.uid }}"
-    group: "{{ _groups.results[0].gid }}"
+    owner: "{{ _podman_oauth2proxy_user.uid }}"
+    group: "{{ _podman_oauth2proxy_groups.results[0].gid }}"
     mode: "u=rwX,g=rX"
     recurse: true
   loop:
