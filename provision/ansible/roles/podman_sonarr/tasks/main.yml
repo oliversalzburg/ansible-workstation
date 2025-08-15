@@ -64,7 +64,7 @@
   delay: 3
   until: podman_sonarr_result is not failed
   community.postgresql.postgresql_user:
-    host: localhost
+    login_host: localhost
     login_password: "{{ podman_postgres_master_password }}"
     login_user: "{{ podman_postgres_master_user }}"
     name: "{{ podman_sonarr_pg_user }}"
@@ -77,7 +77,7 @@
   delay: 3
   until: podman_sonarr_result is not failed
   community.postgresql.postgresql_db:
-    host: localhost
+    login_host: localhost
     login_password: "{{ podman_postgres_master_password }}"
     login_user: "{{ podman_postgres_master_user }}"
     name: "{{ podman_sonarr_pg_db }}-{{ item }}"
@@ -89,10 +89,10 @@
 
 - name: "GRANT ALL PRIVILEGES ON DATABASE 'db' TO 'user'"
   community.postgresql.postgresql_privs:
-    host: localhost
+    login_host: localhost
     login_password: "{{ podman_postgres_master_password }}"
     login_user: "{{ podman_postgres_master_user }}"
-    db: postgres
+    login_db: postgres
     privs: ALL
     type: database
     obj: "{{ podman_sonarr_pg_db }}-{{ item }}"
@@ -104,10 +104,10 @@
 
 - name: "GRANT USAGE, CREATE ON SCHEMA PUBLIC TO 'user'"
   community.postgresql.postgresql_privs:
-    host: localhost
+    login_host: localhost
     login_password: "{{ podman_postgres_master_password }}"
     login_user: "{{ podman_postgres_master_user }}"
-    db: postgres
+    login_db: postgres
     privs: CREATE
     type: schema
     obj: public

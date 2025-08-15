@@ -30,7 +30,7 @@ ExecStart=/usr/bin/podman run \
   --replace \
   --rm \
   --sdnotify "conmon" \
-  --user "{{ _podman_synapse_user.uid }}:{{ _podman_synapse_groups.results[0].gid }}" \
+  --user "{{ _podman_whisparr_user.uid }}:{{ _podman_whisparr_groups.results[0].gid }}" \
   oliversalzburg/containers/whisparr:{{ podman_whisparr_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
@@ -40,4 +40,3 @@ NotifyAccess=all
 
 [Install]
 WantedBy=multi-user.target
-
