@@ -1,48 +1,18 @@
 ---
-- name: Check APT contrib
-  ansible.builtin.shell:
-    cmd: |
-      set -o pipefail
-      apt-cache policy | grep {{ ansible_distribution_release }}/contrib
-    executable: /bin/bash
-  register: all_result_check_contrib
-  changed_when: all_result_check_contrib.rc == 1
-  failed_when: all_result_check_contrib.rc > 1
-- name: Enable contrib APT
+- name: Install Debian Sources Configuration
   become: true
-  ansible.builtin.command: apt-add-repository --yes contrib
-  when: all_result_check_contrib.rc == 1
-  changed_when: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/apt/sources.list.d/debian.sources"
+    dest: /etc/apt/sources.list.d/debian.sources
+    mode: "0o644"
+    owner: root
+    group: root
 
-- name: Check APT non-free
-  ansible.builtin.shell:
-    cmd: |
-      set -o pipefail
-      apt-cache policy | grep {{ ansible_distribution_release }}/non-free
-    executable: /bin/bash
-  register: all_result_check_nonfree
-  changed_when: all_result_check_nonfree.rc == 1
-  failed_when: all_result_check_nonfree.rc > 1
-- name: Enable non-free APT
+- name: Delete Legacy APT Configuration
   become: true
-  ansible.builtin.command: apt-add-repository --yes non-free
-  when: all_result_check_nonfree.rc == 1
-  changed_when: true
-
-- name: Check APT non-free-firmware
-  ansible.builtin.shell:
-    cmd: |
-      set -o pipefail
-      apt-cache policy | grep {{ ansible_distribution_release }}/non-free-firmware
-    executable: /bin/bash
-  register: all_result_check_nonfreefirmware
-  changed_when: all_result_check_nonfreefirmware.rc == 1
-  failed_when: all_result_check_nonfreefirmware.rc > 1
-- name: Enable non-free-firmware APT
-  become: true
-  ansible.builtin.command: apt-add-repository --yes non-free-firmware
-  when: all_result_check_nonfreefirmware.rc == 1
-  changed_when: true
+  ansible.builtin.file:
+    path: /etc/apt/sources.list
+    state: absent
 
 - name: Install commonly used dependencies
   become: true
@@ -85,6 +55,7 @@
       - smbclient
       - snmp
       - strace
+      - tuned
       - tzdata
       - unrar
       - unzip

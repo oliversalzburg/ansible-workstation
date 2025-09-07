@@ -1,4 +1,19 @@
 ---
+- name: Disable Power-Save Garbage 1
+  become: true
+  ansible.builtin.dconf:
+    key: /org/gnome/settings-daemon/plugins/power
+    value: "['sleep-inactive-ac-type', 'nothing']"
+- name: Disable Power-Save Garbage 2
+  become: true
+  ansible.builtin.dconf:
+    key: /org/gnome/settings-daemon/plugins/power
+    value: "['sleep-inactive-battery-type', 'suspend']"
+- name: Disable Power-Save Garbage 3
+  become: true
+  ansible.builtin.shell:
+    cmd: tuned-adm profile throughput-performance
+
 - name: Install systemd-resolved
   become: true
   ansible.builtin.apt:
@@ -52,13 +67,7 @@
 
 - name: Age
   ansible.builtin.include_tasks: age.yml
-- name: Coding environment
-  ansible.builtin.include_tasks: coding-environment.yml
 - name: NodeJs
   ansible.builtin.include_tasks: nodejs.yml
-- name: OpenTofu
-  ansible.builtin.include_tasks: opentofu.yml
 - name: SOPS
   ansible.builtin.include_tasks: sops.yml
-- name: Terraform
-  ansible.builtin.include_tasks: terraform.yml

@@ -1,0 +1,33 @@
+---
+- name: Install Chromium
+  become: true
+  ansible.builtin.apt:
+    name:
+      - chromium
+    state: present
+    update_cache: true
+
+- name: Add User
+  become: true
+  ansible.builtin.user:
+    name: subject
+    password: "!"
+    shell: /bin/bash
+
+- name: Copy Start Script
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/start.sh"
+    dest: /home/subject/start.sh
+    owner: subject
+    group: subject
+    mode: "0o750"
+
+- name: Copy Universe Shell
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/universe.html"
+    dest: /home/subject/universe.html
+    owner: subject
+    group: subject
+    mode: "0o640"

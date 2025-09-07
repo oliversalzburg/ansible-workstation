@@ -53,7 +53,7 @@
         step_bootstrap_force: true
 
 - name: Node Metrics Exporter
-  hosts: all
+  hosts: servicehosts
   roles:
     - role: prometheus.prometheus.node_exporter
       node_exporter_enabled_collectors:

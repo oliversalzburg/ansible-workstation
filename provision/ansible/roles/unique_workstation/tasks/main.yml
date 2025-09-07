@@ -43,8 +43,13 @@
       - radicale
       - thunderbird
 
+- name: Coding environment
+  ansible.builtin.include_tasks: coding-environment.yml
+- name: OpenTofu
+  ansible.builtin.include_tasks: opentofu.yml
 - name: Signal
   ansible.builtin.include_tasks: signal.yml
-
 - name: Steam
   ansible.builtin.include_tasks: steam.yml
+- name: Terraform
+  ansible.builtin.include_tasks: terraform.yml
