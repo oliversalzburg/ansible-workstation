@@ -1,18 +1,43 @@
 ---
-- name: Disable Power-Save Garbage 1
+- name: Ensure /etc/dconf/profile
   become: true
-  ansible.builtin.dconf:
-    key: /org/gnome/settings-daemon/plugins/power
-    value: "['sleep-inactive-ac-type', 'nothing']"
-- name: Disable Power-Save Garbage 2
+  ansible.builtin.file:
+    path: /etc/dconf/profile
+    state: directory
+    owner: root
+    group: root
+    mode: "0o755"
+    recurse: true
+- name: Ensure /etc/dconf/db/local.d
   become: true
-  ansible.builtin.dconf:
-    key: /org/gnome/settings-daemon/plugins/power
-    value: "['sleep-inactive-battery-type', 'suspend']"
-- name: Disable Power-Save Garbage 3
+  ansible.builtin.file:
+    path: /etc/dconf/db/local.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0o755"
+    recurse: true
+- name: Configure dconf DB Storage
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/dconf/profile/user"
+    dest: /etc/dconf/profile/user
+    owner: root
+    group: root
+    mode: "0o644"
+- name: Force Disable all Power Saving Features
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/dconf/db/local.d/00-force-powersave-off"
+    dest: /etc/dconf/db/local.d/00-force-powersave-off
+    owner: root
+    group: root
+    mode: "0o644"
+- name: Update dconf
   become: true
   ansible.builtin.shell:
-    cmd: tuned-adm profile throughput-performance
+    cmd: dconf update
+    executable: /bin/bash
 
 - name: Install systemd-resolved
   become: true
@@ -28,6 +53,7 @@
     enabled: true
 
 # Ideally, just reboot fresh machines after this is applied. Then re-run.
+# Networking is going to be broken until you reboot. It's some weird systemd shit.
 - name: Enable systemd-networkd
   become: true
   ansible.builtin.systemd:
@@ -56,8 +82,6 @@
 
 - name: APT
   ansible.builtin.include_tasks: apt.yml
-# - name: DNS
-#   ansible.builtin.include_tasks: dns.yml
 
 - name: Set default editor
   become: true

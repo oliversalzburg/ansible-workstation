@@ -1,19 +1,84 @@
 ---
-- name: Install Chromium
+- name: Install Desktop Environment
   become: true
   ansible.builtin.apt:
     name:
       - chromium
+      - lightdm
     state: present
     update_cache: true
+- name: Configure lightdm
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/lightdm/lightdm.conf"
+    dest: /etc/lightdm/lightdm.conf
+    owner: root
+    group: root
+    mode: "0o664"
+- name: Ensure Gnome is absent
+  become: true
+  ansible.builtin.apt:
+    name:
+      - gnome-shell
+    state: absent
+- name: Enable and check lightdm service
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    enabled: true
+    name: lightdm
+    state: started
 
+
+- name: Ensure autologin group
+  become: true
+  ansible.builtin.group:
+    name: autologin
+    state: present
 - name: Add User
   become: true
   ansible.builtin.user:
+    append: true
+    create_home: false
+    groups:
+      - autologin
     name: subject
     password: "!"
     shell: /bin/bash
+- name: Ensure Home Directory
+  become: true
+  ansible.builtin.file:
+    path: /home/subject
+    state: directory
+    owner: subject
+    group: subject
+    mode: "0o750"
+    recurse: false
 
+- name: Copy .bashrc
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/.bashrc"
+    dest: /home/subject/.bashrc
+    owner: subject
+    group: subject
+    mode: "0o750"
+- name: Copy .profile
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/.profile"
+    dest: /home/subject/.profile
+    owner: subject
+    group: subject
+    mode: "0o750"
+- name: Copy .xsessionrc
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/.xsessionrc"
+    dest: /home/subject/.xsessionrc
+    owner: subject
+    group: subject
+    mode: "0o750"
 - name: Copy Start Script
   become: true
   ansible.builtin.copy:
@@ -22,7 +87,6 @@
     owner: subject
     group: subject
     mode: "0o750"
-
 - name: Copy Universe Shell
   become: true
   ansible.builtin.copy:

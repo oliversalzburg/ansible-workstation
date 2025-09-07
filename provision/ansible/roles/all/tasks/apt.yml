@@ -55,7 +55,6 @@
       - smbclient
       - snmp
       - strace
-      - tuned
       - tzdata
       - unrar
       - unzip
