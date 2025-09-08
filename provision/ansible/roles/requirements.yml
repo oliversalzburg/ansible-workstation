@@ -4,7 +4,7 @@ collections:
   - name: community.docker
     version: 4.7.0
   - name: community.general
-    version: 11.2.1
+    version: 11.3.0
   - name: community.postgresql
     version: 4.1.0
   - name: community.sops
