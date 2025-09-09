@@ -1,3 +1,2 @@
 #!/bin/bash
-echo ".bashrc evaluated"
-/home/subject/start.sh
+exec /home/subject/start.sh

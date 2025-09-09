@@ -1,9 +1,156 @@
 ---
+- name: Disable Power Saving Features dconf
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/dconf/db/local.d/00-force-powersave-off"
+    dest: /etc/dconf/db/local.d/00-force-powersave-off
+    owner: root
+    group: root
+    mode: "0o644"
+- name: Update dconf
+  become: true
+  ansible.builtin.shell:
+    cmd: dconf update
+    executable: /bin/bash
+- name: Disable Power Saving Features X11
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/X11/xorg.conf.d/00-force-powersave-off"
+    dest: /etc/X11/xorg.conf.d/00-force-powersave-off
+    owner: root
+    group: root
+    mode: "0o644"
+
+# Device operates offline. Don't wait for being online.
+- name: Stop systemd-networkd-wait-online
+  become: true
+  ansible.builtin.systemd_service:
+    name: systemd-networkd-wait-online
+    state: stopped
+- name: Disable systemd-networkd-wait-online
+  become: true
+  ansible.builtin.systemd_service:
+    name: systemd-networkd-wait-online
+    enabled: false
+- name: Mask systemd-networkd-wait-online
+  become: true
+  ansible.builtin.systemd_service:
+    name: systemd-networkd-wait-online
+    masked: true
+
 - name: Install Desktop Environment
   become: true
   ansible.builtin.apt:
     name:
       - chromium
+      - fonts-adf-accanthis
+      - fonts-adf-berenis
+      - fonts-adf-gillius
+      - fonts-adf-universalis
+      - fonts-arphic-bkai00mp
+      - fonts-arphic-bsmi00lp
+      - fonts-arphic-gbsn00lp
+      - fonts-arphic-gkai00mp
+      - fonts-arphic-uming
+      - fonts-baekmuk
+      - fonts-cabin
+      - fonts-cantarell
+      - fonts-clear-sans
+      - fonts-comfortaa
+      - fonts-comic-neue
+      - fonts-croscore
+      - fonts-crosextra-caladea
+      - fonts-crosextra-carlito
+      - fonts-dejavu
+      - fonts-dejavu-core
+      - fonts-dejavu-extra
+      - fonts-dejavu-mono
+      - fonts-droid-fallback
+      - fonts-ebgaramond-extra
+      - fonts-font-awesome
+      - fonts-freefont-otf
+      - fonts-freefont-ttf
+      - fonts-gfs-artemisia
+      - fonts-gfs-baskerville
+      - fonts-gfs-bodoni-classic
+      - fonts-gfs-complutum
+      - fonts-gfs-didot
+      - fonts-gfs-didot-classic
+      - fonts-gfs-gazis
+      - fonts-gfs-neohellenic
+      - fonts-gfs-olga
+      - fonts-gfs-porson
+      - fonts-gfs-solomos
+      - fonts-gfs-theokritos
+      - fonts-go
+      - fonts-hosny-amiri
+      - fonts-inter
+      - fonts-ipaexfont-gothic
+      - fonts-ipaexfont-mincho
+      - fonts-ipafont-gothic
+      - fonts-ipafont-mincho
+      - fonts-katex
+      - fonts-lato
+      - fonts-liberation
+      - fonts-liberation-sans-narrow
+      - fonts-linuxlibertine
+      - fonts-lmodern
+      - fonts-lobster
+      - fonts-lobstertwo
+      - fonts-lyx
+      - fonts-mathjax
+      - fonts-noto-color-emoji
+      - fonts-noto-core
+      - fonts-noto-mono
+      - fonts-oflb-asana-math
+      - fonts-open-sans
+      - fonts-opensymbol
+      - fonts-paratype
+      - fonts-quicksand
+      - fonts-roboto-slab
+      - fonts-roboto-unhinted
+      - fonts-sil-andika
+      - fonts-sil-charis
+      - fonts-sil-gentium
+      - fonts-sil-gentium-basic
+      - fonts-sil-gentiumplus
+      - fonts-sil-gentiumplus-compact
+      - fonts-sil-padauk
+      - fonts-stix
+      - fonts-symbola
+      - fonts-texgyre
+      - fonts-texgyre-math
+      - fonts-tlwg-garuda
+      - fonts-tlwg-garuda-otf
+      - fonts-tlwg-kinnari
+      - fonts-tlwg-kinnari-otf
+      - fonts-tlwg-laksaman
+      - fonts-tlwg-laksaman-otf
+      - fonts-tlwg-loma
+      - fonts-tlwg-loma-otf
+      - fonts-tlwg-mono
+      - fonts-tlwg-mono-otf
+      - fonts-tlwg-norasi
+      - fonts-tlwg-norasi-otf
+      - fonts-tlwg-purisa
+      - fonts-tlwg-purisa-otf
+      - fonts-tlwg-sawasdee
+      - fonts-tlwg-sawasdee-otf
+      - fonts-tlwg-typewriter
+      - fonts-tlwg-typewriter-otf
+      - fonts-tlwg-typist
+      - fonts-tlwg-typist-otf
+      - fonts-tlwg-typo
+      - fonts-tlwg-typo-otf
+      - fonts-tlwg-umpush
+      - fonts-tlwg-umpush-otf
+      - fonts-tlwg-waree
+      - fonts-tlwg-waree-otf
+      - fonts-tuffy
+      - fonts-unfonts-core
+      - fonts-unfonts-extra
+      - fonts-urw-base35
+      - fonts-wine
       - lightdm
     state: present
     update_cache: true
@@ -19,6 +166,7 @@
   become: true
   ansible.builtin.apt:
     name:
+      - gdm3
       - gnome-shell
     state: absent
 - name: Enable and check lightdm service

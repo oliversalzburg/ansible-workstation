@@ -25,14 +25,6 @@
     owner: root
     group: root
     mode: "0o644"
-- name: Force Disable all Power Saving Features
-  become: true
-  ansible.builtin.copy:
-    src: "{{ role_path }}/files/etc/dconf/db/local.d/00-force-powersave-off"
-    dest: /etc/dconf/db/local.d/00-force-powersave-off
-    owner: root
-    group: root
-    mode: "0o644"
 - name: Update dconf
   become: true
   ansible.builtin.shell:
