@@ -10,3 +10,8 @@
   become: true
   ansible.builtin.command: corepack enable
   changed_when: true
+
+- name: Update dconf
+  become: true
+  ansible.builtin.command: dconf update
+  changed_when: true

@@ -25,11 +25,7 @@
     owner: root
     group: root
     mode: "0o644"
-- name: Update dconf
-  become: true
-  ansible.builtin.shell:
-    cmd: dconf update
-    executable: /bin/bash
+  notify: Update dconf
 
 - name: Install systemd-resolved
   become: true
