@@ -234,7 +234,7 @@
 - name: Copy Universe Shell
   become: true
   ansible.builtin.copy:
-    src: "{{ role_path }}/files/universe.html"
+    src: "{{ universe_html }}"
     dest: /home/subject/universe.html
     owner: subject
     group: subject

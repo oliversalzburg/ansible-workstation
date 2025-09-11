@@ -104,3 +104,5 @@
   hosts: time_machine
   roles:
     - role: bm_time_machine
+      vars:
+        bm_time_machine_universe_html: "{{ universe_html }}"
