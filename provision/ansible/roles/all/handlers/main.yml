@@ -6,11 +6,6 @@
     enabled: true
     daemon_reload: true
 
-- name: Enable Corepack
-  become: true
-  ansible.builtin.command: corepack enable
-  changed_when: true
-
 - name: Update dconf
   become: true
   ansible.builtin.command: dconf update
