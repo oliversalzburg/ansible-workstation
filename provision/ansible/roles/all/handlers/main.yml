@@ -5,8 +5,3 @@
     state: started
     enabled: true
     daemon_reload: true
-
-- name: Update dconf
-  become: true
-  ansible.builtin.command: dconf update
-  changed_when: true

@@ -1,4 +1,32 @@
 ---
+- name: Ensure /etc/dconf/profile
+  become: true
+  ansible.builtin.file:
+    path: /etc/dconf/profile
+    state: directory
+    owner: root
+    group: root
+    mode: "0o755"
+    recurse: true
+- name: Ensure /etc/dconf/db/local.d
+  become: true
+  ansible.builtin.file:
+    path: /etc/dconf/db/local.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0o755"
+    recurse: true
+- name: Configure dconf DB Storage
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/dconf/profile/user"
+    dest: /etc/dconf/profile/user
+    owner: root
+    group: root
+    mode: "0o644"
+  notify: Update dconf
+
 - name: KeePassXC
   ansible.builtin.include_tasks: keepassxc.yml
 - name: Syncthing
