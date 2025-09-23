@@ -1,8 +1,5 @@
 {{ ansible_managed|comment }}
 
-# Global email address for npm
-email="{{ git_email }}"
-
 # Defaults for new modules
 init-author-name="{{ git_name }}"
 init-author-email="{{ git_email }}"
@@ -14,9 +11,6 @@ progress=false
 
 # Save installed packages to package.json with a fixed version.
 save-exact=true
-
-# Always use authentication, even for GET requests to the registry.
-always-auth=true
 
 {% if auth_token_npmjs is defined %}
 //registry.npmjs.org/:_authToken={{ auth_token_npmjs }}
