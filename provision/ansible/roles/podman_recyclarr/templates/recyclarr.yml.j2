@@ -5,7 +5,7 @@ sonarr:
     base_url: "http://sonarr.service.{{ inventory_hostname }}:8989"
     api_key: "{{ podman_sonarr_api_key }}"
     media_naming:
-      series: jellyfin
+      series: jellyfin-tvdb
       season: default
       episodes:
         rename: true
@@ -36,6 +36,7 @@ sonarr:
             qualities:
               - WEBDL-1080p
               - WEBRip-1080p
+          - name: HDTV-1080p
 
       - name: WEB-2160p
         reset_unmatched_scores:
@@ -63,13 +64,27 @@ sonarr:
             qualities:
               - WEBDL-2160p
               - WEBRip-2160p
+          - name: HDTV-2160p
           - name: Bluray-1080p Remux
           - name: Bluray-1080p
           - name: WEB 1080p
             qualities:
               - WEBDL-1080p
               - WEBRip-1080p
+          - name: HDTV-1080p
           - name: Bluray-720p
+          - name: WEB 720p
+            qualities:
+              - WEBDL-720p
+              - WEBRip-720p
+          - name: HDTV-720p
+          - name: Bluray-576p
+          - name: Bluray-480p
+          - name: WEB 480p
+            qualities:
+              - WEBDL-480p
+              - WEBRip-480p
+          - name: SDTV
 
       - name: Best Compatible +
         reset_unmatched_scores:
@@ -85,13 +100,16 @@ sonarr:
             qualities:
               - WEBDL-2160p
               - WEBRip-2160p
+          - name: HDTV-2160p
           - name: Bluray-1080p Remux
           - name: Bluray-1080p
           - name: WEB 1080p
             qualities:
               - WEBDL-1080p
               - WEBRip-1080p
+          - name: HDTV-1080p
           - name: Bluray-720p
+          - name: HDTV-720p
 
     custom_formats:
       - trash_ids:
@@ -113,17 +131,9 @@ sonarr:
         - 3e8b714263b26f486972ee1e0fe7606c # MP3
         - 28f6ef16d61e2d1adfce3156ed8257e3 # Opus
         # All HDR Formats
-        - 2b239ed870daba8126a53bd5dc8dc1c8 # DV HDR10+
-        - 7878c33f1963fefb3d6c8657d46c2f0a # DV HDR10
-        #- 6d0d8de7b57e35518ac0308b0ddf404e # DV
-        #- 1f733af03141f068a540eec352589a89 # DV HLG
-        #- 27954b0a80aab882522a88a4d9eae1cd # DV SDR
-        - a3d82cbef5039f8d295478d28a887159 # HDR10+
-        - 3497799d29a085e2ac2df9d468413c94 # HDR10
-        - 3e2c4e748b64a1a1118e0ea3f4cf6875 # HDR
-        - bb019e1cd00f304f80971c965de064dc # HDR (undefined)
-        - 2a7e3be05d3861d6df7171ec74cad727 # PQ
-        - 17e889ce13117940092308f48b48b45b # HLG
+        - 505d871304820ba7106b693be6fe4a9e # HDR
+        #- 7c3a61a9c6cb04f52f1544be6d44a026 # DV Boost
+        - 0c4b99df9206d2cfac3c05ab897dd62a # HDR10Plus Boost
         # Unwanted
         - 85c61753df5da1fb2aab6f2a47426b09 # BR-DISK
         - 9c11cd3f07101cdba90a2d81cf0e56b4 # LQ
@@ -176,10 +186,10 @@ radarr:
     delete_old_custom_formats: true
     replace_existing_custom_formats: true
     media_naming:
-      folder: jellyfin
+      folder: jellyfin-imdb
       movie:
         rename: true
-        standard: jellyfin
+        standard: jellyfin-imdb
     quality_definition:
       type: movie
     quality_profiles:
@@ -261,6 +271,10 @@ radarr:
               - WEBDL-1080p
               - WEBRip-1080p
           - name: Bluray-720p
+          - name: WEB 720p
+            qualities:
+              - WEBDL-720p
+              - WEBRip-720p
 
       - name: Best Compatible Foreign
         reset_unmatched_scores:
@@ -304,17 +318,9 @@ radarr:
         - f9f847ac70a0af62ea4a08280b859636 # DTS-ES
         - 1c1a4c5e823891c75bc50380a6866f73 # DTS
         # All HDR Formats
-        - c53085ddbd027d9624b320627748612f # DV HDR10+
-        - e23edd2482476e595fb990b12e7c609c # DV HDR10
-        #- 58d6a88f13e2db7f5059c41047876f00 # DV
-        #- 55d53828b9d81cbe20b02efd00aa0efd # DV HLG
-        #- a3e19f8f627608af0211acd02bf89735 # DV SDR
-        - b974a6cd08c1066250f1f177d7aa1225 # HDR10+
-        - dfb86d5941bc9075d6af23b09c2aeecd # HDR10
-        - e61e28db95d22bedcadf030b8f156d96 # HDR
-        - 2a4d9069cc1fe3242ff9bdaebed239bb # HDR (undefined)
-        - 08d6d8834ad9ec87b1dc7ec8148e7a1f # PQ
-        - 9364dd386c9b4a1100dde8264690add7 # HLG
+        - 493b6d1dbec3c3364c59d7607f7e3405 # HDR
+        #- b337d6812e06c200ec9a2d3cfa9d20a7 # DV-Boost
+        - caa37d0df9c348912df1fb1d88f9273a # HDR10Plus Boost        
         # Movie Versions
         - 570bc9ebecd92723d2d21500f4be314c # Remaster
         - eca37840c13c6ef2dd0262b141a5482f # 4K Remaster
@@ -342,6 +348,7 @@ radarr:
         - b8cd450cbfa689c0259a01d9e29ba3d6 # 3D
         - bfd8eb01832d646a0a89c4deb46f8564 # Upscaled
         - 0a3f082873eb454bde444150b70253cc # Extras
+        - e6886871085226c3da1830830146846c # Generated Dynamic HDR
         # Optional
         - b6832f586342ef70d9c128d40c07b872 # Bad Dual Groups
         - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5 # No-RlsGroup
@@ -349,9 +356,6 @@ radarr:
         - 5c44f52a8714fdd79bb4d98e2673be1f # Retags
         - f537cf427b64c38c8e36298f657e4828 # Scene
         #- 839bea857ed2c0a8e084f3cbdbd65ecb # x265 (no HDR/DV) ⚠
-        # Optional UHD
-        #- 9c38ebb7384dada637be8899efa68e6f # SDR
-        #- 25c12f78430a3a23413652cbd1d48d77 # SDR (no WEBDL) ⚠
         # General Streaming Services
         - b3b3a6ac74ecbd56bcdbefa4799fb9df # AMZN
         - 40e9380490e748672c2522eaaeb692f7 # ATVP
