@@ -105,4 +105,4 @@
   roles:
     - role: bm_time_machine
       vars:
-        bm_time_machine_universe_html: "{{ universe_html }}"
+        bm_time_machine_data_root: "{{ timeline_root }}"

@@ -234,8 +234,8 @@
 - name: Copy Universe Shell
   become: true
   ansible.builtin.copy:
-    src: "{{ universe_html }}"
-    dest: /home/subject/universe.html
+    src: "{{ bm_time_machine_data_root }}/"
+    dest: /home/subject
     owner: subject
     group: subject
     mode: "0o640"
