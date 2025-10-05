@@ -1,4 +1,38 @@
 ---
+# Some of these are installed by our own base roles.
+- name: Ensure unused/problematic packages are absent
+  become: true
+  ansible.builtin.apt:
+    name:
+      - cifs-utils
+      - evolution
+      - firefox-esr
+      - gnome-calculator
+      - gnome-calendar
+      - gnome-contacts
+      - gnome-maps
+      - gnome-music
+      - gnome-remote-desktop
+      - gnome-snapshot
+      - gnome-sound-recorder
+      - gnome-terminal
+      - gnome-text-editor
+      - gnome-tweaks
+      - gnome-user-docs
+      - gnome-weather
+      - libreoffice-calc
+      - libreoffice-draw
+      - libreoffice-impress
+      - libreoffice-math
+      - libreoffice-writer
+      - nmbd
+      - python3-samba
+      - samba
+      - sane-utils
+      - wireguard
+      - wireguard-tools
+    state: absent
+
 - name: Disable Power Saving Features dconf
   become: true
   ansible.builtin.copy:
