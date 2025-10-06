@@ -4,8 +4,8 @@
 Description=qBittorrent
 Documentation=https://www.qbittorrent.org/
 Wants=network-online.target
-Requires=qbittorrent-wg.service
-After=network-online.target qbittorrent-wg.service
+Requires=qbittorrent-gluetun.service
+After=network-online.target qbittorrent-gluetun.service
 RequiresMountsFor=%t/containers
 BindsTo=qbittorrent.service
 After=qbittorrent.service

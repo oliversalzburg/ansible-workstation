@@ -114,18 +114,17 @@
   loop:
     - config
     - data
-    - wireguard
+    - gluetun
   notify: Restart qbittorrent
 
 
-- name: Copy wireguard configuration
+- name: Create secret qbittorrent_wireguard_private_key
   become: true
-  ansible.builtin.template:
-    src: wg0.conf.j2
-    dest: "{{ podman_qbittorrent_basedir }}/wireguard/wg0.conf"
-    owner: "{{ _podman_qbittorrent_user.uid }}"
-    group: "{{ _podman_qbittorrent_groups.results[0].gid }}"
-    mode: "0o600"
+  containers.podman.podman_secret:
+    data: "{{ vpn_privatekey }}"
+    force: true
+    name: qbittorrent_wireguard_private_key
+    state: present
   notify: Restart qbittorrent
 
 
@@ -141,8 +140,7 @@
     - qbittorrent-exporter.service
     - qbittorrent-flood.service
     - qbittorrent-main.service
-    - qbittorrent-natmap.service
-    - qbittorrent-wg.service
+    - qbittorrent-gluetun.service
     - qbittorrent.service
   notify: Restart qbittorrent
 

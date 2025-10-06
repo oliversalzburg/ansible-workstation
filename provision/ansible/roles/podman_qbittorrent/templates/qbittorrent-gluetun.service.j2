@@ -1,8 +1,8 @@
 {{ ansible_managed|comment }}
 
 [Unit]
-Description=qBittorrent Wireguard Connection
-Documentation=
+Description=gluetun
+Documentation=https://github.com/qdm12/gluetun
 Wants=network-online.target
 After=network-online.target
 RequiresMountsFor=%t/containers
@@ -19,13 +19,23 @@ StartLimitBurst=3
 TimeoutStartSec=300
 TimeoutStopSec=70
 ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
-ExecStartPre=-/usr/bin/podman pull {{ registry_dockerio }}/procustodibus/wireguard:{{ podman_qbittorrent_wireguard_version }}
+ExecStartPre=-/usr/bin/podman pull {{ registry_dockerio }}/qmcgaw/gluetun:{{ podman_qbittorrent_gluetun_version }}
 ExecStart=/usr/bin/podman run \
   --cap-add "NET_ADMIN" \
   --cgroups "no-conmon" \
   --cidfile "%t/%n.ctr-id" \
   --detach \
+  --device "/dev/net/tun:/dev/net/tun" \
   --env "TZ={{ config_system_timezone }}" \
+  --env "VPN_SERVICE_PROVIDER=custom" \
+  --env "VPN_TYPE=wireguard" \
+  --secret "qbittorrent_wireguard_private_key,type=env,target=WIREGUARD_PRIVATE_KEY" \
+  --env "WIREGUARD_ENDPOINT_IP={{ vpn_endpoint_ip }}" \
+  --env "WIREGUARD_ENDPOINT_PORT={{ vpn_endpoint_port }}" \
+  --env "WIREGUARD_PUBLIC_KEY={{ vpn_publickey }}" \
+  --env "WIREGUARD_ADDRESSES={{ vpn_address }}/32" \
+  #--env "VPN_PORT_FORWARDING=on" \
+  --env "VPN_PORT_FORWARDING_UP_COMMAND=/bin/sh -c 'wget --retry-connrefused --header=\"Content-Type: application/json\" --post-data={\"listen_port\":{{ '{{' }}PORTS{{ '}}' }}} -O- http://127.0.0.1:8080/api/v2/app/setPreferences 2>&1'" \
   --log-driver "journald" \
   --memory "256m" \
   --name "%n.{{ inventory_hostname }}" \
@@ -36,7 +46,7 @@ ExecStart=/usr/bin/podman run \
   --sdnotify "conmon" \
   # Image requires root-level access
   #--user "{{ _podman_qbittorrent_user.uid }}:{{ _podman_qbittorrent_groups.results[0].gid }}" \
-  procustodibus/wireguard:{{ podman_qbittorrent_wireguard_version }}
+  qmcgaw/gluetun:{{ podman_qbittorrent_gluetun_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
 ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"

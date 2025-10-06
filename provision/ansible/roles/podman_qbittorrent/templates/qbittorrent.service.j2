@@ -6,12 +6,12 @@ Documentation=
 Wants=network-online.target
 After=network-online.target
 RequiresMountsFor={{ podman_qbittorrent_basedir }} {{ podman_qbittorrent_mediadir }}
-Requires=qbittorrent-main.service qbittorrent-wg.service
+Requires=qbittorrent-main.service qbittorrent-gluetun.service
 Requires=proton.{{ inventory_hostname }}-network.service
 Requires=service.{{ inventory_hostname }}-network.service
 Requires=podman.socket
-Wants=qbittorrent-exporter.service qbittorrent-flood.service qbittorrent-natmap.service
-Before=qbittorrent-main.service qbittorrent-exporter.service qbittorrent-flood.service qbittorrent-natmap.service qbittorrent-wg.service
+Wants=qbittorrent-exporter.service qbittorrent-flood.service
+Before=qbittorrent-main.service qbittorrent-exporter.service qbittorrent-flood.service qbittorrent-gluetun.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
@@ -37,9 +37,6 @@ ExecStartPre=/usr/bin/podman pod create \
   --label "traefik.http.routers.qbittorrent.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
   --label "traefik.http.services.qbittorrent.loadbalancer.server.port=8080" \
   --name "%N.service.{{ inventory_hostname }}" \
-{% if podman_proton_network_subnet is defined %}
-  --network "proton.{{ inventory_hostname }}:alias=%N.proton.{{ inventory_hostname }}" \
-{% endif %}
   --network "service.{{ inventory_hostname }}" \
   --pod-id-file %t/qbittorrent.pod-id \
   --replace \
@@ -49,7 +46,7 @@ ExecStartPre=/usr/bin/podman pod create \
   --volume "{{ podman_qbittorrent_basedir }}/config:/config:rw" \
   --volume "{{ podman_qbittorrent_mediadir }}/INCOMING:/data/INCOMING:rw" \
   --volume "{{ podman_qbittorrent_mediadir }}/XXX:/data/XXX:rw" \
-  --volume "{{ podman_qbittorrent_basedir }}/wireguard:/etc/wireguard:ro" \
+  --volume "{{ podman_qbittorrent_basedir }}/gluetun:/gluetun:rw" \
   --volume "/var/run/podman/podman.sock:/var/run/docker.sock:rw"
 
 ExecStart=/usr/bin/podman pod start --pod-id-file %t/qbittorrent.pod-id
