@@ -117,6 +117,15 @@
     - gluetun
   notify: Restart qbittorrent
 
+- name: Configure Gluetun Servers
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/servers.json"
+    dest: "{{ podman_qbittorrent_basedir }}/gluetun/servers.json"
+    owner: "{{ _podman_qbittorrent_user.uid }}"
+    group: "{{ _podman_qbittorrent_groups.results[0].gid }}"
+    mode: "u=rwX,g=,o="
+  notify: Restart qbittorrent
 
 - name: Create secret qbittorrent_wireguard_private_key
   become: true

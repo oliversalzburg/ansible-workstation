@@ -27,16 +27,13 @@ ExecStart=/usr/bin/podman run \
   --detach \
   --device "/dev/net/tun:/dev/net/tun" \
   --env "TZ={{ config_system_timezone }}" \
-  --env "VPN_SERVICE_PROVIDER=custom" \
+  --env "VPN_SERVICE_PROVIDER=protonvpn" \
   --env "VPN_TYPE=wireguard" \
   --secret "qbittorrent_wireguard_private_key,type=env,target=WIREGUARD_PRIVATE_KEY" \
-  --env "WIREGUARD_ENDPOINT_IP={{ vpn_endpoint_ip }}" \
-  --env "WIREGUARD_ENDPOINT_PORT={{ vpn_endpoint_port }}" \
-  --env "WIREGUARD_PUBLIC_KEY={{ vpn_publickey }}" \
-  --env "WIREGUARD_ADDRESSES={{ vpn_address }}/32" \
-  #--env "VPN_PORT_FORWARDING=on" \
-  --env "VPN_PORT_FORWARDING_UP_COMMAND=/bin/sh -c 'wget --retry-connrefused --header=\"Content-Type: application/json\" --post-data={\"listen_port\":{{ '{{' }}PORTS{{ '}}' }}} -O- http://127.0.0.1:8080/api/v2/app/setPreferences 2>&1'" \
-  --log-driver "journald" \
+  --env "SERVER_COUNTRIES=Hungary,Netherlands,Poland" \
+  --env "PORT_FORWARD_ONLY=on" \
+  --env "VPN_PORT_FORWARDING=on" \
+  --log-driver "journald" \--env "VPN_PORT_FORWARDING_UP_COMMAND=/bin/sh -c 'wget --output-document=- --post-data \'json={\\\\\\\"listen_port\\\\\\\":{{ '{{' }}PORTS{{ '}}' }}}\' --retry-connrefused --server-response --verbose http://127.0.0.1:8080/api/v2/app/setPreferences 2>&1'" \
   --memory "256m" \
   --name "%n.{{ inventory_hostname }}" \
   --pod-id-file "%t/qbittorrent.pod-id" \
