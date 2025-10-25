@@ -5,30 +5,54 @@
   ansible.builtin.apt:
     name:
       - cifs-utils
+      - cups
+      - cups-client
+      - cups-common
+      - cups-core-drivers
+      - cups-daemon
+      - cups-ipp-utils
+      - cups-ppdc
+      - cups-server-common
       - evolution
       - firefox-esr
       - gnome-calculator
       - gnome-calendar
+      - gnome-clocks
       - gnome-contacts
       - gnome-maps
       - gnome-music
+      - gnome-online-accounts
       - gnome-remote-desktop
       - gnome-snapshot
       - gnome-sound-recorder
       - gnome-terminal
       - gnome-text-editor
+      - gnome-tour
       - gnome-tweaks
       - gnome-user-docs
       - gnome-weather
       - libreoffice-calc
+      - libreoffice-common
+      - libreoffice-core
       - libreoffice-draw
+      - libreoffice-gnome
+      - libreoffice-gtk3
+      - libreoffice-help-common
+      - libreoffice-help-en-us
       - libreoffice-impress
       - libreoffice-math
+      - libreoffice-style-colibre
+      - libreoffice-style-elementary
+      - libreoffice-uiconfig-common
       - libreoffice-writer
       - nmbd
       - python3-samba
       - samba
+      - samba-common
+      - samba-common-bin
+      - samba-libs
       - sane-utils
+      - smbclient
       - wireguard
       - wireguard-tools
     state: absent
@@ -207,13 +231,12 @@
     name: lightdm
     state: started
 
-
 - name: Ensure autologin group
   become: true
   ansible.builtin.group:
     name: autologin
     state: present
-- name: Add User
+- name: Add Subject User
   become: true
   ansible.builtin.user:
     append: true
@@ -223,6 +246,12 @@
     name: subject
     password: "!"
     shell: /bin/bash
+- name: Ensure Ansible User is a Subject Group Member
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: subject
+    append: true
 - name: Ensure Home Directory
   become: true
   ansible.builtin.file:
@@ -230,7 +259,7 @@
     state: directory
     owner: subject
     group: subject
-    mode: "0o750"
+    mode: "0o770"
     recurse: false
 
 - name: Copy .bashrc
@@ -265,11 +294,37 @@
     owner: subject
     group: subject
     mode: "0o750"
-- name: Copy Universe Shell
+#- name: Copy Universe Shell
+#  become: true
+#  ansible.builtin.copy:
+#    src: "{{ bm_time_machine_data_root }}/"
+#    dest: /home/subject
+#    owner: subject
+#    group: subject
+#    mode: "0o640"
+
+- name: Ensure Universe Directory Exists Writable
   become: true
-  ansible.builtin.copy:
-    src: "{{ bm_time_machine_data_root }}/"
-    dest: /home/subject
-    owner: subject
+  ansible.builtin.file:
+    path: /home/subject/oszm1
+    state: directory
+    owner: "{{ ansible_user }}"
     group: subject
-    mode: "0o640"
+    mode: "0o775"
+    recurse: true
+
+- name: Synchronize Universe Shell
+  ansible.posix.synchronize:
+    src: "{{ bm_time_machine_data_root }}/"
+    dest: /home/subject/oszm1
+    delete: true
+
+- name: Ensure Universe Directory Writable
+  become: true
+  ansible.builtin.file:
+    path: /home/subject/oszm1
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: subject
+    mode: "0o775"
+    recurse: true

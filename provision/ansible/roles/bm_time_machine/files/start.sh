@@ -4,6 +4,6 @@ setterm --powersave off
 setterm --powerdown 0
 xset dpms 0 0 0 && xset s noblank && xset s off
 DISPLAY=:0 chromium \
-	--app=file:///home/subject/universe.html \
+	--app=file:///home/subject/oszm1/universe.html \
 	--window-position=0,0 \
 	--window-size=1920,1080
