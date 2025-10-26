@@ -28,3 +28,5 @@ kvm_up_guests:
     vm_template: debian-template
     second_hdd: false
     second_hdd_size: ""
+
+bm_kiwix_basedir: /mnt/storage/kiwix

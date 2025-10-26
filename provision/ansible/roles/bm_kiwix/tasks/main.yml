@@ -1,0 +1,74 @@
+---
+- name: Install Kiwix Tools
+  become: true
+  ansible.builtin.apt:
+    name:
+      - kiwix-tools
+    state: present
+    update_cache: true
+
+- name: Create Kiwix Group
+  become: true
+  register: _bm_kiwix_groups
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+    system: true
+  loop: "{{ bm_kiwix_groups }}"
+
+- name: Ensure Ansible User is a Member of Kiwix Group
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: "{{ bm_kiwix_groups }}"
+    append: true
+
+- name: Create Kiwix User
+  become: true
+  register: _bm_kiwix_user
+  ansible.builtin.user:
+    comment: "{{ bm_kiwix_name }}"
+    create_home: false
+    group: "{{ _bm_kiwix_groups.results[0].gid }}"
+    groups: "{{ bm_kiwix_groups }}"
+    home: "{{ bm_kiwix_basedir }}"
+    name: "{{ bm_kiwix_id }}"
+    password: "!"
+    shell: "/usr/sbin/nologin"
+    system: true
+
+- name: Ensure Kiwix Working Directory Exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ bm_kiwix_basedir }}"
+    state: directory
+    owner: "{{ _bm_kiwix_user.uid }}"
+    group: "{{ _bm_kiwix_groups.results[0].gid }}"
+    mode: "u=rwX,g=rX"
+    recurse: true
+
+- name: Copy Kiwix Service Unit
+  become: true
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "{{ directory_systemd }}/{{ item }}"
+    owner: root
+    group: root
+    mode: "0o644"
+  loop:
+    - kiwix.service
+
+- name: Update Kiwix Library
+  become: true
+  ansible.builtin.command:
+    chdir: "{{ bm_kiwix_basedir }}"
+    cmd: "kiwix-manage {{ bm_kiwix_basedir }}/library.xml add {{ item }}"
+  loop: "{{ bm_kiwix_library }}"
+
+- name: Enable and Check Kiwix Service
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    enabled: true
+    name: kiwix
+    state: restarted

@@ -1,0 +1,13 @@
+{{ ansible_managed|comment }}
+
+[Unit]
+Description=Kiwix Serve
+After=network.target network-online.target
+
+[Service]
+User={{ _bm_kiwix_user.uid }}
+ExecStart=kiwix-serve --port {{ bm_kiwix_port }} --library {{ bm_kiwix_basedir }}/library.xml
+Type=simple
+
+[Install]
+WantedBy=multi-user.target

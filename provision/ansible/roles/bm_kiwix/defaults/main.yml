@@ -1,0 +1,10 @@
+---
+bm_kiwix_id: kiwix
+bm_kiwix_name: Kiwix
+bm_kiwix_groups:
+  - kiwix
+bm_kiwix_basedir: /mnt/usb/kiwix
+bm_kiwix_port: 8081
+bm_kiwix_library:
+  - wikipedia_de_all_maxi_2025-09.zim
+  - wikipedia_en_all_maxi_2025-08.zim
