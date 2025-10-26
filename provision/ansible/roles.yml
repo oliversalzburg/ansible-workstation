@@ -25,90 +25,90 @@
   roles:
     - role: bm_kiwix
 
-#- name: Service Hosts
-#  hosts: servicehosts
-#  roles:
-#    - role: podman_host
-#    - role: podman_traefik
-#    - role: prometheus.prometheus.cadvisor
-#    - role: podman_prometheus
-#
-#- name: Canyon
-#  hosts: canyon.labnet
-#  roles:
-#    - role: unique_canyon
-#- name: Container
-#  hosts: container.labnet
-#  roles:
-#    - role: unique_container
-#- name: Laptop
-#  hosts: laptop.labnet
-#  roles:
-#    - role: unique_laptop
-#- name: Storage Server
-#  hosts: fireeye.labnet
-#  roles:
-#    - role: unique_fireeye
-#- name: Workstation
-#  hosts: workstation.labnet
-#  roles:
-#    - role: unique_workstation
-#
-#- name: Artifact Stores
-#  hosts: artifactstores
-#  roles:
-#    - role: podman_nexus
-#
-#- name: DB Hosts
-#  hosts: dbhosts
-#  roles:
-#    - role: podman_postgres
-#
-#- name: DNS Resolvers
-#  hosts: dnsresolvers
-#  roles:
-#    - role: podman_pihole
-#      vars:
-#        podman_pihole_dns_delegation: "{{ dns_delegation }}"
-#        podman_pihole_realm: "{{ realm }}"
-#        podman_pihole_registry: "{{ registry_dockerio }}"
-#        podman_pihole_timezone: "{{ config_system_timezone }}"
-#
-#- name: Auth Servers
-#  hosts: authservers
-#  roles:
-#    - role: podman_keycloak
-#      vars:
-#        podman_keycloak_admin: "{{ keycloak_admin }}"
-#        podman_keycloak_admin_password: "{{ keycloak_admin_password }}"
-#    - role: podman_oauth2proxy
-#
-#- name: GitLabs
-#  hosts: gitlabs
-#  roles:
-#    - role: podman_gitlab
-#
-#- name: Media Servers
-#  hosts: mediaservers
-#  roles:
-#    - role: podman_jellyfin
-#    - role: podman_lidarr
-#    - role: podman_prowlarr
-#    - role: podman_qbittorrent
-#    - role: podman_radarr
-#    - role: podman_recyclarr
-#    - role: podman_sonarr
-#    - role: podman_whisparr
-#
-#- name: Metrics Monitors
-#  hosts: metricsmonitors
-#  roles:
-#    - role: podman_grafana
-#
-#- name: Time Machines
-#  hosts: time_machine
-#  roles:
-#    - role: bm_time_machine
-#      vars:
-#        bm_time_machine_data_root: "{{ timeline_root }}"
-#
+- name: Service Hosts
+  hosts: servicehosts
+  roles:
+    - role: podman_host
+    - role: podman_traefik
+    - role: prometheus.prometheus.cadvisor
+    - role: podman_prometheus
+
+- name: Canyon
+  hosts: canyon.labnet
+  roles:
+    - role: unique_canyon
+- name: Container
+  hosts: container.labnet
+  roles:
+    - role: unique_container
+- name: Laptop
+  hosts: laptop.labnet
+  roles:
+    - role: unique_laptop
+- name: Storage Server
+  hosts: fireeye.labnet
+  roles:
+    - role: unique_fireeye
+- name: Workstation
+  hosts: workstation.labnet
+  roles:
+    - role: unique_workstation
+
+- name: Artifact Stores
+  hosts: artifactstores
+  roles:
+    - role: podman_nexus
+
+- name: DB Hosts
+  hosts: dbhosts
+  roles:
+    - role: podman_postgres
+
+- name: DNS Resolvers
+  hosts: dnsresolvers
+  roles:
+    - role: podman_pihole
+      vars:
+        podman_pihole_dns_delegation: "{{ dns_delegation }}"
+        podman_pihole_realm: "{{ realm }}"
+        podman_pihole_registry: "{{ registry_dockerio }}"
+        podman_pihole_timezone: "{{ config_system_timezone }}"
+
+- name: Auth Servers
+  hosts: authservers
+  roles:
+    - role: podman_keycloak
+      vars:
+        podman_keycloak_admin: "{{ keycloak_admin }}"
+        podman_keycloak_admin_password: "{{ keycloak_admin_password }}"
+    - role: podman_oauth2proxy
+
+- name: GitLabs
+  hosts: gitlabs
+  roles:
+    - role: podman_gitlab
+
+- name: Media Servers
+  hosts: mediaservers
+  roles:
+    - role: podman_jellyfin
+    - role: podman_lidarr
+    - role: podman_prowlarr
+    - role: podman_qbittorrent
+    - role: podman_radarr
+    - role: podman_recyclarr
+    - role: podman_sonarr
+    - role: podman_whisparr
+
+- name: Metrics Monitors
+  hosts: metricsmonitors
+  roles:
+    - role: podman_grafana
+
+- name: Time Machines
+  hosts: time_machine
+  roles:
+    - role: bm_kiwix
+    - role: bm_time_machine
+      vars:
+        bm_time_machine_data_root: "{{ timeline_root }}"

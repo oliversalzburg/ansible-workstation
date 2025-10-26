@@ -13,6 +13,6 @@ collections:
     version: 1.18.0
   - name: https://github.com/maxhoesel-ansible/ansible-collection-smallstep
     type: git
-    version: 187c10bb7c42a5b573d90df09bd8c27994ee5b96
+    version: 8f088f21b59ff685327ae68ff749b17f3a8d597d
   - name: prometheus.prometheus
     version: 0.27.3

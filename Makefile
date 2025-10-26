@@ -1,18 +1,21 @@
+requirements: .venv/built
+.venv: .venv/built
+.venv/built: requirements.txt provision/ansible/roles/requirements.yml
+	python3 -m venv .venv
+	. .venv/bin/activate && pip install -r requirements.txt
+	. .venv/bin/activate && ansible-galaxy install -r provision/ansible/roles/requirements.yml
+	touch .venv/built
+
+clean:
+	rm --force --recursive .venv
+
 lint: requirements
-	. .venv/bin/activate
-	cd provision/ansible; ansible-lint
+	. .venv/bin/activate && cd provision/ansible && ansible-lint
 
 age.agekey:
 	age-keygen -o age.agekey
 	mkdir --parents ~/.config/sops/age
 	cat age.agekey >> ~/.config/sops/age/keys.txt
-
-.venv:
-	python3 -m venv .venv
-
-requirements: .venv
-	.venv/bin/pip install -r requirements.txt
-	.venv/bin/ansible-galaxy install -r provision/ansible/roles/requirements.yml
 
 apt-upgrade: requirements
 	cd provision/ansible; ../../.venv/bin/ansible-playbook apt-upgrade.yml
@@ -32,10 +35,10 @@ init-workstation: requirements
 	cd provision/ansible; ../../.venv/bin/ansible-playbook site.yml --limit workstation.labnet
 
 init-localhost: requirements
-	cd provision/ansible; ../../.venv/bin/ansible localhost --module-name include_role --args name=all
+	. .venv/bin/activate && cd provision/ansible && ansible localhost --module-name include_role --args name=all
 
 update: requirements
-	cd provision/ansible; ../../.venv/bin/ansible-playbook roles.yml
+	. .venv/bin/activate && cd provision/ansible && ansible-playbook roles.yml
 
 update-canyon: requirements
 	cd provision/ansible; ../../.venv/bin/ansible-playbook roles.yml --limit canyon.labnet
