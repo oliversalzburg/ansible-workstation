@@ -1,18 +1,18 @@
 collections:
   - name: community.crypto
-    version: 3.0.4
+    version: ==3.0.4
   - name: community.docker
-    version: 4.8.2
+    version: ==4.8.2
   - name: community.general
-    version: 11.4.0
+    version: ==11.4.0
   - name: community.postgresql
-    version: 4.1.0
+    version: ==4.1.0
   - name: community.sops
-    version: 2.2.6
+    version: ==2.2.6
   - name: containers.podman
-    version: 1.18.0
+    version: ==1.18.0
   - name: https://github.com/maxhoesel-ansible/ansible-collection-smallstep
     type: git
     version: 8f088f21b59ff685327ae68ff749b17f3a8d597d
   - name: prometheus.prometheus
-    version: 0.27.3
+    version: ==0.27.3

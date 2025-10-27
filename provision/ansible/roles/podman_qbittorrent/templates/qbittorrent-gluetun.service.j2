@@ -33,7 +33,8 @@ ExecStart=/usr/bin/podman run \
   --env "SERVER_COUNTRIES=Hungary,Netherlands,Poland" \
   --env "PORT_FORWARD_ONLY=on" \
   --env "VPN_PORT_FORWARDING=on" \
-  --log-driver "journald" \--env "VPN_PORT_FORWARDING_UP_COMMAND=/bin/sh -c 'wget --output-document=- --post-data \'json={\\\\\\\"listen_port\\\\\\\":{{ '{{' }}PORTS{{ '}}' }}}\' --retry-connrefused --server-response --verbose http://127.0.0.1:8080/api/v2/app/setPreferences 2>&1'" \
+  --env "VPN_PORT_FORWARDING_UP_COMMAND=/bin/sh -c 'wget --output-document=- --post-data \'json={\\\\\\\"listen_port\\\\\\\":{{ '{{' }}PORTS{{ '}}' }}}\' --retry-connrefused --server-response --verbose http://127.0.0.1:8080/api/v2/app/setPreferences 2>&1'" \
+  --log-driver "journald" \
   --memory "256m" \
   --name "%n.{{ inventory_hostname }}" \
   --pod-id-file "%t/qbittorrent.pod-id" \

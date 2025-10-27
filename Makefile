@@ -1,9 +1,9 @@
 requirements: .venv/built
 .venv: .venv/built
-.venv/built: requirements.txt provision/ansible/roles/requirements.yml
+.venv/built: requirements.txt provision/ansible/requirements.yml
 	python3 -m venv .venv
 	. .venv/bin/activate && pip install -r requirements.txt
-	. .venv/bin/activate && ansible-galaxy install -r provision/ansible/roles/requirements.yml
+	. .venv/bin/activate && cd provision/ansible && ansible-galaxy collection install -r requirements.yml -p ./collections
 	touch .venv/built
 
 clean:

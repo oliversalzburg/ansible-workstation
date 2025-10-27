@@ -1,3 +1,6 @@
+/.ansible
+/.tmp
+/collections
 /inventory
 /kubeconfig
 /vault-password-file
