@@ -65,7 +65,7 @@ podman_pihole_version: "2025.10.3"
 # renovate: datasource=docker depName=docker.io/library/postgres versioning=semver-coerced
 podman_postgres_version: "17.6"
 # renovate: datasource=docker depName=quay.io/prometheus/prometheus versioning=semver-coerced
-podman_prometheus_version: "v3.7.2"
+podman_prometheus_version: "v3.7.3"
 # renovate: datasource=docker depName=docker.io/prom/pushgateway versioning=semver-coerced
 podman_prometheus_pushgateway_version: "v1.11.1"
 # renovate: datasource=docker depName=quay.io/prometheus/snmp-exporter versioning=semver-coerced
