@@ -1,6 +1,6 @@
 collections:
   - name: community.crypto
-    version: ==3.0.4
+    version: ==3.0.5
   - name: community.docker
     version: ==4.8.2
   - name: community.general
