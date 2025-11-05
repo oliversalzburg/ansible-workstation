@@ -83,7 +83,7 @@ podman_qbittorrent_gluetun_version: "v3.40.0"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/radarr versioning=loose
 podman_radarr_version: "v5.28.0.10274"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/sonarr versioning=loose
-podman_sonarr_version: "v4.0.15.2941"
+podman_sonarr_version: "v4.0.16.2944"
 # renovate: datasource=docker depName=docker.io/library/traefik versioning=semver-coerced
 podman_traefik_version: "v3.5.4"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/whisparr versioning=loose
