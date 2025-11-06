@@ -81,6 +81,12 @@
     cmd: a2enmod proxy
   register: bm_time_machine_mod_proxy
   changed_when: '"Enabling" in bm_time_machine_mod_proxy.stdout'
+- name: Enable Proxy HTTP Module
+  become: true
+  ansible.builtin.command:
+    cmd: a2enmod proxy_http
+  register: bm_time_machine_mod_proxy_http
+  changed_when: '"Enabling" in bm_time_machine_mod_proxy_http.stdout'
 - name: Enable UserDir Module
   become: true
   ansible.builtin.command:
