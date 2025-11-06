@@ -55,7 +55,7 @@
   delay: 3
   until: podman_traefik_result is not failed
   containers.podman.podman_image:
-    name: "docker.io/library/traefik:{{ podman_traefik_version }}"
+    name: "public.ecr.aws/docker/library/traefik:{{ podman_traefik_version }}"
 
 - name: Copy service files
   become: true

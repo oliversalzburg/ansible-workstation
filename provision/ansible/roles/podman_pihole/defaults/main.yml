@@ -7,4 +7,4 @@ podman_pihole_timezone: UTC
 podman_pihole_directory_systemd: /etc/systemd/system
 podman_pihole_dns_delegation: {}
 podman_pihole_realm: localhost
-podman_pihole_registry: docker.io
+podman_pihole_registry: public.ecr.aws/docker

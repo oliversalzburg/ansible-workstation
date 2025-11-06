@@ -72,7 +72,7 @@
   until: podman_pihole_result is not failed
   containers.podman.podman_image:
     force: "{{ podman_pihole_version == 'latest' }}"
-    name: "{{ registry_dockerio }}/pihole/pihole:{{ podman_pihole_version }}"
+    name: "{{ podman_pihole_registry }}/pihole/pihole:{{ podman_pihole_version }}"
   notify: Restart pihole
 
 - name: Copy service files
