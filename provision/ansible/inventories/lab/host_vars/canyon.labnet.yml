@@ -1,2 +1,3 @@
 podman_service_network_subnet: "10.100.52.0/24"
 podman_service_network_gateway: "10.100.52.1"
+bm_kiwix_seeddir: /mnt/storage1/kiwix

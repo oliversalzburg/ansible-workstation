@@ -51,12 +51,34 @@ http:
       service: api@internal
       tls:
         certresolver: "{{ realm }}"
+    kiwix:
+      rule: "Host(`oszm1.web.{{ inventory_hostname }}`) && PathPrefix(`/kiwix`)"
+      service: kiwix@file
+      tls:
+        certresolver: "{{ realm }}"
+        domains:
+          - main: "oszm1.web.{{ inventory_hostname }}"
+    oszm1:
+      rule: "Host(`oszm1.web.{{ inventory_hostname }}`)"
+      service: oszm1@file
+      tls:
+        certresolver: "{{ realm }}"
+        domains:
+          - main: "oszm1.web.{{ inventory_hostname }}"
 
   services:
+    kiwix:
+      loadBalancer:
+        servers:
+          - url: "http://{{ inventory_hostname }}:{{ bm_kiwix_port }}"
     oauth2proxy:
       loadBalancer:
         servers:
           - url: "https://oauth2proxy.web.container.{{ realm }}"
+    oszm1:
+      loadBalancer:
+        servers:
+          - url: "http://{{ inventory_hostname }}:8082"
 
 tls:
   options:

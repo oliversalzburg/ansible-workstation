@@ -34,6 +34,8 @@ hosts_postgres:
 hosts_starr:
   - canyon
 
+bm_kiwix_port: 8081
+
 registry_dockerio: dockerio.nexus.web.container.labnet
 registry_ghcrio: ghcrio.nexus.web.container.labnet
 registry_quayio: quayio.nexus.web.container.labnet

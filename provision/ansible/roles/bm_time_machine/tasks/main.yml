@@ -15,6 +15,7 @@
       - cups-server-common
       - evolution
       - firefox-esr
+      - gnome-accessibility-themes
       - gnome-calculator
       - gnome-calendar
       - gnome-clocks
@@ -56,6 +57,36 @@
       - wireguard
       - wireguard-tools
     state: absent
+
+- name: Install Web Server
+  become: true
+  ansible.builtin.apt:
+    name:
+      - apache2
+- name: Enable Header Module
+  become: true
+  ansible.builtin.command:
+    cmd: a2enmod header
+- name: Enable UserDir Module
+  become: true
+  ansible.builtin.command:
+    cmd: a2enmod userdir
+- name: Configure UserDir Module
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/apache2/sites-available/100-user.conf"
+    dest: /etc/apache2/sites-available/100-user.conf
+    owner: root
+    group: root
+    mode: "0o644"
+- name: Enable UserDir Site
+  become: true
+  ansible.builtin.command:
+    cmd: a2ensite 100-user
+- name: Disable Default Site
+  become: true
+  ansible.builtin.command:
+    cmd: a2dissite 000-default
 
 - name: Disable Power Saving Features dconf
   become: true
@@ -252,6 +283,12 @@
     name: "{{ ansible_user }}"
     groups: subject
     append: true
+- name: Ensure Apache User is a Subject Group Member
+  become: true
+  ansible.builtin.user:
+    name: www-data
+    groups: subject
+    append: true
 - name: Ensure Home Directory
   become: true
   ansible.builtin.file:
@@ -298,7 +335,7 @@
 - name: Ensure Universe Directory Exists Writable
   become: true
   ansible.builtin.file:
-    path: /home/subject/oszm1
+    path: /home/subject/public_html
     state: directory
     owner: "{{ ansible_user }}"
     group: subject
@@ -308,13 +345,13 @@
 - name: Synchronize Universe Shell
   ansible.posix.synchronize:
     src: "{{ bm_time_machine_data_root }}/"
-    dest: /home/subject/oszm1
+    dest: /home/subject/public_html
     delete: true
 
 - name: Ensure Universe Directory Writable
   become: true
   ansible.builtin.file:
-    path: /home/subject/oszm1
+    path: /home/subject/public_html
     state: directory
     owner: "{{ ansible_user }}"
     group: subject

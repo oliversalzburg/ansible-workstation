@@ -4,6 +4,7 @@ bm_kiwix_name: Kiwix
 bm_kiwix_groups:
   - kiwix
 bm_kiwix_basedir: /mnt/usb/kiwix
+bm_kiwix_seeddir: /invalid
 bm_kiwix_port: 8081
 bm_kiwix_library:
   - wikipedia_de_all_maxi_2025-09.zim

@@ -29,4 +29,5 @@ kvm_up_guests:
     second_hdd: false
     second_hdd_size: ""
 
-bm_kiwix_basedir: /mnt/storage/kiwix
+bm_kiwix_basedir: /mnt/storage1/kiwix
+bm_kiwix_seeddir: /mnt/storage1/kiwix

@@ -58,6 +58,53 @@
   loop:
     - kiwix.service
 
+
+- name: Gather package facts
+  ansible.builtin.package_facts:
+    manager: apt
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Copy Kiwix Site
+  become: true
+  ansible.builtin.template:
+    src: kiwix-site.conf.j2
+    dest: /etc/apache2/sites-available/100-kiwix.conf
+    owner: www-data
+    group: www-data
+    mode: "0o644"
+  when: '"apache2" in ansible_facts.packages'
+- name: Enable Kiwix Site
+  become: true
+  ansible.builtin.command:
+    cmd: a2ensite 100-kiwix
+  when: '"apache2" in ansible_facts.packages'
+
+- name: Ensure Kiwix Directory Exists Writable
+  become: true
+  ansible.builtin.file:
+    path: "{{ bm_kiwix_basedir }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: kiwix
+    mode: "0o775"
+    recurse: true
+
+- name: Synchronize Kiwix Content
+  ansible.posix.synchronize:
+    src: "{{ bm_kiwix_seeddir }}/"
+    dest: "{{ bm_kiwix_basedir }}"
+    delete: true
+
+- name: Ensure Universe Directory Writable
+  become: true
+  ansible.builtin.file:
+    path: "{{ bm_kiwix_basedir }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: kiwix
+    mode: "0o775"
+    recurse: true
+
 - name: Update Kiwix Library
   become: true
   ansible.builtin.command:
