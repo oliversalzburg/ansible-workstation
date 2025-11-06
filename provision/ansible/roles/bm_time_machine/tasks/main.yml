@@ -58,19 +58,36 @@
       - wireguard-tools
     state: absent
 
+- name: Gather package facts
+  ansible.builtin.package_facts:
+    manager: apt
+  when: ansible_facts['os_family'] == "Debian"
+
 - name: Install Web Server
   become: true
   ansible.builtin.apt:
     name:
       - apache2
+  when: '"apache2" not in ansible_facts.packages'
 - name: Enable Header Module
   become: true
   ansible.builtin.command:
-    cmd: a2enmod header
+    cmd: a2enmod headers
+  register: bm_time_machine_mod_headers
+  changed_when: '"Enabling" in bm_time_machine_mod_headers.stdout'
+- name: Enable Proxy Module
+  become: true
+  ansible.builtin.command:
+    cmd: a2enmod proxy
+  register: bm_time_machine_mod_proxy
+  changed_when: '"Enabling" in bm_time_machine_mod_proxy.stdout'
 - name: Enable UserDir Module
   become: true
   ansible.builtin.command:
     cmd: a2enmod userdir
+  register: bm_time_machine_mod_userdir
+  changed_when: '"Enabling" in bm_time_machine_mod_userdir.stdout'
+
 - name: Configure UserDir Module
   become: true
   ansible.builtin.copy:
