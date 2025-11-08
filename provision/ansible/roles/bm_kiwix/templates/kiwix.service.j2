@@ -6,7 +6,12 @@ After=network.target network-online.target
 
 [Service]
 User={{ _bm_kiwix_user.name }}
-ExecStart=kiwix-serve --library {{ bm_kiwix_basedir }}/library.xml --port {{ bm_kiwix_port }} --urlRootLocation kiwix
+ExecStart=kiwix-serve \
+	--library {{ bm_kiwix_basedir }}/library.xml \
+	--nolibrarybutton \
+	#--nosearchbar \
+	--port {{ bm_kiwix_port }} \
+	--urlRootLocation kiwix
 Type=simple
 
 [Install]
