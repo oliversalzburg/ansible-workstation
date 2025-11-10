@@ -57,7 +57,7 @@ podman_keycloak_version: "26.4.4"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/lidarr versioning=loose
 podman_lidarr_version: "v3.0.1.4866"
 # renovate: datasource=docker depName=docker.io/mattermost/mattermost-team-edition versioning=semver
-podman_mattermost_version: "11.0.4"
+podman_mattermost_version: "11.1.0"
 # renovate: datasource=docker depName=docker.io/sonatype/nexus3 versioning=semver
 podman_nexus_version: "3.86.0"
 # renovate: datasource=docker depName=quay.io/oauth2-proxy/oauth2-proxy versioning=semver-coerced
