@@ -1,4 +1,9 @@
 ---
+- name: Gather package facts
+  ansible.builtin.package_facts:
+    manager: apt
+  when: ansible_facts['os_family'] == "Debian"
+
 - name: Install KeePassXC
   become: true
   ansible.builtin.apt:
@@ -6,3 +11,4 @@
       - keepassxc
     state: present
     update_cache: true
+  when: '"keypassxc" not in ansible_facts.packages'

@@ -1,4 +1,9 @@
 ---
+- name: Gather package facts
+  ansible.builtin.package_facts:
+    manager: apt
+  when: ansible_facts['os_family'] == "Debian"
+
 - name: Install Kiwix Tools
   become: true
   ansible.builtin.apt:
@@ -6,6 +11,7 @@
       - kiwix-tools
     state: present
     update_cache: true
+  when: '"kiwix-tools" not in ansible_facts.packages'
 
 - name: Create Kiwix Group
   become: true
@@ -58,11 +64,6 @@
   loop:
     - kiwix.service
 
-
-- name: Gather package facts
-  ansible.builtin.package_facts:
-    manager: apt
-  when: ansible_facts['os_family'] == "Debian"
 
 - name: Copy Kiwix Site
   become: true

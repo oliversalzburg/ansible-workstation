@@ -1,4 +1,9 @@
 ---
+- name: Gather package facts
+  ansible.builtin.package_facts:
+    manager: apt
+  when: ansible_facts['os_family'] == "Debian"
+
 - name: Add GoLift Repository
   become: true
   register: podman_qbittorrent_result
@@ -28,6 +33,7 @@
     state: present
     update_cache: true
   notify: Restart unpackerr
+  when: '"unpackerr" not in ansible_facts.packages'
 
 - name: Copy Unpackerr configuration
   become: true

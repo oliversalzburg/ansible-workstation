@@ -1,3 +1,9 @@
+---
+- name: Gather package facts
+  ansible.builtin.package_facts:
+    manager: apt
+  when: ansible_facts['os_family'] == "Debian"
+  
 - name: Add Syncthing Repository
   become: true
   ansible.builtin.deb822_repository:
@@ -17,6 +23,7 @@
       - syncthing
     state: present
     update_cache: true
+  when: '"syncthing" not in ansible_facts.packages'
 
 - name: Get users
   ansible.builtin.getent:

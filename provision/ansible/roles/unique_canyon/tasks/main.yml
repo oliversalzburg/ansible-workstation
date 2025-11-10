@@ -1,4 +1,9 @@
 ---
+- name: Gather package facts
+  ansible.builtin.package_facts:
+    manager: apt
+  when: ansible_facts['os_family'] == "Debian"
+
 - name: Install commonly used dependencies
   become: true
   register: unique_canyon_result
@@ -9,6 +14,7 @@
     name:
       - wpasupplicant
     update_cache: true
+  when: '"wpasupplicant" not in ansible_facts.packages'
 
 - name: Set hostname
   become: true
@@ -33,18 +39,6 @@
     owner: root
     group: root
     mode: "0o644"
-  notify: Restart systemd-networkd
-
-- name: Install wpasupplicant
-  become: true
-  register: unique_canyon_result
-  retries: 3
-  delay: 3
-  until: unique_canyon_result is not failed
-  ansible.builtin.apt:
-    name:
-      - wpasupplicant
-    update_cache: true
   notify: Restart systemd-networkd
 
 - name: "Store WPA config: offline"

@@ -1,4 +1,9 @@
 ---
+- name: Gather package facts
+  ansible.builtin.package_facts:
+    manager: apt
+  when: ansible_facts['os_family'] == "Debian"
+
 - name: Install certbot
   become: true
   ansible.builtin.apt:
@@ -6,6 +11,7 @@
       - certbot
     state: present
     update_cache: true
+  when: '"certbot" not in ansible_facts.packages'
 
 - name: Provision certificate
   become: true

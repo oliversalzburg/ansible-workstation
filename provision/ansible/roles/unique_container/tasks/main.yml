@@ -44,18 +44,6 @@
     mode: "0o644"
   notify: Restart systemd-networkd
 
-- name: Install wpasupplicant
-  become: true
-  register: unique_container_result
-  retries: 3
-  delay: 3
-  until: unique_container_result is not failed
-  ansible.builtin.apt:
-    name:
-      - wpasupplicant
-    update_cache: true
-  notify: Restart systemd-networkd
-
 - name: "Store WPA config: offline"
   become: true
   ansible.builtin.template:
