@@ -123,15 +123,15 @@
     - gluetun
   notify: Restart qbittorrent
 
-- name: Configure Gluetun Servers
-  become: true
-  ansible.builtin.copy:
-    src: "{{ role_path }}/files/servers.json"
-    dest: "{{ podman_qbittorrent_basedir }}/gluetun/servers.json"
-    owner: "{{ _podman_qbittorrent_user.uid }}"
-    group: "{{ _podman_qbittorrent_groups.results[0].gid }}"
-    mode: "u=rwX,g=,o="
-  notify: Restart qbittorrent
+#- name: Configure Gluetun Servers
+#  become: true
+#  ansible.builtin.copy:
+#    src: "{{ role_path }}/files/servers.json"
+#    dest: "{{ podman_qbittorrent_basedir }}/gluetun/servers.json"
+#    owner: "{{ _podman_qbittorrent_user.uid }}"
+#    group: "{{ _podman_qbittorrent_groups.results[0].gid }}"
+#    mode: "u=rwX,g=,o="
+#  notify: Restart qbittorrent
 
 - name: Create secret qbittorrent_wireguard_private_key
   become: true
@@ -141,7 +141,22 @@
     name: qbittorrent_wireguard_private_key
     state: present
   notify: Restart qbittorrent
-
+- name: Create secret protonvpn_username
+  become: true
+  containers.podman.podman_secret:
+    data: "{{ protonvpn_username }}"
+    force: true
+    name: protonvpn_username
+    state: present
+  notify: Restart qbittorrent
+- name: Create secret protonvpn_password
+  become: true
+  containers.podman.podman_secret:
+    data: "{{ protonvpn_username }}"
+    force: true
+    name: protonvpn_password
+    state: present
+  notify: Restart qbittorrent
 
 - name: Copy service files
   become: true
