@@ -12,7 +12,7 @@ jobs:
     name: Run QA
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
       - uses: getsentry/action-setup-venv@0958463ee0e02b9e8aa8f8e031afae1f84b80881 # v3.0.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
