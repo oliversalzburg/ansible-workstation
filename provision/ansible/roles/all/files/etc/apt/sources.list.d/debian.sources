@@ -1,5 +1,5 @@
 Types: deb deb-src
-URIs: http://deb.debian.org/debian/
+URIs: http://mirror.23m.com/debian/
 Suites: forky
 Components: main non-free contrib non-free-firmware
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
