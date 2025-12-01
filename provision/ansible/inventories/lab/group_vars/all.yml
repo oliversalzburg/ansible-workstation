@@ -51,7 +51,7 @@ podman_gitlab_runner_version: "v18.6.3"
 # renovate: datasource=docker depName=docker.io/grafana/grafana-oss versioning=semver
 podman_grafana_version: "12.1.1"
 # renovate: datasource=docker depName=docker.io/jellyfin/jellyfin versioning=semver
-podman_jellyfin_version: "10.11.3"
+podman_jellyfin_version: "10.11.4"
 # renovate: datasource=docker depName=quay.io/keycloak/keycloak versioning=semver
 podman_keycloak_version: "26.4.6"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/lidarr versioning=loose
