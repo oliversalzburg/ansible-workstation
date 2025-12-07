@@ -2,7 +2,7 @@ collections:
   - name: community.crypto
     version: ==3.0.5
   - name: community.docker
-    version: ==5.0.3
+    version: ==5.0.4
   - name: community.general
     version: ==12.1.0
   - name: community.postgresql
