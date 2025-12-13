@@ -3,3 +3,9 @@
   become: true
   ansible.builtin.command: dconf update
   changed_when: true
+
+- name: Enable cage Service
+  become: true
+  ansible.builtin.systemd:
+    name: cage@tty1.service
+    enabled: true

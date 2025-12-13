@@ -1,7 +1,0 @@
-#!/bin/bash
-xrandr --display :0 --output DP-1 --mode 1920x1080 || true
-xrandr --display :0 --output DP-2 --mode 1920x1080 || true
-xrandr --display :0 --output HDMI-1 --mode 1920x1080 || true
-xrandr --display :0 --output HDMI-2 --mode 1920x1080 || true
-xrandr --display :0 --output HDMI-3 --mode 1920x1080 || true
-xset dpms 0 0 0 && xset s noblank && xset s off
