@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
-      - uses: getsentry/action-setup-venv@6e8aebf461914919d9de6e3082669d6bfecc400c # v3.1.0
+      - uses: getsentry/action-setup-venv@5a80476d175edf56cb205b08bc58986fa99d1725 # v3.2.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           install-cmd: pip install -r requirements.txt
