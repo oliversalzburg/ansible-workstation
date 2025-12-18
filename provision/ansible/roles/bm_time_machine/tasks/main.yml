@@ -12,28 +12,20 @@
   when: '"apache2" not in ansible_facts.packages'
 - name: Enable Header Module
   become: true
-  ansible.builtin.command:
-    cmd: a2enmod headers
-  register: bm_time_machine_mod_headers
-  changed_when: '"Enabling" in bm_time_machine_mod_headers.stdout'
+  community.general.apache2_module:
+    name: headers
 - name: Enable Proxy Module
   become: true
-  ansible.builtin.command:
-    cmd: a2enmod proxy
-  register: bm_time_machine_mod_proxy
-  changed_when: '"Enabling" in bm_time_machine_mod_proxy.stdout'
+  community.general.apache2_module:
+    name: proxy
 - name: Enable Proxy HTTP Module
   become: true
-  ansible.builtin.command:
-    cmd: a2enmod proxy_http
-  register: bm_time_machine_mod_proxy_http
-  changed_when: '"Enabling" in bm_time_machine_mod_proxy_http.stdout'
+  community.general.apache2_module:
+    name: proxy_http
 - name: Enable UserDir Module
   become: true
-  ansible.builtin.command:
-    cmd: a2enmod userdir
-  register: bm_time_machine_mod_userdir
-  changed_when: '"Enabling" in bm_time_machine_mod_userdir.stdout'
+  community.general.apache2_module:
+    name: userdir
 
 - name: Configure UserDir Module
   become: true
@@ -93,21 +85,6 @@
     name:
       - cage
       - chromium
-      - fonts-adf-accanthis
-      - fonts-adf-berenis
-      - fonts-adf-gillius
-      - fonts-adf-universalis
-      - fonts-arphic-bkai00mp
-      - fonts-arphic-bsmi00lp
-      - fonts-arphic-gbsn00lp
-      - fonts-arphic-gkai00mp
-      - fonts-arphic-uming
-      - fonts-baekmuk
-      - fonts-cabin
-      - fonts-cantarell
-      - fonts-clear-sans
-      - fonts-comfortaa
-      - fonts-comic-neue
       - fonts-croscore
       - fonts-crosextra-caladea
       - fonts-crosextra-carlito
@@ -116,95 +93,28 @@
       - fonts-dejavu-extra
       - fonts-dejavu-mono
       - fonts-droid-fallback
-      - fonts-ebgaramond-extra
       - fonts-font-awesome
       - fonts-freefont-otf
       - fonts-freefont-ttf
-      - fonts-gfs-artemisia
-      - fonts-gfs-baskerville
-      - fonts-gfs-bodoni-classic
-      - fonts-gfs-complutum
-      - fonts-gfs-didot
-      - fonts-gfs-didot-classic
-      - fonts-gfs-gazis
-      - fonts-gfs-neohellenic
-      - fonts-gfs-olga
-      - fonts-gfs-porson
-      - fonts-gfs-solomos
-      - fonts-gfs-theokritos
-      - fonts-go
-      - fonts-hosny-amiri
-      - fonts-inter
-      - fonts-ipaexfont-gothic
-      - fonts-ipaexfont-mincho
-      - fonts-ipafont-gothic
-      - fonts-ipafont-mincho
-      - fonts-katex
       - fonts-lato
       - fonts-liberation
       - fonts-liberation-sans-narrow
       - fonts-linuxlibertine
-      - fonts-lmodern
-      - fonts-lobster
-      - fonts-lobstertwo
-      - fonts-lyx
       - fonts-mathjax
       - fonts-noto-color-emoji
       - fonts-noto-core
       - fonts-noto-mono
-      - fonts-oflb-asana-math
       - fonts-open-sans
       - fonts-opensymbol
-      - fonts-paratype
-      - fonts-quicksand
       - fonts-roboto-slab
       - fonts-roboto-unhinted
-      - fonts-sil-andika
-      - fonts-sil-charis
-      - fonts-sil-gentium
-      - fonts-sil-gentium-basic
-      - fonts-sil-gentiumplus
-      - fonts-sil-gentiumplus-compact
-      - fonts-sil-padauk
-      - fonts-stix
-      - fonts-symbola
-      - fonts-texgyre
-      - fonts-texgyre-math
-      - fonts-tlwg-garuda
-      - fonts-tlwg-garuda-otf
-      - fonts-tlwg-kinnari
-      - fonts-tlwg-kinnari-otf
-      - fonts-tlwg-laksaman
-      - fonts-tlwg-laksaman-otf
-      - fonts-tlwg-loma
-      - fonts-tlwg-loma-otf
-      - fonts-tlwg-mono
-      - fonts-tlwg-mono-otf
-      - fonts-tlwg-norasi
-      - fonts-tlwg-norasi-otf
-      - fonts-tlwg-purisa
-      - fonts-tlwg-purisa-otf
-      - fonts-tlwg-sawasdee
-      - fonts-tlwg-sawasdee-otf
-      - fonts-tlwg-typewriter
-      - fonts-tlwg-typewriter-otf
-      - fonts-tlwg-typist
-      - fonts-tlwg-typist-otf
-      - fonts-tlwg-typo
-      - fonts-tlwg-typo-otf
-      - fonts-tlwg-umpush
-      - fonts-tlwg-umpush-otf
-      - fonts-tlwg-waree
-      - fonts-tlwg-waree-otf
-      - fonts-tuffy
       - fonts-unfonts-core
       - fonts-unfonts-extra
-      - fonts-urw-base35
       - fonts-wine
+      - libpam-systemd
       - pipewire
       - seatd
       - task-gnome-desktop
-      - unclutter-xfixes
       - wireplumber
     state: present
     update_cache: true
@@ -220,7 +130,9 @@
     append: true
     create_home: false
     groups:
+      - audio
       - seat
+      - video
     name: subject
     password: "!"
     shell: /bin/bash
@@ -274,39 +186,6 @@
   when: "'graphical' not in systemdefault.stdout"
   changed_when: true
 
-#- name: Copy .bashrc
-#  become: true
-#  ansible.builtin.copy:
-#    src: "{{ role_path }}/files/.bashrc"
-#    dest: /home/subject/.bashrc
-#    owner: subject
-#    group: subject
-#    mode: "0o750"
-#- name: Copy .profile
-#  become: true
-#  ansible.builtin.copy:
-#    src: "{{ role_path }}/files/.profile"
-#    dest: /home/subject/.profile
-#    owner: subject
-#    group: subject
-#    mode: "0o750"
-#- name: Copy .xsessionrc
-#  become: true
-#  ansible.builtin.copy:
-#    src: "{{ role_path }}/files/.xsessionrc"
-#    dest: /home/subject/.xsessionrc
-#    owner: subject
-#    group: subject
-#    mode: "0o750"
-#- name: Copy Start Script
-#  become: true
-#  ansible.builtin.copy:
-#    src: "{{ role_path }}/files/start.sh"
-#    dest: /home/subject/start.sh
-#    owner: subject
-#    group: subject
-#    mode: "0o750"
-
 - name: Ensure Universe Directory Exists Writable
   become: true
   ansible.builtin.file:
@@ -314,7 +193,7 @@
     state: directory
     owner: "{{ ansible_user }}"
     group: subject
-    mode: "0o775"
+    mode: "u=rwX,g=rwX,o=rX"
     recurse: true
 
 - name: Synchronize Universe Shell
@@ -330,5 +209,11 @@
     state: directory
     owner: "{{ ansible_user }}"
     group: subject
-    mode: "0o775"
+    mode: "u=rwX,g=rwX,o=rX"
     recurse: true
+
+- name: Clear Chromium Cache
+  become: true
+  ansible.builtin.file:
+    path: /home/subject/.cache/chromium
+    state: absent

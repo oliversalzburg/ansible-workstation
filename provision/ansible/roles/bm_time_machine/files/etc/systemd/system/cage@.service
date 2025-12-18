@@ -13,8 +13,8 @@ Before=graphical.target
 # On systems without virtual consoles, do not start.
 ConditionPathExists=/dev/tty0
 # D-Bus is necessary for contacting logind, which is required.
-Wants=dbus.socket systemd-logind.service
-After=dbus.socket systemd-logind.service
+Wants=dbus.socket systemd-logind.service pipewire.socket
+After=dbus.socket systemd-logind.service pipewire.socket
 # Replace any (a)getty that may have spawned, since we log in
 # automatically.
 Conflicts=getty@%i.service
@@ -24,7 +24,18 @@ After=seatd.service
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/cage -- chromium --app=http://localhost/~subject/universe.html --password-store=basic --start-fullscreen
+ExecStart=/usr/bin/cage -- chromium \
+	# Application mode, opens this single origin and nothing else.
+	--app=http://localhost/~subject/universe.html \
+	# Don't require user interaction for audio.
+	--autoplay-policy=no-user-gesture-required \
+	# Don't show "Press ESC to exit" popup.
+	--kiosk \
+	# Don't create a keyring for credential storage.
+	--password-store=basic \
+	# Fullscreen.
+	--start-fullscreen \
+	--enable-logging=stderr --v=1 > /home/subject/chromium.log 2>&1
 ExecStartPost=+sh -c "tty_name='%i'; exec chvt $${tty_name#tty}"
 Restart=always
 User=subject
@@ -39,6 +50,8 @@ TTYVHangup=yes
 TTYVTDisallocate=yes
 # Fail to start if not controlling the virtual terminal.
 StandardInput=tty-fail
+StandardOutput=file:/home/subject/cage.log
+StandardError=file:/home/subject/cage_err.log
 
 # Set up a full (custom) user session for the user, required by Cage.
 PAMName=subject
