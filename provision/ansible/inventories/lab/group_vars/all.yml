@@ -81,7 +81,7 @@ podman_qbittorrent_exporter_version: "v1.6.0"
 # renovate: datasource=docker depName=docker.io/jesec/flood versioning=semver
 podman_qbittorrent_flood_version: "4.11.0"
 # renovate: datasource=docker depName=docker.io/qmcgaw/gluetun versioning=semver-coerced
-podman_qbittorrent_gluetun_version: "v3.40.3"
+podman_qbittorrent_gluetun_version: "v3.40.4"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/radarr versioning=loose
 podman_radarr_version: "v6.0.4.10291"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/sonarr versioning=loose
