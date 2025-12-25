@@ -1,6 +1,4 @@
 ansible_become_password: ENC[AES256_GCM,data:1pKwDevsect6wMkS,iv:OM+D+g8reDgbsC/YBVGEYXH0NeYJlzDxkfgfTs0CkbM=,tag:1P+fVGlGGjHF8tOWiaKLdg==,type:str]
-auth_token_github: ENC[AES256_GCM,data:DgjCAeeX44HZUcc9rqdeDKyhOvd5XACOghHikrPi68+iKz0lAaKtoQ==,iv:o7tCpvAZByVXS3FYBo6Y7uIb2MdZG3HSMEyRtslXEc8=,tag:ZVREujGjn62YD91zfMhxBA==,type:str]
-auth_token_npmjs: ENC[AES256_GCM,data:fdLVmaAcp0mreB/8GxISjD9WwVt3iifBSoz8683/RdUu08J8,iv:eJfLyHpUwhABHBXEQwh8kjf8FLIKtg/GwoO7HlJIyko=,tag:7cK733nL7Wd2JWfTibhhmA==,type:str]
 cidr_local: ENC[AES256_GCM,data:0t9Jk2Y1uUTroiUHh1G5AA==,iv:KaJPDeibpxB3FNXgPEoiHnO8kM9Fwm/5lXM7S5YiKGU=,tag:9tVDSxt2KnEXkqf7qTpOEw==,type:str]
 cloudflare_api_key: ENC[AES256_GCM,data:UdPeM6sNCv/pPSVIj/+kTRb72Cn5KOzc+Fxe8+m/I8s1xfC13Ng2Zg==,iv:b1HBH4I68B4p3c6UYTP7+PxAbuIrCj5V9xE7zg7Q5ZQ=,tag:rX/FzYfZlhjwPO5RLFW38g==,type:str]
 docker_hub_password: ENC[AES256_GCM,data:qmpRVXcUVEFJ21M74DB3mnDt1io=,iv:yCLERjnRazVkGK4S2mQc9fNJU7jWNhQLD7VQORn/Sfc=,tag:kZjkkSX0TuN6HBz2fh5yRg==,type:str]
@@ -42,8 +40,8 @@ sops:
             SE9MSTh6cnQrNWxTNGFCR2xvNGhmT1UKZ3HILHktZEe0S0zzFoXWNx2AtmSlESsh
             9K/ZztN2zJGeYomwiJXCwToQPa1aXYrtlDgpmBZMlOfwOTS7I2p4LA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-11-17T18:30:04Z"
-    mac: ENC[AES256_GCM,data:wgiKi/uF4oTg82foV7vHwBJcUWOzyqSzu8hMT3KG2ZVpbmXNMSR930ltDUKhPMaFUfJepISYUu89mgL/K3iMyHWv3xreLIAccFhjviKrUqcmILPXO6EpC22KJaNgJYzZbye6Z9wTRdyDzO5RtaXWrh86jSgN2OT5dGbg7w8+PYo=,iv:OfQ/P/JXznpD/QI/V4+Jqk/4zqCH6hOnbUzKm6oFBEg=,tag:QI6q29JjfVK0juv1gkGuVA==,type:str]
+    lastmodified: "2025-12-25T13:49:24Z"
+    mac: ENC[AES256_GCM,data:2PFP1gEqjlWJgxIjZ7ShGrny47fpBLlVycuO9aj68L2c5+2oTUgvH7MbwVd/hQYKtXKdoCzzoPvcOqvgmrp3IHZd2UyX/gUd2cUPWJKxy8gmGkLNn2xmAAKq6O44jy1SKUlWZTwX4+rK1X7b3CsmUvGNUmb6q9XzzACWPhWu0BA=,iv:fuitzmq3sv/6ccAU68byN+QjqxaaM3Hz2/RHcySFEwI=,tag:y9j4e2MeTgXdSgOOgRbTdA==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 3.7.3
