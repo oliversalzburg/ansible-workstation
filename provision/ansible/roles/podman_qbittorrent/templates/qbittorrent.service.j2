@@ -10,8 +10,8 @@ Requires=qbittorrent-main.service qbittorrent-gluetun.service
 Requires=proton.{{ inventory_hostname }}-network.service
 Requires=service.{{ inventory_hostname }}-network.service
 Requires=podman.socket
-Wants=qbittorrent-exporter.service qbittorrent-flood.service
-Before=qbittorrent-main.service qbittorrent-exporter.service qbittorrent-flood.service qbittorrent-gluetun.service
+Wants=qbittorrent-flood.service
+Before=qbittorrent-main.service qbittorrent-flood.service qbittorrent-gluetun.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n

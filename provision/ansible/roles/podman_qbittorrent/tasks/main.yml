@@ -167,7 +167,6 @@
     group: root
     mode: "0o644"
   loop:
-    - qbittorrent-exporter.service
     - qbittorrent-flood.service
     - qbittorrent-main.service
     - qbittorrent-gluetun.service

@@ -8,8 +8,7 @@ After=network-online.target
 RequiresMountsFor={{ podman_postgres_basedir }}
 Requires=postgres-main.service
 Requires=service.{{ inventory_hostname }}-network.service
-Wants=postgres-exporter.service
-Before=postgres-main.service postgres-exporter.service
+Before=postgres-main.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n

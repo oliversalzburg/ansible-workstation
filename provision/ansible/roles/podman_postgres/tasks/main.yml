@@ -85,7 +85,6 @@
     group: root
     mode: "0o644"
   loop:
-    - postgres-exporter.service
     - postgres-main.service
     - postgres.service
   notify: Restart postgres
