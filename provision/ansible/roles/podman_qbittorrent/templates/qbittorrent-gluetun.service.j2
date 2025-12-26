@@ -22,6 +22,7 @@ ExecStartPre=/bin/rm --force %t/%n.pid %t/%n.ctr-id
 ExecStartPre=-/usr/bin/podman pull {{ registry_dockerio }}/qmcgaw/gluetun:{{ podman_qbittorrent_gluetun_version }}
 ExecStart=/usr/bin/podman run \
   --cap-add "NET_ADMIN" \
+  --cap-add "NET_RAW" \
   --cgroups "no-conmon" \
   --cidfile "%t/%n.ctr-id" \
   --detach \
