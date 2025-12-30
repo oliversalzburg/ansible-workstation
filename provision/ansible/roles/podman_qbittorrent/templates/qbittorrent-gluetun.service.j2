@@ -31,11 +31,11 @@ ExecStart=/usr/bin/podman run \
   --env "VPN_SERVICE_PROVIDER=protonvpn" \
   --env "VPN_TYPE=wireguard" \
   --secret "qbittorrent_wireguard_private_key,type=env,target=WIREGUARD_PRIVATE_KEY" \
-  --secret "protonvpn_username,type=env,target=UPDATER_PROTONVPN_USERNAME" \
-  --secret "protonvpn_password,type=env,target=UPDATER_PROTONVPN_PASSWORD" \
-  --env "UPDATER_PERIOD=24h" \
-  --env "UPDATER_VPN_SERVICE_PROVIDERS=protonvpn" \
-  --env "SERVER_COUNTRIES=Netherlands" \
+  #--secret "protonvpn_username,type=env,target=UPDATER_PROTONVPN_EMAIL" \
+  #--secret "protonvpn_password,type=env,target=UPDATER_PROTONVPN_PASSWORD" \
+  #--env "UPDATER_PERIOD=24h" \
+  #--env "UPDATER_VPN_SERVICE_PROVIDERS=protonvpn" \
+  #--env "SERVER_COUNTRIES=Netherlands" \
   --env "PORT_FORWARD_ONLY=on" \
   --env "VPN_PORT_FORWARDING=on" \
   --env "VPN_PORT_FORWARDING_UP_COMMAND=/bin/sh -c 'wget --output-document=- --post-data \'json={\\\\\\\"listen_port\\\\\\\":{{ '{{' }}PORTS{{ '}}' }}}\' --retry-connrefused --server-response --verbose http://127.0.0.1:8080/api/v2/app/setPreferences 2>&1'" \

@@ -26,27 +26,8 @@ http:
         stsPreload: true                                  # Add preload flag appended to the Strict-Transport-Security header
         stsSeconds: 63072000                              # Set the max-age of the Strict-Transport-Security header (63072000 = 2 years)
 
-    oauth:
-      chain:
-        middlewares:
-          - oauth-errors
-          - oauth-auth
-
-    oauth-auth:
-      forwardAuth:
-        address: "https://oauth2proxy.web.container.{{ realm }}/oauth2/auth"
-        trustForwardHeader: true
-    oauth-errors:
-      errors:
-        status:
-          - "401-403"
-        service: oauth2proxy@file
-        query: "/oauth2/sign_in?rd={url}"
-
   routers:
     dashboard:
-      #middlewares:
-      #  - oauth
       rule: "Host(`web.{{ inventory_hostname }}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
       service: api@internal
       tls:
@@ -71,10 +52,6 @@ http:
       loadBalancer:
         servers:
           - url: "http://{{ inventory_hostname }}:{{ bm_kiwix_port }}"
-    oauth2proxy:
-      loadBalancer:
-        servers:
-          - url: "https://oauth2proxy.web.container.{{ realm }}"
     oszm1:
       loadBalancer:
         servers:

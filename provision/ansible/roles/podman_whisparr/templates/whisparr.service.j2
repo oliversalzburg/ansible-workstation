@@ -20,7 +20,6 @@ ExecStartPre=/usr/bin/podman pod create \
   --infra-conmon-pidfile %t/whisparr.pid \
   --label "traefik.enable=true" \
   --label "traefik.http.routers.whisparr.entrypoints=websecure" \
-  #--label "traefik.http.routers.whisparr.middlewares=oauth@file" \
   --label "traefik.http.routers.whisparr.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
   --label "traefik.http.routers.whisparr.tls.certresolver={{ realm }}" \
   --label "traefik.http.routers.whisparr.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \

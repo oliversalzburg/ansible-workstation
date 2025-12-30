@@ -31,7 +31,6 @@ ExecStart=/usr/bin/podman run \
   --hostname "%n.{{ inventory_hostname }}" \
   --label "traefik.enable=true" \
   --label "traefik.http.routers.pihole.entrypoints=websecure" \
-  #--label "traefik.http.routers.pihole.middlewares=oauth@file" \
   --label "traefik.http.routers.pihole.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
   --label "traefik.http.routers.pihole.tls.certresolver={{ podman_pihole_realm }}" \
   --label "traefik.http.routers.pihole.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
@@ -41,8 +40,8 @@ ExecStart=/usr/bin/podman run \
   --memory "4096m" \
   --name "%n.{{ inventory_hostname }}" \
   --network "service.{{ inventory_hostname }}" \
-  --publish "{{ ansible_default_ipv4.address }}:53:53/tcp" \
-  --publish "{{ ansible_default_ipv4.address }}:53:53/udp" \
+  --publish "{{ ansible_facts["default_ipv4"].address }}:53:53/tcp" \
+  --publish "{{ ansible_facts["default_ipv4"].address }}:53:53/udp" \
   --pull "never" \
   --replace \
   --rm \
