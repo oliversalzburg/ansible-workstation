@@ -1,0 +1,42 @@
+{{ ansible_managed|comment }}
+
+[Unit]
+Description=Radarr Root Service
+Documentation=
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor={{ podman_jellyseerr_basedir }} {{ podman_jellyseerr_mediadir }}
+Requires=jellyseerr-main.service postgres.service
+Requires=service.{{ inventory_hostname }}-network.service
+Before=jellyseerr-main.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+TimeoutStopSec=70
+ExecStartPre=/bin/rm --force %t/jellyseerr.pid %t/jellyseerr.pod-id
+ExecStartPre=/usr/bin/podman pod create \
+  --hostname "%n.{{ inventory_hostname }}" \
+  --infra-conmon-pidfile %t/jellyseerr.pid \
+  --label "traefik.enable=true" \
+  --label "traefik.http.routers.jellyseerr.entrypoints=websecure" \
+  --label "traefik.http.routers.jellyseerr.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
+  --label "traefik.http.routers.jellyseerr.tls.certresolver={{ realm }}" \
+  --label "traefik.http.routers.jellyseerr.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
+  --label "traefik.http.services.jellyseerr.loadbalancer.healthcheck.path=/ping" \
+  --label "traefik.http.services.jellyseerr.loadbalancer.server.port=5055" \
+  --name "%n.{{ inventory_hostname }}" \
+  --network "service.{{ inventory_hostname }}" \
+  --pod-id-file %t/jellyseerr.pod-id \
+  --replace \
+  --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
+  --volume "{{ podman_jellyseerr_basedir }}/config:/app/config:rw"
+
+ExecStart=/usr/bin/podman pod start --pod-id-file %t/jellyseerr.pod-id
+ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/jellyseerr.pod-id --time 10
+ExecStopPost=/usr/bin/podman pod rm --ignore --force --pod-id-file %t/jellyseerr.pod-id
+PIDFile=%t/jellyseerr.pid
+Type=forking
+
+[Install]
+WantedBy=multi-user.target

@@ -7,9 +7,8 @@ Wants=network-online.target
 After=network-online.target
 RequiresMountsFor={{ podman_sonarr_basedir }} {{ podman_sonarr_mediadir }}
 Requires=sonarr-main.service postgres.service
-Wants=sonarr-exporter.service
 Requires=service.{{ inventory_hostname }}-network.service
-Before=sonarr-main.service sonarr-exporter.service
+Before=sonarr-main.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n

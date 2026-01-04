@@ -135,7 +135,6 @@
     group: root
     mode: "0o644"
   loop:
-    - lidarr-exporter.service
     - lidarr-main.service
     - lidarr.service
   notify: Restart lidarr

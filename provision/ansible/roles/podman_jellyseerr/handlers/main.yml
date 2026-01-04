@@ -1,0 +1,6 @@
+- name: Restart jellyseerr
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: jellyseerr
+    state: restarted

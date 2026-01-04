@@ -8,8 +8,7 @@ After=network-online.target
 RequiresMountsFor={{ podman_radarr_basedir }} {{ podman_radarr_mediadir }}
 Requires=radarr-main.service postgres.service
 Requires=service.{{ inventory_hostname }}-network.service
-Wants=radarr-exporter.service
-Before=radarr-main.service radarr-exporter.service
+Before=radarr-main.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n

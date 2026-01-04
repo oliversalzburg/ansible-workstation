@@ -135,7 +135,6 @@
     group: root
     mode: "0o644"
   loop:
-    - sonarr-exporter.service
     - sonarr-main.service
     - sonarr.service
   notify: Restart sonarr

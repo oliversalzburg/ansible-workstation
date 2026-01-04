@@ -8,8 +8,7 @@ After=network-online.target
 RequiresMountsFor={{ podman_lidarr_basedir }} {{ podman_lidarr_mediadir }}
 Requires=lidarr-main.service postgres.service
 Requires=service.{{ inventory_hostname }}-network.service
-Wants=lidarr-exporter.service
-Before=lidarr-main.service lidarr-exporter.service
+Before=lidarr-main.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n

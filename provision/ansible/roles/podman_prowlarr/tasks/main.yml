@@ -135,7 +135,6 @@
     group: root
     mode: "0o644"
   loop:
-    - prowlarr-exporter.service
     - prowlarr-flaresolverr.service
     - prowlarr-main.service
     - prowlarr.service

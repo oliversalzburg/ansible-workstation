@@ -8,8 +8,7 @@ After=network-online.target
 RequiresMountsFor={{ podman_prowlarr_basedir }}
 Requires=prowlarr-main.service prowlarr-flaresolverr.service postgres.service
 Requires=service.{{ inventory_hostname }}-network.service
-Wants=prowlarr-exporter.service
-Before=prowlarr-main.service prowlarr-exporter.service prowlarr-flaresolverr.service
+Before=prowlarr-main.service prowlarr-flaresolverr.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
