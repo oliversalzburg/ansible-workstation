@@ -4,6 +4,13 @@
   ansible.builtin.systemd:
     daemon_reload: true
 
+- name: Restart cups
+  become: true
+  ansible.builtin.systemd:
+    name: cups
+    state: restarted
+    enabled: true
+
 - name: Restart systemd-resolved
   become: true
   ansible.builtin.systemd:

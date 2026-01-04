@@ -91,3 +91,30 @@
     enabled: true
     name: mnt-usb.automount
   notify: Reload systemd
+
+- name: Install cups
+  become: true
+  register: unique_container_result
+  retries: 3
+  delay: 3
+  until: unique_container_result is not failed
+  ansible.builtin.apt:
+    name:
+      - cups
+
+- name: Create cupsd.conf
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/cups/cupsd.conf"
+    dest: /etc/cups/cupsd.conf
+    mode: "0o644"
+    owner: root
+    group: root
+  notify: Restart cups
+
+- name: Ensure Ansible User is a Member of lpadmin Group
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: lpadmin
+    append: true
