@@ -82,11 +82,6 @@
         podman_keycloak_admin: "{{ keycloak_admin }}"
         podman_keycloak_admin_password: "{{ keycloak_admin_password }}"
 
-- name: GitLabs
-  hosts: gitlabs
-  roles:
-    - role: podman_gitlab
-
 - name: Media Servers
   hosts: mediaservers
   roles:

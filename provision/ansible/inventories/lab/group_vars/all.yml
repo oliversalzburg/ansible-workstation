@@ -44,10 +44,6 @@ registry_quayio: quayio.nexus.web.container.labnet
 exportarr_version: "v2.3.0"
 # renovate: datasource=docker depName=ghcr.io/flaresolverr/flaresolverr versioning=semver
 podman_prowlarr_flaresolverr_version: "v3.4.6"
-# renovate: datasource=docker depName=docker.io/gitlab/gitlab-ce versioning=semver-coerced
-podman_gitlab_version: "16.9.3-ce.0"
-# renovate: datasource=docker depName=docker.io/gitlab/gitlab-runner versioning=semver
-podman_gitlab_runner_version: "v18.8.0"
 # renovate: datasource=docker depName=grafana/grafana versioning=semver
 podman_grafana_version: "12.3.1"
 # renovate: datasource=docker depName=docker.io/jellyfin/jellyfin versioning=semver
@@ -58,8 +54,6 @@ podman_jellyseerr_version: "2.7.3"
 podman_keycloak_version: "26.5.1"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/lidarr versioning=loose
 podman_lidarr_version: "v3.1.0.4875"
-# renovate: datasource=docker depName=docker.io/mattermost/mattermost-team-edition versioning=semver
-podman_mattermost_version: "11.3.0"
 # renovate: datasource=docker depName=docker.io/sonatype/nexus3 versioning=semver
 podman_nexus_version: "3.88.0"
 # renovate: datasource=docker depName=docker.io/pihole/pihole versioning=loose
