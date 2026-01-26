@@ -11,7 +11,7 @@
     types: [deb]
     uris: https://apt.syncthing.net/
     suites: [syncthing]
-    components: [stable]
+    components: [stable-v2]
     signed_by: https://syncthing.net/release-key.gpg
     state: present
     enabled: true

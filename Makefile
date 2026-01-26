@@ -39,6 +39,8 @@ init-localhost: requirements
 
 update: requirements
 	. .venv/bin/activate && cd provision/ansible && ansible-playbook roles.yml
+update-check: requirements
+	. .venv/bin/activate && cd provision/ansible && ansible-playbook roles.yml --check --diff
 
 update-canyon: requirements
 	cd provision/ansible; ../../.venv/bin/ansible-playbook roles.yml --limit canyon.labnet
