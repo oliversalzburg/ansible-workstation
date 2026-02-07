@@ -15,4 +15,4 @@ collections:
     type: git
     version: 8f088f21b59ff685327ae68ff749b17f3a8d597d
   - name: prometheus.prometheus
-    version: ==0.27.5
+    version: ==0.27.6
