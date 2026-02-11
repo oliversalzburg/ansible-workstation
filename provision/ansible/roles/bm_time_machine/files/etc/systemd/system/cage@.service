@@ -15,6 +15,8 @@ ConditionPathExists=/dev/tty0
 # D-Bus is necessary for contacting logind, which is required.
 Requires=dbus.socket systemd-logind.service
 After=dbus.service dbus.socket systemd-logind.service
+Wants=pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket
+After=pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket
 # Replace any (a)getty that may have spawned, since we log in
 # automatically.
 Conflicts=getty@%i.service
@@ -24,18 +26,39 @@ After=seatd.service
 
 [Service]
 Type=simple
+Environment=WLR_DRM_NO_ATOMIC=1
 ExecStart=/usr/bin/cage -- chromium \
 	# Application mode, opens this single origin and nothing else.
 	--app=http://localhost/~subject/universe.html \
+	# Disable more help bubbles.
+	#--ash-no-nudges \
 	# Don't require user interaction for audio.
 	--autoplay-policy=no-user-gesture-required \
+	# Explains itself.
+	#--disable-client-side-phishing-detection \
+	#--disable-component-update \
+	#--disable-default-apps \
+	#--disable-extensions \
+	#--disable-features=InterestFeedContentSuggestions \
+	#--disable-features=MediaRouter \
+	--disable-notifications \
+	#--disable-search-engine-choice-screen \
+	#--aggressive-cache-discard \
+	# Log to /home/subject/cage_err.log
+	--enable-logging=stderr \
 	# Don't show "Press ESC to exit" popup.
 	--kiosk \
+	# Pointless for our environment.
+	#--no-default-browser-check \
+	# Just in case.
+	#--no-first-run \
 	# Don't create a keyring for credential storage.
 	--password-store=basic \
-	# Fullscreen.
-	--start-fullscreen \
-	--enable-logging=stderr --v=1 > /home/subject/chromium.log 2>&1
+	#--propagate-iph-for-testing \
+	# Fullscreen. Prevents sound?
+	#--start-fullscreen \
+	# Verbosity goes from 0-2 (2 is most verbose)
+	--v=1
 ExecStartPost=+sh -c "tty_name='%i'; exec chvt $${tty_name#tty}"
 Restart=always
 User=subject
