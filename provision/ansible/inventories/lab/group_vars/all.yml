@@ -55,7 +55,7 @@ podman_keycloak_version: "26.5.3"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/lidarr versioning=loose
 podman_lidarr_version: "v3.1.0.4875"
 # renovate: datasource=docker depName=docker.io/sonatype/nexus3 versioning=semver
-podman_nexus_version: "3.89.0"
+podman_nexus_version: "3.89.1"
 # renovate: datasource=docker depName=docker.io/pihole/pihole versioning=loose
 podman_pihole_version: "2025.11.1"
 # renovate: datasource=docker depName=docker.io/library/postgres versioning=semver-coerced
