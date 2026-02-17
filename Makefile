@@ -50,6 +50,3 @@ update-fireeye: requirements
 	cd provision/ansible; ../../.venv/bin/ansible-playbook roles.yml --limit fireeye.labnet
 update-workstation: requirements
 	cd provision/ansible; ../../.venv/bin/ansible-playbook roles.yml --limit workstation.labnet
-
-sandbox:
-	cd provision/terraform; terraform init; terraform apply -var id_ed25519_pub=${HOME}/.ssh/id_ed25519.pub
