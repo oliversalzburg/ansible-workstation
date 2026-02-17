@@ -74,14 +74,6 @@
         podman_pihole_registry: "{{ registry_dockerio }}"
         podman_pihole_timezone: "{{ config_system_timezone }}"
 
-- name: Auth Servers
-  hosts: authservers
-  roles:
-    - role: podman_keycloak
-      vars:
-        podman_keycloak_admin: "{{ keycloak_admin }}"
-        podman_keycloak_admin_password: "{{ keycloak_admin_password }}"
-
 - name: Media Servers
   hosts: mediaservers
   roles:
