@@ -44,6 +44,14 @@
   ansible.builtin.command:
     cmd: a2dissite 000-default
 
+- name: Ensure dconf Directory Exists
+  become: true
+  ansible.builtin.file:
+    path: /etc/dconf/db/local.d/
+    state: directory
+    owner: root
+    group: root
+    mode: "0o775"
 - name: Disable Power Saving Features dconf
   become: true
   ansible.builtin.copy:
@@ -91,14 +99,14 @@
       - fonts-dejavu
       - fonts-dejavu-core
       - fonts-dejavu-extra
-      - fonts-dejavu-mono
+      #- fonts-dejavu-mono
       - fonts-droid-fallback
       - fonts-font-awesome
       - fonts-freefont-otf
       - fonts-freefont-ttf
       - fonts-lato
       - fonts-liberation
-      - fonts-liberation-sans-narrow
+      #- fonts-liberation-sans-narrow
       - fonts-linuxlibertine
       - fonts-mathjax
       - fonts-noto-color-emoji
@@ -198,7 +206,7 @@
 
 - name: Synchronize Universe Shell
   ansible.posix.synchronize:
-    src: "{{ bm_time_machine_data_root }}/"
+    src: "{{ bm_oszm1_data_root }}/"
     dest: /home/subject/public_html
     delete: true
 

@@ -1,0 +1,2 @@
+---
+bm_oszm1_universe_html: "{{ role_path }}/files/universe.html"

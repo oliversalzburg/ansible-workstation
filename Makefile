@@ -24,7 +24,7 @@ init: requirements
 	cd provision/ansible; ../../.venv/bin/ansible-playbook site.yml
 
 init-canyon: requirements
-	cd provision/ansible; ../../.venv/bin/ansible-playbook site.yml --limit canyon.labnet
+	cd provision/ansible; ../../.venv/bin/ansible-playbook site.yml --limit oszm1.labnet
 init-container: requirements
 	cd provision/ansible; ../../.venv/bin/ansible-playbook site.yml --limit container.labnet
 init-laptop: requirements
@@ -43,7 +43,7 @@ update-check: requirements
 	. .venv/bin/activate && cd provision/ansible && ansible-playbook roles.yml --check --diff
 
 update-canyon: requirements
-	cd provision/ansible; ../../.venv/bin/ansible-playbook roles.yml --limit canyon.labnet
+	cd provision/ansible; ../../.venv/bin/ansible-playbook roles.yml --limit oszm1.labnet
 update-container: requirements
 	cd provision/ansible; ../../.venv/bin/ansible-playbook roles.yml --limit container.labnet
 update-fireeye: requirements

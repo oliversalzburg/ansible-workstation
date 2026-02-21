@@ -1,6 +1,0 @@
-[Match]
-Name=wlp3s0
-
-[Link]
-RequiredForOnline=no
-ActivationPolicy=manual

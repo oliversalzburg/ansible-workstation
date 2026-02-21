@@ -33,8 +33,8 @@
     - role: prometheus.prometheus.cadvisor
     - role: podman_prometheus
 
-- name: Canyon
-  hosts: canyon.labnet
+- name: OSZM1
+  hosts: oszm1.labnet
   roles:
     - role: unique_canyon
 - name: Container
@@ -93,9 +93,9 @@
     - role: podman_grafana
 
 - name: Time Machines
-  hosts: time_machine
+  hosts: oszm1
   roles:
     - role: bm_kiwix
-    - role: bm_time_machine
+    - role: bm_oszm1
       vars:
-        bm_time_machine_data_root: "{{ timeline_root }}"
+        bm_oszm1_data_root: "{{ timeline_root }}"
