@@ -1,0 +1,42 @@
+{{ ansible_managed|comment }}
+
+[Unit]
+Description=Jellyseer Root Service
+Documentation=https://docs.seerr.dev/
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor={{ podman_seerr_basedir }} {{ podman_seerr_mediadir }}
+Requires=seerr-main.service postgres.service
+Requires=service.{{ inventory_hostname }}-network.service
+Before=seerr-main.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+TimeoutStopSec=70
+ExecStartPre=/bin/rm --force %t/seerr.pid %t/seerr.pod-id
+ExecStartPre=/usr/bin/podman pod create \
+  --hostname "%n.{{ inventory_hostname }}" \
+  --infra-conmon-pidfile %t/seerr.pid \
+  --label "traefik.enable=true" \
+  --label "traefik.http.routers.seerr.entrypoints=websecure" \
+  --label "traefik.http.routers.seerr.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
+  --label "traefik.http.routers.seerr.tls.certresolver={{ realm }}" \
+  --label "traefik.http.routers.seerr.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
+  --label "traefik.http.services.seerr.loadbalancer.healthcheck.path=/ping" \
+  --label "traefik.http.services.seerr.loadbalancer.server.port=5055" \
+  --name "%n.{{ inventory_hostname }}" \
+  --network "service.{{ inventory_hostname }}" \
+  --pod-id-file %t/seerr.pod-id \
+  --replace \
+  --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
+  --volume "{{ podman_seerr_basedir }}/config:/app/config:rw"
+
+ExecStart=/usr/bin/podman pod start --pod-id-file %t/seerr.pod-id
+ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/seerr.pod-id --time 10
+ExecStopPost=/usr/bin/podman pod rm --ignore --force --pod-id-file %t/seerr.pod-id
+PIDFile=%t/seerr.pid
+Type=forking
+
+[Install]
+WantedBy=multi-user.target

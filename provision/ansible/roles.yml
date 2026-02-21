@@ -78,7 +78,7 @@
   hosts: mediaservers
   roles:
     - role: podman_jellyfin
-    - role: podman_jellyseerr
+    - role: podman_seerr
     - role: podman_lidarr
     - role: podman_prowlarr
     - role: podman_qbittorrent

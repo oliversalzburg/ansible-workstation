@@ -212,8 +212,8 @@
     mode: "u=rwX,g=rwX,o=rX"
     recurse: true
 
-#- name: Clear Chromium Cache
-#  become: true
-#  ansible.builtin.file:
-#    path: /home/subject/.cache/chromium
-#    state: absent
+- name: Clear Chromium Cache
+  become: true
+  ansible.builtin.file:
+    path: /home/subject/.cache/chromium
+    state: absent

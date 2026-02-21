@@ -1,91 +1,91 @@
 ---
 - name: Create groups
   become: true
-  register: _podman_jellyseerr_groups
+  register: _podman_seerr_groups
   ansible.builtin.group:
     name: "{{ item }}"
     state: present
     system: true
-  loop: "{{ podman_jellyseerr_groups }}"
-  notify: Restart jellyseerr
+  loop: "{{ podman_seerr_groups }}"
+  notify: Restart seerr
 
 - name: Ensure user is a group member
   become: true
   ansible.builtin.user:
     name: "{{ ansible_user }}"
-    groups: "{{ podman_jellyseerr_groups }}"
+    groups: "{{ podman_seerr_groups }}"
     append: true
-  notify: Restart jellyseerr
+  notify: Restart seerr
 
 - name: Create user
   become: true
-  register: _podman_jellyseerr_user
+  register: _podman_seerr_user
   ansible.builtin.user:
-    comment: "{{ podman_jellyseerr_name }}"
+    comment: "{{ podman_seerr_name }}"
     create_home: false
-    group: "{{ _podman_jellyseerr_groups.results[0].gid }}"
-    groups: "{{ podman_jellyseerr_groups }}"
-    home: "{{ podman_jellyseerr_basedir }}"
-    name: "{{ podman_jellyseerr_id }}"
+    group: "{{ _podman_seerr_groups.results[0].gid }}"
+    groups: "{{ podman_seerr_groups }}"
+    home: "{{ podman_seerr_basedir }}"
+    name: "{{ podman_seerr_id }}"
     password: "!"
     shell: "/usr/sbin/nologin"
     system: true
-  notify: Restart jellyseerr
+  notify: Restart seerr
 
 
 - name: Ensure working directory exists
   become: true
   ansible.builtin.file:
-    path: "{{ podman_jellyseerr_basedir }}"
+    path: "{{ podman_seerr_basedir }}"
     state: directory
-    owner: "{{ _podman_jellyseerr_user.uid }}"
-    group: "{{ _podman_jellyseerr_groups.results[0].gid }}"
+    owner: "{{ _podman_seerr_user.uid }}"
+    group: "{{ _podman_seerr_groups.results[0].gid }}"
     mode: "u=rwX,g=rX,o="
     recurse: true
-  notify: Restart jellyseerr
+  notify: Restart seerr
 
 - name: Ensure directories exist
   become: true
   ansible.builtin.file:
-    path: "{{ podman_jellyseerr_basedir }}/{{ item }}"
+    path: "{{ podman_seerr_basedir }}/{{ item }}"
     state: directory
-    owner: "{{ _podman_jellyseerr_user.uid }}"
-    group: "{{ _podman_jellyseerr_groups.results[0].gid }}"
+    owner: "{{ _podman_seerr_user.uid }}"
+    group: "{{ _podman_seerr_groups.results[0].gid }}"
     mode: "u=rwX,g=rX,o="
     recurse: true
   loop:
     - config
-  notify: Restart jellyseerr
+  notify: Restart seerr
 
 
 - name: Create postgres user
-  register: podman_jellyseerr_result
+  register: podman_seerr_result
   retries: 3
   delay: 3
-  until: podman_jellyseerr_result is not failed
+  until: podman_seerr_result is not failed
   community.postgresql.postgresql_user:
     login_host: localhost
     login_password: "{{ podman_postgres_master_password }}"
     login_user: "{{ podman_postgres_master_user }}"
-    name: "{{ podman_jellyseerr_pg_user }}"
-    password: "{{ podman_jellyseerr_pg_password }}"
-  notify: Restart jellyseerr
+    name: "{{ podman_seerr_pg_user }}"
+    password: "{{ podman_seerr_pg_password }}"
+  notify: Restart seerr
 
 - name: Create postgres database
-  register: podman_jellyseerr_result
+  register: podman_seerr_result
   retries: 3
   delay: 3
-  until: podman_jellyseerr_result is not failed
+  until: podman_seerr_result is not failed
   community.postgresql.postgresql_db:
     login_host: localhost
     login_password: "{{ podman_postgres_master_password }}"
     login_user: "{{ podman_postgres_master_user }}"
-    name: "{{ podman_jellyseerr_pg_db }}-{{ item }}"
-    owner: "{{ podman_jellyseerr_pg_user }}"
+    name: "{{ podman_seerr_pg_db }}-{{ item }}"
+    owner: "{{ podman_seerr_pg_user }}"
   loop:
     - main
     - log
-  notify: Restart jellyseerr
+  notify: Restart seerr
 
 - name: "GRANT ALL PRIVILEGES ON DATABASE 'db' TO 'user'"
   community.postgresql.postgresql_privs:
@@ -95,12 +95,12 @@
     login_db: postgres
     privs: ALL
     type: database
-    obj: "{{ podman_jellyseerr_pg_db }}-{{ item }}"
-    role: "{{ podman_jellyseerr_pg_user }}"
+    obj: "{{ podman_seerr_pg_db }}-{{ item }}"
+    role: "{{ podman_seerr_pg_user }}"
   loop:
     - main
     - log
-  notify: Restart jellyseerr
+  notify: Restart seerr
 
 - name: "GRANT USAGE, CREATE ON SCHEMA PUBLIC TO 'user'"
   community.postgresql.postgresql_privs:
@@ -111,19 +111,19 @@
     privs: CREATE
     type: schema
     obj: public
-    role: "{{ podman_jellyseerr_pg_user }}"
-  notify: Restart jellyseerr
+    role: "{{ podman_seerr_pg_user }}"
+  notify: Restart seerr
 
 
 #- name: Copy configuration
 #  become: true
 #  ansible.builtin.template:
 #    src: "config.xml.j2"
-#    dest: "{{ podman_jellyseerr_basedir }}/config/config.xml"
-#    owner: "{{ _podman_jellyseerr_user.uid }}"
-#    group: "{{ _podman_jellyseerr_groups.results[0].gid }}"
+#    dest: "{{ podman_seerr_basedir }}/config/config.xml"
+#    owner: "{{ _podman_seerr_user.uid }}"
+#    group: "{{ _podman_seerr_groups.results[0].gid }}"
 #    mode: "0o640"
-#  notify: Restart jellyseerr
+#  notify: Restart seerr
 
 
 - name: Copy service files
@@ -135,13 +135,13 @@
     group: root
     mode: "0o644"
   loop:
-    - jellyseerr-main.service
-    - jellyseerr.service
-  notify: Restart jellyseerr
+    - seerr-main.service
+    - seerr.service
+  notify: Restart seerr
 
-- name: Enable and check jellyseerr service
+- name: Enable and check seerr service
   become: true
   ansible.builtin.systemd:
     enabled: true
-    name: jellyseerr
-  notify: Restart jellyseerr
+    name: seerr
+  notify: Restart seerr

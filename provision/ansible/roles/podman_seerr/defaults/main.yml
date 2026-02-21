@@ -1,0 +1,13 @@
+---
+podman_seerr_id: seerr
+podman_seerr_name: Seerr
+podman_seerr_groups:
+  - service
+
+podman_seerr_basedir: /mnt/usb/seerr
+podman_seerr_mediadir: "{{ media_mount }}"
+podman_seerr_version: latest
+
+podman_seerr_pg_user: seerr
+podman_seerr_pg_password: podman_seerr_password
+podman_seerr_pg_db: seerr
