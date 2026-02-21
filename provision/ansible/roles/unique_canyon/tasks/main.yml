@@ -59,3 +59,20 @@
       - whois
       - zsh
     update_cache: true
+
+# We intentionally switch the APT config after installing the above tools.
+# We want to have the tools before breaking the installation.
+- name: Install Debian Sources Configuration
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/apt/sources.list.d/debian.sources"
+    dest: /etc/apt/sources.list.d/debian.sources
+    mode: "0o644"
+    owner: root
+    group: root
+
+- name: Delete Legacy APT Configuration
+  become: true
+  ansible.builtin.file:
+    path: /etc/apt/sources.list
+    state: absent
