@@ -23,6 +23,8 @@ Conflicts=getty@%i.service
 After=getty@%i.service
 Requires=seatd.service
 After=seatd.service
+Wants=fuck-your-cursor.service
+Before=fuck-your-cursor.service
 
 [Service]
 Type=simple
@@ -31,30 +33,30 @@ ExecStart=/usr/bin/cage -- chromium \
 	# Application mode, opens this single origin and nothing else.
 	--app=http://localhost/~subject/universe.html \
 	# Disable more help bubbles.
-	#--ash-no-nudges \
+	--ash-no-nudges \
 	# Don't require user interaction for audio.
 	--autoplay-policy=no-user-gesture-required \
 	# Explains itself.
-	#--disable-client-side-phishing-detection \
-	#--disable-component-update \
-	#--disable-default-apps \
-	#--disable-extensions \
-	#--disable-features=InterestFeedContentSuggestions \
-	#--disable-features=MediaRouter \
+	--disable-client-side-phishing-detection \
+	--disable-component-update \
+	--disable-default-apps \
+	--disable-extensions \
+	--disable-features=InterestFeedContentSuggestions \
+	--disable-features=MediaRouter \
 	--disable-notifications \
-	#--disable-search-engine-choice-screen \
-	#--aggressive-cache-discard \
+	--disable-search-engine-choice-screen \
+	--aggressive-cache-discard \
 	# Log to /home/subject/cage_err.log
 	--enable-logging=stderr \
 	# Don't show "Press ESC to exit" popup.
 	--kiosk \
 	# Pointless for our environment.
-	#--no-default-browser-check \
+	--no-default-browser-check \
 	# Just in case.
-	#--no-first-run \
+	--no-first-run \
 	# Don't create a keyring for credential storage.
 	--password-store=basic \
-	#--propagate-iph-for-testing \
+	--propagate-iph-for-testing \
 	# Fullscreen. Prevents sound?
 	#--start-fullscreen \
 	# Verbosity goes from 0-2 (2 is most verbose)

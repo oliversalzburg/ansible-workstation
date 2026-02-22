@@ -21,7 +21,7 @@
       when: is_cloudinit_exist.rc == 0
 
 - name: Foundation
-  hosts: all
+  hosts: labnet
   roles:
     - role: all
     - role: userspace

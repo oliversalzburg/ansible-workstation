@@ -1,0 +1,4 @@
+#!/bin/bash
+set -e
+
+cp --verbose "$2" /boot/efi/EFI/Debian/vmlinuz

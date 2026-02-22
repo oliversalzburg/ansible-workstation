@@ -9,3 +9,9 @@
   ansible.builtin.systemd:
     name: cage@tty1.service
     enabled: true
+
+- name: Enable FYC Service
+  become: true
+  ansible.builtin.systemd:
+    name: fuck-your-cursor.service
+    enabled: true

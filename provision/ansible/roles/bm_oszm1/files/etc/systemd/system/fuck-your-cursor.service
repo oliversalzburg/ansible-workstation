@@ -1,0 +1,6 @@
+[Unit]
+Description=Fuck Your Cursor
+
+[Service]
+Type=simple
+ExecStart=sh -c "sleep 4 && /usr/bin/evemu-event /dev/input/event5 --type EV_REL --code REL_X --value 10000 && /usr/bin/evemu-event --sync /dev/input/event5 --type EV_REL --code REL_Y --value 10000"

@@ -4,6 +4,50 @@
     manager: apt
   when: ansible_facts['os_family'] == "Debian"
 
+- name: Install create_EFI_Boot_Entry.sh
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/sbin/create_EFI_Boot_Entry.sh"
+    dest: /sbin/create_EFI_Boot_Entry.sh
+    owner: root
+    group: root
+    mode: "0o755"
+- name: Install zz-update-efistub kernel hook
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/kernel/postinst.d/zz-update-efistub"
+    dest: /etc/kernel/postinst.d/zz-update-efistub
+    owner: root
+    group: root
+    mode: "0o755"
+- name: Ensure initramfs Hooks Directory Exists
+  become: true
+  ansible.builtin.file:
+    path: /etc/initramfs/post-update.d/
+    state: directory
+    owner: root
+    group: root
+    mode: "0o775"
+- name: Install zz-update-efistub initramfs hook
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/initramfs/post-update.d/zz-update-efistub"
+    dest: /etc/initramfs/post-update.d/zz-update-efistub
+    owner: root
+    group: root
+    mode: "0o755"
+- name: Create EFI Stub target
+  become: true
+  ansible.builtin.file:
+    path: /boot/efi/EFI/Debian
+    state: directory
+    owner: root
+    group: root
+    mode: "0o775"
+
+# $ sudo dpkg-reconfigure linux-image-$(uname -r)
+# $ sudo /sbin/create_EFI_Boot_Entry.sh
+
 - name: Install Web Server
   become: true
   ansible.builtin.apt:
@@ -183,6 +227,15 @@
     group: root
     mode: "0o644"
   notify: Enable cage Service
+- name: Configure FYC Service
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/systemd/system/fuck-your-cursor.service"
+    dest: /etc/systemd/system/fuck-your-cursor.service
+    owner: root
+    group: root
+    mode: "0o644"
+  notify: Enable FYC Service
 
 - name: Get Current Systemd Default
   ansible.builtin.command: systemctl get-default
@@ -223,5 +276,5 @@
 - name: Clear Chromium Cache
   become: true
   ansible.builtin.file:
-    path: /home/subject/.cache/chromium
+    path: /home/subject/.cache/chromium/Default/Cache
     state: absent
