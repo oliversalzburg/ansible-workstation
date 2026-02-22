@@ -24,12 +24,6 @@
     mode: "0o644"
   notify: Restart systemd-resolved
 
-- name: Set default editor
-  become: true
-  community.general.alternatives:
-    name: editor
-    path: /usr/bin/vim
-
 - name: Install commonly used dependencies
   become: true
   register: unique_canyon_result
@@ -41,7 +35,6 @@
       - ca-certificates
       - curl
       - dnsutils
-      - evemu-tools
       - file
       - glances
       - htop
@@ -66,6 +59,12 @@
       - whois
       - zsh
     update_cache: true
+
+- name: Set default editor
+  become: true
+  community.general.alternatives:
+    name: editor
+    path: /usr/bin/vim
 
 # We intentionally switch the APT config after installing the above tools.
 # We want to have the tools before breaking the installation.

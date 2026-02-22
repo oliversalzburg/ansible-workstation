@@ -26,6 +26,10 @@
     - role: all
     - role: userspace
       userspace_user: "{{ ansible_user }}"
+- name: OSZM1 Foundation
+  hosts: oszm1.labnet
+  roles:
+    - role: unique_canyon
 
 - name: Step CA
   hosts: ca

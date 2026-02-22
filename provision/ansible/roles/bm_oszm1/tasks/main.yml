@@ -4,6 +4,14 @@
     manager: apt
   when: ansible_facts['os_family'] == "Debian"
 
+- name: Install Grub Configuration
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/default/grub"
+    dest: /etc/default/grub
+    owner: root
+    group: root
+    mode: "0o644"
 - name: Install create_EFI_Boot_Entry.sh
   become: true
   ansible.builtin.copy:
@@ -105,14 +113,6 @@
     group: root
     mode: "0o644"
   notify: Update dconf
-#- name: Disable Power Saving Features X11
-#  become: true
-#  ansible.builtin.copy:
-#    src: "{{ role_path }}/files/etc/X11/xorg.conf.d/00-force-powersave-off"
-#    dest: /etc/X11/xorg.conf.d/00-force-powersave-off
-#    owner: root
-#    group: root
-#    mode: "0o644"
 
 # Device operates offline. Don't wait for being online.
 - name: Stop systemd-networkd-wait-online
@@ -137,31 +137,32 @@
     name:
       - cage
       - chromium
+      - evemu-tools
       - fonts-croscore
       - fonts-crosextra-caladea
       - fonts-crosextra-carlito
-      - fonts-dejavu
-      - fonts-dejavu-core
-      - fonts-dejavu-extra
+      #- fonts-dejavu
+      #- fonts-dejavu-core
+      #- fonts-dejavu-extra
       #- fonts-dejavu-mono
       - fonts-droid-fallback
-      - fonts-font-awesome
+      #- fonts-font-awesome
       - fonts-freefont-otf
       - fonts-freefont-ttf
       - fonts-lato
-      - fonts-liberation
+      #- fonts-liberation
       #- fonts-liberation-sans-narrow
-      - fonts-linuxlibertine
+      #- fonts-linuxlibertine
       - fonts-mathjax
       - fonts-noto-color-emoji
       - fonts-noto-core
       - fonts-noto-mono
       - fonts-open-sans
       - fonts-opensymbol
-      - fonts-roboto-slab
-      - fonts-roboto-unhinted
-      - fonts-unfonts-core
-      - fonts-unfonts-extra
+      #- fonts-roboto-slab
+      #- fonts-roboto-unhinted
+      #- fonts-unfonts-core
+      #- fonts-unfonts-extra
       - fonts-wine
       - libpam-systemd
       - pipewire
@@ -247,6 +248,12 @@
   when: "'graphical' not in systemdefault.stdout"
   changed_when: true
 
+- name: Clear Chromium Cache
+  become: true
+  ansible.builtin.file:
+    path: /home/subject/.cache/chromium/Default/Cache
+    state: absent
+
 - name: Ensure Universe Directory Exists Writable
   become: true
   ansible.builtin.file:
@@ -272,9 +279,3 @@
     group: subject
     mode: "u=rwX,g=rwX,o=rX"
     recurse: true
-
-- name: Clear Chromium Cache
-  become: true
-  ansible.builtin.file:
-    path: /home/subject/.cache/chromium/Default/Cache
-    state: absent

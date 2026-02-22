@@ -33,10 +33,6 @@
     - role: prometheus.prometheus.cadvisor
     - role: podman_prometheus
 
-- name: OSZM1
-  hosts: oszm1.labnet
-  roles:
-    - role: unique_canyon
 - name: Container
   hosts: container.labnet
   roles:

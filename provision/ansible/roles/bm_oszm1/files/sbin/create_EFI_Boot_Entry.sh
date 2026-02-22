@@ -10,7 +10,7 @@
 #
 
 # First compose the variables used as arguments:
-label='Debian (EFI stub)'
+label='OSZM1 Debian EFI Stub'
 loader='\EFI\Debian\vmlinuz' # Use single \'s !
 initrd='\EFI\Debian\initrd.img' # Use single \'s !
 # Compose default kernel arguments for an EFI-boot
@@ -38,5 +38,5 @@ else
 fi
 # echo "${largs%* }"; exit
 # Then create the EFI entry:
-echo efibootmgr --create --disk /dev/nvme1n1 --label "${label}" --loader "${loader}" --unicode "${largs%* }"
-efibootmgr --create --disk /dev/nvme1n1 --label "${label}" --loader "${loader}" --unicode "${largs%* }"
+echo efibootmgr --create --disk /dev/nvme0n1 --part 1 --label "${label}" --loader "${loader}" --unicode "${largs%* }"
+efibootmgr --create --disk /dev/nvme0n1 --part 1 --label "${label}" --loader "${loader}" --unicode "${largs%* }"
