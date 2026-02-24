@@ -32,6 +32,7 @@
       - curl
       - dnsutils
       - file
+      - flatpack
       - git
       - glances
       - htop

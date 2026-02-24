@@ -53,8 +53,42 @@
     group: root
     mode: "0o775"
 
+# $ sudo update-grub
 # $ sudo dpkg-reconfigure linux-image-$(uname -r)
 # $ sudo /sbin/create_EFI_Boot_Entry.sh
+# $ sudo plymouth-set-default-theme -R spinner
+
+- name: Configure Greeter
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/gdm3/greeter.dconf-defaults"
+    dest: /etc/gdm3/greeter.dconf-defaults
+    owner: root
+    group: root
+    mode: "0o644"
+
+# $ sudo dpkg-reconfigure gdm3
+
+- name: Ensure downloads Directory exists
+  ansible.builtin.file:
+    path: "{{ directory_downloads }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    mode: "u=rwX,g=rX,o="
+    recurse: false
+- name: Download hide-cursor extension
+  register: bm_oszm1_result
+  retries: 3
+  delay: 3
+  until: bm_oszm1_result is not failed
+  ansible.builtin.get_url:
+    url: https://extensions.gnome.org/extension-data/hide-cursorelcste.com.v10.shell-extension.zip
+    dest: "{{ directory_downloads }}"
+    mode: "0o640"
+- name: Install hide-cursor GNOME extensions
+  become: true
+  ansible.builtin.command:
+    cmd: gnome-extensions install "{{ directory_downloads }}/hide-cursorelcste.com.v10.shell-extension.zip"
 
 - name: Install Web Server
   become: true
@@ -166,6 +200,8 @@
       - fonts-wine
       - libpam-systemd
       - pipewire
+      - plymouth
+      - plymouth-themes
       - seatd
       - task-gnome-desktop
       - wireplumber
