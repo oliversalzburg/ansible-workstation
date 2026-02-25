@@ -55,40 +55,30 @@
 
 # $ sudo update-grub
 # $ sudo dpkg-reconfigure linux-image-$(uname -r)
+# $ # sudo efibootmgr --bootnum 1 --delete-bootnum
 # $ sudo /sbin/create_EFI_Boot_Entry.sh
 # $ sudo plymouth-set-default-theme -R spinner
 
-- name: Configure Greeter
-  become: true
-  ansible.builtin.copy:
-    src: "{{ role_path }}/files/etc/gdm3/greeter.dconf-defaults"
-    dest: /etc/gdm3/greeter.dconf-defaults
-    owner: root
-    group: root
-    mode: "0o644"
-
-# $ sudo dpkg-reconfigure gdm3
-
-- name: Ensure downloads Directory exists
-  ansible.builtin.file:
-    path: "{{ directory_downloads }}"
-    state: directory
-    owner: "{{ ansible_user }}"
-    mode: "u=rwX,g=rX,o="
-    recurse: false
-- name: Download hide-cursor extension
-  register: bm_oszm1_result
-  retries: 3
-  delay: 3
-  until: bm_oszm1_result is not failed
-  ansible.builtin.get_url:
-    url: https://extensions.gnome.org/extension-data/hide-cursorelcste.com.v10.shell-extension.zip
-    dest: "{{ directory_downloads }}"
-    mode: "0o640"
-- name: Install hide-cursor GNOME extensions
-  become: true
-  ansible.builtin.command:
-    cmd: gnome-extensions install "{{ directory_downloads }}/hide-cursorelcste.com.v10.shell-extension.zip"
+#- name: Ensure downloads Directory exists
+#  ansible.builtin.file:
+#    path: "{{ directory_downloads }}"
+#    state: directory
+#    owner: "{{ ansible_user }}"
+#    mode: "u=rwX,g=rX,o="
+#    recurse: false
+#- name: Download hide-cursor extension
+#  register: bm_oszm1_result
+#  retries: 3
+#  delay: 3
+#  until: bm_oszm1_result is not failed
+#  ansible.builtin.get_url:
+#    url: https://extensions.gnome.org/extension-data/hide-cursorelcste.com.v10.shell-extension.zip
+#    dest: "{{ directory_downloads }}"
+#    mode: "0o640"
+#- name: Install hide-cursor GNOME extensions
+#  become: true
+#  ansible.builtin.command:
+#    cmd: gnome-extensions install "{{ directory_downloads }}/hide-cursorelcste.com.v10.shell-extension.zip"
 
 - name: Install Web Server
   become: true
@@ -96,6 +86,10 @@
     name:
       - apache2
   when: '"apache2" not in ansible_facts.packages'
+- name: Enable Alias Module
+  become: true
+  community.general.apache2_module:
+    name: alias
 - name: Enable Header Module
   become: true
   community.general.apache2_module:
@@ -175,10 +169,10 @@
       - fonts-croscore
       - fonts-crosextra-caladea
       - fonts-crosextra-carlito
-      #- fonts-dejavu
-      #- fonts-dejavu-core
-      #- fonts-dejavu-extra
-      #- fonts-dejavu-mono
+      - fonts-dejavu
+      - fonts-dejavu-core
+      - fonts-dejavu-extra
+      - fonts-dejavu-mono
       - fonts-droid-fallback
       #- fonts-font-awesome
       - fonts-freefont-otf
@@ -195,9 +189,10 @@
       - fonts-opensymbol
       #- fonts-roboto-slab
       #- fonts-roboto-unhinted
-      #- fonts-unfonts-core
-      #- fonts-unfonts-extra
+      - fonts-unfonts-core
+      - fonts-unfonts-extra
       - fonts-wine
+      - libavcodec-extra
       - libpam-systemd
       - pipewire
       - plymouth
@@ -258,12 +253,20 @@
 - name: Configure cage Service
   become: true
   ansible.builtin.copy:
-    src: "{{ role_path }}/files/etc/systemd/system/cage@.service"
-    dest: /etc/systemd/system/cage@.service
+    src: "{{ role_path }}/files/etc/systemd/system/cage.service"
+    dest: /etc/systemd/system/cage.service
     owner: root
     group: root
     mode: "0o644"
   notify: Enable cage Service
+#- name: Ensure cage as Display Manager
+#  become: true
+#  ansible.builtin.file:
+#    src: /etc/systemd/system/cage.service
+#    path: /etc/systemd/system/display-manager.service
+#    owner: root
+#    group: root
+#    state: link
 - name: Configure FYC Service
   become: true
   ansible.builtin.copy:
@@ -299,17 +302,47 @@
     group: subject
     mode: "u=rwX,g=rwX,o=rX"
     recurse: true
+- name: Ensure Media Directory Exists Writable
+  become: true
+  ansible.builtin.file:
+    path: /opt/media
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: subject
+    mode: "u=rwX,g=rwX,o=rX"
+    recurse: true
 
-- name: Synchronize Universe Shell
+- name: Synchronize Universe
+  become: true
+  ansible.builtin.copy:
+    src: "{{ bm_oszm1_data_root }}/{{ item }}"
+    dest: "/home/subject/public_html/{{ item }}"
+    owner: "{{ ansible_user }}"
+    group: subject
+    mode: "0o664"
+  loop:
+    - favicon.ico
+    - universe.html
+- name: Synchronize Media
   ansible.posix.synchronize:
-    src: "{{ bm_oszm1_data_root }}/"
-    dest: /home/subject/public_html
+    src: "{{ bm_oszm1_data_root }}/media/"
+    dest: /opt/media/
     delete: true
 
-- name: Ensure Universe Directory is Writable
+
+- name: Ensure Universe remains Writable
   become: true
   ansible.builtin.file:
     path: /home/subject/public_html
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: subject
+    mode: "u=rwX,g=rwX,o=rX"
+    recurse: true
+- name: Ensure Media remains Writable
+  become: true
+  ansible.builtin.file:
+    path: /opt/media
     state: directory
     owner: "{{ ansible_user }}"
     group: subject

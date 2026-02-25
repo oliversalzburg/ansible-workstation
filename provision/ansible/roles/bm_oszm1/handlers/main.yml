@@ -7,7 +7,7 @@
 - name: Enable cage Service
   become: true
   ansible.builtin.systemd:
-    name: cage@tty1.service
+    name: cage.service
     enabled: true
 
 - name: Enable FYC Service

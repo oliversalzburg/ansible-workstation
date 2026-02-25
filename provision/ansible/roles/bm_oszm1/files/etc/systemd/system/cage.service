@@ -3,7 +3,7 @@
 # with systemd logind support.
 
 [Unit]
-Description=Cage Wayland compositor on %I
+Description=Cage Wayland compositor on tty1
 # Make sure we are started after logins are permitted. If Plymouth is
 # used, we want to start when it is on its way out.
 After=systemd-user-sessions.service plymouth-quit-wait.service
@@ -19,8 +19,8 @@ Wants=pipewire.service pipewire.socket wireplumber.service pipewire-pulse.servic
 After=pipewire.service pipewire.socket wireplumber.service pipewire-pulse.service pipewire-pulse.socket
 # Replace any (a)getty that may have spawned, since we log in
 # automatically.
-Conflicts=getty@%i.service
-After=getty@%i.service
+Conflicts=getty@tty1.service
+After=getty@tty1.service
 Requires=seatd.service
 After=seatd.service
 Wants=fuck-your-cursor.service
@@ -61,15 +61,15 @@ ExecStart=/usr/bin/cage -- chromium \
 	#--start-fullscreen \
 	# Verbosity goes from 0-2 (2 is most verbose)
 	--v=1
-ExecStartPost=+sh -c "tty_name='%i'; exec chvt $${tty_name#tty}"
+ExecStartPost=+sh -c "exec chvt 1"
 Restart=always
 User=subject
 # Log this user with utmp, letting it show up with commands 'w' and
 # 'who'. This is needed since we replace (a)getty.
-UtmpIdentifier=%I
+UtmpIdentifier=tty1
 UtmpMode=user
 # A virtual terminal is needed.
-TTYPath=/dev/%I
+TTYPath=/dev/tty1
 TTYReset=yes
 TTYVHangup=yes
 TTYVTDisallocate=yes
@@ -84,4 +84,3 @@ PAMName=subject
 [Install]
 WantedBy=graphical.target
 #Alias=display-manager.service
-DefaultInstance=tty7

@@ -2,5 +2,5 @@
 Description=Fuck Your Cursor
 
 [Service]
-Type=simple
-ExecStart=sh -c "sleep 2 && /usr/bin/evemu-event /dev/input/event5 --type EV_REL --code REL_X --value 10000 && /usr/bin/evemu-event --sync /dev/input/event5 --type EV_REL --code REL_Y --value 10000"
+Type=oneshot
+ExecStart=sh -c "for i in `seq 1 100`; do /usr/bin/evemu-event /dev/input/event3 --type EV_REL --code REL_X --value 10000 && /usr/bin/evemu-event --sync /dev/input/event3 --type EV_REL --code REL_Y --value 10000 && sleep 0.1; done"
