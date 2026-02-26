@@ -53,32 +53,20 @@
     group: root
     mode: "0o775"
 
+- name: Synchronize Plymouth Theme
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/usr/share/plymouth/themes/"
+    dest: /usr/share/plymouth/themes/
+    owner: root
+    group: root
+    mode: "0o644"
+
 # $ sudo update-grub
 # $ sudo dpkg-reconfigure linux-image-$(uname -r)
 # $ # sudo efibootmgr --bootnum 1 --delete-bootnum
 # $ sudo /sbin/create_EFI_Boot_Entry.sh
-# $ sudo plymouth-set-default-theme -R spinner
-
-#- name: Ensure downloads Directory exists
-#  ansible.builtin.file:
-#    path: "{{ directory_downloads }}"
-#    state: directory
-#    owner: "{{ ansible_user }}"
-#    mode: "u=rwX,g=rX,o="
-#    recurse: false
-#- name: Download hide-cursor extension
-#  register: bm_oszm1_result
-#  retries: 3
-#  delay: 3
-#  until: bm_oszm1_result is not failed
-#  ansible.builtin.get_url:
-#    url: https://extensions.gnome.org/extension-data/hide-cursorelcste.com.v10.shell-extension.zip
-#    dest: "{{ directory_downloads }}"
-#    mode: "0o640"
-#- name: Install hide-cursor GNOME extensions
-#  become: true
-#  ansible.builtin.command:
-#    cmd: gnome-extensions install "{{ directory_downloads }}/hide-cursorelcste.com.v10.shell-extension.zip"
+# $ sudo plymouth-set-default-theme -R abstract_ring
 
 - name: Install Web Server
   become: true
@@ -198,7 +186,7 @@
       - plymouth
       - plymouth-themes
       - seatd
-      - task-gnome-desktop
+      #- task-gnome-desktop
       - wireplumber
     state: present
     update_cache: true
