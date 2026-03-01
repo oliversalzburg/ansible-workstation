@@ -185,6 +185,7 @@
       - pipewire
       - plymouth
       - plymouth-themes
+      - pulseaudio-utils
       - seatd
       #- task-gnome-desktop
       - wireplumber
@@ -227,7 +228,7 @@
     state: directory
     owner: subject
     group: subject
-    mode: "0o770"
+    mode: "0o775"
     recurse: false
 
 - name: Configure cage PAM

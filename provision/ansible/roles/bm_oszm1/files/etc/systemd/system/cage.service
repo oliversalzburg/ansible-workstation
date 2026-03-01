@@ -48,6 +48,7 @@ ExecStart=/usr/bin/cage -- chromium \
 	--aggressive-cache-discard \
 	# Log to /home/subject/cage_err.log
 	--enable-logging=stderr \
+	--force-dark-mode \
 	# Don't show "Press ESC to exit" popup.
 	--kiosk \
 	# Pointless for our environment.
@@ -57,11 +58,12 @@ ExecStart=/usr/bin/cage -- chromium \
 	# Don't create a keyring for credential storage.
 	--password-store=basic \
 	--propagate-iph-for-testing \
-	# Fullscreen. Prevents sound?
-	#--start-fullscreen \
+	# Fullscreen.
+	--start-fullscreen
 	# Verbosity goes from 0-2 (2 is most verbose)
-	--v=1
+	#--v=1
 ExecStartPost=+sh -c "exec chvt 1"
+#ExecStartPost=+sh -c "pactl set-sink-volume @DEFAULT_SINK@ 100%"
 Restart=always
 User=subject
 # Log this user with utmp, letting it show up with commands 'w' and

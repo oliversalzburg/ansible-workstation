@@ -2,7 +2,7 @@
 idle-delay=0
 idle-dim=false
 idle-activation-enabled=false
-power-button-action='nothing'
+power-button-action='shutdown'
 power-saver-profile-on-low-battery=false
 sleep-inactive-ac-timeout=0
 sleep-inactive-ac-type='nothing'
