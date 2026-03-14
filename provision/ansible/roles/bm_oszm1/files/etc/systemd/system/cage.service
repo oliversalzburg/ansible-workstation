@@ -59,9 +59,9 @@ ExecStart=/usr/bin/cage -- chromium \
 	--password-store=basic \
 	--propagate-iph-for-testing \
 	# Fullscreen.
-	--start-fullscreen
+	--start-fullscreen \
 	# Verbosity goes from 0-2 (2 is most verbose)
-	#--v=1
+	--v=0
 ExecStartPost=+sh -c "exec chvt 1"
 #ExecStartPost=+sh -c "pactl set-sink-volume @DEFAULT_SINK@ 100%"
 Restart=always

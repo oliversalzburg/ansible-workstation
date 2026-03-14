@@ -189,6 +189,7 @@
       - seatd
       #- task-gnome-desktop
       - wireplumber
+      - xpadneo-dkms
     state: present
     update_cache: true
 
