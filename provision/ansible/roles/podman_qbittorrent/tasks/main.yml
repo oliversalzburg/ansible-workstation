@@ -40,7 +40,7 @@
   ansible.builtin.template:
     src: unpackerr.conf.j2
     dest: /etc/unpackerr/unpackerr.conf
-    owner: qbittorrent
+    owner: unpackerr
     group: nas
     mode: "0o600"
   notify: Restart unpackerr
