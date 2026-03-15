@@ -4,14 +4,14 @@
     manager: apt
   when: ansible_facts['os_family'] == "Debian"
 
-- name: Install Grub Configuration
-  become: true
-  ansible.builtin.copy:
-    src: "{{ role_path }}/files/etc/default/grub"
-    dest: /etc/default/grub
-    owner: root
-    group: root
-    mode: "0o644"
+#- name: Install Grub Configuration
+#  become: true
+#  ansible.builtin.copy:
+#    src: "{{ role_path }}/files/etc/default/grub"
+#    dest: /etc/default/grub
+#    owner: root
+#    group: root
+#    mode: "0o644"
 - name: Install create_EFI_Boot_Entry.sh
   become: true
   ansible.builtin.copy:
@@ -183,6 +183,7 @@
       - fonts-unfonts-core
       - fonts-unfonts-extra
       - fonts-wine
+      - grub-efi
       - libavcodec-extra
       - libpam-systemd
       - pipewire

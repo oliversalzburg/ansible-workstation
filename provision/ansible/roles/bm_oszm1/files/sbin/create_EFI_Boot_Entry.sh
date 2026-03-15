@@ -10,9 +10,9 @@
 #
 
 # First compose the variables used as arguments:
-label='OSZM1 Debian EFI Stub'
-loader='\EFI\Debian\vmlinuz' # Use single \'s !
-initrd='\EFI\Debian\initrd.img' # Use single \'s !
+label='Debian (EFI stub)'
+loader='\EFI\debian\vmlinuz' # Use single \'s !
+initrd='\EFI\debian\initrd.img' # Use single \'s !
 # Compose default kernel arguments for an EFI-boot
 printf -v largs "%s " \
         "root=UUID=$(findmnt -kno UUID /) ro" \
