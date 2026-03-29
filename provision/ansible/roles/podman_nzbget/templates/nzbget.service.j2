@@ -1,0 +1,43 @@
+{{ ansible_managed|comment }}
+
+[Unit]
+Description=NZBget Root Service
+Documentation=
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor={{ podman_nzbget_basedir }} {{ podman_nzbget_mediadir }}
+Requires=nzbget-main.service postgres.service
+Requires=service.{{ inventory_hostname }}-network.service
+Before=nzbget-main.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+TimeoutStopSec=70
+ExecStartPre=/bin/rm --force %t/nzbget.pid %t/nzbget.pod-id
+ExecStartPre=/usr/bin/podman pod create \
+  --hostname "%n.{{ inventory_hostname }}" \
+  --infra-conmon-pidfile %t/nzbget.pid \
+  --label "traefik.enable=true" \
+  --label "traefik.http.routers.nzbget.entrypoints=websecure" \
+  --label "traefik.http.routers.nzbget.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
+  --label "traefik.http.routers.nzbget.tls.certresolver={{ realm }}" \
+  --label "traefik.http.routers.nzbget.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
+#  --label "traefik.http.services.nzbget.loadbalancer.healthcheck.path=/ping" \
+  --label "traefik.http.services.nzbget.loadbalancer.server.port=6789" \
+  --name "%n.{{ inventory_hostname }}" \
+  --network "service.{{ inventory_hostname }}" \
+  --pod-id-file %t/nzbget.pod-id \
+  --replace \
+  --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
+  --volume "{{ podman_nzbget_basedir }}/config:/config:rw" \
+  --volume "{{ podman_qbittorrent_mediadir }}/INCOMING:/downloads:rw"
+
+ExecStart=/usr/bin/podman pod start --pod-id-file %t/nzbget.pod-id
+ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/nzbget.pod-id --time 10
+ExecStopPost=/usr/bin/podman pod rm --ignore --force --pod-id-file %t/nzbget.pod-id
+PIDFile=%t/nzbget.pid
+Type=forking
+
+[Install]
+WantedBy=multi-user.target

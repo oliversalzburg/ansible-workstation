@@ -76,6 +76,7 @@
     - role: podman_jellyfin
     - role: podman_seerr
     - role: podman_lidarr
+    - role: podman_nzbget
     - role: podman_prowlarr
     - role: podman_qbittorrent
     - role: podman_radarr

@@ -1,0 +1,9 @@
+---
+podman_nzbget_id: nzbget
+podman_nzbget_name: NZBget
+podman_nzbget_groups:
+  - nas
+  - service
+
+podman_nzbget_basedir: /mnt/usb/nzbget
+podman_nzbget_version: latest

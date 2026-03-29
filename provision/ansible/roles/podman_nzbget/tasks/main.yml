@@ -1,0 +1,90 @@
+---
+- name: Create groups
+  become: true
+  register: _podman_nzbget_groups
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+    system: true
+  loop: "{{ podman_nzbget_groups }}"
+  notify: Restart nzbget
+
+- name: Ensure user is a group member
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: "{{ podman_nzbget_groups }}"
+    append: true
+  notify: Restart nzbget
+
+- name: Create user
+  become: true
+  register: _podman_nzbget_user
+  ansible.builtin.user:
+    comment: "{{ podman_nzbget_name }}"
+    create_home: false
+    group: "{{ _podman_nzbget_groups.results[0].gid }}"
+    groups: "{{ podman_nzbget_groups }}"
+    home: "{{ podman_nzbget_basedir }}"
+    name: "{{ podman_nzbget_id }}"
+    password: "!"
+    shell: "/usr/sbin/nologin"
+    system: true
+  notify: Restart nzbget
+
+
+- name: Ensure working directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ podman_nzbget_basedir }}"
+    state: directory
+    owner: "{{ _podman_nzbget_user.uid }}"
+    group: "{{ _podman_nzbget_groups.results[0].gid }}"
+    mode: "u=rwX,g=rX,o="
+    recurse: false
+  notify: Restart nzbget
+
+- name: Ensure directories exist
+  become: true
+  ansible.builtin.file:
+    path: "{{ podman_nzbget_basedir }}/{{ item }}"
+    state: directory
+    owner: "{{ _podman_nzbget_user.uid }}"
+    group: "{{ _podman_nzbget_groups.results[0].gid }}"
+    mode: "u=rwX,g=rX,o="
+    recurse: true
+  loop:
+    - config
+  notify: Restart nzbget
+
+
+#- name: Copy configuration
+#  become: true
+#  ansible.builtin.template:
+#    src: "config.xml.j2"
+#    dest: "{{ podman_nzbget_basedir }}/config/config.xml"
+#    owner: "{{ _podman_nzbget_user.uid }}"
+#    group: "{{ _podman_nzbget_groups.results[0].gid }}"
+#    mode: "0o640"
+#  notify: Restart nzbget
+
+
+- name: Copy service files
+  become: true
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "{{ directory_systemd }}/{{ item }}"
+    owner: root
+    group: root
+    mode: "0o644"
+  loop:
+    - nzbget-main.service
+    - nzbget.service
+  notify: Restart nzbget
+
+- name: Enable and check nzbget service
+  become: true
+  ansible.builtin.systemd:
+    enabled: true
+    name: nzbget
+  notify: Restart nzbget
