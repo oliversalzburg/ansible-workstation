@@ -58,15 +58,15 @@
   notify: Restart nzbget
 
 
-#- name: Copy configuration
-#  become: true
-#  ansible.builtin.template:
-#    src: "config.xml.j2"
-#    dest: "{{ podman_nzbget_basedir }}/config/config.xml"
-#    owner: "{{ _podman_nzbget_user.uid }}"
-#    group: "{{ _podman_nzbget_groups.results[0].gid }}"
-#    mode: "0o640"
-#  notify: Restart nzbget
+- name: Copy configuration
+  become: true
+  ansible.builtin.template:
+    src: "nzbget.conf.j2"
+    dest: "{{ podman_nzbget_basedir }}/config/nzbget.conf"
+    owner: "{{ _podman_nzbget_user.uid }}"
+    group: "{{ _podman_nzbget_groups.results[0].gid }}"
+    mode: "0o640"
+  notify: Restart nzbget
 
 
 - name: Copy service files

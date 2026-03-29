@@ -21,6 +21,11 @@ ExecStart=/usr/bin/podman run \
   --cgroups "no-conmon" \
   --cidfile "%t/%n.ctr-id" \
   --detach \
+# Replace retarded groupmod bullshit default entrypoint.
+  --entrypoint='["/app/nzbget/nzbget", "-s", "-c", "/config/nzbget.conf", "-o", "OutputMode=log", "-o", "ControlUsername=nzbget", "-o", "ControlPassword=nzbget"]' \
+# Useless garbage
+#  --env "PUID={{ _podman_nzbget_user.uid }}" \
+#  --env "PGID={{ _podman_nzbget_groups.results[0].gid }}" \
   --env "TZ={{ config_system_timezone }}" \
   --log-driver "journald" \
   --memory "4g" \
@@ -31,7 +36,7 @@ ExecStart=/usr/bin/podman run \
   --rm \
   --sdnotify "conmon" \
   --user "{{ _podman_nzbget_user.uid }}:{{ _podman_nzbget_groups.results[0].gid }}" \
-  oliversalzburg/containers/nzbget:{{ podman_nzbget_version }}
+  {{ registry_ghcrio }}/nzbgetcom/nzbget:{{ podman_nzbget_version }}
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile "%t/%n.ctr-id" --time 10
 ExecStopPost=/usr/bin/podman rm --ignore --force --cidfile "%t/%n.ctr-id"
