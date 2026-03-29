@@ -12,55 +12,55 @@
 #    owner: root
 #    group: root
 #    mode: "0o644"
-- name: Install create_EFI_Boot_Entry.sh
-  become: true
-  ansible.builtin.copy:
-    src: "{{ role_path }}/files/sbin/create_EFI_Boot_Entry.sh"
-    dest: /sbin/create_EFI_Boot_Entry.sh
-    owner: root
-    group: root
-    mode: "0o755"
-- name: Install zz-update-efistub kernel hook
-  become: true
-  ansible.builtin.copy:
-    src: "{{ role_path }}/files/etc/kernel/postinst.d/zz-update-efistub"
-    dest: /etc/kernel/postinst.d/zz-update-efistub
-    owner: root
-    group: root
-    mode: "0o755"
-- name: Ensure initramfs Hooks Directory Exists
-  become: true
-  ansible.builtin.file:
-    path: /etc/initramfs/post-update.d/
-    state: directory
-    owner: root
-    group: root
-    mode: "0o775"
-- name: Install zz-update-efistub initramfs hook
-  become: true
-  ansible.builtin.copy:
-    src: "{{ role_path }}/files/etc/initramfs/post-update.d/zz-update-efistub"
-    dest: /etc/initramfs/post-update.d/zz-update-efistub
-    owner: root
-    group: root
-    mode: "0o755"
-- name: Create EFI Stub target
-  become: true
-  ansible.builtin.file:
-    path: /boot/efi/EFI/Debian
-    state: directory
-    owner: root
-    group: root
-    mode: "0o775"
+#- name: Install create_EFI_Boot_Entry.sh
+#  become: true
+#  ansible.builtin.copy:
+#    src: "{{ role_path }}/files/sbin/create_EFI_Boot_Entry.sh"
+#    dest: /sbin/create_EFI_Boot_Entry.sh
+#    owner: root
+#    group: root
+#    mode: "0o755"
+#- name: Install zz-update-efistub kernel hook
+#  become: true
+#  ansible.builtin.copy:
+#    src: "{{ role_path }}/files/etc/kernel/postinst.d/zz-update-efistub"
+#    dest: /etc/kernel/postinst.d/zz-update-efistub
+#    owner: root
+#    group: root
+#    mode: "0o755"
+#- name: Ensure initramfs Hooks Directory Exists
+#  become: true
+#  ansible.builtin.file:
+#    path: /etc/initramfs/post-update.d/
+#    state: directory
+#    owner: root
+#    group: root
+#    mode: "0o775"
+#- name: Install zz-update-efistub initramfs hook
+#  become: true
+#  ansible.builtin.copy:
+#    src: "{{ role_path }}/files/etc/initramfs/post-update.d/zz-update-efistub"
+#    dest: /etc/initramfs/post-update.d/zz-update-efistub
+#    owner: root
+#    group: root
+#    mode: "0o755"
+#- name: Create EFI Stub target
+#  become: true
+#  ansible.builtin.file:
+#    path: /boot/efi/EFI/Debian
+#    state: directory
+#    owner: root
+#    group: root
+#    mode: "0o775"
 
-- name: Synchronize Plymouth Theme
-  become: true
-  ansible.builtin.copy:
-    src: "{{ role_path }}/files/usr/share/plymouth/themes/"
-    dest: /usr/share/plymouth/themes/
-    owner: root
-    group: root
-    mode: "0o644"
+#- name: Synchronize Plymouth Theme
+#  become: true
+#  ansible.builtin.copy:
+#    src: "{{ role_path }}/files/usr/share/plymouth/themes/"
+#    dest: /usr/share/plymouth/themes/
+#    owner: root
+#    group: root
+#    mode: "0o644"
 
 # $ sudo update-grub
 # $ sudo dpkg-reconfigure linux-image-$(uname -r)
@@ -188,7 +188,7 @@
       - libpam-systemd
       - pipewire
       - plymouth
-      - plymouth-themes
+      #- plymouth-themes
       - pulseaudio-utils
       - seatd
       #- task-gnome-desktop

@@ -10,9 +10,9 @@
 #
 
 # First compose the variables used as arguments:
-label='Debian (EFI stub)'
-loader='\EFI\debian\vmlinuz' # Use single \'s !
-initrd='\EFI\debian\initrd.img' # Use single \'s !
+label='OSZM1'
+loader='\EFI\Debian\vmlinuz' # Use single \'s !
+initrd='\EFI\Debian\initrd.img' # Use single \'s !
 # Compose default kernel arguments for an EFI-boot
 printf -v largs "%s " \
         "root=UUID=$(findmnt -kno UUID /) ro" \
@@ -38,5 +38,5 @@ else
 fi
 # echo "${largs%* }"; exit
 # Then create the EFI entry:
-echo efibootmgr --create --disk /dev/nvme0n1 --part 1 --label "${label}" --loader "${loader}" --unicode "${largs%* }"
+echo "efibootmgr --create --disk /dev/nvme0n1 --part 1 --label \"${label}\" --loader \"${loader}\" --unicode \"${largs%* }\""
 efibootmgr --create --disk /dev/nvme0n1 --part 1 --label "${label}" --loader "${loader}" --unicode "${largs%* }"
