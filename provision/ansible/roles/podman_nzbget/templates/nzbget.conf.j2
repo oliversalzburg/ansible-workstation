@@ -766,7 +766,7 @@ NzbDirFileAge=60
 # be deleted to prevent accidental data loss. Instead, it will be moved to 
 # the '_processed' directory.
 # If processing fails, the file is moved to '_broken' directory to prevent data loss.
-#NzbDirArchiveAction=delete
+NzbDirArchiveAction=move
 
 # Check for duplicate titles (yes, no).
 #
@@ -919,7 +919,7 @@ FileNaming=auto
 # Rename downloaded files after unpack (yes, no).
 #
 # This option renames the extracted and obfuscated files using the NZB filename.
-RenameAfterUnpack=yes
+RenameAfterUnpack=no
 
 # File extensions to ignore during renaming after unpack.
 #
@@ -1588,7 +1588,7 @@ UseTempUnpackDir=yes
 UnpackPauseQueue=no
 
 # Delete archive files after successful unpacking (yes, no).
-UnpackCleanupDisk=yes
+UnpackCleanupDisk=no
 
 # Full path to unrar executable.
 #
