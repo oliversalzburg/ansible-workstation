@@ -7,7 +7,7 @@ podman_qbittorrent_groups:
   - unpackerr
 
 podman_qbittorrent_basedir: /mnt/usb/qbittorrent
-podman_qbittorrent_mediadir: "{{ media_mount }}"
+podman_qbittorrent_mediadir: /mnt/media
 podman_qbittorrent_version: latest
 podman_qbittorrent_exporter_version: latest
 podman_qbittorrent_flood_version: latest

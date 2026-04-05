@@ -6,5 +6,5 @@ podman_jellyfin_groups:
   - service
 
 podman_jellyfin_basedir: /mnt/usb/jellyfin
-podman_jellyfin_mediadir: "{{ media_mount }}"
+podman_jellyfin_mediadir: /mnt/media
 podman_jellyfin_version: latest

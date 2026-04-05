@@ -31,7 +31,7 @@ ExecStartPre=/usr/bin/podman pod create \
   --replace \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
   --volume "{{ podman_lidarr_basedir }}/config:/var/lib/lidarr:rw" \
-  --volume "{{ podman_lidarr_mediadir }}:/data:rw"
+  --volume "{{ podman_lidarr_mediadir }}/data:/data:rw"
 
 ExecStart=/usr/bin/podman pod start --pod-id-file %t/lidarr.pod-id
 ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/lidarr.pod-id --time 10

@@ -5,5 +5,12 @@ podman_nzbget_groups:
   - nas
   - service
 
+podman_nzbget_username: nzbget
+podman_nzbget_password: nzbget
 podman_nzbget_basedir: /mnt/usb/nzbget
+podman_nzbget_mediadir: /mnt/media
 podman_nzbget_version: latest
+podman_nzbget_nzname: invalid
+podman_nzbget_nzhost: invalid
+podman_nzbget_nzusername: invalid
+podman_nzbget_nzpassword: invalid

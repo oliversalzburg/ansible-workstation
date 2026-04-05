@@ -134,7 +134,7 @@ api_key = "{{ podman_sonarr_api_key }}"
 ## List of paths where content is downloaded for this app.
 ## Used as fallback if the path the Starr app reports does not exist or is not accessible.
 # paths = ['/downloads']
-paths = ['{{ podman_qbittorrent_mediadir }}/INCOMING']
+paths = ['{{ podman_qbittorrent_mediadir }}/data/torrents']
 ## Protocols to process from the download queue. Starr apps historically
 ## used "torrent" and "usenet" as the protocol strings, but newer versions
 ## emit the full class names "TorrentDownloadProtocol" and
@@ -163,7 +163,7 @@ api_key = "{{ podman_radarr_api_key }}"
 ## List of paths where content is downloaded for this app.
 ## Used as fallback if the path the Starr app reports does not exist or is not accessible.
 # paths = ['/downloads']
-paths = ['{{ podman_qbittorrent_mediadir }}/INCOMING']
+paths = ['{{ podman_qbittorrent_mediadir }}/data/torrents']
 ## Protocols to process from the download queue. Starr apps historically
 ## used "torrent" and "usenet" as the protocol strings, but newer versions
 ## emit the full class names "TorrentDownloadProtocol" and
@@ -190,7 +190,7 @@ api_key = "{{ podman_lidarr_api_key }}"
 ## List of paths where content is downloaded for this app.
 ## Used as fallback if the path the Starr app reports does not exist or is not accessible.
 # paths = ['/downloads']
-paths = ['{{ podman_qbittorrent_mediadir }}/INCOMING']
+paths = ['{{ podman_qbittorrent_mediadir }}/data/torrents']
 ## Protocols to process from the download queue. Starr apps historically
 ## used "torrent" and "usenet" as the protocol strings, but newer versions
 ## emit the full class names "TorrentDownloadProtocol" and
@@ -245,7 +245,7 @@ api_key = "{{ podman_whisparr_api_key }}"
 ## List of paths where content is downloaded for this app.
 ## Used as fallback if the path the Starr app reports does not exist or is not accessible.
 # paths = ['/downloads']
-paths = ['{{ podman_qbittorrent_mediadir }}/INCOMING']
+paths = ['{{ podman_qbittorrent_mediadir }}/data/torrents']
 ## Protocols to process from the download queue. Starr apps historically
 ## used "torrent" and "usenet" as the protocol strings, but newer versions
 ## emit the full class names "TorrentDownloadProtocol" and

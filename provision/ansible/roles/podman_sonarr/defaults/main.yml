@@ -6,7 +6,7 @@ podman_sonarr_groups:
   - service
 
 podman_sonarr_basedir: /mnt/usb/sonarr
-podman_sonarr_mediadir: "{{ media_mount }}"
+podman_sonarr_mediadir: /mnt/media
 podman_sonarr_version: latest
 podman_sonarr_exportarr_version: latest
 

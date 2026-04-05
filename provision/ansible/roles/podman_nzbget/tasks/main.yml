@@ -33,17 +33,6 @@
   notify: Restart nzbget
 
 
-- name: Ensure working directory exists
-  become: true
-  ansible.builtin.file:
-    path: "{{ podman_nzbget_basedir }}"
-    state: directory
-    owner: "{{ _podman_nzbget_user.uid }}"
-    group: "{{ _podman_nzbget_groups.results[0].gid }}"
-    mode: "u=rwX,g=rX,o="
-    recurse: false
-  notify: Restart nzbget
-
 - name: Ensure directories exist
   become: true
   ansible.builtin.file:
@@ -56,18 +45,19 @@
   loop:
     - config
   notify: Restart nzbget
-
-- name: Ensure downloads directory exists
+- name: Ensure downloads directories exist
   become: true
   ansible.builtin.file:
-    path: "{{ podman_qbittorrent_mediadir }}/INCOMING/downloads"
+    path: "{{ podman_nzbget_mediadir }}/{{ item }}"
     state: directory
     owner: "{{ _podman_nzbget_user.uid }}"
     group: "{{ _podman_nzbget_groups.results[0].gid }}"
     mode: "u=rwX,g=rX,o="
-    recurse: false
+    recurse: true
+  loop:
+    - data/usenet/complete
+    - data/usenet/incomplete
   notify: Restart nzbget
-
 
 - name: Copy configuration
   become: true

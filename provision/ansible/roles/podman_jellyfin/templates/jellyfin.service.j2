@@ -40,7 +40,7 @@ ExecStart=/usr/bin/podman run \
   --rm \
   --user "{{ _podman_jellyfin_user.uid }}:{{ _podman_jellyfin_groups.results[0].gid }}" \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
-  --volume "{{ podman_jellyfin_mediadir }}:/media:rw" \
+  --volume "{{ podman_jellyfin_mediadir }}/data/media:/media:rw" \
   --volume "{{ podman_jellyfin_basedir }}/cache:/cache:rw" \
   --volume "{{ podman_jellyfin_basedir }}/config:/config:rw" \
   jellyfin/jellyfin:{{ podman_jellyfin_version }}

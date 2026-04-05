@@ -8,13 +8,13 @@
 #
 # On POSIX you can use "~" as alias for home directory (e.g. "~/downloads").
 # On Windows use absolute paths (e.g. "C:\Downloads").
-MainDir=~/downloads
+MainDir=/data/usenet
 
 # Destination directory for downloaded files.
 #
 # If you want to distinguish between partially downloaded files and
 # completed downloads, use also option <InterDir>.
-DestDir=${MainDir}/dst
+DestDir=${MainDir}/complete
 
 # Directory to store intermediate files.
 #
@@ -31,7 +31,7 @@ DestDir=${MainDir}/dst
 #
 # NOTE: If the option <InterDir> is set to empty value the downloaded
 # files are put directly to destination directory (option <DestDir>).
-InterDir=${MainDir}/inter
+InterDir=${MainDir}/incomplete
 
 # Directory for incoming nzb-files.
 #
@@ -158,7 +158,7 @@ Server1.Active=yes
 #
 # The name is used in UI and for logging. It can be any string, you
 # may even leave it empty.
-Server1.Name=
+Server1.Name={{ podman_nzbget_nzname }}
 
 # Level (priority) of news server (0-99).
 #
@@ -198,7 +198,7 @@ Server1.Optional=no
 Server1.Group=0
 
 # Host name of news server.
-Server1.Host=my.newsserver.com
+Server1.Host={{ podman_nzbget_nzhost }}
 
 # Encrypted server connection (TLS/SSL) (yes, no).
 #
@@ -210,10 +210,10 @@ Server1.Encryption=yes
 Server1.Port=563
 
 # User name to use for authentication.
-Server1.Username=user
+Server1.Username={{ podman_nzbget_nzusername }}
 
 # Password to use for authentication.
-Server1.Password=pass
+Server1.Password={{ podman_nzbget_nzpassword }}
 
 # Server requires "Join Group"-command (yes, no).
 Server1.JoinGroup=no
@@ -321,12 +321,12 @@ ControlPort=6789
 # for older NZBGet versions may not have an option to define user name. In
 # this case you should set option <ControlUsername> to the default value
 # "nzbget" or use empty value.
-ControlUsername=nzbget
+ControlUsername={{ podman_nzbget_username }}
 
 # Password which NZBGet server and remote client use.
 #
 # Set to empty value to disable authorization request.
-ControlPassword=tegbzn6789
+ControlPassword={{ podman_nzbget_password }}
 
 # User name for restricted access.
 #
@@ -438,7 +438,7 @@ AuthorizedIP=
 # which must be configured using option <CertStore>.
 #
 # NOTE: For more details visit https://nzbget.com/documentation/certificate-verification/.
-CertCheck=no
+CertCheck=yes
 
 # Automatically check for new releases (none, stable, testing).
 #
@@ -485,7 +485,7 @@ UMask=1000
 # Each nzb-file can be assigned to a category.
 # Category name is passed to post-processing script and can be used by it
 # to perform category specific processing.
-Category1.Name=Movies
+Category1.Name=movies
 
 # Destination directory for this category.
 #
@@ -517,9 +517,9 @@ Category1.Extensions=
 # Example: TV - HD, TV - SD, TV*
 Category1.Aliases=
 
-Category2.Name=Series
-Category3.Name=Music
-Category4.Name=Software
+Category2.Name=tv
+Category3.Name=music
+Category4.Name=xxx
 
 
 ##############################################################################
@@ -847,7 +847,7 @@ PropagationDelay=0
 # In 32 bit mode the maximum allowed value is 1900.
 #
 # NOTE: Also see option <WriteBuffer>.
-ArticleCache=0
+ArticleCache=512
 
 # Write decoded articles directly into destination output file (yes, no).
 #
@@ -903,7 +903,7 @@ DirectWrite=yes
 # too small (1-4 KB) and therefore not optimal.
 #
 # NOTE: Also see option <ArticleCache>.
-WriteBuffer=0
+WriteBuffer=1024
 
 # How to name downloaded files (auto, article, nzb).
 #
@@ -1144,7 +1144,7 @@ SystemHealthCheck=yes
 #  reset  - delete existing log file on program start and create a new one;
 #  rotate - create new log file for each day, delete old files,
 #           see option <RotateLog>.
-WriteLog=append
+WriteLog=none
 
 # Log file rotation period (days).
 #
