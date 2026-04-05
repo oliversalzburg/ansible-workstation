@@ -57,6 +57,17 @@
     - config
   notify: Restart nzbget
 
+- name: Ensure downloads directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ podman_qbittorrent_mediadir }}/INCOMING/downloads"
+    state: directory
+    owner: "{{ _podman_nzbget_user.uid }}"
+    group: "{{ _podman_nzbget_groups.results[0].gid }}"
+    mode: "u=rwX,g=rX,o="
+    recurse: false
+  notify: Restart nzbget
+
 
 - name: Copy configuration
   become: true
