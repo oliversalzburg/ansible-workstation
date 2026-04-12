@@ -42,7 +42,7 @@ ExecStartPre=/usr/bin/podman pod create \
   --sysctl "net.ipv6.conf.all.disable_ipv6=1" \
   --volume "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro" \
   --volume "{{ podman_qbittorrent_basedir }}/config:/config:rw" \
-  --volume "{{ podman_qbittorrent_mediadir }}/data/torrents:/data/torrents:rw" \
+  --volume "{{ podman_qbittorrent_mediadir }}/data:/data:rw" \
   --volume "{{ podman_qbittorrent_basedir }}/gluetun:/gluetun:rw" \
   --volume "/var/run/podman/podman.sock:/var/run/docker.sock:rw"
 
