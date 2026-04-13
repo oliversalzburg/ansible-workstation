@@ -51,5 +51,3 @@
   ansible.builtin.include_tasks: signal.yml
 - name: Steam
   ansible.builtin.include_tasks: steam.yml
-- name: Terraform
-  ansible.builtin.include_tasks: terraform.yml
