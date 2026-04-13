@@ -152,13 +152,14 @@ CertStore=/etc/ssl/certs/ca-certificates.crt
 #
 # NOTE: Download is not possible when all servers on level 0 are disabled. Servers
 # on higher levels are used only if at least one server on level 0 was tried.
-Server1.Active=yes
+{% for server in podman_nzbget_servers %}
+Server{{ loop.index }}.Active={{ server.active }}
 
 # Name of news server.
 #
 # The name is used in UI and for logging. It can be any string, you
 # may even leave it empty.
-Server1.Name={{ podman_nzbget_nzname }}
+Server{{ loop.index }}.Name={{ server.name }}
 
 # Level (priority) of news server (0-99).
 #
@@ -172,7 +173,7 @@ Server1.Name={{ podman_nzbget_nzname }}
 #
 # Several servers with the same level may be defined, they have
 # the same priority.
-Server1.Level=0
+Server{{ loop.index }}.Level={{ server.level }}
 
 # This is an optional non-reliable server (yes, no).
 #
@@ -185,7 +186,7 @@ Server1.Level=0
 # (costly) upper level servers if one of main servers is temporary
 # unavailable. However, for less reliable servers you may prefer to ignore
 # connection errors and go on with higher-level servers instead.
-Server1.Optional=no
+Server{{ loop.index }}.Optional={{ server.optional }}
 
 # Group of news server (0-99).
 #
@@ -195,28 +196,28 @@ Server1.Optional=no
 # other servers from the same group.
 #
 # Value "0" means no group defined (default).
-Server1.Group=0
+Server{{ loop.index }}.Group=0
 
 # Host name of news server.
-Server1.Host={{ podman_nzbget_nzhost }}
+Server{{ loop.index }}.Host={{ server.host }}
 
 # Encrypted server connection (TLS/SSL) (yes, no).
 #
 # NOTE: By changing this option you should also change the option <ServerX.Port>
 # accordingly because unsecure and encrypted connections use different ports.
-Server1.Encryption=yes
+Server{{ loop.index }}.Encryption={{ server.encryption }}
 
 # News Server port, usually 563 for secure connections, 119 for unsecure connections, rare - 80 or 443 (1-65535).
-Server1.Port=563
+Server{{ loop.index }}.Port={{ server.port }}
 
 # User name to use for authentication.
-Server1.Username={{ podman_nzbget_nzusername }}
+Server{{ loop.index }}.Username={{ server.username }}
 
 # Password to use for authentication.
-Server1.Password={{ podman_nzbget_nzpassword }}
+Server{{ loop.index }}.Password={{ server.password }}
 
 # Server requires "Join Group"-command (yes, no).
-Server1.JoinGroup=no
+Server{{ loop.index }}.JoinGroup=no
 
 # Cipher to use for encrypted server connection.
 #
@@ -229,10 +230,10 @@ Server1.JoinGroup=no
 # NOTE: You may get a TLS handshake error if the news server does
 # not support the chosen cipher. You can also get an error "Could not
 # select cipher for TLS" if the cipher string is not valid.
-Server1.Cipher=
+Server{{ loop.index }}.Cipher=
 
 # Maximum number of simultaneous connections to this server (0-999).
-Server1.Connections=8
+Server{{ loop.index }}.Connections={{ server.connections }}
 
 # Server retention time (days).
 #
@@ -242,7 +243,7 @@ Server1.Connections=8
 # news server.
 #
 # Value "0" disables retention check.
-Server1.Retention=0
+Server{{ loop.index }}.Retention=0
 
 # Certificate verification level (Strict, Minimal, None).
 #
@@ -251,16 +252,17 @@ Server1.Retention=0
 # Minimal - certificate signing check, NO certificate hostname check
 #
 # Strict - certificate signing check, certificate hostname check
-Server1.CertVerification=strict
+Server{{ loop.index }}.CertVerification=strict
 
 # IP protocol version (auto, ipv4, ipv6).
-Server1.IpVersion=auto
+Server{{ loop.index }}.IpVersion=auto
 
 # User comments on this server.
 #
 # Any text you want to save along with the server definition. For your convenience
 # or for usage in custom extension scripts.
-Server1.Notes=
+Server{{ loop.index }}.Notes=
+{% endfor %}
 
 # Second server, on level 0.
 
@@ -766,7 +768,7 @@ NzbDirFileAge=60
 # be deleted to prevent accidental data loss. Instead, it will be moved to 
 # the '_processed' directory.
 # If processing fails, the file is moved to '_broken' directory to prevent data loss.
-NzbDirArchiveAction=move
+#NzbDirArchiveAction=move
 
 # Check for duplicate titles (yes, no).
 #

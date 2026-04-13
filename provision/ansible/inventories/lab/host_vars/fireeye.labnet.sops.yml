@@ -22,10 +22,27 @@ extra_hosts:
 podman_jellyfin_mediadir: ENC[AES256_GCM,data:2nv+fFPbKoXScw80,iv:+EhIAvqJXrd2hzk5TPV252QAfTSt5YwLzQV5K9sGVbk=,tag:yrDXyW26dy8ym8l/5ifFWw==,type:str]
 podman_lidarr_mediadir: ENC[AES256_GCM,data:ZpJVcK/c+E2s1EF1,iv:3bf4RMBVAxctAHYuS+3q4YyC+Np7FvcfqNQCkC1EWmI=,tag:iUeJasAe4pdlYjXSJ0/SVg==,type:str]
 podman_nzbget_mediadir: ENC[AES256_GCM,data:nJmYRYaJsxGb3oee,iv:DJzaVhkLFn0Qfd0uYkhlnLeXxJdLjwv40qFclHUfQwU=,tag:X+bZvirri9RMCTqPHq6/zA==,type:str]
-podman_nzbget_nzhost: ENC[AES256_GCM,data:OhQeVkbDiS9i0tcusb7m,iv:q44HZ2J2y/Dz/Hu0/AMUbFbdvPRM9MB8jeC01qE4T6g=,tag:z1rLmVST+x3rlTu2lF/ccg==,type:str]
-podman_nzbget_nzname: ENC[AES256_GCM,data:1N0tXJuo/Q==,iv:LMl6oA3jIoMkBF9vd/5TpgLg/0ot+vbiN8KZS3Hn7CU=,tag:yCIv/M9naGiw3czL+yNq/w==,type:str]
-podman_nzbget_nzpassword: ENC[AES256_GCM,data:WJZ/077ci3oK+5cJ4o8hyw==,iv:X5RDurqnuXIc/a1KgIx4fSqsKBl563u1ZGCRhcSIQJg=,tag:XyYiC+O+cuByGPe1VKK/FQ==,type:str]
-podman_nzbget_nzusername: ENC[AES256_GCM,data:eW2K91N1usnuCd3SqZ1q2w==,iv:X40NGMQ8mky5NyCNSJobyKDKBZsfJKketE/Cj4eEufU=,tag:IEFqi76tP/AgIL0OYLZ+AA==,type:str]
+podman_nzbget_servers:
+    - name: ENC[AES256_GCM,data:xcTTjVq9tA==,iv:1RNcwHw4wsuSZMYAXoxWrgLcVYBq6xQ9x+nmHzO9sCY=,tag:vyKHfL6SVG/VBTuSzEJoEw==,type:str]
+      host: ENC[AES256_GCM,data:ix2/70DD3UfSm1T96Wy/,iv:ieVxNzWJgTybPOPoeIx/x9igsAFGBRYo3mAy9F8GTdc=,tag:s+ocLsjD0C1eG1hFUn1hCA==,type:str]
+      username: ENC[AES256_GCM,data:x46fKTwmPLrixtGPSYa9Zw==,iv:qpIl2sKnWAjcjSMhW0spTPB4NuUnuIrsGBAq6t26FAw=,tag:tKVX7YQIyWHxENKz/dmIZQ==,type:str]
+      password: ENC[AES256_GCM,data:7TVGi/yNOVJyBY5kbygQdQ==,iv:W0yXCFMMRbTiK+mraB22FNFq6VCPQUo00ZKjcx/DkT4=,tag:hCVDQVety4QIuz2EnJC/ww==,type:str]
+      active: ENC[AES256_GCM,data:ippl,iv:PhuEWfiRxAUzSxzYMsS+cRRmIttC3P106uMXl5N2JS0=,tag:yBGH7qHPSo3O9I5VpVJs2A==,type:str]
+      level: ENC[AES256_GCM,data:Ig==,iv:fvh1jCy6LM8WzXwis3FY19IL3HKL4k4pa5qLK122aps=,tag:V/k4RwUAo0R5ZEwq6MT1rg==,type:int]
+      encryption: ENC[AES256_GCM,data:c3YR,iv:6rpnmEZ5ycZEXbimMb1rAmnC+yGW3F2JKFm4OSN4Bk4=,tag:0Zt7YQYxH22e99sqnEyTOQ==,type:str]
+      port: ENC[AES256_GCM,data:OoKL,iv:B/6CeToy9PvlZNbZJV7UnZwNBj1K5WY8HxyZ0+8pNhg=,tag:PeLvP52rYjC1z67O6RWvEw==,type:int]
+      connections: ENC[AES256_GCM,data:9A==,iv:gga8NR5+Mf2DMVhDVy9jT6p//+rTVLh2IWNjYFOoudA=,tag:Oif9UtnCAuA4v8JCPXUYzQ==,type:int]
+      optional: ENC[AES256_GCM,data:Owg=,iv:FAXaM4tlI2QehIPvBh3dXmDV3VkQCC71epIKNLkwX38=,tag:D8uESzM42cyahYlAM5nUbw==,type:str]
+    - name: ENC[AES256_GCM,data:ut2hqPgHt59AgCw=,iv:ESDRLxFIWZbYJUKVFgdPBBbSEqnnUsLIuDIXuB9M+34=,tag:eMglGp+y7NXcdRv6fYmvTw==,type:str]
+      host: ENC[AES256_GCM,data:3DO241cbg9GXHRCjAxKwug==,iv:Rbu/0GjmRRkC4jXYtR/QcqSiACttHAYdpEb+vbr8Qj0=,tag:HolnqFkZdBWdEy8o6k0CGg==,type:str]
+      username: ENC[AES256_GCM,data:OElM6ysvPsHcJNHeC5WHkg==,iv:85njCpyUh21oICqTxhtNKsFha1USQcr7R/AVL95l8y8=,tag:YanLJXqWNn2paw4vAhkYOA==,type:str]
+      password: ENC[AES256_GCM,data:1tnqeSEmyqKcFULsRN3lnA==,iv:rEAXdwncSmdnXDJa9xgMy1/qx2rQVMVOnEatZUHs30w=,tag:LFUuDAmYbcs2IfPzGr/c/Q==,type:str]
+      active: ENC[AES256_GCM,data:ippl,iv:PhuEWfiRxAUzSxzYMsS+cRRmIttC3P106uMXl5N2JS0=,tag:yBGH7qHPSo3O9I5VpVJs2A==,type:str]
+      level: ENC[AES256_GCM,data:Ig==,iv:fvh1jCy6LM8WzXwis3FY19IL3HKL4k4pa5qLK122aps=,tag:V/k4RwUAo0R5ZEwq6MT1rg==,type:int]
+      encryption: ENC[AES256_GCM,data:61M4,iv:1cCmREysS0LpEwCzAm/IRgeDmLlHOHWNTR4AYjfmSaQ=,tag:wZwEDisNNKU6Of+K5phUBA==,type:str]
+      port: ENC[AES256_GCM,data:kFHW,iv:xMkUVelsQDJyuBJKKsM+XSpkvdYD6T4x0GrU3aB2C+E=,tag:vlsse8Xx+6KhX52XK4OeZg==,type:int]
+      connections: ENC[AES256_GCM,data:GQ==,iv:0tLgMYm93jwi6aHIBGAZx3/S5S6xBREjkudq5sQU5cU=,tag:GauCozqVq2BqM/lTfEGvPg==,type:int]
+      optional: ENC[AES256_GCM,data:WqQ=,iv:NswyCOb+JDAC1ERSZVzk7HWS4hM4OHl0OLE0MEOYhr4=,tag:oiUjfWQf3/d9ZWyJYF7ymg==,type:str]
 podman_qbittorrent_mediadir: ENC[AES256_GCM,data:DvJASTAsRjLOsnzh,iv:k1W9WPeHoAukq66U0nK739cm5TFbm5x/RDgPOMHRMhc=,tag:VrfzvXSKU3RG6YqqQWUlsg==,type:str]
 podman_radarr_mediadir: ENC[AES256_GCM,data:E6CDyZOexKyTy2N3,iv:un46mWxcUKTz46g1xk4k1g/AuSNoR4zyqng3286LELg=,tag:qFeybErLng/XKqg/pWSzVQ==,type:str]
 podman_sonarr_mediadir: ENC[AES256_GCM,data:WmGlCADZd1qY1dOm,iv:PKZX4mOnDxdjAnbqOgWd+mvaQWWlxq3ZD6VNWIyMwUo=,tag:8QzBPxS6ChKd9hmntrUsZA==,type:str]
@@ -45,8 +62,8 @@ sops:
             d3hRVlBGMmxFb0QySTc0SmdoQUQ3cjgKZqgSA+g4fBVTolJ3wtfgxzEhyAamy9JE
             xQfgUYolygKcQ7nd2XOoylDgmkzYUYxS7GgxT2fGZs/W4PlrQTyquA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2026-04-05T13:12:56Z"
-    mac: ENC[AES256_GCM,data:Zz/gEL0JlMxPBHsUhEQcmqbhtRAklRtplHDpagGFJ3OjylDzYQE4UvT859Q0z+xeRcL1HT4bT97P2VuamJmLn5Yi17CdqjSJ06wFBRSpBWgsiO1xB2/67Qkr/Jtc1NcM8DHR0jpovCuwBQDdYd9NwuFTDb0g+HVLbqgxfCGrryQ=,iv:9RFEnsoT/adoNoQMspjZBQlYnx0+ZTOlKLTSgwrf/Vc=,tag:WFl/uolodKJ5PZmvbSgIhA==,type:str]
+    lastmodified: "2026-04-13T15:47:29Z"
+    mac: ENC[AES256_GCM,data:1VgGNpAISmju9zouLQ27OXfnBrfcQcJUOo4UUHZK3SaN3nHGLlIymy6VeRL0hlmZSeI+UEig+h4FGrtLiBEwnRDT5/zvxPMC7FALj1CNS51IXX67fkCGeC2al0NEFBcKBVCcGCQ2zE/vCJigJ6MrI/wfYabjpvDUPnsI7MVGDSw=,iv:G4Xjx2IxYW6IiemNzCB5ZLVKkUsqgK7H5Rb6wu50rHU=,tag:igJj2H5R5rzh9z+Guk6V/w==,type:str]
     pgp: []
     unencrypted_regex: ^(kind)$
     version: 3.7.3
