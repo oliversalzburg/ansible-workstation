@@ -53,7 +53,7 @@ podman_seerr_version: "v3.2.0"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/lidarr versioning=loose
 podman_lidarr_version: "v3.1.0.4875"
 # renovate: datasource=docker depName=docker.io/sonatype/nexus3 versioning=semver
-podman_nexus_version: "3.91.0"
+podman_nexus_version: "3.91.1"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/nzbget versioning=semver
 podman_nzbget_version: "v26.0"
 # renovate: datasource=docker depName=docker.io/pihole/pihole versioning=loose
