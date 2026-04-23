@@ -37,8 +37,7 @@
     state: directory
     owner: "{{ _podman_synapse_user.uid }}"
     group: "{{ _podman_synapse_groups.results[0].gid }}"
-    mode: "u=rwX,g=rX"
-    recurse: true
+    mode: "0o750"
 
 - name: Ensure directories exist
   become: true
@@ -47,8 +46,7 @@
     state: directory
     owner: "{{ _podman_synapse_user.uid }}"
     group: "{{ _podman_synapse_groups.results[0].gid }}"
-    mode: "u=rwX,g=rX"
-    recurse: true
+    mode: "0o750"
   loop:
     - data
     - data/discord

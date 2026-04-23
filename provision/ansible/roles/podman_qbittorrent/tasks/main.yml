@@ -104,8 +104,7 @@
     state: directory
     owner: "{{ _podman_qbittorrent_user.uid }}"
     group: "{{ _podman_qbittorrent_groups.results[0].gid }}"
-    mode: "u=rwX,g=,o="
-    recurse: false
+    mode: "0o700"
   notify: Restart qbittorrent
 
 - name: Ensure directories exist
@@ -115,8 +114,7 @@
     state: directory
     owner: "{{ _podman_qbittorrent_user.uid }}"
     group: "{{ _podman_qbittorrent_groups.results[0].gid }}"
-    mode: "u=rwX,g=,o="
-    recurse: false
+    mode: "0o700"
   loop:
     - config
     - data

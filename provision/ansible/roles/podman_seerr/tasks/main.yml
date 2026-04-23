@@ -40,8 +40,7 @@
     state: directory
     owner: "{{ _podman_seerr_user.uid }}"
     group: "{{ _podman_seerr_groups.results[0].gid }}"
-    mode: "u=rwX,g=rX,o="
-    recurse: true
+    mode: "0o750"
   notify: Restart seerr
 
 - name: Ensure directories exist
@@ -51,8 +50,7 @@
     state: directory
     owner: "{{ _podman_seerr_user.uid }}"
     group: "{{ _podman_seerr_groups.results[0].gid }}"
-    mode: "u=rwX,g=rX,o="
-    recurse: true
+    mode: "0o750"
   loop:
     - config
   notify: Restart seerr

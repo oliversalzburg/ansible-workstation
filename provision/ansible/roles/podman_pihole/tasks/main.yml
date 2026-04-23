@@ -6,8 +6,7 @@
     state: directory
     owner: root
     group: root
-    mode: "u=rwX,g=rX,o="
-    recurse: false
+    mode: "0o750"
   notify: Restart pihole
 
 - name: Ensure directories exist dnsmasq.d

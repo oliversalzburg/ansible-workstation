@@ -40,8 +40,7 @@
     state: directory
     owner: "{{ _podman_postgres_user.uid }}"
     group: "{{ _podman_postgres_groups.results[0].gid }}"
-    mode: "u=rwX,g=,o="
-    recurse: true
+    mode: "0o700"
   notify: Restart postgres
 
 - name: Ensure directories exist
@@ -51,8 +50,7 @@
     state: directory
     owner: "{{ _podman_postgres_user.uid }}"
     group: "{{ _podman_postgres_groups.results[0].gid }}"
-    mode: "u=rwX,g=,o="
-    recurse: true
+    mode: "0o700"
   loop:
     - data
   notify: Restart postgres

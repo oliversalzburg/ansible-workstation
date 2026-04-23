@@ -40,8 +40,7 @@
     state: directory
     owner: "{{ _podman_sonarr_user.uid }}"
     group: "{{ _podman_sonarr_groups.results[0].gid }}"
-    mode: "u=rwX,g=rX"
-    recurse: true
+    mode: "0o750"
   notify: Restart sonarr
 
 - name: Ensure directories exist
@@ -51,8 +50,7 @@
     state: directory
     owner: "{{ _podman_sonarr_user.uid }}"
     group: "{{ _podman_sonarr_groups.results[0].gid }}"
-    mode: "u=rwX,g=rX"
-    recurse: true
+    mode: "0o750"
   loop:
     - config
   notify: Restart sonarr

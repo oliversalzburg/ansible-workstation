@@ -50,3 +50,6 @@ update-fireeye: requirements
 	cd provision/ansible; ../../.venv/bin/ansible-playbook roles.yml --limit fireeye.labnet
 update-workstation: requirements
 	cd provision/ansible; ../../.venv/bin/ansible-playbook roles.yml --limit workstation.labnet
+
+update-check-fireeye: requirements
+	cd provision/ansible; ../../.venv/bin/ansible-playbook roles.yml --check --diff --limit fireeye.labnet

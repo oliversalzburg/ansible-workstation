@@ -40,8 +40,7 @@
     state: directory
     owner: "{{ _podman_nzbget_user.uid }}"
     group: "{{ _podman_nzbget_groups.results[0].gid }}"
-    mode: "u=rwX,g=rX,o="
-    recurse: true
+    mode: "0o750"
   loop:
     - config
   notify: Restart nzbget
@@ -52,8 +51,7 @@
     state: directory
     owner: "{{ _podman_nzbget_user.uid }}"
     group: "{{ _podman_nzbget_groups.results[0].gid }}"
-    mode: "u=rwX,g=rX,o="
-    recurse: true
+    mode: "0o750"
   loop:
     - data/usenet/complete
     - data/usenet/incomplete

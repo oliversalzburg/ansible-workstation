@@ -58,8 +58,7 @@
     path: "{{ userspace_downloads }}"
     state: directory
     owner: "{{ userspace_user }}"
-    mode: "u=rwX,g=rX,o="
-    recurse: true
+    mode: "0o750"
 
 - name: Download Oh My Zsh installer
   register: userspace_result
