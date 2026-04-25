@@ -57,7 +57,7 @@ podman_nexus_version: "3.91.1"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/nzbget versioning=semver
 podman_nzbget_version: "v26.0"
 # renovate: datasource=docker depName=docker.io/pihole/pihole versioning=loose
-podman_pihole_version: "2026.04.0"
+podman_pihole_version: "2026.04.1"
 # renovate: datasource=docker depName=docker.io/library/postgres versioning=semver-coerced
 podman_postgres_version: "17.9"
 # renovate: datasource=docker depName=quay.io/prometheus/prometheus versioning=semver-coerced
