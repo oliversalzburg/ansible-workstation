@@ -32,7 +32,7 @@ ExecStart=/usr/bin/podman run \
   --label "traefik.http.services.jellyfin.loadbalancer.healthcheck.path=/health" \
   --label "traefik.http.services.jellyfin.loadbalancer.server.port=8096" \
   --log-driver "journald" \
-  --memory "16g" \
+  --memory "24g" \
   --name "%n.{{ inventory_hostname }}" \
   --network host \
   --pull "never" \
