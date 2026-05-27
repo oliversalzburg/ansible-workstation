@@ -47,7 +47,7 @@ podman_prowlarr_flaresolverr_version: "v3.5.0"
 # renovate: datasource=docker depName=grafana/grafana versioning=semver
 podman_grafana_version: "13.0.1"
 # renovate: datasource=docker depName=docker.io/jellyfin/jellyfin versioning=semver
-podman_jellyfin_version: "10.11.9"
+podman_jellyfin_version: "10.11.10"
 # renovate: datasource=docker depName=ghcr.io/seerr-team/seerr versioning=semver
 podman_seerr_version: "v3.2.0"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/lidarr versioning=loose
