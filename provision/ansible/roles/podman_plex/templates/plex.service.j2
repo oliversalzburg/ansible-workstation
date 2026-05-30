@@ -26,7 +26,10 @@ ExecStart=/usr/bin/podman run \
   --group-add "{{ ansible_facts["getent_group"]["nas"][1] }}" \
   --group-add "{{ ansible_facts["getent_group"]["render"][1] }}" \
   --hostname "%n.{{ inventory_hostname }}" \
-  --label "traefik.enable=false" \
+  --label "traefik.enable=true" \
+  --label "traefik.http.routers.plex.entrypoints=websecure" \
+  --label "traefik.http.routers.plex.tls.certresolver={{ realm }}" \
+  --label "traefik.http.routers.plex.tls.domains[0].main=%N.web.{{ inventory_hostname }}" \
   --label "traefik.http.routers.plex.rule=Host(`%N.web.{{ inventory_hostname }}`)" \
   --label "traefik.http.services.plex.loadbalancer.healthcheck.path=/health" \
   --label "traefik.http.services.plex.loadbalancer.server.port=32400" \
