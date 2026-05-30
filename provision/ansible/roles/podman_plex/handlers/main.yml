@@ -1,0 +1,6 @@
+- name: Restart plex
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: plex
+    state: restarted

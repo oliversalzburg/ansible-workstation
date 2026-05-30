@@ -1,0 +1,10 @@
+---
+podman_plex_id: plex
+podman_plex_name: Plex
+podman_plex_groups:
+  - nas
+  - service
+
+podman_plex_basedir: /mnt/usb/plex
+podman_plex_mediadir: /mnt/media
+podman_plex_version: latest

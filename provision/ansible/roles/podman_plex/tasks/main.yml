@@ -1,0 +1,79 @@
+---
+- name: Create groups
+  become: true
+  register: _podman_plex_groups
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+    system: true
+  loop: "{{ podman_plex_groups }}"
+  notify: Restart plex
+
+- name: Ensure user is a group member
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: "{{ podman_plex_groups }}"
+    append: true
+  notify: Restart plex
+
+- name: Create user
+  become: true
+  register: _podman_plex_user
+  ansible.builtin.user:
+    comment: "{{ podman_plex_name }}"
+    create_home: false
+    group: "{{ _podman_plex_groups.results[0].gid }}"
+    groups: "{{ podman_plex_groups }}"
+    home: "{{ podman_plex_basedir }}"
+    name: "{{ podman_plex_id }}"
+    password: "!"
+    shell: "/usr/sbin/nologin"
+    system: true
+  notify: Restart plex
+
+
+- name: Ensure working directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ podman_plex_basedir }}"
+    state: directory
+    owner: "{{ _podman_plex_user.uid }}"
+    group: "{{ _podman_plex_groups.results[0].gid }}"
+    mode: "0o750"
+  notify: Restart plex
+
+- name: Ensure directories exist
+  become: true
+  ansible.builtin.file:
+    path: "{{ podman_plex_basedir }}/{{ item }}"
+    state: directory
+    owner: "{{ _podman_plex_user.uid }}"
+    group: "{{ _podman_plex_groups.results[0].gid }}"
+    mode: "0o750"
+  loop:
+    - config
+  notify: Restart plex
+
+- name: Get groups
+  ansible.builtin.getent:
+    database: group
+
+- name: Copy service files
+  become: true
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "{{ directory_systemd }}/{{ item }}"
+    owner: root
+    group: root
+    mode: "0o644"
+  loop:
+    - plex.service
+  notify: Restart plex
+
+- name: Enable and check plex service
+  become: true
+  ansible.builtin.systemd:
+    enabled: true
+    name: plex
+  notify: Restart plex
