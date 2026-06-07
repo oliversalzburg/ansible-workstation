@@ -59,6 +59,16 @@
   ansible.builtin.getent:
     database: group
 
+- name: Copy configuration
+  become: true
+  ansible.builtin.template:
+    src: "Preferences.xml.j2"
+    dest: "{{ podman_plex_basedir }}/config/Preferences.xml"
+    owner: "{{ _podman_plex_user.uid }}"
+    group: "{{ _podman_plex_groups.results[0].gid }}"
+    mode: "0o640"
+  notify: Restart plex
+
 - name: Copy service files
   become: true
   ansible.builtin.template:
