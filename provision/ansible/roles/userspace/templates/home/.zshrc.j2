@@ -90,7 +90,7 @@ plugins=(
 # The keychain plugin is broken af and doesn't load all identities
 # It's also completely pointless, because this command does everything
 # you otherwise need 3 plugins for.
-eval `keychain --eval --quiet --agents ssh --inherit any id_ed25519`
+eval `keychain --eval --quiet id_ed25519`
 
 source $ZSH/oh-my-zsh.sh
 
