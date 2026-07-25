@@ -31,6 +31,15 @@
     mode: "0o644"
   notify: Enable noswap service
 
+- name: Write journald configuration
+  become: true
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/systemd/journald.conf"
+    dest: /etc/systemd/journald.conf
+    mode: "0o644"
+    owner: root
+    group: root
+
 - name: Generate /etc/hosts
   become: true
   ansible.builtin.template:
