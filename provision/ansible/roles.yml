@@ -30,7 +30,6 @@
   roles:
     - role: podman_host
     - role: podman_traefik
-    - role: prometheus.prometheus.cadvisor
     - role: podman_prometheus
 
 - name: Container
