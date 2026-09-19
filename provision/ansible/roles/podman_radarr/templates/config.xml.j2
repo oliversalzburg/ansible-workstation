@@ -6,7 +6,7 @@
   <LaunchBrowser>True</LaunchBrowser>
   <ApiKey>{{ podman_radarr_api_key }}</ApiKey>
   <AuthenticationMethod>Forms</AuthenticationMethod>
-  <AuthenticationRequired>DisabledForLocalAddresses</AuthenticationRequired>
+  <AuthenticationRequired>Enabled</AuthenticationRequired>
   <Branch>master</Branch>
   <LogLevel>info</LogLevel>
   <SslCertPath></SslCertPath>
@@ -20,4 +20,6 @@
   <PostgresHost>postgres.service.{{ inventory_hostname }}</PostgresHost>
   <PostgresMainDb>{{ podman_radarr_pg_db }}-main</PostgresMainDb>
   <PostgresLogDb>{{ podman_radarr_pg_db }}-log</PostgresLogDb>
+  <AllowedHosts></AllowedHosts>
+  <TrustedNetworks>192.168.178.0/24, {{ podman_service_network_subnet }}</TrustedNetworks>
 </Config>

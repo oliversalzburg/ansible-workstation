@@ -6,7 +6,7 @@
   <LaunchBrowser>True</LaunchBrowser>
   <ApiKey>{{ podman_whisparr_api_key }}</ApiKey>
   <AuthenticationMethod>Forms</AuthenticationMethod>
-  <AuthenticationRequired>DisabledForLocalAddresses</AuthenticationRequired>
+  <AuthenticationRequired>Enabled</AuthenticationRequired>
   <Branch>eros</Branch>
   <LogLevel>info</LogLevel>
   <SslCertPath></SslCertPath>
@@ -22,4 +22,6 @@
   <PostgresLogDb>{{ podman_whisparr_pg_db }}-log</PostgresLogDb>
   <WhisparrMetadata>https://api.whisparr.com/v3/{route}</WhisparrMetadata>
   <GithubOwnerRepo>whisparr/whisparr-eros</GithubOwnerRepo>
+  <AllowedHosts></AllowedHosts>
+  <TrustedNetworks>192.168.178.0/24, {{ podman_service_network_subnet }}</TrustedNetworks>
 </Config>
