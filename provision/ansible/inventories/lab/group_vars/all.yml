@@ -51,7 +51,7 @@ podman_jellyfin_version: "10.11.11"
 # renovate: datasource=docker depName=ghcr.io/seerr-team/seerr versioning=semver
 podman_seerr_version: "v3.5.1"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/lidarr versioning=loose
-podman_lidarr_version: "v3.1.0.4875"
+podman_lidarr_version: "v3.1.6.5079"
 # renovate: datasource=docker depName=docker.io/sonatype/nexus3 versioning=semver
 podman_nexus_version: "3.97.2"
 # renovate: datasource=docker depName=ghcr.io/oliversalzburg/containers/nzbget versioning=semver
