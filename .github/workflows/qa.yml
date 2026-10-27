@@ -5,7 +5,7 @@ on:
 
 env:
   # renovate: datasource=python-version depName=python versioning=python
-  PYTHON_VERSION: "3.15.1"
+  PYTHON_VERSION: "3.15.2"
 
 jobs:
   build:
