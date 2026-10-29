@@ -46,6 +46,15 @@ http:
         certresolver: "{{ realm }}"
         domains:
           - main: "oszm1.web.{{ inventory_hostname }}"
+{% if "mediaservers" in group_names %}
+    unpackerr:
+      rule: "Host(`unpackerr.web.{{ inventory_hostname }}`)"
+      service: unpackerr@file
+      tls:
+        certresolver: "{{ realm }}"
+        domains:
+          - main: "unpackerr.web.{{ inventory_hostname }}"
+{% endif %}
 
   services:
     kiwix:
@@ -56,6 +65,12 @@ http:
       loadBalancer:
         servers:
           - url: "http://{{ inventory_hostname }}:8082"
+{% if "mediaservers" in group_names %}
+    unpackerr:
+      loadBalancer:
+        servers:
+          - url: "http://{{ inventory_hostname }}:5656"
+{% endif %}
 
 tls:
   options:

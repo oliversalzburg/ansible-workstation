@@ -11,7 +11,7 @@
 
 ## Turn on debug messages in the output. Do not wrap this in quotes.
 ## Recommend trying this so you know what it looks like. I personally leave it on.
-debug = false
+debug = true
 
 ## Disable writing messages to stdout/stderr. This silences the app. Set a log
 ## file below if you set this to true. Recommended when starting with systemctl.
@@ -236,7 +236,6 @@ paths = ['{{ podman_qbittorrent_mediadir }}/data/torrents']
 ## If you use Syncthing, setting this to true will make unpackerr wait for syncs to finish.
 # syncthing = false
 
-#[[whisparr]]
 [[whisparr]]
 # url = "http://127.0.0.1:6969"
 # api_key = "0123456789abcdef0123456789abcdef"
