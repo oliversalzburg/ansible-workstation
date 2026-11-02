@@ -483,7 +483,7 @@ paths = ['{{ podman_qbittorrent_mediadir }}/data/torrents']
 # Extra IDs and custom event titles shared by every webhook and command hook.
 [hooks]
 ## Nested [hooks.custom_ids] table, not an inline map.
-## Webhooks get `customIDs` in JSON (`{{index .CustomIDs "url"}}` in templates).
+## Webhooks get `customIDs` in JSON (`{% raw %}{{index .CustomIDs "url"}}{% endraw %}` in templates).
 ## Command hooks get `UN_CUSTOM_ID_<key>` environment variables.
 ## Env: UN_HOOKS_CUSTOM_IDS_url=https://…
 ## [hooks.custom_ids]
